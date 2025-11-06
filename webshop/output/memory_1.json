@@ -1,0 +1,283 @@
+[
+    {
+        "Id": "fixed_0",
+        "Instruction": "i am looking for blue color toothbrushes that helps to maintain my oral hygiene, and price lower than 50.00 dollars",
+        "Actions": [
+            "Action: search[blue toothbrush oral hygiene]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09MW563KN] \nSWAGOFKGys Travel Toothbrushes\uff0c Double Side Tongue Cleaner Brush for Tongue Cleaning Oral Care Tool Silicone Tongue Scraper Toothbrush Fresh Breath (Color : Yellow) \n$22.9 \n[B07S8JZJ6Y] \nHello Kitty Inspired 4pc Bright Smile Oral Hygiene Set! (1) Hello Kitty Soft Manual Toothbrush with Caps (1) Crest Kids Toothpaste Bundle Bonus Matching Mouth Wash Rinse Cup! \n$14.9 \n[B08GXD5MDG] \nPortable Case Orthodontic Care Kit Orthodontic Toothbrush Kit for Braces for Orthodontic Patient Travel Oral Care Kit Dental Travel Kit Interdental Brush Dental Wax Dental Floss (8 Pcs/Pack)-Red \n$14.59 ",
+            "Action: think[B07S8JZJ6Y and B08GXD5MDG are blue toothbrushes for oral hygiene and less than 50 dollars. I can check B07S8JZJ6Y first.]",
+            "Observation: OK.",
+            "Action: click[B07S8JZJ6Y]",
+            "Observation: \n[Back to Search] \n[< Prev] \nHello Kitty Inspired 4pc Bright Smile Oral Hygiene Set! (1) Hello Kitty Soft Manual Toothbrush with Caps (1) Crest Kids Toothpaste Bundle Bonus Matching Mouth Wash Rinse Cup! \nPrice: $14.9 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[For blue toothbrush for oral hygiene, the item has options 'blue' and 'oral hygiene' and seems good to buy.]",
+            "Observation: OK.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": false,
+        "Reward": 0.6666666666666666,
+        "Category": "beauty",
+        "Query": "tongue cleaners"
+    },
+    {
+        "Id": "fixed_1",
+        "Instruction": "place order for a pack of 12 blue diamond almonds that is gluten free and has the pecan flavor, and price lower than 60.00 dollars",
+        "Actions": [
+            "Action: search[12 pack blue diamond almonds gluten free pecan flavor]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B003I567W4] \nBlue Diamond Almonds Nut Thins Gluten Free Cracker Crisps, Hint of Sea Salt, 4.25 Oz Boxes (Pack of 12) \n$34.44 \n[B09DBYG4XD] \nItalian Herb Nuts - Vegan, Kosher, Gluten-free, GMO-free - 12oz (PACK OF 3 BAGS), Satisfaction Guarantee \n$17.95 \n[B07HYF111T] \nKETO BARS : The Original High Fat, Low Carb, Ketogenic Bar. Gluten Free, Vegan, Homemade with simple ingredients. [Chocolate Peanut Butter, 10 Pack] \n$29.95 ",
+            "Action: think[B003I567W4 and B09DBYG4XD are 12 pack blue diamond almonds gluten free pecan flavor less than 60 dollars. I can check B003I567W4 first.]",
+            "Observation: OK.",
+            "Action: click[B003I567W4]",
+            "Observation: \n[Back to Search] \n[< Prev] \nflavor name [country ranch][multi-seeds][original almond][pepper jack][sea salt][sesame seeds][smokehouse][cheddar][pecan][flax seeds][honey cinnamon]\nsize [4.25 ounce (pack of 1)][4.25 ounce (pack of 2)][4.25 ounce (pack of 6)][4.25 ounce (pack of 12)][7.7 ounce (pack of 1)]\nBlue Diamond Almonds Nut Thins Gluten Free Cracker Crisps, Hint of Sea Salt, 4.25 Oz Boxes (Pack of 12) \nPrice: $34.44 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[For a pack of 12 blue diamond almonds that is gluten free and has the pecan flavor, the item has options 'pecan' and '4.25 ounce (pack of 12)' and seems good to buy.]",
+            "Observation: OK.",
+            "Action: click[pecan]",
+            "Observation: You have clicked pecan.",
+            "Action: click[4.25 ounce (pack of 12)]",
+            "Observation: You have clicked 4.25 ounce (pack of 12).",
+            "Action: click[Buy Now]"
+        ],
+        "Success": true,
+        "Reward": 1.0,
+        "Category": "grocery",
+        "Query": "pantry staples"
+    },
+    {
+        "Id": "fixed_2",
+        "Instruction": "i am looking for a pair of men's size 10.5 black loafers with rubber soles, and price lower than 70.00 dollars",
+        "Actions": [
+            "Action: search[men's size 10.5 black loafers rubber soles]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B082MT9162] \nGLOBALWIN Men's Casual Slip On Penny Loafers Lightweight Driving Shoes \n$29.99 to $49.99 \n[B07HP6LVRS] \nMCICI Mens Loafers Moccasin Driving Shoes Premium Genuine Leather Casual Slip On Flats Fashion Slipper Breathable Big Size \n$15.99 to $32.99 \n[B09F2MFG1Q] \nWomens Mens house slippers Memory Foam Garden Plush Lining Slip On Rubber sole Indoor Outdoor House Casual Shoes \uff08Black adult-10.5-11) \n$100.0 ",
+            "Action: think[B082MT9162 and B07HP6LVRS are men's size 10.5 black loafers with rubber soles and less than 70 dollars. I can check B082MT9162 first.]",
+            "Observation: OK.",
+            "Action: click[B082MT9162]",
+            "Observation: \n[Back to Search] \n[< Prev] \nsize [7][7.5][8][8.5][9][9.5][10][10.5][11][12][13]\ncolor [2005brown][2005grey][2005black]\nGLOBALWIN Men's Casual Slip On Penny Loafers Lightweight Driving Shoes \nPrice: $29.99 to $49.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[For men's size 10.5 black loafers with rubber soles, the item has options '10.5' and '2005black' and seems good to buy.]",
+            "Observation: OK.",
+            "Action: click[10.5]",
+            "Observation: You have clicked 10.5.",
+            "Action: click[2005black]",
+            "Observation: You have clicked 2005black.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": true,
+        "Reward": 1.0,
+        "Category": "fashion",
+        "Query": "men's loafers & slip-ons"
+    },
+    {
+        "Id": "fixed_3",
+        "Instruction": "i want to buy a folding storage box ottoman which i can easily install and has faux leather, the size of it should be 60x40x40cm, and price lower than 170.00 dollars",
+        "Actions": [
+            "Action: search[folding storage box ottoman faux leather 60x40x40cm]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09NTCCVGX] \nOttoman Footstools Folding Storage Box with Lid, Large Storage Seat Faux Leather Footstool Toy Storage Box, Yellow, 40x40x40cm (Color : Yellow, Size : 40X40X40cm) \n$149.97 \n[B07G4HJR5V] \nBest Choice Products Tufted Faux Leather 3-Seat L-Shape Sectional Sofa Couch Set w/Chaise Lounge, Ottoman Coffee Table Bench, Black \n$699.99 \n[B0893JSZHZ] \nAlien Storehouse Fashionable Square Cloth Modern Small Stool Table Stool Sofa Pier Ottoman Stool, A \n$36.58 ",
+            "Action: think[B09NTCCVGX and B07G4HJR5V are folding storage box ottoman with faux leather and size 60x40x40cm. I can check B09NTCCVGX first.]",
+            "Observation: OK.",
+            "Action: click[B09NTCCVGX]",
+            "Observation: \n[Back to Search] \n[< Prev] \nsize [40x40x40cm][60x40x40cm][80x40x40cm][90x40x40cm][100x40x40cm][110x40x40cm][120x40x40cm]\nOttoman Footstools Folding Storage Box with Lid, Large Storage Seat Faux Leather Footstool Toy Storage Box, Yellow, 40x40x40cm (Color : Yellow, Size : 40X40X40cm) \nPrice: $149.97 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[For folding storage box ottoman with faux leather and size 60x40x40cm, the item has option '60x40x40cm' and seems good to buy.]",
+            "Observation: OK.",
+            "Action: click[60x40x40cm]",
+            "Observation: You have clicked 60x40x40cm.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": true,
+        "Reward": 1.0,
+        "Category": "garden",
+        "Query": "ottomans"
+    },
+    {
+        "Id": "fixed_4",
+        "Instruction": "i am looking for a gluten free, 100% vegan plant based protein shake that is soy-free, and price lower than 40.00 dollars",
+        "Actions": [
+            "Action: search[gluten free vegan plant based protein shake soy-free]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B07FYPSNH8] \nOWYN - 100% Vegan Plant-Based Protein Shakes | Cold Brew Coffee, 12 Fl Oz | Dairy-Free, Gluten-Free, Soy-Free, Tree Nut-Free, Egg-Free, Allergy-Free, Vegetarian \n$11.07 \n[B08BPTT8MX] \nPediasure Grow & Gain with Immune Support, Kids Protein Shake, 27 Vitamins and Minerals, 7g Protein, Helps Kids Catch Up On Growth, Non-GMO, Gluten-Free, Chocolate, 8 Fl Oz, 16 Count \n$100.0 \n[B07HYF111T] \nKETO BARS : The Original High Fat, Low Carb, Ketogenic Bar. Gluten Free, Vegan, Homemade with simple ingredients. [Chocolate Peanut Butter, 10 Pack] \n$29.95 ",
+            "Action: think[B07FYPSNH8 and B08BPTT8MX are gluten free, vegan, plant based protein shakes that are soy-free and less than 40 dollars. I can check B07FYPSNH8 first.]",
+            "Observation: OK.",
+            "Action: click[B07FYPSNH8]",
+            "Observation: \n[Back to Search] \n[< Prev] \nOWYN - 100% Vegan Plant-Based Protein Shakes | Cold Brew Coffee, 12 Fl Oz | Dairy-Free, Gluten-Free, Soy-Free, Tree Nut-Free, Egg-Free, Allergy-Free, Vegetarian \nPrice: $11.07 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[For a gluten free, vegan, plant based protein shake that is soy-free and less than 40 dollars, the item has options 'gluten-free', 'vegan', 'soy-free', and '12 Fl Oz' and seems good to buy.]",
+            "Observation: OK.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": true,
+        "Reward": 1.0,
+        "Category": "grocery",
+        "Query": "beverages"
+    },
+    {
+        "Id": "fixed_5",
+        "Instruction": "i need a 120 ml hair mask treatment, and price lower than 140.00 dollars",
+        "Actions": [
+            "Action: search[120 ml hair mask treatment]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09R4RJSFP] \nMagical Hair Treatment Mask 5 Seconds Repairs Damage Hair Advanced Molecular Hair deep Conditioner Roots Treatment Return Bouncy Restore Elasticity Hair Care Essence (60ML) \n$100.0 \n[B09FYBZNQL] \n7pcs Hair Conditioner For Damaged Dry Hair, Hair Mask Repairing Hair Deep Conditioner Conditioning Treatment for Damaged Hair \n$11.99 \n[B07T3PZ3S9] \nDaeng Gi Meo Ri Jin Gi Vitalizing Treatment 500 ML Anti Dandruff and Itchiness Made In Korea (Treatment) \n$32.0 ",
+            "Action: think[B09R4RJSFP and B09FYBZNQL are 120 ml hair mask treatment less than 140 dollars. I can check B09R4RJSFP first.]",
+            "Observation: OK.",
+            "Action: click[B09R4RJSFP]",
+            "Observation: \n[Back to Search] \n[< Prev] \ncolor [120ml][60ml]\nMagical Hair Treatment Mask 5 Seconds Repairs Damage Hair Advanced Molecular Hair deep Conditioner Roots Treatment Return Bouncy Restore Elasticity Hair Care Essence (60ML) \nPrice: $100.0 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[For 120 ml hair mask treatment, the item has option '120ml' and seems good to buy.]",
+            "Observation: OK.",
+            "Action: click[120ml]",
+            "Observation: You have clicked 120ml.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": true,
+        "Reward": 1.0,
+        "Category": "beauty",
+        "Query": "hair masks"
+    },
+    {
+        "Id": "fixed_6",
+        "Instruction": "i want a pink niuta 2 pack hair towel wrap for dry hair, and price lower than 40.00 dollars",
+        "Actions": [
+            "Action: search[pink niuta 2 pack hair towel wrap dry hair]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B08G14B779] \nNIUTA 2 Pack Hair Towel Wrap, Microfiber Quick Drying Hair Towels, Super Absorbent Quick Dry Hair Towel, Wrapped Bath Cap (Pink+Light Blue) \n$4.99 \n[B098824K9T] \nSpa Savvy Shower Cap and Twist Hair Turban Duo, Enhance Your Shower Experience with this Complete Set, Fully Lined Shower Cap, Microfiber Turban (Green) \n$11.99 \n[B09DD2C1XD] \nBeaupretty 8pcs Kids Nightcaps Hair Bonnets Sleeping Caps Hair Protection Wide Rim Hat Bath Shower Accessories for Home \n$19.99 ",
+            "Action: think[B08G14B779 and B098824K9T are pink niuta 2 pack hair towel wrap less than 40 dollars. I can check B08G14B779 first.]",
+            "Observation: OK.",
+            "Action: click[B08G14B779]",
+            "Observation: \n[Back to Search] \n[< Prev] \ncolor [pink][pink light blue][pink purple][pink rose]\nsize [26 inch x 10 inch][26 inch x 10 inch]\nNIUTA 2 Pack Hair Towel Wrap, Microfiber Quick Drying Hair Towels, Super Absorbent Quick Dry Hair Towel, Wrapped Bath Cap (Pink+Light Blue) \nPrice: $4.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[For pink niuta 2 pack hair towel wrap for dry hair, the item has options 'pink' and '26 inch x 10 inch' and seems good to buy.]",
+            "Observation: OK.",
+            "Action: click[pink]",
+            "Observation: You have clicked pink.",
+            "Action: click[26 inch x 10 inch]",
+            "Observation: You have clicked 26 inch x 10 inch.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": true,
+        "Reward": 1.0,
+        "Category": "beauty",
+        "Query": "bathing accessories"
+    },
+    {
+        "Id": "fixed_7",
+        "Instruction": "i need some draw string shorts that are official cleveland university. the need to be small and charcoal along with being machine washable, and price lower than 50.00 dollars",
+        "Actions": [
+            "Action: search[draw string shorts official cleveland university small charcoal machine washable]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09HX5CD2D] \nCSU Cleveland State University Vikings Property Fleece Drawstring Shorts Heather Charcoal \n$39.95 \n[B07XPR3R7N] \nMarvel Avengers: Endgame Captain America America's Language T-Shirt \n$22.99 \n[B09QQP3356] \nHAUKLIE Men's Sports Waffle Ribbed Polo Shirts Summer Short Sleeve Cotton Muscle Quarter-Zip Henley T-Shirt Tunics Tops \n$10.99 ",
+            "Action: think[B09HX5CD2D is official cleveland university draw string shorts in small and charcoal color, and it is machine washable. The price is lower than 50.00 dollars. I can check B09HX5CD2D first.]",
+            "Observation: OK.",
+            "Action: click[B09HX5CD2D]",
+            "Observation: \n[Back to Search] \n[< Prev] \ncolor [heather charcoal][heather grey]\nsize [small][medium][large][x-large][xx-large]\nCSU Cleveland State University Vikings Property Fleece Drawstring Shorts Heather Charcoal \nPrice: $39.95 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[For official cleveland university draw string shorts in small and charcoal color, the item has options 'heather charcoal' and 'small' and seems good to buy.]",
+            "Observation: OK.",
+            "Action: click[heather charcoal]",
+            "Observation: You have clicked heather charcoal.",
+            "Action: click[small]",
+            "Observation: You have clicked small.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": true,
+        "Reward": 1.0,
+        "Category": "fashion",
+        "Query": "men's shorts"
+    },
+    {
+        "Id": "fixed_8",
+        "Instruction": "show me an one organic hair growth serum roller set for all hair types, and price lower than 60.00 dollars",
+        "Actions": [
+            "Action: search[organic hair growth serum roller set all hair types]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09PY89B1S] \nUpgraded Version Regrowth Organic Hair Serum Roller Set, Biotin Hair Growth Serum,Triple Roll-On Massager Hair Growth Essence,for Men Women of All Hair Types (5PCS) \n$21.99 \n[B08Q42DTN1] \nTHANN Aromatic Wood Aromatherapy Shampoo and Conditioner with Organic Olive Oil, Organic Grape Oil and Coix Extract, Organic Jojoba Oil, Organic Corn Silk Extract and Wheat Protein - Set B. \n$155.7 \n[B09MDQ4HBT] \nLom-style Moroccan Hair Serum - Repairing Anti-frizz Serum No Silicones, Sulfates or Pbens with Organic Argan Oil 100 ml/3.38 oz Model (3301-9145) \n$100.0 ",
+            "Action: think[B09PY89B1S and B08Q42DTN1 are organic hair growth serum roller set for all hair types and less than 60 dollars. I can check B09PY89B1S first.]",
+            "Observation: OK.",
+            "Action: click[B09PY89B1S]",
+            "Observation: \n[Back to Search] \n[< Prev] \nsize [1pcs][3pcs][5pcs]\nUpgraded Version Regrowth Organic Hair Serum Roller Set, Biotin Hair Growth Serum,Triple Roll-On Massager Hair Growth Essence,for Men Women of All Hair Types (5PCS) \nPrice: $21.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[For organic hair growth serum roller set for all hair types, the item has options '5pcs' and seems good to buy.]",
+            "Observation: OK.",
+            "Action: click[5pcs]",
+            "Observation: You have clicked 5pcs.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": false,
+        "Reward": 0.6666666666666666,
+        "Category": "beauty",
+        "Query": "hair loss products"
+    },
+    {
+        "Id": "fixed_9",
+        "Instruction": "i am looking for x-large, red color women faux fur lined winter warm jacket coat, and price lower than 80.00 dollars",
+        "Actions": [
+            "Action: search[x-large red women faux fur lined winter warm jacket coat]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09KP78G37] \nWomen Faux Fur Lined Jacket Coat Winter Warm Thick Fleece Outwear Trench Zipper Plus Size Long Sleeve Plush Overcoat \n$47.41 to $59.07 \n[B07ZXBGDXF] \nWomen's Coat, FORUU Winter Faux Fur Fleece Outwear Warm Lapel Biker Motor Aviator Jacket \n$21.49 to $24.99 \n[B09MSZ4VS8] \nGoldweather Women Winter Leggings Printed Warm Fleece Lined Yoga Pants Trousers Thermal High Waist Thicken Cashmere Tights (Navy, L) \n$20.99 ",
+            "Action: think[B09KP78G37 and B07ZXBGDXF are x-large red women faux fur lined winter warm jacket coat less than 80 dollars. I can check B09KP78G37 first.]",
+            "Observation: OK.",
+            "Action: click[B09KP78G37]",
+            "Observation: \n[Back to Search] \n[< Prev] \ncolor [black][navy][red][yellow]\nsize [small][medium][large][x-large][xx-large][3x-large]\nWomen Faux Fur Lined Jacket Coat Winter Warm Thick Fleece Outwear Trench Zipper Plus Size Long Sleeve Plush Overcoat \nPrice: $47.41 to $59.07 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[For x-large, red color women faux fur lined winter warm jacket coat, the item has options 'x-large' and 'red' and seems good to buy.]",
+            "Observation: OK.",
+            "Action: click[x-large]",
+            "Observation: You have clicked x-large.",
+            "Action: click[red]",
+            "Observation: You have clicked red.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": true,
+        "Reward": 1.0,
+        "Category": "fashion",
+        "Query": "women's coats, jackets & vests"
+    },
+    {
+        "Id": "fixed_10",
+        "Instruction": "hello, i'm looking for a pair of cargo pants for everyday casual wear? but also hiking-friendly. also, i want an orange pair please, and price lower than 50.00 dollars",
+        "Actions": [
+            "Action: search[cargo pants everyday casual wear hiking-friendly orange]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B099231V35] \nMens Casual Cargo Pants Hi Vis Viz Reflective Overalls High Visibility Safe Work Pants Outdoor Hiking Trousers Big and Tall \n$16.79 \n[B09Q5ZHRVM] \nYinimo Mens Gym Shorts Fashionable Loose Beach Drawstring Turkey Print Beach Cool Shorts \n$19.19 \n[B09MSZ4VS8] \nGoldweather Women Winter Leggings Printed Warm Fleece Lined Yoga Pants Trousers Thermal High Waist Thicken Cashmere Tights (Navy, L) \n$20.99 ",
+            "Action: think[B099231V35 and B09Q5ZHRVM are cargo pants for everyday casual wear and hiking-friendly, but B099231V35 is not orange. I can check B09Q5ZHRVM first.]",
+            "Observation: OK.",
+            "Action: click[B09Q5ZHRVM]",
+            "Observation: \n[Back to Search] \n[< Prev] \ncolor [black][blue][red]\nsize [small][medium][large][x-large][xx-large][3x-large][4x-large][5x-large]\nYinimo Mens Gym Shorts Fashionable Loose Beach Drawstring Turkey Print Beach Cool Shorts \nPrice: $19.19 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[For cargo pants for everyday casual wear and hiking-friendly, the item has options 'black' and 'medium' and seems good to buy.]",
+            "Observation: OK.",
+            "Action: click[black]",
+            "Observation: You have clicked black.",
+            "Action: click[medium]",
+            "Observation: You have clicked medium.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": false,
+        "Reward": 0.025,
+        "Category": "fashion",
+        "Query": "men's pants"
+    },
+    {
+        "Id": "fixed_11",
+        "Instruction": "i need cruelty free deodorant that has a woody scent and is 1.6 oz, and price lower than 50.00 dollars",
+        "Actions": [
+            "Action: search[cruelty free deodorant woody scent 1.6 oz]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B005X7IXTK] \nL'Erbolario - Iris - Deodorant Cream - Floral and Powdery Scent - Anti-perspirant Properties - Maintains Freshness, Protects Skin - Made with Marshmallow, 1.6 Oz \n$35.5 \n[B08XQWJX8P] \nOriental Eau de Toilette \u2013 Natural Eau de Toilette for Men Woody Eau de Toilette Infused with Essential Oils Fragrance for Men with Oriental Woody Tones NOU Oliban Eau de Toilette for Men \u2013 1.7 Fl Oz \n$21.95 \n[B01N1T77OM] \nRexona Womans Motion Sense Invisible Pure Deodorant Stick 40ml / 1.35 Oz Travel Size (Pack of 6) \n$33.0 ",
+            "Action: think[B08XQWJX8P is cruelty free deodorant with woody scent and 1.7 oz, and price is lower than 50.00 dollars. I can check B08XQWJX8P first.]",
+            "Observation: OK.",
+            "Action: click[B08XQWJX8P]",
+            "Observation: \n[Back to Search] \n[< Prev] \nOriental Eau de Toilette \u2013 Natural Eau de Toilette for Men Woody Eau de Toilette Infused with Essential Oils Fragrance for Men with Oriental Woody Tones NOU Oliban Eau de Toilette for Men \u2013 1.7 Fl Oz \nPrice: $21.95 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[For cruelty free deodorant with woody scent and 1.6 oz, the item has options 'woody scent' and '1.7 Fl Oz' and seems good to buy.]",
+            "Observation: OK.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": false,
+        "Reward": 0.025,
+        "Category": "beauty",
+        "Query": "deodorants & antiperspirants"
+    },
+    {
+        "Id": "fixed_12",
+        "Instruction": "i am looking fresh scent body lotion for dry skin, and price lower than 30.00 dollars",
+        "Actions": [
+            "Action: search[fresh scent body lotion dry skin]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B087Y28XLM] \nPalmer's Mens Body/face Lotion 8.5 Ounce \n$5.99 \n[B005X7IXTK] \nL'Erbolario - Iris - Deodorant Cream - Floral and Powdery Scent - Anti-perspirant Properties - Maintains Freshness, Protects Skin - Made with Marshmallow, 1.6 Oz \n$35.5 \n[B004VMVLLU] \nEminence Cinnamon Paprika Body Lotion, 8.4 Ounce \n$39.94 ",
+            "Action: think[B087Y28XLM is a fresh scent body lotion for dry skin and is within the price range. I can check B087Y28XLM first.]",
+            "Observation: OK.",
+            "Action: click[B087Y28XLM]",
+            "Observation: \n[Back to Search] \n[< Prev] \nscent [fresh][butter]\nsize [8.5 fl oz (pack of 1)][10.6 fl oz (pack of 1)]\nPalmer's Mens Body/face Lotion 8.5 Ounce \nPrice: $5.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[For fresh scent body lotion for dry skin, the item has options 'fresh' and '8.5 fl oz (pack of 1)' and seems good to buy.]",
+            "Observation: OK.",
+            "Action: click[fresh]",
+            "Observation: You have clicked fresh.",
+            "Action: click[8.5 fl oz (pack of 1)]",
+            "Observation: You have clicked 8.5 fl oz (pack of 1).",
+            "Action: click[Buy Now]"
+        ],
+        "Success": true,
+        "Reward": 1.0,
+        "Category": "beauty",
+        "Query": "body care"
+    }
+]
