@@ -14,7 +14,6 @@ from rank_bm25 import BM25Okapi
 from flask import render_template_string
 from rich import print
 from pyserini.search.lucene import LuceneSearcher
-
 from web_agent_site.utils import (
     BASE_DIR,
     DEFAULT_FILE_PATH,

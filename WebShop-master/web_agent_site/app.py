@@ -21,6 +21,7 @@ from web_agent_site.engine.engine import (
     END_BUTTON
 )
 from web_agent_site.engine.goal import get_reward, get_goals
+
 from web_agent_site.utils import (
     generate_mturk_code,
     setup_logger,

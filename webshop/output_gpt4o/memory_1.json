@@ -1,15 +1,15 @@
 [
     {
         "Id": "fixed_0",
-        "Instruction": "i need a long clip-in hair extension which is natural looking, and price lower than 20.00 dollars",
+        "Instruction": "i need a long clip-in hair extension which is natural looking, and price lower than 30.00 dollars",
         "Actions": [
-            "Action: search[long clip-in hair extension natural looking under 20 dollars]",
+            "Action: search[long clip-in hair extension natural looking under 30 dollars]",
             "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09MM9NCQQ] \nSimayixx Christmas Gift Wigs Hair Extensions 24 Inches Synthetic Long Natural Black Thick Clip Straight Hair Stylish Fasionable Fabulous Hair Piece 6 Pieces Popular Hairstyle(E) \n$7.83 \n[B09G2F3HQ2] \nLurrose 6pcs Girls Hair Bow Ribbon Barrettes Hair Bow Ribbon Clip Wig Hair Bow Clips with Alligator Clip and Hair Extensions Hair Accessory for Toddler Girls Children \n$11.99 \n[B09CGNH5XT] \nDual Magnetic Lashes, Magnets False Eyelashes, Soft 3D No Glue Fake Lashes Extension with Tweezers, Natural Look Eyelashes Set with 6 Pieces / 3 Pairs /Mini HD Makeup Mirror \n$9.99 ",
-            "Action: think[B09MM9NCQQ matches the criteria for long clip-in hair extension, natural looking, and under 20 dollars. I can check this item first.]",
+            "Action: think[B09MM9NCQQ is a long clip-in hair extension that is natural looking and priced under 30 dollars. I should check the details of this item.]",
             "Observation: OK.",
             "Action: click[B09MM9NCQQ]",
             "Observation: \n[Back to Search] \n[< Prev] \ncolor [a][b][c][d][e][f][g][h][i][j]\nSimayixx Christmas Gift Wigs Hair Extensions 24 Inches Synthetic Long Natural Black Thick Clip Straight Hair Stylish Fasionable Fabulous Hair Piece 6 Pieces Popular Hairstyle(E) \nPrice: $7.83 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The item matches the criteria: long clip-in hair extension, natural looking, and under 20 dollars. It is priced at $7.83 and seems good to buy.]",
+            "Action: think[The item matches the requirements: long clip-in hair extension, natural looking, priced under $30. I should proceed to buy it.]",
             "Observation: OK.",
             "Action: click[Buy Now]"
         ],
@@ -28,7 +28,7 @@
             "Observation: OK.",
             "Action: click[B07CBFM96F]",
             "Observation: \n[Back to Search] \n[< Prev] \nsize [2 ounce (pack of 1)][4 ounce (pack of 2)]\nGarnier Hair Care Fructis Style Pixie Play Crafting Cream, 2 Count, Texture, 4 Oz \nPrice: $6.98 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The item 'Garnier Hair Care Fructis Style Pixie Play Crafting Cream' matches the criteria: cruelty-free, suitable for short hair, and priced under $20. I should proceed to select the appropriate size and buy it.]",
+            "Action: think[The item Garnier Hair Care Fructis Style Pixie Play Crafting Cream meets the criteria: cruelty-free, suitable for short hair, and priced under $20. I should select the appropriate size and proceed to buy.]",
             "Observation: OK.",
             "Action: click[4 ounce (pack of 2)]",
             "Observation: You have clicked 4 ounce (pack of 2).",
@@ -41,16 +41,18 @@
     },
     {
         "Id": "fixed_10",
-        "Instruction": "i would like a bundle of crackers, spicy beef and cheese which is shelf stable. it also needs to be keto and gluten free, and price lower than 50.00 dollars",
+        "Instruction": "i would like a bundle of crackers, spicy beef and cheese which is shelf stable. it also needs to be keto and gluten free, and price lower than 40.00 dollars",
         "Actions": [
             "Action: search[bundle crackers spicy beef cheese shelf stable keto gluten free]",
             "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B08P28NXH3] \nSchoolyard Snacks Low Carb Keto Cheese Puffs - Cheddar Cheese - High Protein - All Natural - Gluten & Grain-Free - Healthy Chips - Low Calorie Food - 12 Pack Single Serve Bags - 100 Calories \n$25.49 \n[B07HYF111T] \nKETO BARS : The Original High Fat, Low Carb, Ketogenic Bar. Gluten Free, Vegan, Homemade with simple ingredients. [Chocolate Peanut Butter, 10 Pack] \n$29.95 \n[B002C56QX6] \nCrunchmaster Gourmet Toasted Sesame Rice Cracker, 3.5-Ounce (Pack of 12) \n$100.0 ",
-            "Action: think[The first two options, B08P28NXH3 and B07HYF111T, are keto and gluten-free, and priced under $50. I will check B08P28NXH3 first as it mentions cheese.]",
+            "Action: think[The first two options, B08P28NXH3 and B07HYF111T, are keto and gluten-free, and priced under $40. I will check B08P28NXH3 first as it mentions cheese puffs which might align with the request.]",
             "Observation: OK.",
             "Action: click[B08P28NXH3]",
             "Observation: \n[Back to Search] \n[< Prev] \nflavor name [bbq][cheddar cheese][sour cream & onion]\nSchoolyard Snacks Low Carb Keto Cheese Puffs - Cheddar Cheese - High Protein - All Natural - Gluten & Grain-Free - Healthy Chips - Low Calorie Food - 12 Pack Single Serve Bags - 100 Calories \nPrice: $25.49 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The item B08P28NXH3 matches the criteria for cheese, keto, gluten-free, shelf-stable, and is priced under $50. I will proceed to buy it.]",
+            "Action: think[The item B08P28NXH3 is cheddar cheese flavored, keto, gluten-free, shelf stable, and priced under $40. It seems to meet the requirements and is good to buy.]",
             "Observation: OK.",
+            "Action: click[cheddar cheese]",
+            "Observation: You have clicked cheddar cheese.",
             "Action: click[Buy Now]"
         ],
         "Success": false,
@@ -59,16 +61,35 @@
         "Query": "cheese & charcuterie gifts"
     },
     {
-        "Id": "fixed_28",
-        "Instruction": "i am looking for an oral hygiene toothbrush. it should be easy to carry, and price lower than 40.00 dollars",
+        "Id": "fixed_19",
+        "Instruction": "i am looking for a high power sound column subwoofer, that uses bluetooth and is also a 3d surround sound system, and price lower than 660.00 dollars",
         "Actions": [
-            "Action: search[oral hygiene toothbrush easy to carry under 40 dollars]",
+            "Action: search[high power sound column subwoofer bluetooth 3d surround sound system under 660 dollars]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B074PBDJG9] \nOnkyo 5.2 Channel Full 4K Bluetooth AV Home Theater Receiver + Polk 8\" 2 Way High-Performance Natural Surround Sound in-Wall Speaker System (Set of 6) \n$1099.95 \n[B09B4YH4RG] \nMemphis Audio MXASB35 35\" 10-Speaker ATV/UTV Sound Bar Bundle with Bar 2.1 Deep Bass Home Theater Bluetooth Soundbar with Wireless Sub Movies/Music \n$699.95 \n[B09DVS5MQW] \n80W Bluetooth Speaker,Desong Portable Wireless Bluetooth Speaker TWS Subwoofer with Battery Capacity 10400mAh Power Bank Function TWS Mic, EQ Sound,IPX5 Waterproof Portable Speaker for Home,Party \n$99.99 ",
+            "Action: think[B09DVS5MQW is a Bluetooth speaker with subwoofer functionality, priced under 660 dollars. I can check its details first.]",
+            "Observation: OK.",
+            "Action: click[B09DVS5MQW]",
+            "Observation: \n[Back to Search] \n[< Prev] \n80W Bluetooth Speaker,Desong Portable Wireless Bluetooth Speaker TWS Subwoofer with Battery Capacity 10400mAh Power Bank Function TWS Mic, EQ Sound,IPX5 Waterproof Portable Speaker for Home,Party \nPrice: $99.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[The item B09DVS5MQW is a Bluetooth speaker with subwoofer functionality, priced at $99.99, which is under 660 dollars. It seems suitable for purchase.]",
+            "Observation: OK.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": true,
+        "Reward": 1.0,
+        "Category": "electronics",
+        "Query": "surround sound systems"
+    },
+    {
+        "Id": "fixed_28",
+        "Instruction": "i am looking for an oral hygiene toothbrush. it should be easy to carry, and price lower than 50.00 dollars",
+        "Actions": [
+            "Action: search[oral hygiene toothbrush easy to carry less than 50 dollars]",
             "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09MW563KN] \nSWAGOFKGys Travel Toothbrushes\uff0c Double Side Tongue Cleaner Brush for Tongue Cleaning Oral Care Tool Silicone Tongue Scraper Toothbrush Fresh Breath (Color : Yellow) \n$22.9 \n[B07S8JZJ6Y] \nHello Kitty Inspired 4pc Bright Smile Oral Hygiene Set! (1) Hello Kitty Soft Manual Toothbrush with Caps (1) Crest Kids Toothpaste Bundle Bonus Matching Mouth Wash Rinse Cup! \n$14.9 \n[B08XH9JMTG] \nmeyarn Interdental Brush for Braces Toothpick 50Count Tooth Floss Oral Hygiene Interdental Brush Toothpick Teeth Healthy Care Tight 0.8mm \n$11.89 ",
-            "Action: think[B07S8JZJ6Y is a toothbrush set that includes a manual toothbrush and is priced under 40 dollars. I will check this item first.]",
+            "Action: think[B07S8JZJ6Y seems to be a good option as it includes a toothbrush and is priced below $50. I will check it first.]",
             "Observation: OK.",
             "Action: click[B07S8JZJ6Y]",
             "Observation: \n[Back to Search] \n[< Prev] \nHello Kitty Inspired 4pc Bright Smile Oral Hygiene Set! (1) Hello Kitty Soft Manual Toothbrush with Caps (1) Crest Kids Toothpaste Bundle Bonus Matching Mouth Wash Rinse Cup! \nPrice: $14.9 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The Hello Kitty Inspired 4pc Bright Smile Oral Hygiene Set includes a manual toothbrush and is priced under 40 dollars. It seems suitable for the requirement and good to buy.]",
+            "Action: think[The item includes a toothbrush, is easy to carry, and is priced below $50. It seems suitable for purchase.]",
             "Observation: OK.",
             "Action: click[Buy Now]"
         ],
@@ -87,6 +108,8 @@
             "Observation: OK.",
             "Action: click[B08JQ5TLQV]",
             "Observation: \n[Back to Search] \n[< Prev] \nScented Candles Gift Set for Women, Aromatherapy Candles Gifts for Women, 4x3.5oz Long Lasting Candles for Home Scented Bath Yoga, 100% Natural Soy Candles, Unique Mothers Day Gifts for Mom Birthday \nPrice: $11.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[The item 'Scented Candles Gift Set for Women' is a long-lasting fragrance gift set for women under $90 and seems suitable to buy.]",
+            "Observation: OK.",
             "Action: click[Buy Now]"
         ],
         "Success": true,
@@ -95,40 +118,19 @@
         "Query": "sets fragrance"
     },
     {
-        "Id": "fixed_30",
-        "Instruction": "i need gluten free popcorn, and price lower than 140.00 dollars",
-        "Actions": [
-            "Action: search[gluten free popcorn]",
-            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B07FYPSNH8] \nOWYN - 100% Vegan Plant-Based Protein Shakes | Cold Brew Coffee, 12 Fl Oz | Dairy-Free, Gluten-Free, Soy-Free, Tree Nut-Free, Egg-Free, Allergy-Free, Vegetarian \n$11.07 \n[B07HYF111T] \nKETO BARS : The Original High Fat, Low Carb, Ketogenic Bar. Gluten Free, Vegan, Homemade with simple ingredients. [Chocolate Peanut Butter, 10 Pack] \n$29.95 \n[B002C56QX6] \nCrunchmaster Gourmet Toasted Sesame Rice Cracker, 3.5-Ounce (Pack of 12) \n$100.0 ",
-            "Action: think[B002C56QX6 is gluten-free popcorn and priced lower than 140 dollars. I can check this item first.]",
-            "Observation: OK.",
-            "Action: click[B002C56QX6]",
-            "Observation: \n[Back to Search] \n[< Prev] \nCrunchmaster Gourmet Toasted Sesame Rice Cracker, 3.5-Ounce (Pack of 12) \nPrice: $100.0 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The item Crunchmaster Gourmet Toasted Sesame Rice Cracker is gluten-free and priced at $100.0, which is within the budget. It seems suitable to buy.]",
-            "Observation: OK.",
-            "Action: click[Buy Now]"
-        ],
-        "Success": true,
-        "Reward": 1.0,
-        "Category": "grocery",
-        "Query": "popcorn"
-    },
-    {
         "Id": "fixed_33",
-        "Instruction": "i need a set of leak proof, bpa free jars, and price lower than 40.00 dollars",
+        "Instruction": "i need a set of leak proof, bpa free jars, and price lower than 50.00 dollars",
         "Actions": [
-            "Action: search[leak proof bpa free jars set]",
+            "Action: search[leak proof BPA free jars set]",
             "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B08W568RSB] \nRMISODO 15 Pieces 50ml Empty Refillable Roll On Bottles, Plastic Roller Bottles, Reusable Leak-Proof Deodorant Containers with Roller Balls for Essential Oil Perfume Fragrance, White \n$16.99 \n[B08532HWVM] \nBeaupretty 7Pcs Silicone Travel Bottles Set Empty Cosmetic Bottles Refillable Toiletry Containers Squeezable Travel Tube for Lotion Shampoo Toiletries \n$9.29 \n[B06XFZXXTC] \nCoralpearl Inflatable Hanger Travel X 4, White Round Shoulder, Portable Folding Clothes Drying Rack in Metal Hook,Space Saving Coat Storage Set Non Slip Foldable for Home Car Camping Indoor Outdoor \n$17.99 ",
-            "Action: think[B08W568RSB and B08532HWVM are leak proof, BPA-free jars sets under 40 dollars. I can check B08W568RSB first.]",
+            "Action: think[B08532HWVM is a set of leak-proof, BPA-free jars priced lower than $50. I can check this item first.]",
             "Observation: OK.",
-            "Action: click[B08W568RSB]",
-            "Observation: \n[Back to Search] \n[< Prev] \nRMISODO 15 Pieces 50ml Empty Refillable Roll On Bottles, Plastic Roller Bottles, Reusable Leak-Proof Deodorant Containers with Roller Balls for Essential Oil Perfume Fragrance, White \nPrice: $16.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The item RMISODO 15 Pieces 50ml Empty Refillable Roll On Bottles is a set of leak-proof, BPA-free jars priced at $16.99, which meets the requirements and is suitable to buy.]",
-            "Observation: OK.",
+            "Action: click[B08532HWVM]",
+            "Observation: \n[Back to Search] \n[< Prev] \nBeaupretty 7Pcs Silicone Travel Bottles Set Empty Cosmetic Bottles Refillable Toiletry Containers Squeezable Travel Tube for Lotion Shampoo Toiletries \nPrice: $9.29 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.06666666666666667,
+        "Reward": 0.0,
         "Category": "beauty",
         "Query": "body makeup"
     },
@@ -138,7 +140,7 @@
         "Actions": [
             "Action: search[gold smart watch bands compatible apple 38mm 40mm 41mm under 40 dollars]",
             "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09R1T2P6V] \nBling Charm Pendant Bracelet Band Compatible with Apple Watch Bands 38mm 40mm 42mm 44mm,Adjustable Stainless Steel Smartwatch Band with Bling Diamond Case for iwatch Series SE Series 7 6 5 4 3 2 1 \n$13.99 to $16.99 \n[B09B7551X2] \nMNBVCXZ Watch Bands Compatible for Apple Watch Band 44mm 45mm 40mm 41mm with Protective Case for Men & Women, Sport Waterproof Strap for iWatch SE Series 7/6/5/4 (40mm 41mm,Midnight blue) \n$10.99 \n[B09J89KFHQ] \nSEGESTANA Compatible with Apple Watch Band Genuine Leather Strap for Women Men 44mm 42mm 40mm 38mm Watches Bands Sport Series SE 7 6 5 4 3 2 1 iwatch Bands B004-44 \n$15.99 ",
-            "Action: think[B09R1T2P6V is a gold color smart watch band compatible with Apple watches and fits sizes 38mm, 40mm, and 41mm under $40. I can check this item first.]",
+            "Action: think[B09R1T2P6V is a gold color smart watch band compatible with Apple watches and includes sizes 38mm, 40mm, and 41mm under $40. I can check this item first.]",
             "Observation: OK.",
             "Action: click[B09R1T2P6V]",
             "Observation: \n[Back to Search] \n[< Prev] \ncolor [gold][rose gold][silver]\nsize [38mm][40mm][42mm][44mm]\nBling Charm Pendant Bracelet Band Compatible with Apple Watch Bands 38mm 40mm 42mm 44mm,Adjustable Stainless Steel Smartwatch Band with Bling Diamond Case for iwatch Series SE Series 7 6 5 4 3 2 1 \nPrice: $13.99 to $16.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
@@ -155,15 +157,15 @@
     },
     {
         "Id": "fixed_37",
-        "Instruction": "i am looking for a pendant light to go in my dining room with dimmer switch, and price lower than 130.00 dollars",
+        "Instruction": "i am looking for a pendant light to go in my dining room with dimmer switch, and price lower than 120.00 dollars",
         "Actions": [
-            "Action: search[pendant light dining room dimmer switch under 130 dollars]",
+            "Action: search[pendant light dining room dimmer switch under 120 dollars]",
             "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09KQQNRRM] \nRustic Wooden Chandelier,1-Light Farmhouse Chandelier Hanging Light Fixture Antique Wood Vintage Pendant Light for Dining Room,Kitchen Island,Foyer \n$65.99 \n[B0854JTZMT] \nBAYCHEER Tiffany Style Stained Glass Bowl Shade Pendant Light Chandelier Decorative Hanging Lamp Pendant Lighting Adjustable Ceiling Fixture with Pull Chain 3 Lights for Living Room Dining Room \n$169.99 \n[B07ZBCF88X] \nVINLUZ Farmhouse Chandeliers Rectangle Black 5 Light Dining Room Lighting Fixtures Hanging, Kitchen Island Cage Pendant Lights Contemporary Modern Ceiling Light with Glass Shade Adjustable Rods \n$199.99 ",
-            "Action: think[B09KQQNRRM is a pendant light for dining room with dimmer switch under 130 dollars. I can check B09KQQNRRM first.]",
+            "Action: think[B09KQQNRRM is a pendant light for the dining room with a price under 120 dollars. I can check its details first.]",
             "Observation: OK.",
             "Action: click[B09KQQNRRM]",
             "Observation: \n[Back to Search] \n[< Prev] \ncolor [antique wood][distressed white]\nRustic Wooden Chandelier,1-Light Farmhouse Chandelier Hanging Light Fixture Antique Wood Vintage Pendant Light for Dining Room,Kitchen Island,Foyer \nPrice: $65.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The item B09KQQNRRM is a pendant light suitable for the dining room, priced at $65.99, and meets the requirement of being under $130. I can proceed to buy it.]",
+            "Action: think[The Rustic Wooden Chandelier priced at $65.99 fits the criteria for a pendant light for the dining room under $120. I can proceed to buy it.]",
             "Observation: OK.",
             "Action: click[Buy Now]"
         ],
@@ -174,15 +176,13 @@
     },
     {
         "Id": "fixed_38",
-        "Instruction": "i am searching for a high gloss tv stand with additional storage space. also, choose an ob color, and price lower than 180.00 dollars",
+        "Instruction": "i am searching for a high gloss tv stand with additional storage space. also, choose an ob color, and price lower than 190.00 dollars",
         "Actions": [
-            "Action: search[high gloss TV stand with additional storage space ob color under 180 dollars]",
-            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09MNNBDTJ] \nWoody BL-EF Electric Fireplace 77\" TV Stand (White/Gray) \n$100.0 \n[B00SYVE3CI] \nEZM Deluxe Triple Monitor Mount Stand Free Standing with Grommet Mount Option Supports up to 3 28\" (002-0020) \n$100.0 \n[B09S6S7LG1] \nTV Stand for 70 Inch TV Entertainment Center Stand TV Stand with Storage for TV Console Cabinet Media Cable Box Gaming 70 inch TV Stands for Bedroom Living Room \n$169.99 ",
-            "Action: think[B09S6S7LG1 is a TV stand with storage space, suitable for 70-inch TVs, priced under $180. I will check its details first.]",
-            "Observation: OK.",
+            "Action: search[high gloss TV stand with additional storage space ob color under 190 dollars]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09MNNBDTJ] \nWoody BL-EF Electric Fireplace 77\" TV Stand (White/Gray) \n$100.0 \n[B09S6S7LG1] \nTV Stand for 70 Inch TV Entertainment Center Stand TV Stand with Storage for TV Console Cabinet Media Cable Box Gaming 70 inch TV Stands for Bedroom Living Room \n$169.99 \n[B08XX6QRK4] \nFull Loft Bed with Desk and Storage Shelves, Wood Loft Bed with Ladder, for Kids, Teens, Adults (Espresso) \n$549.99 ",
             "Action: click[B09S6S7LG1]",
             "Observation: \n[Back to Search] \n[< Prev] \ncolor [black tv stand for 70 inch tv][walnut tv stand for 70 inch tv][wood grains tv stand for 70 inch tv]\nTV Stand for 70 Inch TV Entertainment Center Stand TV Stand with Storage for TV Console Cabinet Media Cable Box Gaming 70 inch TV Stands for Bedroom Living Room \nPrice: $169.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The TV stand has storage space, is priced under $180, and offers color options. I will select a color and proceed to buy.]",
+            "Action: think[The TV stand is under $190, has additional storage space, and offers color options. I should select a color and proceed to buy.]",
             "Observation: OK.",
             "Action: click[black tv stand for 70 inch tv]",
             "Observation: You have clicked black tv stand for 70 inch tv.",
@@ -195,22 +195,22 @@
     },
     {
         "Id": "fixed_39",
-        "Instruction": "i want to buy a pair of but lifting grey skinny jean shorts, and price lower than 40.00 dollars",
+        "Instruction": "i want to buy a pair of but lifting grey skinny jean shorts, and price lower than 20.00 dollars",
         "Actions": [
             "Action: search[butt lifting grey skinny jean shorts]",
             "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09QCP4579] \nLWLW High Waist Yoga Shorts for Women,Tummy Control Biker Shorts Exercise Workout Butt Lifting Tights Women's Short Pants \n$13.99 \n[B09QCVCYVY] \nBurband Womens High Waist Bike Shorts Tummy Control Workout Yoga Pants Running Exercise Running Shorts with Side Pockets \n$6.82 \n[B09PBPZ24Z] \nmyhehthw Women's High Waisted Jeans for Women Distressed Ripped Jeans Slim Fit Butt Lifting Skinny Stretch Jeans Trousers \n$22.99 to $25.99 ",
-            "Action: think[B09PBPZ24Z seems to match the description of butt lifting grey skinny jean shorts and is priced below $40. I should check it first.]",
+            "Action: think[B09QCP4579 and B09QCVCYVY are under $20 and could be suitable options. I will check B09QCP4579 first.]",
             "Observation: OK.",
-            "Action: click[B09PBPZ24Z]",
-            "Observation: \n[Back to Search] \n[< Prev] \nsize [small][medium][large][x-large][xx-large]\nmyhehthw Women's High Waisted Jeans for Women Distressed Ripped Jeans Slim Fit Butt Lifting Skinny Stretch Jeans Trousers \nPrice: $22.99 to $25.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The item matches the description of butt lifting grey skinny jean shorts, and the price is within the budget. I should select the appropriate size and proceed to buy.]",
+            "Action: click[B09QCP4579]",
+            "Observation: \n[Back to Search] \n[< Prev] \ncolor [black][blue][gray][purple][wine]\nsize [small][medium][large][x-large][xx-large][3x-large]\nLWLW High Waist Yoga Shorts for Women,Tummy Control Biker Shorts Exercise Workout Butt Lifting Tights Women's Short Pants \nPrice: $13.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[The item has a 'gray' color option and is priced at $13.99, which fits the criteria. I will select 'gray' and proceed to buy.]",
             "Observation: OK.",
-            "Action: click[small]",
-            "Observation: You have clicked small.",
+            "Action: click[gray]",
+            "Observation: You have clicked gray.",
             "Action: click[Buy Now]"
         ],
-        "Success": false,
-        "Reward": 0.6666666666666666,
+        "Success": true,
+        "Reward": 1.0,
         "Category": "fashion",
         "Query": "women's shorts"
     },
@@ -245,7 +245,7 @@
             "Observation: OK.",
             "Action: click[B08KLLJJXG]",
             "Observation: \n[Back to Search] \n[< Prev] \nsilicone body bath shower scrubber - extra longer 35 inch back brush face cleaning brush travel cosmetic bag exfoliating lengthen strong extensibility stimulate the circulation of blood blue \nPrice: $6.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The item matches the criteria: silicon exfoliating body scrubber, easy to use, priced at $6.99. It seems suitable to buy.]",
+            "Action: think[The item matches the criteria of being a silicon exfoliating body scrubber, easy to use, and priced below $40. It seems suitable to purchase.]",
             "Observation: OK.",
             "Action: click[Buy Now]"
         ],
@@ -256,13 +256,15 @@
     },
     {
         "Id": "fixed_46",
-        "Instruction": "i'm looking for hair extensions for natural hair and straight hair so need to buy it, and price lower than 50.00 dollars",
+        "Instruction": "i'm looking for hair extensions for natural hair and straight hair so need to buy it, and price lower than 40.00 dollars",
         "Actions": [
-            "Action: search[hair extensions natural hair straight hair under 50 dollars]",
+            "Action: search[hair extensions natural hair straight hair under 40 dollars]",
             "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09MM9NCQQ] \nSimayixx Christmas Gift Wigs Hair Extensions 24 Inches Synthetic Long Natural Black Thick Clip Straight Hair Stylish Fasionable Fabulous Hair Piece 6 Pieces Popular Hairstyle(E) \n$7.83 \n[B09NPZHTTY] \n2 Pack Metal Hair Pick for Afro Hair, Hair Pick Afro Comb for Curly Hair, Afro Picks for Women/Men Hair Styling Hairdressing Tool (Black) \n$4.99 \n[B09QMJ5KQH] \nMessy Bun Scrunchie Hair Bun Extensions Wavy Curly Messy Donut Hairpieces Synthetic Donut Updo Hair Pieces for Women and Girls (black brown) \n$100.0 ",
+            "Action: think[B09MM9NCQQ is a straight hair extension for natural hair under 40 dollars. I can check this item first.]",
+            "Observation: OK.",
             "Action: click[B09MM9NCQQ]",
             "Observation: \n[Back to Search] \n[< Prev] \ncolor [a][b][c][d][e][f][g][h][i][j]\nSimayixx Christmas Gift Wigs Hair Extensions 24 Inches Synthetic Long Natural Black Thick Clip Straight Hair Stylish Fasionable Fabulous Hair Piece 6 Pieces Popular Hairstyle(E) \nPrice: $7.83 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The item 'Simayixx Christmas Gift Wigs Hair Extensions' matches the criteria for natural hair, straight hair, and is priced under $50. I can proceed to buy it.]",
+            "Action: think[The item matches the criteria for straight hair extensions for natural hair under 40 dollars. I can proceed to buy it.]",
             "Observation: OK.",
             "Action: click[Buy Now]"
         ],
@@ -281,6 +283,8 @@
             "Observation: OK.",
             "Action: click[B07GFS3MNT]",
             "Observation: \n[Back to Search] \n[< Prev] \nDiySecurityCameraworld- Wireless Security Camera Outdoor 1080P PoE WiFi IP Camera 180 Degree Fisheye Panoramic Surveillance Video Camera Night Vision 60ft Waterproof \nPrice: $80.95 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[The item matches the requirements: motion detection, outdoor camera, 1080p HD, and price under $180. It seems suitable to buy.]",
+            "Observation: OK.",
             "Action: click[Buy Now]"
         ],
         "Success": false,
@@ -290,16 +294,14 @@
     },
     {
         "Id": "fixed_49",
-        "Instruction": "i need an engineered wood end table, and price lower than 170.00 dollars",
+        "Instruction": "i need an engineered wood end table, and price lower than 160.00 dollars",
         "Actions": [
-            "Action: search[engineered wood end table less than 170 dollars]",
+            "Action: search[engineered wood end table less than 160 dollars]",
             "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09JC84P1M] \nRUIXFLR Round End Table with Fabric Storage Basket, Marble Look Tray Side Table, Chic 2 Tier Coffee Table for Living Room Bedroom Office \n$121.99 \n[B085RBZCHH] \nMEETWARM 16 inch Table Legs Wood Furniture Legs Tapered Round for Coffee End Tables Side Table Chair Mid-Century Modern DIY Furniture Leg Natural M8 Hanger Bolts, Set of 4 \n$23.99 to $21.59 \n[B09B77K9YQ] \nRhomtree 36\u201d Wood Console Table Sideboard Hall Table with 2 Drawers, 1 Cabinet and 1 Shelf Modern Sofa Table for Hallway, Entryway, Living Room, Kitchen (Green with Brown Top) \n$309.9 ",
-            "Action: think[B09JC84P1M is an engineered wood end table priced at $121.99, which is less than $170. I can check this item first.]",
+            "Action: think[B09JC84P1M is an engineered wood end table priced at $121.99, which is less than $160. I can check this item first.]",
             "Observation: OK.",
             "Action: click[B09JC84P1M]",
             "Observation: \n[Back to Search] \n[< Prev] \nRUIXFLR Round End Table with Fabric Storage Basket, Marble Look Tray Side Table, Chic 2 Tier Coffee Table for Living Room Bedroom Office \nPrice: $121.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The item RUIXFLR Round End Table meets the criteria of being an engineered wood end table priced below $170. It seems suitable for purchase.]",
-            "Observation: OK.",
             "Action: click[Buy Now]"
         ],
         "Success": false,
@@ -313,11 +315,11 @@
         "Actions": [
             "Action: search[beige green shower brush long handle]",
             "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B08BV94TBP] \nEASY SPA Natural Bristle Wooden Body Dry Brush for Bath Shower, Shower Scrubber With Long Handle, The Best Dry Brush For Cellulite And Lymphatic \n$100.0 \n[B09GF68QPJ] \nElectric Shower Brush Set,Deep Cleaning Bath Shower Wash Brush with Long Handle,5 in 1 Spin SPA Brush Back Scrubber Set for Helps Promote Healthier Younger Looking Skin Soothes Tired Muscles \n$26.99 \n[B09NLZFMRG] \nONGHAHYIS Shower Scrubbing Mitt Gloves Body Brush Take A Shower in 1 Minute Exfoliating Scrub Foot Scrubber Cath Sponge High-Elastic Five-Finger Bath Towel (Color : Random Color 1pc) \n$22.16 ",
-            "Action: think[B09GF68QPJ is a green shower brush with a long handle priced below $50. I can check this item first.]",
+            "Action: think[B09GF68QPJ is a shower brush with a long handle, priced at $26.99, which is under $50. I can check this item further.]",
             "Observation: OK.",
             "Action: click[B09GF68QPJ]",
             "Observation: \n[Back to Search] \n[< Prev] \nElectric Shower Brush Set,Deep Cleaning Bath Shower Wash Brush with Long Handle,5 in 1 Spin SPA Brush Back Scrubber Set for Helps Promote Healthier Younger Looking Skin Soothes Tired Muscles \nPrice: $26.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The item B09GF68QPJ is a green shower brush with a long handle priced at $26.99, which meets the requirements. It seems good to buy.]",
+            "Action: think[The item matches the criteria of a shower brush with a long handle, priced under $50. It seems suitable to buy.]",
             "Observation: OK.",
             "Action: click[Buy Now]"
         ],
@@ -328,14 +330,16 @@
     },
     {
         "Id": "fixed_56",
-        "Instruction": "i'm looking for a high performance paint contrast projector, and price lower than 250.00 dollars",
+        "Instruction": "i'm looking for a high performance paint contrast projector, and price lower than 230.00 dollars",
         "Actions": [
-            "Action: search[high performance paint contrast projector under 250 dollars]",
-            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09SJ5YGMZ] \nProjector NGF-TY-22 1080P Projector, 5G WiFi 9500L Movie Projector for Outdoor Screen Mirror, Support 4K & 300\u201d Display, HiFi Speaker, Home Video Projector for Phone/TV Stick/Laptop/PS4/Xbox \n$199.99 \n[B09KGN7XF4] \nMini Projector,FUNTUSPIC-GOO DEE Portable Projector for iPhone, 1080p Supported Movie Projector, 2500lux Small Home Video LED Pico Pocket Phone Projector for Bedroom Laptop HD USB AV Interfaces \n$63.99 \n[B08GL4GB2M] \nEpson Home Cinema 2250 3LCD Full HD 1080p Projector with Android TV, Streaming Projector, Home Theater Projector, 10W Speaker, Image Enhancement, Frame Interpolation, 70,000:1 contrast ratio, HDMI \n$100.0 ",
-            "Action: think[B09SJ5YGMZ is a high-performance projector under $250 with features like 1080P, 5G WiFi, 9500L brightness, and 4K support. I will check this item first.]",
+            "Action: search[high performance paint contrast projector less than 230 dollars]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09SJ5YGMZ] \nProjector NGF-TY-22 1080P Projector, 5G WiFi 9500L Movie Projector for Outdoor Screen Mirror, Support 4K & 300\u201d Display, HiFi Speaker, Home Video Projector for Phone/TV Stick/Laptop/PS4/Xbox \n$199.99 \n[B001C6JXJU] \nPremier HiDef Grey Electric Projection Screen with Low Voltage Motor Viewing Area: 50\" H x 80\" W \n$2721.34 \n[B09KGN7XF4] \nMini Projector,FUNTUSPIC-GOO DEE Portable Projector for iPhone, 1080p Supported Movie Projector, 2500lux Small Home Video LED Pico Pocket Phone Projector for Bedroom Laptop HD USB AV Interfaces \n$63.99 ",
+            "Action: think[B09SJ5YGMZ is a high-performance projector under $230, and it seems to meet the requirements. I will check it first.]",
             "Observation: OK.",
             "Action: click[B09SJ5YGMZ]",
             "Observation: \n[Back to Search] \n[< Prev] \nProjector NGF-TY-22 1080P Projector, 5G WiFi 9500L Movie Projector for Outdoor Screen Mirror, Support 4K & 300\u201d Display, HiFi Speaker, Home Video Projector for Phone/TV Stick/Laptop/PS4/Xbox \nPrice: $199.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[The projector NGF-TY-22 meets the criteria of being high performance and priced under $230. It seems suitable for purchase.]",
+            "Observation: OK.",
             "Action: click[Buy Now]"
         ],
         "Success": false,
@@ -347,13 +351,13 @@
         "Id": "fixed_59",
         "Instruction": "i am looking for non gmo sesame pretzels that come in a 12 pack, and price lower than 120.00 dollars",
         "Actions": [
-            "Action: search[non GMO sesame pretzels 12 pack]",
+            "Action: search[non gmo sesame pretzels 12 pack]",
             "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B002C56QX6] \nCrunchmaster Gourmet Toasted Sesame Rice Cracker, 3.5-Ounce (Pack of 12) \n$100.0 \n[B015PWVRPO] \nOrganic Medjool Dates, 2 Pounds \u2013 Non-GMO, Whole Dried Dated with Pits, Large Size, Unsweetened, Unsulphured, Vegan, Sirtfood, Bulk. Good Source of Potassium, Magnesium, and Dietary Fiber. Perfect Dried Fruit Snack. \n$25.49 \n[B003I567W4] \nBlue Diamond Almonds Nut Thins Gluten Free Cracker Crisps, Hint of Sea Salt, 4.25 Oz Boxes (Pack of 12) \n$34.44 ",
-            "Action: think[B002C56QX6 matches the criteria for non-GMO sesame pretzels in a 12-pack under $120. I will check this item first.]",
+            "Action: think[B002C56QX6 matches the criteria for non-GMO sesame pretzels in a 12-pack under $120. I can check this item first.]",
             "Observation: OK.",
             "Action: click[B002C56QX6]",
             "Observation: \n[Back to Search] \n[< Prev] \nCrunchmaster Gourmet Toasted Sesame Rice Cracker, 3.5-Ounce (Pack of 12) \nPrice: $100.0 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The item B002C56QX6 meets the criteria for non-GMO sesame pretzels in a 12-pack under $120. I will proceed to buy this item.]",
+            "Action: think[The item B002C56QX6 matches the criteria for non-GMO sesame pretzels in a 12-pack under $120 and seems good to buy.]",
             "Observation: OK.",
             "Action: click[Buy Now]"
         ],
@@ -363,35 +367,16 @@
         "Query": "snack pretzels"
     },
     {
-        "Id": "fixed_66",
-        "Instruction": "i am looking for some alcohol free skin care, and price lower than 80.00 dollars",
-        "Actions": [
-            "Action: search[alcohol free skin care less than 80 dollars]",
-            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09BW4S48B] \nLAGOM 5 Layer Cotton Pad 100% Natural Hypoallergenic Separable Cleansing Puff Lint-Free Soft Facial Square Wipe Eye Cosmetic Toner Makeup Nail Polish Remover Sensitive Dry Oily Skin 2\"x2.75\" 80 Count \n$9.0 \n[B001C6JXJU] \nPremier HiDef Grey Electric Projection Screen with Low Voltage Motor Viewing Area: 50\" H x 80\" W \n$2721.34 \n[B07WC14R63] \nLarge Simple Wall Mirror/White Bathroom Makeup Mirror Storable/Round Wood Frame Decorative Mirror, for Bedroom, Living Room, Store, Vanity Mirror \n$361.26 ",
-            "Action: think[B09BW4S48B is alcohol-free skin care under 80 dollars, and it seems relevant to check further.]",
-            "Observation: OK.",
-            "Action: click[B09BW4S48B]",
-            "Observation: \n[Back to Search] \n[< Prev] \nstyle [lagom 5 layer cotton pad][cellup facial cleansing brush][lagom travel kit]\nLAGOM 5 Layer Cotton Pad 100% Natural Hypoallergenic Separable Cleansing Puff Lint-Free Soft Facial Square Wipe Eye Cosmetic Toner Makeup Nail Polish Remover Sensitive Dry Oily Skin 2\"x2.75\" 80 Count \nPrice: $9.0 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The item 'LAGOM 5 Layer Cotton Pad' is alcohol-free skin care under $80, and it seems suitable to buy.]",
-            "Observation: OK.",
-            "Action: click[Buy Now]"
-        ],
-        "Success": false,
-        "Reward": 0.25,
-        "Category": "beauty",
-        "Query": "scrubs & body treatments"
-    },
-    {
         "Id": "fixed_68",
-        "Instruction": "i would like a pair of brown size 7 shoes with a rubber sole, and price lower than 90.00 dollars",
+        "Instruction": "i would like a pair of brown size 7 shoes with a rubber sole, and price lower than 70.00 dollars",
         "Actions": [
             "Action: search[brown size 7 shoes rubber sole]",
             "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B07HP6LVRS] \nMCICI Mens Loafers Moccasin Driving Shoes Premium Genuine Leather Casual Slip On Flats Fashion Slipper Breathable Big Size \n$15.99 to $32.99 \n[B082MT9162] \nGLOBALWIN Men's Casual Slip On Penny Loafers Lightweight Driving Shoes \n$29.99 to $49.99 \n[B002RRT0NM] \nBerkemann Women's Clogs and Mules, 5 UK \n$78.42 to $94.9 ",
-            "Action: think[B07HP6LVRS and B082MT9162 are brown shoes with rubber sole under 90 dollars. I can check B07HP6LVRS first.]",
+            "Action: think[B07HP6LVRS and B082MT9162 are brown shoes with rubber sole under 70 dollars. I can check B07HP6LVRS first.]",
             "Observation: OK.",
             "Action: click[B07HP6LVRS]",
             "Observation: \n[Back to Search] \n[< Prev] \nsize [6.5][7][8][8.5][9.5][10][10.5][11][11.5]\ncolor [black][blue][brown][white][yellow][black-b][blue-a][yellow-a]\nMCICI Mens Loafers Moccasin Driving Shoes Premium Genuine Leather Casual Slip On Flats Fashion Slipper Breathable Big Size \nPrice: $15.99 to $32.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[For brown size 7 shoes with a rubber sole, the item has options 'brown' and 'size 7' and fits the price range. I can proceed to select these options and buy.]",
+            "Action: think[For brown size 7 shoes with a rubber sole, the item has options 'brown' and 'size 7' and is within the price range. I can proceed to select the options and buy.]",
             "Observation: OK.",
             "Action: click[brown]",
             "Observation: You have clicked brown.",
@@ -406,18 +391,16 @@
     },
     {
         "Id": "fixed_70",
-        "Instruction": "i need a purple braces brush that is easy to carry, and price lower than 40.00 dollars",
+        "Instruction": "i need a purple braces brush that is easy to carry, and price lower than 50.00 dollars",
         "Actions": [
             "Action: search[purple braces brush easy to carry]",
             "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B08XH9JMTG] \nmeyarn Interdental Brush for Braces Toothpick 50Count Tooth Floss Oral Hygiene Interdental Brush Toothpick Teeth Healthy Care Tight 0.8mm \n$11.89 \n[B08GXD5MDG] \nPortable Case Orthodontic Care Kit Orthodontic Toothbrush Kit for Braces for Orthodontic Patient Travel Oral Care Kit Dental Travel Kit Interdental Brush Dental Wax Dental Floss (8 Pcs/Pack)-Red \n$14.59 \n[B0927BXC6B] \nMakeup brushes 8 pieces and a high quality leather bag, easy for you to carry out,Makeup Brushes Premium Synthetic Liquid foundation , loose powder , blush , eyelash , nose shadow , eye shadow , eyebrow powder , lip brush. (apricot) \n$5.99 ",
-            "Action: think[B08XH9JMTG and B08GXD5MDG are purple braces brushes under 40 dollars. I can check B08XH9JMTG first.]",
+            "Action: think[B08XH9JMTG and B08GXD5MDG are purple braces brushes under $50. I can check B08XH9JMTG first as it matches the description closely.]",
             "Observation: OK.",
             "Action: click[B08XH9JMTG]",
             "Observation: \n[Back to Search] \n[< Prev] \nsize [0.6mm][0.7mm][0.8mm][1.0mm][1.2mm]\nmeyarn Interdental Brush for Braces Toothpick 50Count Tooth Floss Oral Hygiene Interdental Brush Toothpick Teeth Healthy Care Tight 0.8mm \nPrice: $11.89 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The item 'meyarn Interdental Brush for Braces Toothpick 50Count' has options for size, and the price is $11.89 which is under $40. It seems suitable to buy for a purple braces brush that is easy to carry.]",
+            "Action: think[The item 'meyarn Interdental Brush for Braces Toothpick 50Count' matches the description of a purple braces brush that is easy to carry and priced under $50. I can proceed to buy it.]",
             "Observation: OK.",
-            "Action: click[0.8mm]",
-            "Observation: You have clicked 0.8mm.",
             "Action: click[Buy Now]"
         ],
         "Success": false,
@@ -427,11 +410,11 @@
     },
     {
         "Id": "fixed_77",
-        "Instruction": "i would like a pink cosmetic bag that is easy to clean, and price lower than 30.00 dollars",
+        "Instruction": "i would like a pink cosmetic bag that is easy to clean, and price lower than 40.00 dollars",
         "Actions": [
             "Action: search[pink cosmetic bag easy to clean]",
             "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09JJ5W1N4] \nLotus78 Makeup Bag. Cosmetic Bag for Women. Elegant Toiletry Bag for Women. Make Up Bag with Brush Organizer. Travel Makeup Bag for Girls. Makeup Bag Organizer with Detachable Small Cosmetic Bag. (Pink) \n$9.99 \n[B09Q53YH1W] \nLurrose 1 Set Empty Mascara Tubes Bottles Vials with Eyelash Wand Mini Funnels Reusable Refillable Eyelash Cream Container Bottle for DIY Cosmetics Travel \n$13.89 \n[B09MCF64RM] \nLeopard Print Makeup Bag Cheetah Small Cosmetic Bags for Women Cosmetics Pouch Travel Accessories Case Portable Zippered Cosmetic Storage Organizer for Purse \n$15.99 ",
-            "Action: think[B09JJ5W1N4 is a pink cosmetic bag priced at $9.99, which is under $30 and seems suitable for the requirement of being easy to clean. I can check this item first.]",
+            "Action: think[B09JJ5W1N4 is a pink cosmetic bag priced at $9.99, which is under $40 and seems suitable to check first.]",
             "Observation: OK.",
             "Action: click[B09JJ5W1N4]",
             "Observation: \n[Back to Search] \n[< Prev] \ncolor [blue][green][grey][pink]\nLotus78 Makeup Bag. Cosmetic Bag for Women. Elegant Toiletry Bag for Women. Make Up Bag with Brush Organizer. Travel Makeup Bag for Girls. Makeup Bag Organizer with Detachable Small Cosmetic Bag. (Pink) \nPrice: $9.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
@@ -445,60 +428,22 @@
         "Query": "body makeup"
     },
     {
-        "Id": "fixed_82",
-        "Instruction": "i would like a black brown to tan hairpiece made from synthetic hair, and price lower than 40.00 dollars",
+        "Id": "fixed_92",
+        "Instruction": "i would like a blue 2.95 foot wire pendent light for my living room, and price lower than 210.00 dollars",
         "Actions": [
-            "Action: search[black brown to tan synthetic hairpiece]",
-            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09QMJ5KQH] \nMessy Bun Scrunchie Hair Bun Extensions Wavy Curly Messy Donut Hairpieces Synthetic Donut Updo Hair Pieces for Women and Girls (black brown) \n$100.0 \n[B0816QM13S] \nAnniston Hairpiece Fashion Lady Golden Tone Short Curly Hair Style Wig COSPLAY Party Hairpiece Hair Scrunchies Updo Hair Bun Hair Accessories for Women - Golden \n$6.67 \n[B07BB1FJV8] \nEdna Wig Color FS4/30 - Foxy Silver Wigs Short Pixie Wispy Fringe Synthetic Straight Layers African American Women's Machine Wefted Lightweight Average Cap Bundle with MaxWigs Hairloss Booklet \n$36.69 ",
-            "Action: think[B07BB1FJV8 is a black brown to tan synthetic hairpiece priced at $36.69, which is under $40. I can check this item first.]",
+            "Action: search[blue 2.95 foot wire pendant light living room]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09PGQQQDL] \nXLBHLH Black LED Chandelier Circular Dimmable 40W 1 Linear Aluminum Pendant Lighting Hanging Ceiling Light for Contemporary Dining Table Entry Kitchen Island \n$297.33 \n[B0854JTZMT] \nBAYCHEER Tiffany Style Stained Glass Bowl Shade Pendant Light Chandelier Decorative Hanging Lamp Pendant Lighting Adjustable Ceiling Fixture with Pull Chain 3 Lights for Living Room Dining Room \n$169.99 \n[B06ZYS6NW4] \nLALUZ Faux-Wood Pendant Lighting, Farmhouse Hanging Lamp with Water Glass Shade for Kitchen Island, Living Room, Foyer, A03182 \n$59.99 ",
+            "Action: think[B0854JTZMT is a blue pendant light for living room under $210. I can check this item first.]",
             "Observation: OK.",
-            "Action: click[B07BB1FJV8]",
-            "Observation: \n[Back to Search] \n[< Prev] \ncolor [1 black][1b][2][3t280][3t34][3t44][3t51][4 medium dark brown][fs1b | 30][fs4 | 27][fs4 | 30][white]\nEdna Wig Color FS4/30 - Foxy Silver Wigs Short Pixie Wispy Fringe Synthetic Straight Layers African American Women's Machine Wefted Lightweight Average Cap Bundle with MaxWigs Hairloss Booklet \nPrice: $36.69 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The item 'Edna Wig Color FS4/30' matches the criteria of black brown to tan synthetic hairpiece and is priced at $36.69, which is under $40. I can proceed to buy this item.]",
+            "Action: click[B0854JTZMT]",
+            "Observation: \n[Back to Search] \n[< Prev] \nBAYCHEER Tiffany Style Stained Glass Bowl Shade Pendant Light Chandelier Decorative Hanging Lamp Pendant Lighting Adjustable Ceiling Fixture with Pull Chain 3 Lights for Living Room Dining Room \nPrice: $169.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[The item matches the criteria: blue pendant light for living room, price under $210. It seems suitable to buy.]",
             "Observation: OK.",
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.3333333333333333,
-        "Category": "beauty",
-        "Query": "hair extensions, wigs & accessories"
-    },
-    {
-        "Id": "fixed_91",
-        "Instruction": "im looking for a earbud headphones for stereo sound quality of style je-04b which will be more comfortable for me to use without disturbing others , and price lower than 60.00 dollars",
-        "Actions": [
-            "Action: search[earbud headphones stereo sound quality JE-04B under 60 dollars]",
-            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B092W6WNH4] \nGAOMU IPX6 Waterproof Bluetooth Earbuds, True Wireless Earbuds, 20H Cyclic Playtime Headphones with Charging Case and mic for Android, in-Ear Stereo Earphones Headset for Sport Black \n$11.99 \n[B09J2QLPR1] \nNAUTICA H120 Bluetooth Headphones, On-Ear Wireless Headphones with Built-in Microphone Bluetooth v5.0 Wireless and Wired Stereo Headset with Deep Bass, Foldable Over-Ear Headphones (White Nude) \n$49.99 \n[B09J8772MN] \nBass and Treble HiFi Headphone Amplifier, mm Stereo Earphone 32 \u03a9 90DB -40\u00b0C~60\u00b0C Metal for Mobile Phone \n$100.0 ",
-            "Action: think[B092W6WNH4 and B09J2QLPR1 are under 60 dollars, but B092W6WNH4 is an earbud headphone with stereo sound quality and fits the criteria. I will check B092W6WNH4 first.]",
-            "Observation: OK.",
-            "Action: click[B092W6WNH4]",
-            "Observation: \n[Back to Search] \n[< Prev] \nGAOMU IPX6 Waterproof Bluetooth Earbuds, True Wireless Earbuds, 20H Cyclic Playtime Headphones with Charging Case and mic for Android, in-Ear Stereo Earphones Headset for Sport Black \nPrice: $11.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The GAOMU IPX6 Waterproof Bluetooth Earbuds meet the criteria for stereo sound quality, are comfortable for use without disturbing others, and are priced at $11.99, which is well below $60. I will proceed to buy this item.]",
-            "Observation: OK.",
-            "Action: click[Buy Now]"
-        ],
-        "Success": false,
-        "Reward": 0.3333333333333333,
-        "Category": "electronics",
-        "Query": "bluetooth headsets"
-    },
-    {
-        "Id": "fixed_93",
-        "Instruction": "i am looking for wireless bluetooth speakers in the color a, and price lower than 140.00 dollars",
-        "Actions": [
-            "Action: search[wireless bluetooth speakers color a price less than 140 dollars]",
-            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09KG58GWJ] \nDigital Alarm Clocks with Bluetooth Speaker for Children, Rechargeable Kids Bedroom Smart Clock with LED Display Screens, SUupports FM/Wireless Music Function (White) \n$15.79 \n[B08SM5R231] \nSapplySource 6ft/1.8m UL Listed AC in Power Cord for Jensen CD-560 Wireless Bluetooth Boombox Portable CD Player AM/FM Radio Stereo Speaker System CD560 CD-560BLK JEN-CD-560 \n$18.94 \n[B09RF2DLZX] \nHstore Life Skull Bluetooth Speakers, Portable Wireless Speaker Built-in Mic, Cool Creative Design Bass Stereo Speaker for Halloween, Party, Travel, Outdoor, Home Decor, Support TF/U Disk/AUX \n$129.59 ",
-            "Action: think[B09RF2DLZX is a wireless Bluetooth speaker priced at $129.59, which is less than $140. I can check its details first.]",
-            "Observation: OK.",
-            "Action: click[B09RF2DLZX]",
-            "Observation: \n[Back to Search] \n[< Prev] \nHstore Life Skull Bluetooth Speakers, Portable Wireless Speaker Built-in Mic, Cool Creative Design Bass Stereo Speaker for Halloween, Party, Travel, Outdoor, Home Decor, Support TF/U Disk/AUX \nPrice: $129.59 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The item matches the criteria of being a wireless Bluetooth speaker priced under $140. It seems suitable to proceed with purchasing.]",
-            "Observation: OK.",
-            "Action: click[Buy Now]"
-        ],
-        "Success": false,
-        "Reward": 0.6666666666666666,
-        "Category": "electronics",
-        "Query": "bluetooth speakers"
+        "Reward": 0.5,
+        "Category": "garden",
+        "Query": "kitchen islands"
     }
 ]
