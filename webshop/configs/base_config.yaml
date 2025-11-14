@@ -1,7 +1,8 @@
 params:
   initial_prompt: 'PROMPT1'
   temperature: 0.0
-  split: 'final'
+  # final, test, eval, train, end
+  split: '0-500'
   success: True
   query_category: True
   intra_task: True

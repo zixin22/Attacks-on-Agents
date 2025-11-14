@@ -112,7 +112,7 @@ def index(session_id):
 def search_results(session_id, keywords, page):
     global user_sessions, goals, weights, user_log_dir
 
-    # ✅ 新增：确保 session 初始化
+    # Ensure session initialization
     if session_id not in user_sessions and 'fixed' in session_id:
         goal_dix = int(session_id.split('_')[-1])
         goal = goals[goal_dix]

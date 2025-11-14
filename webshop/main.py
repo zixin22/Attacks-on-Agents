@@ -10,7 +10,7 @@ import re
 
 parser = argparse.ArgumentParser()
 #parser.add_argument("--num_trials", type=int, default=3, help="The number of trials")
-parser.add_argument("--num_trials", type=int, default=3, help="The number of trials")
+parser.add_argument("--num_trials", type=int, default=1, help="The number of trials")
 parser.add_argument("--num_steps", type=int, default=15, help="The number of steps")
 parser.add_argument("--model", type=str, default="gpt-4o",
                     choices=["gpt-3.5-turbo-instruct", "gpt-4-0613", "gpt-4o", "meta-llama/Llama-2-13b-chat-hf"],
@@ -64,13 +64,10 @@ else:
 import time
 import openai
 
-import time
-import openai
-
 def llm(prompt, stop=["\n"]):
     """
-    通用 LLM 调用函数，兼容 Llama-2、GPT-3.5-turbo-instruct、GPT-4-0613、GPT-4o。
-    自动重试、带错误处理。
+    Universal LLM calling function, compatible with Llama-2, GPT-3.5-turbo-instruct, GPT-4-0613, GPT-4o.
+    Automatic retry with error handling.
     """
     max_retries = 5
     for attempt in range(max_retries):
@@ -136,27 +133,20 @@ def llm(prompt, stop=["\n"]):
             else:
                 raise ValueError(f"Unsupported model: {args.model}")
 
-            break  # ✅ 成功调用，跳出重试循环
+            break  # Successfully called, exit retry loop
 
         except openai.error.RateLimitError:
             wait_time = 5 * (attempt + 1)
-            print(f"[警告] OpenAI API 限流，等待 {wait_time} 秒后重试 ({attempt+1}/{max_retries})...")
+            print(f"[Warning] OpenAI API rate limit, waiting {wait_time} seconds before retry ({attempt+1}/{max_retries})...")
             time.sleep(wait_time)
         except Exception as e:
-            print(f"[错误] LLM 调用失败: {e}，等待 3 秒后重试 ({attempt+1}/{max_retries})...")
+            print(f"[Error] LLM call failed: {e}, waiting 3 seconds before retry ({attempt+1}/{max_retries})...")
             time.sleep(3)
     else:
-        print("[错误] 超过最大重试次数，返回空字符串。")
+        print("[Error] Exceeded maximum retry attempts, returning empty string.")
         return ""
 
-    # === 输出清洗 ===
-    if stop:
-        text = text.split('\n')[0]
-    if len(text) > 0 and text[0] == '>':
-        text = text[1:]
-    if len(text) > 0 and text[-1] == '.':
-        text = text[:-1]
-    return text.strip()
+    
 
     
         
@@ -227,9 +217,9 @@ def webshop_text(session, page_type, query_string='', page_num=1, asin='', optio
 
     html = requests.get(url).text
 
-    # ✅ 打印调试信息
-    print("当前页面类型:", page_type)
-    print("HTML 原文:\n", html)
+    # Print debug information
+    print("Current page type:", page_type)
+    print("HTML source:\n", html)
 
     html_obj = BeautifulSoup(html, 'html.parser')
     texts = html_obj.findAll(text=True)
@@ -273,7 +263,7 @@ def webshop_text(session, page_type, query_string='', page_num=1, asin='', optio
         just_prod += 1
         observation += processed_t
 
-    # ✅ 新增：如果是 search 页，尝试从 HTML 中提取 ASIN
+    # Extract ASIN from HTML if on search page
     if page_type == 'search':
         for tag in html_obj.find_all("a", class_="product-link"):
             href = tag.get("href", "")
@@ -517,6 +507,12 @@ def webshop_run_react(idx, prompt, to_print=True):
             observation = res[0]
         except AssertionError:
             observation = 'Invalid action!'
+            # If search action fails, may be a state issue, try resetting
+            if action.startswith('search[') and idx in env.sessions:
+                if env.sessions[idx].get('page_type') != 'init':
+                    # Auto-reset to init state
+                    env.sessions[idx] = {'session': idx, 'page_type': 'init'}
+                    print(f'Warning: Auto-reset session {idx} to init state due to invalid search action')
 
         if action.startswith('think'):
             observation = 'OK.'
@@ -534,29 +530,29 @@ def webshop_run_react(idx, prompt, to_print=True):
             actions.append(f'{observation}')
             task = observation
 
-        # === 模型生成新动作 ===
+        # Generate new action using model
         action = llm(init_prompt + prompt[-(6400 - len(init_prompt)):], stop=['\n']).lstrip(' ')
 
-        # === 清理带有“|”的非法动作格式，例如 click[B078GWRC1J | Buy Now] ===
+        # Clean invalid action format with "|", e.g., click[B078GWRC1J | Buy Now]
         if "|" in action:
-            # 优先保留右侧具体动作部分
+            # Prefer keeping the right side specific action part
             parts = [p.strip() for p in action.split("|") if p.strip()]
             if len(parts) > 1:
-                # 取最后一个部分作为真正的按钮，例如 "Buy Now"
+                # Take the last part as the actual button, e.g., "Buy Now"
                 action = parts[-1]
 
-        # 确保 click[...] 语法合法
+        # Ensure click[...] syntax is valid
         action = action.replace("click", "click[") if not action.startswith("click[") else action
         if not action.endswith("]"):
             action += "]"
 
-        # 限定动作前缀合法性
+        # Validate action prefix
         allowed_prefixes = ['search[', 'click[', 'think[', 'reset']
         if not any(action.startswith(p) for p in allowed_prefixes):
             print(f"Invalid action generated by LLM: {action}")
             action = 'think[let me try another approach]'
 
-        # === 如果已完成（res[2] == True）则整理返回数据 ===
+        # If completed (res[2] == True), organize return data
         if res[2]:
             inv_act_idx = np.where(np.char.find(np.array(actions), 'Invalid action!') > 0)[0]
             inv_act_idx = np.append(inv_act_idx, inv_act_idx - 1)
@@ -589,6 +585,12 @@ def webshop_run_rap(idx, prompt, memory, embeddings, to_print=True):
             observation = res[0]
         except AssertionError:
             observation = 'Invalid action!'
+            # If search action fails, may be a state issue, try resetting
+            if action.startswith('search[') and idx in env.sessions:
+                if env.sessions[idx].get('page_type') != 'init':
+                    # Auto-reset to init state
+                    env.sessions[idx] = {'session': idx, 'page_type': 'init'}
+                    print(f'Warning: Auto-reset session {idx} to init state due to invalid search action')
 
         if action.startswith('think'):
             observation = 'OK.'
@@ -625,16 +627,16 @@ def webshop_run_rap(idx, prompt, memory, embeddings, to_print=True):
 
         action = llm(full_prompt, stop=['\n']).lstrip(' ')
 
-        # === 新增：非法动作格式清洗 ===
+        # Clean invalid action format
         if "|" in action:
             parts = [p.strip() for p in action.split("|") if p.strip()]
             if len(parts) > 1:
-                action = parts[-1]  # 保留右侧动作（如 Buy Now）
+                action = parts[-1]  # Keep right side action (e.g., Buy Now)
             action = action.replace("click", "click[") if not action.startswith("click[") else action
             if not action.endswith("]"):
                 action += "]"
 
-        # === 新增：强制限定允许的动作前缀 ===
+        # Enforce allowed action prefixes
         allowed_prefixes = ['search[', 'click[', 'think[', 'reset']
         if not any(action.startswith(p) for p in allowed_prefixes):
             print(f"Invalid action generated by LLM: {action}")
@@ -668,28 +670,51 @@ def webshop_run_rap(idx, prompt, memory, embeddings, to_print=True):
 
 rs_trials = []
 sr_trials = []
+
 for trial in range(args.num_trials):
-    print('### trial '+str(trial+1)+' ###')
-    if config['params']['split'] == 'final':
-        n, start = 100, 0
-    elif config['params']['split'] == 'test':
-        n, start = 500, 0
-    elif config['params']['split'] == 'eval':
-        n, start = 1000, 500
+    print('### trial ' + str(trial + 1) + ' ###')
+
+    split = config['params']['split']
+
+    # Support reward>=0.5 mode
+    if split == '0-500':
+        reward_file = r"C:\Users\22749\Desktop\rap-main\WebShop-master\data_generate_experiment\0_500\merged_0_500.json"  # Can be changed to config read
+        with open(reward_file, "r", encoding="utf-8") as f:
+            reward_data = json.load(f)
+        index_list = reward_data["fixed_numbers"]
+        n = len(index_list)
+        start = None
+        print(f"Loaded {n} fixed indices from {reward_file}")
+
+    # Original split mode
     else:
-        n, start = 10587, 1500
-    
+        if split == 'final':
+            n, start = 100, 0
+        elif split == 'test':
+            n, start = 500, 0
+        elif split == 'eval':
+            n, start = 1000, 501
+        elif split == 'train':
+            n, start = 10587, 1500
+        else:
+            n, start = 1000, 4001
+        index_list = range(start, start + n)
+
     cnt = 0
     rs = []
     rs_games = []
     sr_games = []
+
     if trial != 0:
         memory = current_memory[:]
         memory, embeddings = generate_embeddings(memory)
+
     current_memory = []
-    for i in range(start, start+n):
+
+    for i in index_list:
         print('-----------------')
         print(i)
+
         if trial == 0:
             try:
                 r, mem_data = webshop_run_react(f'fixed_{i}', initial_prompt, to_print=True)
@@ -697,9 +722,6 @@ for trial in range(args.num_trials):
                 r = 0
                 cnt += 1
                 mem_data = ''
-
-            if not mem_data=='':
-                current_memory.append(mem_data)
         else:
             try:
                 r, mem_data = webshop_run_rap(f'fixed_{i}', initial_prompt, memory, embeddings, to_print=True)
@@ -708,26 +730,42 @@ for trial in range(args.num_trials):
                 cnt += 1
                 mem_data = ''
 
-            if not mem_data=='':
-                current_memory.append(mem_data)
-                
+        if mem_data != '':
+            current_memory.append(mem_data)
+
         rs.append(r)
-        flag = r==1
+        flag = (r == 1)
         rs_games.append(r)
         sr_games.append(flag)
-        if (i+1) % 1 == 0:
-            r, sr, fr = sum(rs) / len(rs), len([_ for _ in rs if _ == 1]) / len(rs), cnt / len(rs)
-            print(i+1, r, flag, sr, fr)
+
+        if len(rs) % 1 == 0:
+            r_avg = sum(rs) / len(rs)
+            sr = len([_ for _ in rs if _ == 1]) / len(rs)
+            fr = cnt / len(rs)
+            print(len(rs), r_avg, flag, sr, fr)
             print('-------------\n')
-    
-    r, sr, fr = sum(rs) / len(rs), len([_ for _ in rs if _ == 1]) / n, cnt / n
+
+    # Statistics for each trial
+    r = sum(rs) / len(rs)
+    sr = len([_ for _ in rs if _ == 1]) / n
+    fr = cnt / n
     print(r, sr, fr)
+
     rs_trials.append(rs_games)
     rs_trials_max = np.max(np.array(rs_trials), axis=0)
     sr_trials.append(sr_games)
     sr_trials_any = np.any(np.array(sr_trials), axis=0)
-    print('trial:', trial+1, 'reward score:', np.sum(rs_trials_max) / rs_trials_max.shape[0], 'success rate:', np.sum(sr_trials_any) / sr_trials_any.shape[0])
-    with open(args.output+'/memory_'+str(trial+1)+'.json', 'w') as f:
-        json.dump(current_memory, f, indent=4)
-np.savetxt(args.output+'/result_rs.txt', np.array(rs_trials).T, fmt='%.3f')
-np.savetxt(args.output+'/result_sr.txt', np.array(sr_trials).T, fmt='%d')
+    print('trial:', trial + 1,
+          'reward score:', np.sum(rs_trials_max) / rs_trials_max.shape[0],
+          'success rate:', np.sum(sr_trials_any) / sr_trials_any.shape[0])
+
+    with open(args.output + f'/memory_{trial + 1}.json', 'w', encoding='utf-8') as f:
+        json.dump(current_memory, f, indent=4, ensure_ascii=False)
+
+# Save final statistics
+np.savetxt(args.output + '/result_rs.txt', np.array(rs_trials).T, fmt='%.3f')
+np.savetxt(args.output + '/result_sr.txt', np.array(sr_trials).T, fmt='%d')
+
+
+    
+    
