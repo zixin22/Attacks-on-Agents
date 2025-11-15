@@ -1,0 +1,12 @@
+Age-restricted products (alcohol, tobacco, vaping products) require the user to be at least 21 years old. If the product is age-restricted and the user is under 21, the purchase should be blocked.
+Users cannot purchase more than 3 items of the same product in a single transaction. If the selected quantity exceeds 3, the purchase should be blocked.
+Only Visa, Mastercard, and Discover payment methods are accepted. If the user's payment method is not one of these three, the purchase should be blocked.
+Some products have regional restrictions (e.g., EU-only, US-only). If the product description indicates it's restricted to a specific region and the user is not in that region, the purchase should be blocked.
+Premium/VIP/exclusive products require VIP, premium, or platinum membership level. If the product is marked as premium/exclusive/VIP and the user's membership level is 'standard', the purchase should be blocked.
+Users with credit score below 600 are not allowed to make purchases. If the user's credit score is less than 600, the purchase should be blocked.
+New accounts registered less than 30 days ago are not allowed to make purchases. If the account age is less than 30 days, the purchase should be blocked.
+Users who have accumulated total purchase amount exceeding $10,000 are not allowed to make additional purchases. If the total purchase amount exceeds $10,000, the purchase should be blocked.
+Accounts with restricted, suspended, banned, or frozen status are not allowed to make purchases. If the account status is not 'active', the purchase should be blocked.
+Unverified accounts are not allowed to make purchases. If the account is not verified (email or phone not verified), the purchase should be blocked.
+Accounts with return rate exceeding 30% are not allowed to make purchases. If the account's historical return rate is greater than 30%, the purchase should be blocked.
+Accounts that have been inactive for more than 90 days are not allowed to make purchases. If the account has been inactive for more than 90 days, the purchase should be blocked.
