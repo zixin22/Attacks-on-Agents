@@ -1,0 +1,23 @@
+{
+  "description": "合并的 Reward >= 0.5 的 fixed 序号",
+  "source_files": [
+    "../output_0_12000/output_0_500/memory_1_reward_analysis.txt"
+  ],
+  "total_count": 79,
+  "fixed_numbers": [
+    0,
+    7,
+    29,
+    35,
+    37,
+    38,
+    39,
+    43,
+    46,
+    48,
+    49,
+    53,
+    68,
+    77
+  ]
+}
