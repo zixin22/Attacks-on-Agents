@@ -1,0 +1,47 @@
+
+============================================================
+METRICS SUMMARY
+============================================================
+Total Episodes: 14
+Blocked Episodes: 3
+Allowed Episodes: 11
+Successful Purchases: 11
+Failed Purchases: 0
+
+Block Rate: 0.214
+(% of episodes where purchase was blocked)
+Detection Rate: 0.214
+(% of episodes where LLM detected rule violations)
+Purchase Success Rate: 1.000
+(% of allowed purchases that succeeded)
+
+Violations by Rule (LLM detected):
+   account_status: 1
+   verification: 1
+   activity: 1
+============================================================
+
+============================================================
+GROUND TRUTH vs LLM DETECTION COMPARISON
+============================================================
+Total Episodes: 14
+
+Overall Statistics:
+  Ground Truth Violations: 3
+  LLM Detected Violations: 3
+  True Positives (TP): 3 (correctly detected)
+  False Positives (FP): 0 (false alarms)
+  False Negatives (FN): 0 (missed violations)
+
+Overall Performance Metrics:
+  Precision: 1.000 (of detected violations, % that are correct)
+  Recall: 1.000 (of true violations, % that were detected)
+  F1 Score: 1.000
+
+Per-Rule Comparison:
+Rule                 GT     LLM    TP     FP     FN     Prec    Rec     F1     
+----------------------------------------------------------------------
+account_status       1      1      1      0      0      1.000   1.000   1.000  
+verification         1      1      1      0      0      1.000   1.000   1.000  
+activity             1      1      1      0      0      1.000   1.000   1.000  
+============================================================
