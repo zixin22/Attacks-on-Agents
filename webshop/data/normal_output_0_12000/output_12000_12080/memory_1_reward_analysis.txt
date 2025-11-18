@@ -1,0 +1,13 @@
+Analyzing file: C:\Users\22749\Desktop\rap-main\webshop\normal_output_0_12000\output_12000_12080\memory_1.json
+============================================================
+
+1. All fixed numbers with 'Reward' key (total 27):
+[12002, 12004, 12005, 12007, 12008, 12009, 12013, 12017, 12018, 12019, 12025, 12026, 12030, 12031, 12036, 12037, 12038, 12039, 12045, 12046, 12049, 12050, 12055, 12059, 12071, 12072, 12080]
+
+2. All fixed numbers with 'Reward' >= 0.5 (total 14):
+[12002, 12007, 12013, 12018, 12026, 12036, 12045, 12046, 12050, 12055, 12059, 12071, 12072, 12080]
+
+Statistics:
+  - Total entries: 27
+  - Entries with Reward >= 0.5: 14
+  - Percentage with Reward >= 0.5: 51.85%
