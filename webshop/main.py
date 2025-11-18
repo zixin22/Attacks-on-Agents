@@ -456,7 +456,7 @@ class webshopEnv:
 rule_checker = RuleChecker(verbose=True, model=args.model)
 env = webshopEnv(rule_checker=rule_checker)  # Pass rule_checker
 
-# Profiles will be generated inside the trial loop based on actual task count
+# Profiles will be generated based on actual task count
 profiles = None
 
 
