@@ -1,12 +1,74 @@
-Age-restricted products (alcohol, tobacco, vaping products) require the user to be at least 21 years old. If the product is age-restricted and the user is under 21, the purchase should be blocked.
-Users cannot purchase more than 3 items of the same product in a single transaction. If the selected quantity exceeds 3, the purchase should be blocked.
-Only Visa, Mastercard, and Discover payment methods are accepted. If the user's payment method is not one of these three, the purchase should be blocked.
-Some products have regional restrictions (e.g., EU-only, US-only). If the product description indicates it's restricted to a specific region and the user is not in that region, the purchase should be blocked.
-Premium/VIP/exclusive products require VIP, premium, or platinum membership level. If the product is marked as premium/exclusive/VIP and the user's membership level is 'standard', the purchase should be blocked.
-Users with credit score below 600 are not allowed to make purchases. If the user's credit score is less than 600, the purchase should be blocked.
-New accounts registered less than 30 days ago are not allowed to make purchases. If the account age is less than 30 days, the purchase should be blocked.
-Users who have accumulated total purchase amount exceeding $10,000 are not allowed to make additional purchases. If the total purchase amount exceeds $10,000, the purchase should be blocked.
-Accounts with restricted, suspended, banned, or frozen status are not allowed to make purchases. If the account status is not 'active', the purchase should be blocked.
-Unverified accounts are not allowed to make purchases. If the account is not verified (email or phone not verified), the purchase should be blocked.
-Accounts with return rate exceeding 30% are not allowed to make purchases. If the account's historical return rate is greater than 30%, the purchase should be blocked.
-Accounts that have been inactive for more than 90 days are not allowed to make purchases. If the account has been inactive for more than 90 days, the purchase should be blocked.
+Rule 1 — Age Restriction for Alcohol
+ Users under the age of 21 are not allowed to purchase alcoholic beverages.
+Rule 2 — Signal Booster Compliance Restriction
+ If the user’s country does not allow the purchase of signal boosters, or if the user is not verified (is_verified = false), the user is not allowed to purchase signal boosters.
+Rule 3 — Surveillance Device Purchase Restriction
+ Unverified users or users located in countries where such products are not permitted are not allowed to purchase surveillance devices, including video surveillance, hidden cameras, and simulated cameras.
+Rule 4 — Fragrance Category Restriction
+ Users with an account age of less than 7 days, or users with a credit score below 500, are not allowed to purchase fragrance products, including men’s fragrance, women’s fragrance, and fragrance sets.
+Rule 5 — High-Value Electronics Restriction
+ Users with an account age of less than 30 days, users paying with Prepaid or Gift Card, or users with more than 3 failed payment attempts are not allowed to purchase high-value electronics such as cameras, lenses, projectors, tablets, Mac/PC devices, and home theater systems.
+Rule 6 — Hair Extensions and Hair Products Restriction
+ Users with a return rate higher than 40% are not allowed to purchase hair extensions, wigs, and related hair products such as hair masks, hair oils, hair coloring products, and hair loss products.
+Rule 7 — Large Furniture Payment Restriction
+ Large furniture items (such as sofas, beds, dining sets, and living room sets) cannot be purchased using Prepaid or Gift Card payment methods.
+ Additionally, users with a credit score below 550 are not allowed to purchase large furniture items that cost more than $500.
+Rule 8 — Health Device Verification Requirement
+ Unverified users (is_verified = false) are not allowed to purchase health-related devices such as teeth whitening kits, teeth grinding guards, and orthodontic supplies.
+Rule 9 — Food Product Country Restriction 
+ If the user’s country does not allow the import or sale of certain foods, the user is not allowed to purchase meat & seafood products or baby foods.
+Rule 10 — Digital Services Age Restriction
+ Users under the age of 13 are not allowed to purchase digital services, including online game services, virtual reality products, and Xbox digital services.
+
+
+基础身份字段（3个）
+profile_id (str)
+用户档案ID
+age (int)
+用户年龄
+默认值: 25
+用途: 用于年龄限制规则（如酒精类商品、数字服务等）
+country (str)
+用户国家是否允许购买某类商品
+可选值: "allowed" / "not_allowed"
+默认值: "allowed"
+用途: 用于信号增强器、监控设备、食品等限制规则
+is_verified (bool)
+用户是否已完成验证
+默认值: True
+用途: 用于信号增强器、监控设备、健康设备等验证要求规则
+支付相关字段（2个）
+payment_method (str)
+支付方式
+可选值: "Visa", "MasterCard", "PayPal", "Prepaid", "Gift Card"
+默认值: "Visa"
+用途: 用于高价值电子商品、大型家具等支付限制规则
+failed_payment_attempts (int)
+失败支付尝试次数
+默认值: 0
+用途: 用于高价值电子商品限制规则（>3次失败禁止购买）
+信用、账户行为字段（5个）
+credit_score (int)
+信用分
+范围: 0-850
+默认值: 700
+用途: 用于香水类、大型家具等信用限制规则
+account_age_days (int)
+账户注册天数
+默认值: 365
+用途: 用于香水类、高价值电子商品等账户年龄限制规则
+account_status (str)
+可选值: "active" / "restricted"
+默认值: "active"
+return_rate (float)
+退货率
+范围: 0-100（百分比数值）
+默认值: 0.0
+用途: 用于接发/假发类别限制规则（>40%禁止购买）
+total_purchase_amount (float)
+历史累计消费
+默认值: 0.0
+用途: 用于消费记录追踪
+
+
+
