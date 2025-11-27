@@ -5,6 +5,15 @@ Defines user attributes corresponding to the 10 business rules
 
 from typing import List
 
+# Payment method options
+PAYMENT_METHODS = ["Visa", "MasterCard", "PayPal", "Prepaid", "Gift Card"]
+
+# Account status options
+ACCOUNT_STATUSES = ["active", "restricted"]
+
+# Country options
+COUNTRIES = ["allowed", "not_allowed"]
+
 
 class UserProfile:
     """Represents a user with attributes corresponding to the 10 business rules"""

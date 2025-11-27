@@ -6,7 +6,7 @@ import transformers
 import torch
 import argparse
 import re
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 # Import rule system components
 from rule_and_profile import RuleChecker, MetricsTracker, UserProfile
@@ -19,9 +19,9 @@ parser.add_argument("--model", type=str, default="gpt-4o",
                     help="The model name")
 parser.add_argument("--output", type=str, default="output", help="The output folder")
 parser.add_argument("--emb_model", type=str, default="sentence-transformers/all-MiniLM-L6-v2", choices=["sentence-transformers/all-MiniLM-L6-v2", "sentence-transformers/all-MiniLM-L12-v2"], help="The model name")
-parser.add_argument("--attack", action="store_true", help="Enable query decomposition attack mode")
+parser.add_argument("--attack", action="store_true", help="Enable fragment-based attack mode")
 parser.add_argument("--attack_fixed_number", type=int, default=None, help="Fixed number of the case to attack (required if --attack is set)")
-parser.add_argument("--attack_target", type=str, default="alcohol", help="Target item to inject in attack (default: alcohol)")
+parser.add_argument("--attack_target_instruction", type=str, default=None, help="Target instruction to inject in attack (e.g., 'i would like a bundle of hair extensions that are 20 inches')")
 parser.add_argument("--split", type=str, default=None, help="Data split to use (e.g., '0-100', '0-500', 'test', 'eval', 'train'). If not specified, uses value from config file.")
 args = parser.parse_args()
 
@@ -590,6 +590,44 @@ def webshop_run_react(idx, prompt, profile=None, to_print=True, return_log=False
         if action.startswith('think'):
             observation = 'OK.'
 
+        # Use attack_instruction if provided, replace instruction in observation BEFORE building prompt
+        if saved_instruction:
+            instruction = saved_instruction
+            if instruction.startswith('Instruction: '):
+                instruction = instruction.replace('Instruction: ', '', 1)
+            # Remove ALL instruction lines and add only our attack instruction (first step only)
+            if i == 1:
+                lines = observation.split('\n')
+                new_lines = []
+                instruction_added = False
+                # Patterns that indicate an instruction line
+                instruction_patterns = ['instruction:', 'i am looking', 'i need to buy', 'i need a', 
+                                      'i would like', 'i am searching', 'i want', "i'm looking", "i'm searching"]
+                
+                for line in lines:
+                    line_lower = line.strip().lower()
+                    # Skip all instruction-related lines
+                    if any(line_lower.startswith(pattern) for pattern in instruction_patterns):
+                        # Add our attack instruction only once, replacing the first instruction line found
+                        if not instruction_added:
+                            new_lines.append(f'Instruction: {instruction}')
+                            instruction_added = True
+                        # Skip this instruction line
+                        continue
+                    else:
+                        new_lines.append(line)
+                
+                # If no instruction line was found, add it after "WebShop" or "reset"
+                if not instruction_added:
+                    insert_idx = 0
+                    for idx, line in enumerate(new_lines):
+                        if 'WebShop' in line or 'reset' in line.lower():
+                            insert_idx = idx + 1
+                            break
+                    new_lines.insert(insert_idx, f'Instruction: {instruction}')
+                
+                observation = '\n'.join(new_lines)
+
         if to_print:
             print(f'Action: {action}\nObservation: {observation}\n')
             sys.stdout.flush()
@@ -697,6 +735,51 @@ def webshop_run_rap(idx, prompt, memory, embeddings, profile=None, to_print=True
             print(f'Action: {action}\nObservation: {observation}\n')
             sys.stdout.flush()
 
+        # Use attack_instruction if provided, otherwise get from environment
+        # IMPORTANT: Remove ALL instruction lines and add only our attack instruction (first step only)
+        if saved_instruction:
+            instruction = saved_instruction
+            if instruction.startswith('Instruction: '):
+                instruction = instruction.replace('Instruction: ', '', 1)
+            res[3]['instruction'] = instruction
+            # Remove ALL instruction lines and add only our attack instruction (first step only)
+            if i == 1:
+                lines = observation.split('\n')
+                new_lines = []
+                instruction_added = False
+                # Patterns that indicate an instruction line
+                instruction_patterns = ['instruction:', 'i am looking', 'i need to buy', 'i need a', 
+                                      'i would like', 'i am searching', 'i want', "i'm looking", "i'm searching"]
+                
+                for line in lines:
+                    line_lower = line.strip().lower()
+                    # Skip all instruction-related lines
+                    if any(line_lower.startswith(pattern) for pattern in instruction_patterns):
+                        # Add our attack instruction only once, replacing the first instruction line found
+                        if not instruction_added:
+                            new_lines.append(f'Instruction: {instruction}')
+                            instruction_added = True
+                        # Skip this instruction line
+                        continue
+                    else:
+                        new_lines.append(line)
+                
+                # If no instruction line was found, add it after "WebShop" or "reset"
+                if not instruction_added:
+                    insert_idx = 0
+                    for idx, line in enumerate(new_lines):
+                        if 'WebShop' in line or 'reset' in line.lower():
+                            insert_idx = idx + 1
+                            break
+                    new_lines.insert(insert_idx, f'Instruction: {instruction}')
+                
+                observation = '\n'.join(new_lines)
+        elif instruction is None and res[3].get('instruction', None) is not None:
+            instruction = res[3]['instruction'].replace('Instruction: ', '')
+            res[3]['instruction'] = instruction
+        elif res[3].get('instruction', None) is None:
+            res[3]['instruction'] = instruction
+
         if i:
             prompt += f' {action}\nObservation: {observation}\n\nAction:'
             actions.append(f'Action: {action}')
@@ -705,18 +788,6 @@ def webshop_run_rap(idx, prompt, memory, embeddings, profile=None, to_print=True
             prompt += f'{observation}\n\nAction:'
             actions.append(f'{observation}')
             task = observation
-
-        # Use attack_instruction if provided, otherwise get from environment
-        if saved_instruction:
-            instruction = saved_instruction
-            if instruction.startswith('Instruction: '):
-                instruction = instruction.replace('Instruction: ', '', 1)
-            res[3]['instruction'] = instruction
-        elif instruction is None and res[3].get('instruction', None) is not None:
-            instruction = res[3]['instruction'].replace('Instruction: ', '')
-            res[3]['instruction'] = instruction
-        elif res[3].get('instruction', None) is None:
-            res[3]['instruction'] = instruction
 
         init_prompt, reasoning = generate_examples(
             res[3], actions, memory, embeddings, reasoning,
@@ -793,141 +864,329 @@ def webshop_run_rap(idx, prompt, memory, embeddings, profile=None, to_print=True
         return 0, '', execution_log
     return 0, ''  # No reward output = failed
 
-def execute_attack_queries(attack_plan: Dict, memory: List, embeddings: Dict, 
-                          profile: UserProfile, initial_prompt: str, 
-                          attack_log_file: str = None) -> List:
+
+def execute_fragment_attack(
+    fragment_label: str,
+    fragment_attack_instruction: str,
+    host_instruction: str,
+    session_id: str,
+    memory: List,
+    embeddings: Dict,
+    profile: UserProfile,
+    initial_prompt: str,
+    memory_file: str,
+    attack_log_file: str = None
+) -> Tuple[bool, Dict, Dict]:
     """
-    Execute attack query sequence and inject results into memory.
+    Execute a single fragment attack as a complete task.
     
     Args:
-        attack_plan: Dictionary from QueryAttackGenerator.decompose_query_attack()
+        fragment_label: Fragment label ('A', 'B', 'C', 'D')
+        fragment_attack_instruction: Complete attack instruction
+        host_instruction: Original host instruction
+        session_id: Session ID for this attack (e.g., 'fixed_attack_fragment_A_29')
         memory: Current memory list
-        embeddings: Current embeddings dictionary
-        profile: User profile for this attack
-        initial_prompt: Initial prompt template
-        attack_log_file: Path to attack log file for saving prompts and outputs
+        embeddings: Current embeddings dict
+        profile: User profile to use (should be profile_37)
+        initial_prompt: Initial prompt for the task
+        memory_file: Path to memory file
     
     Returns:
-        Updated memory list with injected attack results
+        (injected, updated_memory, updated_embeddings)
+        injected: True if successfully injected to memory
     """
-    attack_instructions = attack_plan['attack_instructions']
-    injected_memory = []
-    attack_logs = []
+    print(f"\n{'='*60}")
+    print(f"EXECUTING FRAGMENT {fragment_label} ATTACK")
+    print(f"Session ID: {session_id}")
+    print(f"Attack Instruction: {fragment_attack_instruction}")
+    print(f"{'='*60}\n")
     
-    log_content = f"\n{'='*60}\n"
-    log_content += f"EXECUTING ATTACK QUERY SEQUENCE\n"
-    log_content += f"Host Query: {attack_plan['host_query']}\n"
-    log_content += f"Attack Target: {attack_plan['attack_target']}\n"
-    log_content += f"Number of attack queries: {len(attack_instructions)}\n"
-    log_content += f"{'='*60}\n\n"
-    
-    print(log_content)
-    
-    if attack_log_file:
-        with open(attack_log_file, 'a', encoding='utf-8') as f:
-            f.write(log_content)
-    
-    for idx, attack_info in enumerate(attack_instructions):
-        expanded_query = attack_info['query']
-        label = attack_info['label']
-        attack_instruction = attack_info['instruction']
+    # Execute the task (use RAP if memory exists, REACT if not)
+    # Use return_log=True to capture all prompts and outputs
+    # Initialize violated_rules early to avoid UnboundLocalError
+    violated_rules = []
+    try:
+        if len(memory) > 0:
+            r, mem_data, execution_log = webshop_run_rap(
+                session_id, initial_prompt, memory, embeddings,
+                profile=profile, to_print=True,
+                attack_instruction=fragment_attack_instruction,
+                return_log=True
+            )
+        else:
+            r, mem_data, execution_log = webshop_run_react(
+                session_id, initial_prompt,
+                profile=profile, to_print=True,
+                attack_instruction=fragment_attack_instruction,
+                return_log=True
+            )
         
-        query_log = f"\n--- Attack Query {idx+1}/{len(attack_instructions)} (Label: {label}) ---\n"
-        query_log += f"Expanded Query: {expanded_query}\n"
-        query_log += f"Attack Instruction: {attack_instruction}\n"
-        query_log += f"Session ID: attack_{label}_{idx}\n"
-        query_log += f"{'-'*60}\n"
+        # Get violations for this session
+        violated_rules = env.violations.get(session_id, [])
+        was_blocked = len(violated_rules) > 0
         
-        print(query_log)
+        # Write prompt log to file if attack_log_file is provided
+        if attack_log_file and execution_log:
+            with open(attack_log_file, 'a', encoding='utf-8') as f:
+                f.write(f"\n{'='*80}\n")
+                f.write(f"FRAGMENT {fragment_label} ATTACK\n")
+                f.write(f"{'='*80}\n")
+                f.write(f"Session ID: {session_id}\n")
+                f.write(f"Profile Used: {profile.profile_id} (credit_score={profile.credit_score}, account_age_days={profile.account_age_days})\n")
+                f.write(f"Host Instruction: {host_instruction}\n")
+                f.write(f"Fragment Attack Instruction: {fragment_attack_instruction}\n")
+                f.write(f"Fragment Label: {fragment_label}\n")
+                f.write(f"Reward: {r}\n")
+                f.write(f"Success: {mem_data.get('Success', False) if mem_data else False}\n")
+                if violated_rules:
+                    f.write(f"Violated Rules: {', '.join(violated_rules)}\n")
+                f.write(f"{'-'*80}\n")
+                f.write("EXECUTION LOG (Prompts and LLM Responses):\n")
+                f.write(f"{'-'*80}\n")
+                for log_entry in execution_log:
+                    f.write(log_entry + "\n")
+                f.write(f"{'='*80}\n\n")
         
+    except AssertionError:
+        r = 0
+        mem_data = ''
+        execution_log = []
+        violated_rules = []
+        was_blocked = False
+        print(f"✗ Fragment {fragment_label} attack failed due to assertion error")
+        
+        # Log failure to file
         if attack_log_file:
             with open(attack_log_file, 'a', encoding='utf-8') as f:
-                f.write(query_log)
+                f.write(f"\n{'='*80}\n")
+                f.write(f"FRAGMENT {fragment_label} ATTACK - FAILED\n")
+                f.write(f"{'='*80}\n")
+                f.write(f"Session ID: {session_id}\n")
+                f.write(f"Host Instruction: {host_instruction}\n")
+                f.write(f"Fragment Attack Instruction: {fragment_attack_instruction}\n")
+                f.write(f"Error: AssertionError - Attack failed\n")
+                f.write(f"{'='*80}\n\n")
+    except Exception as e:
+        r = 0
+        mem_data = ''
+        execution_log = []
+        violated_rules = []
+        was_blocked = False
+        print(f"✗ Fragment {fragment_label} attack failed due to error: {e}")
         
-        # Create a modified prompt with the attack instruction
-        # Replace the instruction in the initial prompt
-        modified_prompt = initial_prompt.replace(
-            'i would like a 3 ounce bottle of bright citrus deodorant for sensitive skin, and price lower than 50.00 dollars',
-            attack_instruction
+        # Log failure to file
+        if attack_log_file:
+            with open(attack_log_file, 'a', encoding='utf-8') as f:
+                f.write(f"\n{'='*80}\n")
+                f.write(f"FRAGMENT {fragment_label} ATTACK - FAILED\n")
+                f.write(f"{'='*80}\n")
+                f.write(f"Session ID: {session_id}\n")
+                f.write(f"Host Instruction: {host_instruction}\n")
+                f.write(f"Fragment Attack Instruction: {fragment_attack_instruction}\n")
+                f.write(f"Error: {type(e).__name__} - {str(e)}\n")
+                f.write(f"{'='*80}\n\n")
+    
+    # Only inject if done=True (mem_data != '')
+    if mem_data != '':
+        # Add attack injection markers
+        mem_data['AttackInjection'] = True
+        mem_data['AttackType'] = 'fragment'
+        mem_data['FragmentLabel'] = fragment_label
+        mem_data['FragmentInstruction'] = fragment_attack_instruction
+        mem_data['HostInstruction'] = host_instruction
+        
+        # Inject to memory
+        memory.append(mem_data)
+        
+        # Save to file immediately
+        with open(memory_file, 'w', encoding='utf-8') as f:
+            json.dump(memory, f, indent=4, ensure_ascii=False)
+        
+        # Update embeddings (only Reward > 0.0 will be used for retrieval)
+        memory, embeddings = generate_embeddings(memory)
+        
+        print(f"✓ Fragment {fragment_label} injected to memory (Reward: {r}, Success: {mem_data.get('Success', False)})")
+        return True, memory, embeddings
+    else:
+        print(f"✗ Fragment {fragment_label} did not complete (Reward: {r}), skipping memory injection")
+        
+        # Log incomplete execution to file
+        if attack_log_file:
+            with open(attack_log_file, 'a', encoding='utf-8') as f:
+                f.write(f"\n{'='*80}\n")
+                f.write(f"FRAGMENT {fragment_label} ATTACK - INCOMPLETE\n")
+                f.write(f"{'='*80}\n")
+                f.write(f"Session ID: {session_id}\n")
+                f.write(f"Host Instruction: {host_instruction}\n")
+                f.write(f"Fragment Attack Instruction: {fragment_attack_instruction}\n")
+                f.write(f"Reward: {r}\n")
+                f.write(f"Status: Task did not complete (done=False or mem_data empty)\n")
+                if execution_log:
+                    f.write(f"{'-'*80}\n")
+                    f.write("EXECUTION LOG (Partial):\n")
+                    f.write(f"{'-'*80}\n")
+                    for log_entry in execution_log:
+                        f.write(log_entry + "\n")
+                f.write(f"{'='*80}\n\n")
+        
+        return False, memory, embeddings
+
+
+def execute_trigger_attack(
+    trigger_attack_instruction: str,
+    host_instruction: str,
+    session_id: str,
+    memory: List,
+    embeddings: Dict,
+    profile: UserProfile,
+    initial_prompt: str,
+    memory_file: str,
+    attack_log_file: str = None
+) -> Tuple[bool, Dict, Dict]:
+    """
+    Execute trigger attack as a complete task.
+    
+    Args:
+        trigger_attack_instruction: Complete trigger attack instruction
+        host_instruction: Original host instruction
+        session_id: Session ID for this attack (e.g., 'fixed_attack_trigger_29')
+        memory: Current memory list (should contain all fragments)
+        embeddings: Current embeddings dict
+        profile: User profile to use (should be profile_37)
+        initial_prompt: Initial prompt for the task
+        memory_file: Path to memory file
+    
+    Returns:
+        (injected, updated_memory, updated_embeddings)
+        injected: True if successfully injected to memory
+    """
+    print(f"\n{'='*60}")
+    print(f"EXECUTING TRIGGER ATTACK")
+    print(f"Session ID: {session_id}")
+    print(f"Trigger Instruction: {trigger_attack_instruction}")
+    print(f"{'='*60}\n")
+    
+    # Execute the task (use RAP with memory containing fragments)
+    # Use return_log=True to capture all prompts and outputs
+    # Initialize violated_rules early to avoid UnboundLocalError
+    violated_rules = []
+    try:
+        r, mem_data, execution_log = webshop_run_rap(
+            session_id, initial_prompt, memory, embeddings,
+            profile=profile, to_print=True,
+            attack_instruction=trigger_attack_instruction,
+            return_log=True
         )
         
-        # Log the modified prompt
-        prompt_log = f"\n[PROMPT] Initial Prompt (Modified):\n{modified_prompt}\n\n"
+        # Get violations for this session
+        violated_rules = env.violations.get(session_id, [])
+        was_blocked = len(violated_rules) > 0
+        
+        # Write prompt log to file if attack_log_file is provided
+        if attack_log_file and execution_log:
+            with open(attack_log_file, 'a', encoding='utf-8') as f:
+                f.write(f"\n{'='*80}\n")
+                f.write(f"TRIGGER ATTACK\n")
+                f.write(f"{'='*80}\n")
+                f.write(f"Session ID: {session_id}\n")
+                f.write(f"Profile Used: {profile.profile_id} (credit_score={profile.credit_score}, account_age_days={profile.account_age_days})\n")
+                f.write(f"Host Instruction: {host_instruction}\n")
+                f.write(f"Trigger Attack Instruction: {trigger_attack_instruction}\n")
+                f.write(f"Reward: {r}\n")
+                f.write(f"Success: {mem_data.get('Success', False) if mem_data else False}\n")
+                if violated_rules:
+                    f.write(f"Violated Rules: {', '.join(violated_rules)}\n")
+                f.write(f"{'-'*80}\n")
+                f.write("EXECUTION LOG (Prompts and LLM Responses):\n")
+                f.write(f"{'-'*80}\n")
+                for log_entry in execution_log:
+                    f.write(log_entry + "\n")
+                f.write(f"{'='*80}\n\n")
+        
+    except AssertionError:
+        r = 0
+        mem_data = ''
+        execution_log = []
+        violated_rules = []
+        was_blocked = False
+        print(f"✗ Trigger attack failed due to assertion error")
+        
+        # Log failure to file
         if attack_log_file:
             with open(attack_log_file, 'a', encoding='utf-8') as f:
-                f.write(prompt_log)
+                f.write(f"\n{'='*80}\n")
+                f.write(f"TRIGGER ATTACK - FAILED\n")
+                f.write(f"{'='*80}\n")
+                f.write(f"Session ID: {session_id}\n")
+                f.write(f"Host Instruction: {host_instruction}\n")
+                f.write(f"Trigger Attack Instruction: {trigger_attack_instruction}\n")
+                f.write(f"Error: AssertionError - Attack failed\n")
+                f.write(f"{'='*80}\n\n")
+    except Exception as e:
+        r = 0
+        mem_data = ''
+        execution_log = []
+        violated_rules = []
+        was_blocked = False
+        print(f"✗ Trigger attack failed due to error: {e}")
         
-        # Use a special session ID for attack queries
-        attack_session_id = f"attack_{label}_{idx}"
+        # Log failure to file
+        if attack_log_file:
+            with open(attack_log_file, 'a', encoding='utf-8') as f:
+                f.write(f"\n{'='*80}\n")
+                f.write(f"TRIGGER ATTACK - FAILED\n")
+                f.write(f"{'='*80}\n")
+                f.write(f"Session ID: {session_id}\n")
+                f.write(f"Host Instruction: {host_instruction}\n")
+                f.write(f"Trigger Attack Instruction: {trigger_attack_instruction}\n")
+                f.write(f"Error: {type(e).__name__} - {str(e)}\n")
+                f.write(f"{'='*80}\n\n")
+    
+    # Only inject if done=True (mem_data != '')
+    if mem_data != '':
+        # Add attack injection markers
+        mem_data['AttackInjection'] = True
+        mem_data['AttackType'] = 'trigger'
+        mem_data['FragmentLabel'] = None  # Trigger has no fragment label
+        mem_data['TriggerInstruction'] = trigger_attack_instruction
+        mem_data['HostInstruction'] = host_instruction
         
-        # Execute the attack query
-        try:
-            # Load current memory and embeddings
-            current_memory = memory.copy()
-            current_embeddings = embeddings.copy() if embeddings else None
-            
-            # Use RAP if memory exists, otherwise use REACT
-            execution_log = []
-            # Pass attack_instruction to ensure correct instruction is used
-            if len(current_memory) > 0 and current_embeddings:
-                r, mem_data, execution_log = webshop_run_rap(
-                    attack_session_id, modified_prompt, 
-                    current_memory, current_embeddings,
-                    profile=profile, to_print=False, return_log=True,
-                    attack_instruction=attack_instruction
-                )
-            else:
-                r, mem_data, execution_log = webshop_run_react(
-                    attack_session_id, modified_prompt,
-                    profile=profile, to_print=False, return_log=True,
-                    attack_instruction=attack_instruction
-                )
-            
-            # Log execution details
-            exec_log_content = f"\n[EXECUTION LOG] Attack Query {label}:\n"
-            exec_log_content += f"{'='*60}\n"
-            for log_entry in execution_log:
-                exec_log_content += log_entry + "\n"
-            exec_log_content += f"{'='*60}\n"
-            exec_log_content += f"Reward: {r}\n"
-            exec_log_content += f"Memory Data: {json.dumps(mem_data, indent=2, ensure_ascii=False) if mem_data != '' else 'Empty'}\n\n"
-            
-            print(exec_log_content)
-            if attack_log_file:
-                with open(attack_log_file, 'a', encoding='utf-8') as f:
-                    f.write(exec_log_content)
-            
-            # Inject the result into memory
-            if mem_data != '':
-                # Mark as attack injection
-                mem_data['AttackInjection'] = True
-                mem_data['AttackLabel'] = label
-                mem_data['AttackQuery'] = expanded_query
-                injected_memory.append(mem_data)
-                print(f"✓ Successfully injected attack query {label} (Reward: {r})")
-            else:
-                print(f"✗ Failed to execute attack query {label}")
+        # Inject to memory
+        memory.append(mem_data)
         
-        except Exception as e:
-            error_log = f"✗ Error executing attack query {label}: {e}\n"
-            error_log += f"Traceback:\n{str(e)}\n\n"
-            print(error_log)
-            if attack_log_file:
-                with open(attack_log_file, 'a', encoding='utf-8') as f:
-                    f.write(error_log)
-            continue
-    
-    completion_log = f"\n{'='*60}\n"
-    completion_log += f"ATTACK QUERY SEQUENCE COMPLETE\n"
-    completion_log += f"Injected {len(injected_memory)} attack queries into memory\n"
-    completion_log += f"{'='*60}\n\n"
-    
-    print(completion_log)
-    if attack_log_file:
-        with open(attack_log_file, 'a', encoding='utf-8') as f:
-            f.write(completion_log)
-    
-    return injected_memory
+        # Save to file immediately
+        with open(memory_file, 'w', encoding='utf-8') as f:
+            json.dump(memory, f, indent=4, ensure_ascii=False)
+        
+        # Update embeddings (only Reward > 0.0 will be used for retrieval)
+        memory, embeddings = generate_embeddings(memory)
+        
+        print(f"✓ Trigger attack injected to memory (Reward: {r}, Success: {mem_data.get('Success', False)})")
+        return True, memory, embeddings
+    else:
+        print(f"✗ Trigger attack did not complete (Reward: {r}), skipping memory injection")
+        
+        # Log incomplete execution to file
+        if attack_log_file:
+            with open(attack_log_file, 'a', encoding='utf-8') as f:
+                f.write(f"\n{'='*80}\n")
+                f.write(f"TRIGGER ATTACK - INCOMPLETE\n")
+                f.write(f"{'='*80}\n")
+                f.write(f"Session ID: {session_id}\n")
+                f.write(f"Host Instruction: {host_instruction}\n")
+                f.write(f"Trigger Attack Instruction: {trigger_attack_instruction}\n")
+                f.write(f"Reward: {r}\n")
+                f.write(f"Status: Task did not complete (done=False or mem_data empty)\n")
+                if execution_log:
+                    f.write(f"{'-'*80}\n")
+                    f.write("EXECUTION LOG (Partial):\n")
+                    f.write(f"{'-'*80}\n")
+                    for log_entry in execution_log:
+                        f.write(log_entry + "\n")
+                f.write(f"{'='*80}\n\n")
+        
+        return False, memory, embeddings
+
 
 # Initialize rule violation log file (clear previous content)
 rule_violation_file = args.output + '/rule_violation.txt'
@@ -975,23 +1234,38 @@ else:
         n, start = 1000, 5001
     index_list = range(start, start + n)
 
-# Validate attack_fixed_number after index_list is loaded
+# Import FragmentAttackGenerator for attack mode
+attack_log_file = None
 if args.attack:
-    if args.attack_fixed_number not in index_list:
-        available_indices = list(index_list)[:20]  # Show first 20 for reference
-        error_msg = f"\n{'='*60}\n"
-        error_msg += f"ERROR: --attack_fixed_number {args.attack_fixed_number} is not in the index_list\n"
-        error_msg += f"{'='*60}\n"
-        error_msg += f"Available indices (showing first 20): {available_indices}\n"
-        if len(index_list) > 20:
-            error_msg += f"... and {len(index_list) - 20} more\n"
-        error_msg += f"Total available indices: {len(index_list)}\n"
-        error_msg += f"{'='*60}\n"
-        print(error_msg)
-        raise ValueError(f"--attack_fixed_number {args.attack_fixed_number} is not in the index_list. Available indices: {list(index_list)}")
+    from attack import FragmentAttackGenerator
+    if args.attack_fixed_number is None:
+        raise ValueError("--attack_fixed_number is required when --attack is set")
+    if args.attack_target_instruction is None:
+        raise ValueError("--attack_target_instruction is required when --attack is set")
+    attack_generator = FragmentAttackGenerator(verbose=True)
+    
+    # Initialize attack log file
+    attack_log_file = args.output + '/attack_prompts_log.txt'
+    with open(attack_log_file, 'w', encoding='utf-8') as f:
+        f.write("="*80 + "\n")
+        f.write("ATTACK MODE PROMPT LOG\n")
+        f.write("="*80 + "\n")
+        f.write(f"Target Case: fixed_{args.attack_fixed_number}\n")
+        f.write(f"Target Instruction: {args.attack_target_instruction}\n")
+        f.write(f"Log File: {attack_log_file}\n")
+        f.write("="*80 + "\n\n")
+    
+    print(f"\n{'='*60}")
+    print("ATTACK MODE ENABLED")
+    print(f"Target Case: fixed_{args.attack_fixed_number}")
+    print(f"Target Instruction: {args.attack_target_instruction}")
+    print(f"Attack Prompt Log: {attack_log_file}")
+    print(f"{'='*60}\n")
 
-# Load profiles from generated_profiles.json instead of generating new ones
-generated_profiles_path = r"C:\Users\22749\Desktop\rap-main\webshop\generated_profiles.json"
+# Load profiles from generated_profiles.json
+# Use relative path from the script location
+script_dir = os.path.dirname(os.path.abspath(__file__))
+generated_profiles_path = os.path.join(script_dir, 'generated_profiles.json')
 profiles = []
 try:
     with open(generated_profiles_path, 'r', encoding='utf-8') as f:
@@ -1031,7 +1305,8 @@ try:
     
 except FileNotFoundError:
     print(f"Error: Profile file not found at {generated_profiles_path}")
-    print("Please ensure generated_profiles.json exists before running the program.")
+    print("Please ensure generated_profiles.json exists in the webshop directory.")
+    print("You can generate it by running: python rule_and_profile/generate_profiles.py")
     raise FileNotFoundError(f"Profile file not found: {generated_profiles_path}")
 except Exception as e:
     print(f"Error loading profiles from {generated_profiles_path}: {e}")
@@ -1045,23 +1320,6 @@ sr = []
 # Initialize metrics tracker
 metrics_tracker = MetricsTracker()
 
-# Attack mode: Import attack generator if attack is enabled
-if args.attack:
-    from attack import QueryAttackGenerator
-    
-    # Validate attack parameters (basic check)
-    if args.attack_fixed_number is None:
-        raise ValueError("--attack_fixed_number must be specified when --attack is enabled")
-    
-    # Note: Full validation will happen after index_list is loaded
-    print(f"\n{'='*60}")
-    print(f"ATTACK MODE ENABLED")
-    print(f"Target case: fixed_{args.attack_fixed_number}")
-    print(f"Attack target: {args.attack_target}")
-    print(f"{'='*60}\n")
-    
-    # Initialize attack generator (will be used later)
-    attack_generator = QueryAttackGenerator(model=args.model, verbose=True)
 
 # Track profile usage to ensure no repetition
 profile_index = 0
@@ -1097,202 +1355,134 @@ for i in index_list:
     profile_index += 1
     print(f'Using profile: {profile.profile_id} (profile {profile_index}/{len(profiles)})')
     
-    # Attack mode: Execute attack queries before target case
+    # Check if this is the attack target case
     if args.attack and i == args.attack_fixed_number:
-        # Create attack log file
-        attack_log_file = args.output + f'/attack_log_case_{i}.txt'
-        if os.path.exists(attack_log_file):
-            os.remove(attack_log_file)  # Clear previous attack log
+        print(f"\n{'='*60}")
+        print(f"ATTACK MODE: Processing case fixed_{i}")
+        print(f"{'='*60}\n")
         
-        attack_header = f"\n{'='*60}\n"
-        attack_header += f"ATTACK MODE: Executing attack on case {i}\n"
-        attack_header += f"Attack Target: {args.attack_target}\n"
-        attack_header += f"Timestamp: {time.strftime('%Y-%m-%d %H:%M:%S')}\n"
-        attack_header += f"{'='*60}\n\n"
+        # Force use profile_37 for attack
+        profile_37 = None
+        for p in profiles:
+            if p.profile_id == 'profile_37':
+                profile_37 = p
+                break
+        if profile_37 is None:
+            print(f"Warning: profile_37 not found, using current profile {profile.profile_id}")
+            profile_37 = profile
+        else:
+            print(f"Using profile_37 for attack: {profile_37.profile_id}")
+            print(f"Profile details: credit_score={profile_37.credit_score}, account_age_days={profile_37.account_age_days}")
+            profile = profile_37
         
-        print(attack_header)
-        with open(attack_log_file, 'w', encoding='utf-8') as f:
-            f.write(attack_header)
+        # Step 1: Get host instruction and query by resetting the environment
+        # Reset environment to get initial state
+        env.step(f'fixed_{i}', 'reset', profile=profile)
+        # Get initial observation to extract instruction and query
+        obs, info = webshop_text(session=f'fixed_{i}', page_type='init')
+        host_instruction = info.get('instruction', '')
+        host_query = info.get('query', '')
         
-        # Step 1: Execute the case once to get host query and instruction
-        step1_log = "Step 1: Executing case to get host query and instruction...\n"
-        print(step1_log)
-        with open(attack_log_file, 'a', encoding='utf-8') as f:
-            f.write(step1_log)
-        try:
-            # Use fixed_{i} session to get the correct goal (instruction and query will match)
-            # Using 'fixed' prefix ensures WebShop server assigns the goal at index i
-            temp_session_id = f"fixed_{i}"
-            temp_action = 'reset'
-            temp_res = env.step(temp_session_id, temp_action, profile=profile)
-            temp_obs, temp_info = webshop_text(**env.sessions[temp_session_id])
-            
-            host_query = temp_info.get('query', '')
-            original_instruction = temp_info.get('instruction', '')
-            
-            # Clean instruction: remove "Instruction: " prefix if present
-            if original_instruction and original_instruction.startswith('Instruction: '):
-                original_instruction = original_instruction.replace('Instruction: ', '', 1)
-            
-            # With fixed_{i} session, instruction and query should always match
-            # If instruction is empty, fallback to constructing from host_query
-            if not original_instruction and host_query:
-                original_instruction = f"i'm looking for {host_query}"
-            
-            if not host_query:
-                # Fallback: try to get from human_goals.json
-                try:
-                    human_goals_path = r"C:\Users\22749\Desktop\rap-main\WebShop-master\baseline_models\data\human_goals.json"
-                    with open(human_goals_path, 'r', encoding='utf-8') as f:
-                        human_goals = json.load(f)
-                    if i < len(human_goals):
-                        host_query = human_goals[i]
-                        if not original_instruction:
-                            original_instruction = f"i'm looking for {host_query}"
-                except Exception as e:
-                    print(f"Warning: Could not get host query: {e}")
-                    host_query = f"case_{i}_query"
-            
-            step1_result = f"Host Query (Q₀): {host_query}\n"
-            step1_result += f"Original Instruction: {original_instruction}\n\n"
-            print(step1_result)
+        # Clean instruction (remove "Instruction: " prefix if present)
+        if host_instruction and host_instruction.startswith('Instruction: '):
+            host_instruction = host_instruction.replace('Instruction: ', '', 1)
+        
+        print(f"Host Instruction: {host_instruction}")
+        print(f"Host Query: {host_query}")
+        
+        # Step 2: Generate attack plan
+        attack_plan = attack_generator.generate_attack_plan(
+            host_instruction=host_instruction,
+            target_instruction=args.attack_target_instruction
+        )
+        
+        print(f"\nAttack Plan Generated:")
+        print(f"  Fragments: {attack_plan['fragments']}")
+        print(f"  Number of Fragment Attacks: {len(attack_plan['fragment_attacks'])}")
+        print(f"  Trigger Instruction: {attack_plan['trigger_instruction']}\n")
+        
+        # Log attack plan to file
+        if attack_log_file:
             with open(attack_log_file, 'a', encoding='utf-8') as f:
-                f.write(step1_result)
+                f.write(f"\n{'='*80}\n")
+                f.write(f"ATTACK PLAN FOR CASE fixed_{i}\n")
+                f.write(f"{'='*80}\n")
+                f.write(f"Profile Used: {profile.profile_id} (credit_score={profile.credit_score}, account_age_days={profile.account_age_days})\n")
+                f.write(f"Host Instruction: {host_instruction}\n")
+                f.write(f"Target Instruction: {args.attack_target_instruction}\n")
+                f.write(f"\nFragments:\n")
+                for idx, fragment in enumerate(attack_plan['fragments'], 1):
+                    f.write(f"  F{idx}: {fragment}\n")
+                f.write(f"\nFragment Attacks ({len(attack_plan['fragment_attacks'])}):\n")
+                for frag_attack in attack_plan['fragment_attacks']:
+                    f.write(f"  {frag_attack['label']}: {frag_attack['instruction']}\n")
+                f.write(f"\nTrigger Instruction:\n")
+                f.write(f"  {attack_plan['trigger_instruction']}\n")
+                f.write(f"{'='*80}\n\n")
+        
+        # Step 3: Execute fragment attacks
+        for fragment_attack in attack_plan['fragment_attacks']:
+            fragment_label = fragment_attack['label']
+            fragment_instruction = fragment_attack['instruction']
+            # Use 'fixed' prefix so server uses the correct goal (fixed_{i}) instead of random goal
+            session_id = f'fixed_attack_fragment_{fragment_label}_{i}'
             
-            # Step 2: Generate attack plan
-            step2_log = "Step 2: Generating attack plan...\n"
-            print(step2_log)
-            with open(attack_log_file, 'a', encoding='utf-8') as f:
-                f.write(step2_log)
-            
-            attack_plan = attack_generator.decompose_query_attack(
-                host_query=host_query,
-                attack_target=args.attack_target,
-                original_instruction=original_instruction,
-                log_file=attack_log_file
+            # Execute fragment attack
+            injected, memory, embeddings = execute_fragment_attack(
+                fragment_label=fragment_label,
+                fragment_attack_instruction=fragment_instruction,
+                host_instruction=host_instruction,
+                session_id=session_id,
+                memory=memory,
+                embeddings=embeddings,
+                profile=profile,
+                initial_prompt=initial_prompt,
+                memory_file=memory_file,
+                attack_log_file=attack_log_file
             )
             
-            # Log attack plan
-            plan_log = f"\n[ATTACK PLAN]\n"
-            plan_log += f"{'='*60}\n"
-            plan_log += f"Host Query: {attack_plan['host_query']}\n"
-            plan_log += f"Attack Target: {attack_plan['attack_target']}\n"
-            plan_log += f"Tokens: {attack_plan['tokens']}\n"
-            plan_log += f"Expanded Queries:\n"
-            for exp_query, label in attack_plan['expanded_queries']:
-                plan_log += f"  {label}: {exp_query}\n"
-            plan_log += f"Final Query: {attack_plan['final_query']}\n"
-            plan_log += f"{'='*60}\n\n"
-            
-            print(plan_log)
-            with open(attack_log_file, 'a', encoding='utf-8') as f:
-                f.write(plan_log)
-            
-            # Step 3: Execute attack query sequence and inject into memory
-            step3_log = "\nStep 3: Executing attack query sequence...\n"
-            print(step3_log)
-            with open(attack_log_file, 'a', encoding='utf-8') as f:
-                f.write(step3_log)
-            
-            injected_memory = execute_attack_queries(
-                attack_plan, memory, embeddings, profile, initial_prompt, attack_log_file
-            )
-            
-            # Step 4: Save injected memory to memory_1.json
-            if injected_memory:
-                memory.extend(injected_memory)
-                with open(memory_file, 'w', encoding='utf-8') as f:
-                    json.dump(memory, f, indent=4, ensure_ascii=False)
-                print(f"Saved {len(injected_memory)} attack injections to {memory_file}")
-                
-                # Regenerate embeddings with new memory
-                memory, embeddings = generate_embeddings(memory)
-            
-            # Step 5: Execute final attack query to test retrieval
-            step5_log = "\nStep 5: Executing final attack query to test retrieval...\n"
-            print(step5_log)
-            with open(attack_log_file, 'a', encoding='utf-8') as f:
-                f.write(step5_log)
-            
-            final_query = attack_plan['final_query']
-            final_instruction = attack_generator.create_attack_instruction(
-                final_query, original_instruction
-            )
-            
-            modified_prompt = initial_prompt.replace(
-                'i would like a 3 ounce bottle of bright citrus deodorant for sensitive skin, and price lower than 50.00 dollars',
-                final_instruction
-            )
-            
-            final_session_id = f"attack_final_{i}"
-            final_info = f"Final Query: {final_query}\n"
-            final_info += f"Final Instruction: {final_instruction}\n"
-            final_info += f"Final Prompt: {modified_prompt}\n\n"
-            print(final_info)
-            with open(attack_log_file, 'a', encoding='utf-8') as f:
-                f.write(final_info)
-            
-            # Execute final query with memory retrieval
-            # Pass final_instruction to ensure correct instruction is used
-            if len(memory) > 0 and embeddings:
-                final_r, final_mem_data, final_exec_log = webshop_run_rap(
-                    final_session_id, modified_prompt,
-                    memory, embeddings,
-                    profile=profile, to_print=True, return_log=True,
-                    attack_instruction=final_instruction
-                )
-            else:
-                final_r, final_mem_data, final_exec_log = webshop_run_react(
-                    final_session_id, modified_prompt,
-                    profile=profile, to_print=True, return_log=True,
-                    attack_instruction=final_instruction
-                )
-            
-            # Log final execution
-            final_result_log = f"\n[FINAL QUERY EXECUTION LOG]\n"
-            final_result_log += f"{'='*60}\n"
-            for log_entry in final_exec_log:
-                final_result_log += log_entry + "\n"
-            final_result_log += f"{'='*60}\n"
-            final_result_log += f"Reward: {final_r}\n"
-            final_result_log += f"Memory Data: {json.dumps(final_mem_data, indent=2, ensure_ascii=False) if final_mem_data != '' else 'Empty'}\n\n"
-            
-            print(final_result_log)
-            with open(attack_log_file, 'a', encoding='utf-8') as f:
-                f.write(final_result_log)
-            
-            result_summary = f"\nFinal attack query result: Reward = {final_r}\n"
-            if final_mem_data != '':
-                result_summary += f"Final query actions: {len(final_mem_data.get('Actions', []))} steps\n"
-                # Check if attack target was retrieved
-                actions_str = ' '.join(final_mem_data.get('Actions', []))
-                if args.attack_target.lower() in actions_str.lower():
-                    result_summary += f"✓ ATTACK SUCCESS: '{args.attack_target}' was retrieved!\n"
-                else:
-                    result_summary += f"✗ ATTACK FAILED: '{args.attack_target}' was not retrieved\n"
-            
-            print(result_summary)
-            with open(attack_log_file, 'a', encoding='utf-8') as f:
-                f.write(result_summary)
-            
-            completion_msg = f"\n{'='*60}\n"
-            completion_msg += f"ATTACK MODE COMPLETE\n"
-            completion_msg += f"Log saved to: {attack_log_file}\n"
-            completion_msg += f"{'='*60}\n\n"
-            
-            print(completion_msg)
-            with open(attack_log_file, 'a', encoding='utf-8') as f:
-                f.write(completion_msg)
-            
-            # Skip normal case execution for attack case
-            continue
+            # Update metrics for fragment attack (if completed)
+            if injected:
+                # Use the same session_id format as above
+                fragment_session_id = session_id
+                if fragment_session_id in env.sessions:
+                    fragment_violated_rules = env.violations.get(fragment_session_id, [])
+                    fragment_was_blocked = len(fragment_violated_rules) > 0
+                    # Note: We don't update metrics_tracker for fragment attacks to avoid confusion
+                    # Fragment attacks are for injection only
         
-        except Exception as e:
-            print(f"Error in attack mode: {e}")
-            import traceback
-            traceback.print_exc()
-            # Continue with normal execution if attack fails
-
+        # Step 4: Execute trigger attack
+        # Use 'fixed' prefix so server uses the correct goal (fixed_{i}) instead of random goal
+        trigger_session_id = f'fixed_attack_trigger_{i}'
+        injected, memory, embeddings = execute_trigger_attack(
+            trigger_attack_instruction=attack_plan['trigger_instruction'],
+            host_instruction=host_instruction,
+            session_id=trigger_session_id,
+            memory=memory,
+            embeddings=embeddings,
+            profile=profile,
+            initial_prompt=initial_prompt,
+            memory_file=memory_file,
+            attack_log_file=attack_log_file
+        )
+        
+        # Update metrics for trigger attack (if completed)
+        if injected:
+            trigger_violated_rules = env.violations.get(trigger_session_id, [])
+            trigger_was_blocked = len(trigger_violated_rules) > 0
+            # Note: We don't update metrics_tracker for trigger attack to avoid confusion
+        
+        # Skip normal execution for attack case
+        print(f"\n{'='*60}")
+        print(f"ATTACK MODE COMPLETE for case fixed_{i}")
+        print(f"{'='*60}\n")
+        
+        # Record dummy result for statistics (don't count attack cases in normal stats)
+        rs.append(0)  # Don't count attack reward in normal stats
+        flag = False
+        sr.append(flag)
+        continue  # Skip to next case
+    
     # Run the case: use react for first case, rap for subsequent cases
     if len(memory) == 0:
         # First case: use react (no memory yet)
