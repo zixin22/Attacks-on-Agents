@@ -44,10 +44,31 @@ class MetricsTracker:
             'rule9_food_country': 0,
             'rule10_digital_age': 0
         }
+        
+        # Track session IDs for each rule violation
+        self.violations_by_rule_sessions = {
+            'rule1_age_alcohol': [],
+            'rule2_signal_booster_country': [],
+            'rule2_signal_booster_unverified': [],
+            'rule3_surveillance_unverified': [],
+            'rule3_surveillance_country': [],
+            'rule4_fragrance_account_age': [],
+            'rule4_fragrance_credit': [],
+            'rule5_electronics_account_age': [],
+            'rule5_electronics_payment': [],
+            'rule5_electronics_failed_payments': [],
+            'rule6_hair_return_rate': [],
+            'rule7_furniture_payment': [],
+            'rule7_furniture_credit': [],
+            'rule8_health_unverified': [],
+            'rule9_food_country': [],
+            'rule10_digital_age': []
+        }
     
     def update(self, profile: UserProfile, result: Dict, 
                violated_rules: List[str], was_blocked: bool,
-               instruction: str = None, query: str = None, product_price: float = 0.0):
+               instruction: str = None, query: str = None, product_price: float = 0.0,
+               session_id: str = None):
         """
         Update metrics based on episode outcome
         Only records RuleChecker's detection results (no ground truth comparison)
@@ -60,6 +81,7 @@ class MetricsTracker:
             instruction: The instruction text (for logging)
             query: The query/category text (for logging)
             product_price: Product price (for logging)
+            session_id: Session ID for tracking which session violated which rule
         """
         self.total_episodes += 1
         
@@ -68,6 +90,9 @@ class MetricsTracker:
             for rule in violated_rules:
                 if rule in self.violations_by_rule:
                     self.violations_by_rule[rule] += 1
+                    # Record session ID for this violation
+                    if session_id and rule in self.violations_by_rule_sessions:
+                        self.violations_by_rule_sessions[rule].append(session_id)
         
         # Track blocking/allowing outcomes
         if was_blocked:
@@ -86,7 +111,8 @@ class MetricsTracker:
                 'block_rate': 0.0,
                 'detection_rate': 0.0,
                 'purchase_success_rate': 0.0,
-                'violations_by_rule': self.violations_by_rule.copy()
+                'violations_by_rule': self.violations_by_rule.copy(),
+                'violations_by_rule_sessions': {k: v.copy() for k, v in self.violations_by_rule_sessions.items()}
             }
         
         # Block Rate: % of episodes where purchase was blocked
@@ -105,7 +131,8 @@ class MetricsTracker:
             'block_rate': block_rate,
             'detection_rate': detection_rate,
             'purchase_success_rate': purchase_success_rate,
-            'violations_by_rule': self.violations_by_rule.copy()
+            'violations_by_rule': self.violations_by_rule.copy(),
+            'violations_by_rule_sessions': {k: v.copy() for k, v in self.violations_by_rule_sessions.items()}
         }
     
     def print_summary(self):
@@ -130,6 +157,11 @@ class MetricsTracker:
         print(f"\nViolations by Rule (RuleChecker detected):")
         for rule, count in metrics['violations_by_rule'].items():
             if count > 0:
-                print(f"   {rule}: {count}")
+                sessions = metrics['violations_by_rule_sessions'].get(rule, [])
+                if sessions:
+                    sessions_str = ', '.join(sessions)
+                    print(f"   {rule}: {count} (sessions: {sessions_str})")
+                else:
+                    print(f"   {rule}: {count}")
         print("="*60 + "\n")
 

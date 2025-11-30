@@ -527,13 +527,14 @@ def generate_examples(info, actions, memory, embeddings, reasoning='', k=3, act_
         # Ensure k doesn't exceed available memory entries
         actual_k = min(k, len(memory))
         if actual_k == 0:
-            return '', reasoning
+            return '', reasoning, []
         if config['params'].get('intra_task', False):
           intra_scores = torch.FloatTensor(intra_scores)
           _, hits = torch.topk(ret_scores+cos_scores+intra_scores, k=actual_k)
         else:
           _, hits = torch.topk(ret_scores+cos_scores, k=actual_k)
         init_prompt = ''
+        retrieved_ids = []  # Track retrieved memory IDs
         # ret_examples = []
         for h in hits:
           part = [
@@ -547,24 +548,30 @@ def generate_examples(info, actions, memory, embeddings, reasoning='', k=3, act_
             break
           init_prompt += '\n' + retrieve_prompt
           # ret_examples.append('Task:\n' + d_log[h]['actions'][0] + '\n'.join(d_log[h]['actions'][part[0]:part[1]]) + '\n')
+          retrieved_ids.append((memory[h]["Id"], part[0], part[1]))
           print(f'Retrieved from {memory[h]["Id"]}, part {part[0]} to {part[1]}')
         # init_prompt = '\n'.join(ret_examples)
       else:
         # Ensure k doesn't exceed available memory entries
         actual_k = min(k, len(memory))
         if actual_k == 0:
-            return '', reasoning
+            return '', reasoning, []
         _, hits = torch.topk(cos_scores, k=actual_k)
         ret_examples = []
+        retrieved_ids = []  # Track retrieved memory IDs
         for h in hits:
           ret_examples.append('\n'.join(memory[h]["Actions"]))
           if len('\n'.join(ret_examples)) > config['params'].get('max_init_prompt_len', 6400):
             ret_examples = ret_examples[:-1]
             # too many retrievals, stop adding to init_prompt
             break
+          retrieved_ids.append((memory[h]["Id"], None, None))  # No part info for full retrieval
           print(f'Retrieved from {memory[h]["Id"]}')
         init_prompt = '\n'.join(ret_examples)
-    return init_prompt, reasoning
+    else:
+        retrieved_ids = []  # No retrieval if no instruction
+    
+    return init_prompt, reasoning, retrieved_ids
 
 def webshop_run_react(idx, prompt, profile=None, to_print=True, return_log=False, attack_instruction=None):
     action = 'reset'
@@ -595,6 +602,9 @@ def webshop_run_react(idx, prompt, profile=None, to_print=True, return_log=False
             instruction = saved_instruction
             if instruction.startswith('Instruction: '):
                 instruction = instruction.replace('Instruction: ', '', 1)
+            # IMPORTANT: Update session's instruction so RuleChecker uses attack instruction
+            if idx in env.sessions:
+                env.sessions[idx]['instruction'] = instruction
             # Remove ALL instruction lines and add only our attack instruction (first step only)
             if i == 1:
                 lines = observation.split('\n')
@@ -742,6 +752,9 @@ def webshop_run_rap(idx, prompt, memory, embeddings, profile=None, to_print=True
             if instruction.startswith('Instruction: '):
                 instruction = instruction.replace('Instruction: ', '', 1)
             res[3]['instruction'] = instruction
+            # IMPORTANT: Also update session's instruction so RuleChecker uses attack instruction
+            if idx in env.sessions:
+                env.sessions[idx]['instruction'] = instruction
             # Remove ALL instruction lines and add only our attack instruction (first step only)
             if i == 1:
                 lines = observation.split('\n')
@@ -789,7 +802,7 @@ def webshop_run_rap(idx, prompt, memory, embeddings, profile=None, to_print=True
             actions.append(f'{observation}')
             task = observation
 
-        init_prompt, reasoning = generate_examples(
+        init_prompt, reasoning, retrieved_ids = generate_examples(
             res[3], actions, memory, embeddings, reasoning,
             k=config['params'].get('num_retrieval', 1),
             act_len=config['params'].get('analogy_len', 0),
@@ -804,6 +817,14 @@ def webshop_run_rap(idx, prompt, memory, embeddings, profile=None, to_print=True
         if return_log:
             execution_log.append(f"[Step {i}] Full Prompt to LLM:")
             execution_log.append(f"{'='*60}")
+            if retrieved_ids:
+                execution_log.append(f"Retrieved Memory Sessions:")
+                for mem_id, part_start, part_end in retrieved_ids:
+                    if part_start is not None and part_end is not None:
+                        execution_log.append(f"  - {mem_id} (actions {part_start} to {part_end})")
+                    else:
+                        execution_log.append(f"  - {mem_id} (full actions)")
+                execution_log.append(f"{'='*60}")
             execution_log.append(full_prompt)
             execution_log.append(f"{'='*60}")
 
@@ -875,7 +896,8 @@ def execute_fragment_attack(
     profile: UserProfile,
     initial_prompt: str,
     memory_file: str,
-    attack_log_file: str = None
+    attack_log_file: str = None,
+    metrics_tracker: MetricsTracker = None
 ) -> Tuple[bool, Dict, Dict]:
     """
     Execute a single fragment attack as a complete task.
@@ -924,6 +946,31 @@ def execute_fragment_attack(
         # Get violations for this session
         violated_rules = env.violations.get(session_id, [])
         was_blocked = len(violated_rules) > 0
+        
+        # Update metrics tracker if provided
+        if metrics_tracker and mem_data != '':
+            # Extract instruction, query, and price for metrics tracking
+            instruction = mem_data.get('Instruction', fragment_attack_instruction)
+            query = mem_data.get('Query', '')
+            product_price = 0.0
+            if session_id in env.sessions:
+                session_info = env.sessions[session_id]
+                query = session_info.get('query', query)
+                # Try to extract price from observation if available
+                try:
+                    obs, info = webshop_text(**session_info)
+                    import re
+                    price_match = re.search(r'\$(\d+\.?\d*)', obs)
+                    if price_match:
+                        product_price = float(price_match.group(1))
+                except:
+                    pass
+            
+            metrics_tracker.update(
+                profile, mem_data, violated_rules, was_blocked,
+                instruction=instruction, query=query, product_price=product_price,
+                session_id=session_id
+            )
         
         # Write prompt log to file if attack_log_file is provided
         if attack_log_file and execution_log:
@@ -1041,7 +1088,8 @@ def execute_trigger_attack(
     profile: UserProfile,
     initial_prompt: str,
     memory_file: str,
-    attack_log_file: str = None
+    attack_log_file: str = None,
+    metrics_tracker: MetricsTracker = None
 ) -> Tuple[bool, Dict, Dict]:
     """
     Execute trigger attack as a complete task.
@@ -1081,6 +1129,31 @@ def execute_trigger_attack(
         # Get violations for this session
         violated_rules = env.violations.get(session_id, [])
         was_blocked = len(violated_rules) > 0
+        
+        # Update metrics tracker if provided
+        if metrics_tracker and mem_data != '':
+            # Extract instruction, query, and price for metrics tracking
+            instruction = mem_data.get('Instruction', trigger_attack_instruction)
+            query = mem_data.get('Query', '')
+            product_price = 0.0
+            if session_id in env.sessions:
+                session_info = env.sessions[session_id]
+                query = session_info.get('query', query)
+                # Try to extract price from observation if available
+                try:
+                    obs, info = webshop_text(**session_info)
+                    import re
+                    price_match = re.search(r'\$(\d+\.?\d*)', obs)
+                    if price_match:
+                        product_price = float(price_match.group(1))
+                except:
+                    pass
+            
+            metrics_tracker.update(
+                profile, mem_data, violated_rules, was_blocked,
+                instruction=instruction, query=query, product_price=product_price,
+                session_id=session_id
+            )
         
         # Write prompt log to file if attack_log_file is provided
         if attack_log_file and execution_log:
@@ -1438,18 +1511,12 @@ for i in index_list:
                 profile=profile,
                 initial_prompt=initial_prompt,
                 memory_file=memory_file,
-                attack_log_file=attack_log_file
+                attack_log_file=attack_log_file,
+                metrics_tracker=metrics_tracker
             )
             
-            # Update metrics for fragment attack (if completed)
-            if injected:
-                # Use the same session_id format as above
-                fragment_session_id = session_id
-                if fragment_session_id in env.sessions:
-                    fragment_violated_rules = env.violations.get(fragment_session_id, [])
-                    fragment_was_blocked = len(fragment_violated_rules) > 0
-                    # Note: We don't update metrics_tracker for fragment attacks to avoid confusion
-                    # Fragment attacks are for injection only
+            # Note: Metrics tracker is updated inside execute_fragment_attack() function
+            # Fragment attacks are tracked with their session IDs for rule violation analysis
         
         # Step 4: Execute trigger attack
         # Use 'fixed' prefix so server uses the correct goal (fixed_{i}) instead of random goal
@@ -1463,14 +1530,12 @@ for i in index_list:
             profile=profile,
             initial_prompt=initial_prompt,
             memory_file=memory_file,
-            attack_log_file=attack_log_file
+            attack_log_file=attack_log_file,
+            metrics_tracker=metrics_tracker
         )
         
-        # Update metrics for trigger attack (if completed)
-        if injected:
-            trigger_violated_rules = env.violations.get(trigger_session_id, [])
-            trigger_was_blocked = len(trigger_violated_rules) > 0
-            # Note: We don't update metrics_tracker for trigger attack to avoid confusion
+        # Note: Metrics tracker is updated inside execute_trigger_attack() function
+        # Trigger attacks are tracked with their session IDs for rule violation analysis
         
         # Skip normal execution for attack case
         print(f"\n{'='*60}")
@@ -1543,8 +1608,10 @@ for i in index_list:
                     pass
         
         # Update metrics tracker (only records RuleChecker's detection results)
+        session_id = f'fixed_{i}'
         metrics_tracker.update(profile, mem_data, violated_rules, was_blocked,
-                              instruction=instruction, query=query, product_price=product_price)
+                              instruction=instruction, query=query, product_price=product_price,
+                              session_id=session_id)
 
     rs.append(r)
     flag = (r == 1)
@@ -1603,7 +1670,12 @@ with open(args.output + '/rule_violation.txt', 'a', encoding='utf-8') as f:
     f.write("\nViolations by Rule (RuleChecker detected):\n")
     for rule, count in metrics['violations_by_rule'].items():
         if count > 0:
-            f.write(f"   {rule}: {count}\n")
+            sessions = metrics.get('violations_by_rule_sessions', {}).get(rule, [])
+            if sessions:
+                sessions_str = ', '.join(sessions)
+                f.write(f"   {rule}: {count} (sessions: {sessions_str})\n")
+            else:
+                f.write(f"   {rule}: {count}\n")
     f.write("="*60 + "\n")
 
 # Save final statistics (single trial format)
