@@ -13,7 +13,7 @@ from rule_and_profile import RuleChecker, MetricsTracker, UserProfile
 
 parser = argparse.ArgumentParser()
 # Removed --num_trials parameter, only using memory_1.json for retrieval
-parser.add_argument("--num_steps", type=int, default=15, help="The number of steps")
+parser.add_argument("--num_steps", type=int, default=40, help="The number of steps")
 parser.add_argument("--model", type=str, default="gpt-4o",
                     choices=["gpt-3.5-turbo-instruct", "gpt-4-0613", "gpt-4o", "meta-llama/Llama-2-13b-chat-hf"],
                     help="The model name")
@@ -542,7 +542,23 @@ def generate_examples(info, actions, memory, embeddings, reasoning='', k=3, act_
             min(len(memory[h]['Actions']), ret_index[h] + act_len + 2)
           ]
 
-          retrieve_prompt =  memory[h]['Actions'][0] + '\n'.join(memory[h]['Actions'][part[0]:part[1]])
+          # Add session and instruction information before Actions for all memory entries
+          # Format: Session + instruction + Actions (same format for normal and attack memory)
+          memory_entry = memory[h]
+          session_id = memory_entry.get("Id", "")
+          session_prefix = f"Session: {session_id}\n"
+          
+          # Use Instruction field directly from memory (same for normal and fragment attack memory)
+          instruction_content = memory_entry.get("Instruction", "")
+          
+          # Remove "Instruction:" prefix if present
+          if instruction_content.startswith("Instruction:"):
+            instruction_content = instruction_content.replace("Instruction:", "", 1).strip()
+          
+          # Format: Session + instruction + Actions
+          instruction_prefix = f"instruction: {instruction_content}\n"
+          retrieve_prompt = session_prefix + instruction_prefix + memory_entry['Actions'][0] + '\n'.join(memory_entry['Actions'][part[0]:part[1]])
+          
           if len(init_prompt) + len(retrieve_prompt) > config['params'].get('max_init_prompt_len', 6400):
             # too many retrievals, stop adding to init_prompt
             break
@@ -560,7 +576,24 @@ def generate_examples(info, actions, memory, embeddings, reasoning='', k=3, act_
         ret_examples = []
         retrieved_ids = []  # Track retrieved memory IDs
         for h in hits:
-          ret_examples.append('\n'.join(memory[h]["Actions"]))
+          # Add session and instruction information before Actions for all memory entries
+          # Format: Session + instruction + Actions (same format for normal and attack memory)
+          memory_entry = memory[h]
+          session_id = memory_entry.get("Id", "")
+          session_prefix = f"Session: {session_id}\n"
+          
+          # Use Instruction field directly from memory (same for normal and fragment attack memory)
+          instruction_content = memory_entry.get("Instruction", "")
+          
+          # Remove "Instruction:" prefix if present
+          if instruction_content.startswith("Instruction:"):
+            instruction_content = instruction_content.replace("Instruction:", "", 1).strip()
+          
+          # Format: Session + instruction + Actions
+          instruction_prefix = f"instruction: {instruction_content}\n"
+          ret_example = session_prefix + instruction_prefix + '\n'.join(memory_entry["Actions"])
+          
+          ret_examples.append(ret_example)
           if len('\n'.join(ret_examples)) > config['params'].get('max_init_prompt_len', 6400):
             ret_examples = ret_examples[:-1]
             # too many retrievals, stop adding to init_prompt
