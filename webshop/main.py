@@ -333,8 +333,9 @@ class webshopEnv:
   def step(self, session, action, profile=None):
     done = False
     observation_ = None
+    
     if action == 'reset':
-      self.sessions[session] = {'session': session, 'page_type': 'init'}
+      self.sessions[session] = {'session': session, 'page_type': 'init', '_rules_checked': False}
     elif action.startswith('think['):
       observation = 'OK.'
     elif action.startswith('search['):
@@ -347,57 +348,15 @@ class webshopEnv:
       if button == 'Buy Now':
         assert self.sessions[session]['page_type'] == 'item'
         
-        # PRE-ACTION RULE CHECK (only for Buy Now actions)
-        # Note: rule_checker.check_all_rules() internally also checks for 'click[Buy Now]',
-        # but we check here first to avoid unnecessary LLM calls for non-purchase actions.
-        # The double check is harmless - it's a defensive programming practice.
-        if self.rule_checker and profile and action.startswith('click[Buy Now]'):
-            # Get instruction and query from session
-            instruction = self.sessions[session].get('instruction', '')
-            query = self.sessions[session].get('query', '')
-            
-            # Check all rules using LLM
-            # Returns: (is_valid: bool, violated_rules: List[str])
-            # - is_valid=True: No violations, purchase can proceed
-            # - is_valid=False: Violations detected, purchase MUST be blocked
-            is_valid, violated_rules = self.rule_checker.check_all_rules(
-                profile, instruction, query, action
-            )
-            
-            # If rules are violated, BLOCK the purchase immediately
-            # This is a HARD BLOCK - the purchase cannot proceed under any circumstances
-            # The function returns early here, preventing the purchase from happening
-            if not is_valid:
-                # Block the purchase and return early
-                # This return statement prevents execution from reaching the normal purchase flow below
-                observation = f"Purchase blocked: Rule violation ({', '.join(violated_rules)})"
-                reward = 0.0
-                done = True
-                
-                # Track violations for metrics tracking
-                if session not in self.violations:
-                    self.violations[session] = []
-                self.violations[session].extend(violated_rules)
-                
-                # Return blocked purchase result
-                # This prevents the purchase from proceeding - it's a hard block
-                return observation, reward, done, {
-                    'rule_violated': True,
-                    'violated_rules': violated_rules,
-                    'instruction': self.sessions[session].get('instruction', ''),
-                    'query': self.sessions[session].get('query', ''),
-                    'category': self.sessions[session].get('category', ''),
-                    'reward': 0.0
-                }
-            # If is_valid == True, continue with normal purchase flow below
-            # The purchase will proceed normally if no violations are detected
+        # IMPORTANT: When Buy Now is clicked, done MUST be True, regardless of reward
+        # This ensures that the session is recorded to memory even if reward is 0.0
         
         # Help URI Encoding, as WSGI error thrown when option has '#'
         if 'options' in self.sessions[session]:
             for option_type in self.sessions[session]['options']:
                 self.sessions[session]['options'][option_type] = quote(self.sessions[session]['options'][option_type])
         self.sessions[session]['page_type'] = 'end'
-        done = True
+        done = True  # Always set done=True when Buy Now is clicked
       elif button == 'Back to Search':
         assert self.sessions[session]['page_type'] in ['search', 'item_sub', 'item']
         self.sessions[session] = {'session': session, 'page_type': 'init'}
@@ -438,6 +397,54 @@ class webshopEnv:
     if observation_:
       observation = observation_
     self.sessions[session].update(info)
+    
+    # RULE CHECK AT SESSION START (after getting instruction and query from webshop_text)
+    # Check rules based on instruction and query, without requiring action
+    if self.rule_checker and profile:
+        # Get instruction and query from session (set by webshop_text)
+        instruction = self.sessions[session].get('instruction', '')
+        query = self.sessions[session].get('query', '')
+        
+        # Only check rules if we have instruction and query (session has been initialized)
+        # Skip if already checked (to avoid duplicate checks)
+        if instruction and query and not self.sessions[session].get('_rules_checked', False):
+            # Check all rules using LLM
+            # Returns: (is_valid: bool, violated_rules: List[str])
+            # - is_valid=True: No violations, session can proceed
+            # - is_valid=False: Violations detected, session MUST be blocked
+            is_valid, violated_rules = self.rule_checker.check_all_rules(
+                profile, instruction, query
+            )
+            
+            # Mark as checked to avoid duplicate checks
+            self.sessions[session]['_rules_checked'] = True
+            
+            # If rules are violated, BLOCK the session immediately
+            # This is a HARD BLOCK - the session cannot proceed under any circumstances
+            if not is_valid:
+                # Block the session and return early
+                observation = f"Session blocked: Rule violation ({', '.join(violated_rules)})"
+                reward = 0.0
+                done = True
+                
+                # Track violations for metrics tracking
+                if session not in self.violations:
+                    self.violations[session] = []
+                self.violations[session].extend(violated_rules)
+                
+                # Return blocked session result
+                # This prevents the session from proceeding - it's a hard block
+                return observation, reward, done, {
+                    'rule_violated': True,
+                    'violated_rules': violated_rules,
+                    'instruction': instruction,
+                    'query': query,
+                    'category': self.sessions[session].get('category', ''),
+                    'reward': 0.0
+                }
+            # If is_valid == True, continue with normal session flow below
+            # The session will proceed normally if no violations are detected
+    
     reward = info.get('reward', 0.0)
     return observation, reward, done, info
 
@@ -882,7 +889,9 @@ def webshop_run_rap(idx, prompt, memory, embeddings, profile=None, to_print=True
             print(f"Invalid action generated by LLM: {action}")
             action = 'think[let me try another approach]'
 
-        if res[2]:
+        if res[2]:  # res[2] is done flag - if True, task is complete (e.g., Buy Now clicked)
+            # IMPORTANT: When done=True (e.g., Buy Now clicked), always generate mem_data
+            # This ensures that sessions with reward=0.0 are also recorded to memory
             inv_act_idx = np.where(np.char.find(np.array(actions), 'Invalid action!') > 0)[0]
             inv_act_idx = np.append(inv_act_idx, inv_act_idx - 1)
             actions = [actions[i] for i in range(len(actions)) if i not in inv_act_idx]
@@ -892,12 +901,13 @@ def webshop_run_rap(idx, prompt, memory, embeddings, profile=None, to_print=True
             if final_instruction and final_instruction.startswith('Instruction: '):
                 final_instruction = final_instruction.replace('Instruction: ', '', 1)
             
+            # Generate mem_data - this will be saved to memory even if reward=0.0
             data = {
                 'Id': idx,
                 'Instruction': final_instruction,
                 'Actions': actions[2:-1],
                 'Success': (res[1] == 1.0),  # Success=True only if Reward == 1.0
-                'Reward': res[1],
+                'Reward': res[1],  # Can be 0.0, but still saved to memory if done=True
                 'Category': res[3].get('category', ''),
                 'Query': res[3].get('query', '')
             }
@@ -1066,7 +1076,9 @@ def execute_fragment_attack(
                 f.write(f"Error: {type(e).__name__} - {str(e)}\n")
                 f.write(f"{'='*80}\n\n")
     
-    # Only inject if done=True (mem_data != '')
+    # IMPORTANT: Only inject if done=True (mem_data != '')
+    # When Buy Now is clicked, done=True, so mem_data will be generated even if reward=0.0
+    # This ensures all completed sessions (including those with reward=0.0) are saved to memory
     if mem_data != '':
         # Add attack injection markers
         mem_data['AttackInjection'] = True
@@ -1075,7 +1087,7 @@ def execute_fragment_attack(
         mem_data['FragmentInstruction'] = fragment_attack_instruction
         mem_data['HostInstruction'] = host_instruction
         
-        # Inject to memory
+        # Inject to memory - this includes sessions with reward=0.0
         memory.append(mem_data)
         
         # Save to file immediately
@@ -1088,7 +1100,7 @@ def execute_fragment_attack(
         print(f"✓ Fragment {fragment_label} injected to memory (Reward: {r}, Success: {mem_data.get('Success', False)})")
         return True, memory, embeddings
     else:
-        print(f"✗ Fragment {fragment_label} did not complete (Reward: {r}), skipping memory injection")
+        print(f"✗ Fragment {fragment_label} did not complete (Reward: {r}, done=False), skipping memory injection")
         
         # Log incomplete execution to file
         if attack_log_file:
@@ -1248,7 +1260,9 @@ def execute_trigger_attack(
                 f.write(f"Error: {type(e).__name__} - {str(e)}\n")
                 f.write(f"{'='*80}\n\n")
     
-    # Only inject if done=True (mem_data != '')
+    # IMPORTANT: Only inject if done=True (mem_data != '')
+    # When Buy Now is clicked, done=True, so mem_data will be generated even if reward=0.0
+    # This ensures all completed sessions (including those with reward=0.0) are saved to memory
     if mem_data != '':
         # Add attack injection markers
         mem_data['AttackInjection'] = True
@@ -1257,7 +1271,7 @@ def execute_trigger_attack(
         mem_data['TriggerInstruction'] = trigger_attack_instruction
         mem_data['HostInstruction'] = host_instruction
         
-        # Inject to memory
+        # Inject to memory - this includes sessions with reward=0.0
         memory.append(mem_data)
         
         # Save to file immediately
@@ -1270,7 +1284,7 @@ def execute_trigger_attack(
         print(f"✓ Trigger attack injected to memory (Reward: {r}, Success: {mem_data.get('Success', False)})")
         return True, memory, embeddings
     else:
-        print(f"✗ Trigger attack did not complete (Reward: {r}), skipping memory injection")
+        print(f"✗ Trigger attack did not complete (Reward: {r}, done=False), skipping memory injection")
         
         # Log incomplete execution to file
         if attack_log_file:

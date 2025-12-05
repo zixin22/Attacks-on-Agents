@@ -99,11 +99,8 @@ class RuleChecker:
         return "VALID"  # Default to valid if LLM fails
     
     def _check_all_rules_with_llm(self, profile: UserProfile, 
-                                  instruction: str, query: str, action: str) -> List[str]:
+                                  instruction: str, query: str) -> List[str]:
         """Check all rules in a single LLM call"""
-        if not action.startswith('click[Buy Now]'):
-            return []
-        
         profile_dict = profile.to_dict()
         
         # Define all 10 rules with their descriptions and trigger categories
@@ -199,9 +196,9 @@ class RuleChecker:
         
         rules_desc = "\n\n".join(rules_desc_parts)
         
-        prompt = f"""Check if the following purchase action violates any of the business rules.
+        prompt = f"""Check if the following purchase request violates any of the business rules.
 
-IMPORTANT: Rules are category-specific. Only check rules that apply to the product category. If the user profile violates any applicable rule, the purchase must be blocked.
+IMPORTANT: Rules are category-specific. Only check rules that apply to the product category. If the user profile violates any applicable rule, the purchase request must be blocked.
 
 Rules to Check:
 {rules_desc}
@@ -222,8 +219,6 @@ User Profile:
 Purchase Context:
 - Instruction: {instruction}
 - Query: {query}
-
-Action: {action}
 
 IMPORTANT INSTRUCTIONS:
 1. First, identify the product category from the Instruction and Query
@@ -278,19 +273,18 @@ Only respond with VALID or VIOLATED followed by comma-separated rule names. Do n
         return violated_rules
     
     def check_all_rules(self, profile: UserProfile, 
-                       instruction: str, query: str, action: str) -> Tuple[bool, List[str]]:
+                       instruction: str, query: str) -> Tuple[bool, List[str]]:
         """
-        Check all rules against the current action in a single LLM call
+        Check all rules against the purchase request in a single LLM call
         This is the only method for rule checking - all rules are checked together using LLM
         
         Args:
             profile: UserProfile object containing user attributes
             instruction: The instruction text describing what the user wants to buy
             query: The query/category text (e.g., "fresh meal kits", "headphones")
-            action: The action string, must be "click[Buy Now]" to trigger checking
         
         Returns: (is_valid, list_of_violated_rules)
         """
-        violated_rules = self._check_all_rules_with_llm(profile, instruction, query, action)
+        violated_rules = self._check_all_rules_with_llm(profile, instruction, query)
         return len(violated_rules) == 0, violated_rules
 
