@@ -23,6 +23,7 @@ parser.add_argument("--attack", action="store_true", help="Enable fragment-based
 parser.add_argument("--attack_fixed_number", type=int, default=None, help="Fixed number of the case to attack (required if --attack is set)")
 parser.add_argument("--attack_target_instruction", type=str, default=None, help="Target instruction to inject in attack (e.g., 'i would like a bundle of hair extensions that are 20 inches')")
 parser.add_argument("--split", type=str, default=None, help="Data split to use (e.g., '0-100', '0-500', 'test', 'eval', 'train'). If not specified, uses value from config file.")
+parser.add_argument("--skip_fragments", action="store_true", help="Skip fragment attacks and only execute trigger attack (fragments should already be in memory)")
 parser.add_argument("--enable_rule_checker", action="store_true", help="Enable RuleChecker (default: disabled)")
 args = parser.parse_args()
 
@@ -1335,6 +1336,14 @@ if split == '0-100':
     n = len(index_list)
     start = None
     print(f"Loaded {n} fixed indices from {reward_file}")
+elif split == 'fix_7':
+    reward_file = r"C:\Users\22749\Desktop\rap-main\WebShop-master\data_generate_experiment\fix_7\merged_0_100.json"  # Can be changed to config read
+    with open(reward_file, "r", encoding="utf-8") as f:
+        reward_data = json.load(f)
+    index_list = reward_data["fixed_numbers"]
+    n = len(index_list)
+    start = None
+    print(f"Loaded {n} fixed indices from {reward_file}")
 elif split == '0-500':
     reward_file = r"C:\Users\22749\Desktop\rap-main\WebShop-master\data_generate_experiment\0_500\merged_0_500.json"  # Can be changed to config read
     with open(reward_file, "r", encoding="utf-8") as f:
@@ -1531,6 +1540,9 @@ for i in index_list:
                 f.write(f"\n{'='*80}\n")
                 f.write(f"ATTACK PLAN FOR CASE fixed_{i}\n")
                 f.write(f"{'='*80}\n")
+                if args.skip_fragments:
+                    f.write("NOTE: Fragment attacks will be SKIPPED (--skip_fragments flag set)\n")
+                    f.write("Fragments are assumed to be already in memory\n")
                 f.write(f"Profile Used: {profile.profile_id} (credit_score={profile.credit_score}, account_age_days={profile.account_age_days})\n")
                 f.write(f"Host Instruction: {host_instruction}\n")
                 f.write(f"Target Instruction: {args.attack_target_instruction}\n")
@@ -1544,30 +1556,44 @@ for i in index_list:
                 f.write(f"  {attack_plan['trigger_instruction']}\n")
                 f.write(f"{'='*80}\n\n")
         
-        # Step 3: Execute fragment attacks
-        for fragment_attack in attack_plan['fragment_attacks']:
-            fragment_label = fragment_attack['label']
-            fragment_instruction = fragment_attack['instruction']
-            # Use 'fixed' prefix so server uses the correct goal (fixed_{i}) instead of random goal
-            session_id = f'fixed_attack_fragment_{fragment_label}_{i}'
+        # Step 3: Execute fragment attacks (skip if --skip_fragments is set)
+        if not args.skip_fragments:
+            for fragment_attack in attack_plan['fragment_attacks']:
+                fragment_label = fragment_attack['label']
+                fragment_instruction = fragment_attack['instruction']
+                # Use 'fixed' prefix so server uses the correct goal (fixed_{i}) instead of random goal
+                session_id = f'fixed_attack_fragment_{fragment_label}_{i}'
+                
+                # Execute fragment attack
+                injected, memory, embeddings = execute_fragment_attack(
+                    fragment_label=fragment_label,
+                    fragment_attack_instruction=fragment_instruction,
+                    host_instruction=host_instruction,
+                    session_id=session_id,
+                    memory=memory,
+                    embeddings=embeddings,
+                    profile=profile,
+                    initial_prompt=initial_prompt,
+                    memory_file=memory_file,
+                    attack_log_file=attack_log_file,
+                    metrics_tracker=metrics_tracker
+                )
+                
+                # Note: Metrics tracker is updated inside execute_fragment_attack() function
+                # Fragment attacks are tracked with their session IDs for rule violation analysis
+        else:
+            print(f"\n{'='*60}")
+            print("SKIPPING FRAGMENT ATTACKS (--skip_fragments flag set)")
+            print("Assuming fragments are already in memory")
+            print(f"{'='*60}\n")
             
-            # Execute fragment attack
-            injected, memory, embeddings = execute_fragment_attack(
-                fragment_label=fragment_label,
-                fragment_attack_instruction=fragment_instruction,
-                host_instruction=host_instruction,
-                session_id=session_id,
-                memory=memory,
-                embeddings=embeddings,
-                profile=profile,
-                initial_prompt=initial_prompt,
-                memory_file=memory_file,
-                attack_log_file=attack_log_file,
-                metrics_tracker=metrics_tracker
-            )
-            
-            # Note: Metrics tracker is updated inside execute_fragment_attack() function
-            # Fragment attacks are tracked with their session IDs for rule violation analysis
+            # Log skip message to file
+            if attack_log_file:
+                with open(attack_log_file, 'a', encoding='utf-8') as f:
+                    f.write(f"\n{'='*80}\n")
+                    f.write("FRAGMENT ATTACKS SKIPPED\n")
+                    f.write("Fragments are assumed to be already in memory\n")
+                    f.write(f"{'='*80}\n\n")
         
         # Step 4: Execute trigger attack
         # Use 'fixed' prefix so server uses the correct goal (fixed_{i}) instead of random goal
