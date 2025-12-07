@@ -43,7 +43,7 @@ class RuleChecker:
         else:
             raise FileNotFoundError(f"OpenAI API key file not found. Tried: {possible_paths}")
         
-        openai.api_base = "http://148.113.224.153:3000/v1"
+        openai.api_base = "http://152.53.53.64:3000/v1"
     
     def _call_llm(self, prompt: str, max_retries: int = 3) -> str:
         """Call LLM with retry logic"""

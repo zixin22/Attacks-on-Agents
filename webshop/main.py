@@ -23,6 +23,7 @@ parser.add_argument("--attack", action="store_true", help="Enable fragment-based
 parser.add_argument("--attack_fixed_number", type=int, default=None, help="Fixed number of the case to attack (required if --attack is set)")
 parser.add_argument("--attack_target_instruction", type=str, default=None, help="Target instruction to inject in attack (e.g., 'i would like a bundle of hair extensions that are 20 inches')")
 parser.add_argument("--split", type=str, default=None, help="Data split to use (e.g., '0-100', '0-500', 'test', 'eval', 'train'). If not specified, uses value from config file.")
+parser.add_argument("--enable_rule_checker", action="store_true", help="Enable RuleChecker (default: disabled)")
 args = parser.parse_args()
 
 os.makedirs(args.output, exist_ok=True)
@@ -60,7 +61,7 @@ elif 'gpt' in args.model:
     #openai.api_key = os.environ["OPENAI_API_KEY"]
     with open(r"C:\Users\22749\Desktop\rap-main\webshop\OpenAI_api_key.txt", "r") as f:
         openai.api_key = f.read().strip()
-    openai.api_base = "http://148.113.224.153:3000/v1"
+    openai.api_base = "http://152.53.53.64:3000/v1"
 else:
     print('LLM currently not supported')
     sys.exit(0)
@@ -448,9 +449,12 @@ class webshopEnv:
     reward = info.get('reward', 0.0)
     return observation, reward, done, info
 
-# Initialize rule system first
-rule_checker = RuleChecker(verbose=True, model=args.model)
-env = webshopEnv(rule_checker=rule_checker)  # Pass rule_checker
+# Initialize rule system first (only if enabled)
+if args.enable_rule_checker:
+    rule_checker = RuleChecker(verbose=True, model=args.model)
+else:
+    rule_checker = None
+env = webshopEnv(rule_checker=rule_checker)  # Pass rule_checker (None if disabled)
 
 # Profiles will be generated based on actual task count
 profiles = None
