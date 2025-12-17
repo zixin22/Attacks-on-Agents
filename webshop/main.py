@@ -1523,14 +1523,20 @@ for i in index_list:
         print(f"Host Instruction: {host_instruction}")
         print(f"Host Query: {host_query}")
         
-        # Step 2: Generate attack plan
+        # Step 2: Generate attack plan (with mask check if rule_checker is enabled)
         attack_plan = attack_generator.generate_attack_plan(
             host_instruction=host_instruction,
-            target_instruction=args.attack_target_instruction
+            target_instruction=args.attack_target_instruction,
+            rule_checker=rule_checker if args.enable_rule_checker else None,
+            profile=profile if args.enable_rule_checker else None,
+            query=host_query if args.enable_rule_checker else ""
         )
         
         print(f"\nAttack Plan Generated:")
         print(f"  Fragments: {attack_plan['fragments']}")
+        if 'sensitive_fragments' in attack_plan:
+            print(f"  Sensitive Fragments (from mask check): {attack_plan['sensitive_fragments']}")
+            print(f"  Safe Fragments (from mask check): {attack_plan['safe_fragments']}")
         print(f"  Number of Fragment Attacks: {len(attack_plan['fragment_attacks'])}")
         print(f"  Trigger Instruction: {attack_plan['trigger_instruction']}\n")
         
@@ -1549,6 +1555,10 @@ for i in index_list:
                 f.write(f"\nFragments:\n")
                 for idx, fragment in enumerate(attack_plan['fragments'], 1):
                     f.write(f"  F{idx}: {fragment}\n")
+                if 'sensitive_fragments' in attack_plan:
+                    f.write(f"\nMask Check Results:\n")
+                    f.write(f"  Sensitive Fragments: {attack_plan['sensitive_fragments']}\n")
+                    f.write(f"  Safe Fragments: {attack_plan['safe_fragments']}\n")
                 f.write(f"\nFragment Attacks ({len(attack_plan['fragment_attacks'])}):\n")
                 for frag_attack in attack_plan['fragment_attacks']:
                     f.write(f"  {frag_attack['label']}: {frag_attack['instruction']}\n")
