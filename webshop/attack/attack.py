@@ -347,7 +347,8 @@ class FragmentAttackGenerator:
                             target_instruction: str,
                             rule_checker=None,
                             profile=None,
-                            query: str = "") -> Dict:
+                            query: str = "",
+                            attack_log_file: str = None) -> Dict:
         """
         Complete fragment attack plan generation with optional mask check.
         
@@ -357,6 +358,7 @@ class FragmentAttackGenerator:
             rule_checker: Optional RuleChecker instance for mask checking
             profile: Optional UserProfile instance for mask checking
             query: Optional query string for mask checking
+            attack_log_file: Optional path to attack log file for recording MASK detection details
         
         Returns:
             Dictionary containing:
@@ -365,6 +367,8 @@ class FragmentAttackGenerator:
             - 'fragments': List of fragments [F1, F2, F3, F4]
             - 'sensitive_fragments': List of sensitive fragment texts (if mask check performed)
             - 'safe_fragments': List of safe fragment texts (if mask check performed)
+            - 'mask_detection_log': List of MASK detection records (if mask check performed)
+            - 'safe_instruction_check': RULECHECKER check result for safe fragments only (if mask check performed)
             - 'fragment_attacks': List of fragment attack instruction dicts
             - 'trigger_instruction': Trigger attack instruction
         """
@@ -374,6 +378,8 @@ class FragmentAttackGenerator:
         # Step 2: Perform mask check if rule_checker and profile are provided
         sensitive_fragments = None
         safe_fragments = None
+        mask_detection_log = None
+        safe_instruction_check = None
         
         if rule_checker is not None and profile is not None:
             if self.verbose:
@@ -389,12 +395,60 @@ class FragmentAttackGenerator:
                 verbose=self.verbose
             )
             
-            sensitive_fragments, safe_fragments = mask_checker.get_sensitive_and_safe_fragments(fragments)
+            sensitive_fragments, safe_fragments, mask_detection_log, safe_instruction_check = mask_checker.get_sensitive_and_safe_fragments(fragments)
             
             if self.verbose:
                 print(f"\nMask Check Results:")
                 print(f"  Sensitive fragments: {sensitive_fragments}")
                 print(f"  Safe fragments: {safe_fragments}\n")
+            
+            # Log MASK detection details to file
+            if attack_log_file:
+                with open(attack_log_file, 'a', encoding='utf-8') as f:
+                    f.write(f"\n{'='*80}\n")
+                    f.write(f"MASK DETECTION DETAILS\n")
+                    f.write(f"{'='*80}\n")
+                    f.write(f"Profile Used: {profile.profile_id} (credit_score={profile.credit_score}, account_age_days={profile.account_age_days})\n")
+                    f.write(f"Host Instruction: {host_instruction}\n")
+                    f.write(f"Target Instruction: {target_instruction}\n")
+                    f.write(f"Query: {query}\n")
+                    f.write(f"\nFragments:\n")
+                    for idx, fragment in enumerate(fragments, 1):
+                        f.write(f"  F{idx}: {fragment}\n")
+                    
+                    f.write(f"\nMASK Detection Process:\n")
+                    f.write(f"{'-'*80}\n")
+                    for log_entry in mask_detection_log:
+                        f.write(f"\nTest Type: {log_entry['test_type']}\n")
+                        if log_entry['fragment_label']:
+                            f.write(f"Fragment Label: {log_entry['fragment_label']}\n")
+                            f.write(f"Fragment Text: {log_entry['fragment_text']}\n")
+                        f.write(f"Instruction Tested: {log_entry['instruction']}\n")
+                        f.write(f"Is Valid: {log_entry['is_valid']}\n")
+                        f.write(f"Violated Rules: {log_entry['violated_rules']}\n")
+                        f.write(f"\nRULECHECKER Prompt:\n")
+                        f.write(f"{log_entry.get('rule_checker_prompt', 'N/A')}\n")
+                        f.write(f"\nRULECHECKER Response:\n")
+                        f.write(f"{log_entry.get('rule_checker_response', 'N/A')}\n")
+                        f.write(f"{'-'*80}\n")
+                    
+                    if safe_instruction_check:
+                        f.write(f"\nSafe Fragments Only (Partial Instruction) RULECHECKER Check:\n")
+                        f.write(f"{'-'*80}\n")
+                        f.write(f"Safe Fragments: {safe_instruction_check['safe_fragments']}\n")
+                        f.write(f"Instruction: {safe_instruction_check['instruction']}\n")
+                        f.write(f"Is Valid: {safe_instruction_check['is_valid']}\n")
+                        f.write(f"Violated Rules: {safe_instruction_check['violated_rules']}\n")
+                        f.write(f"\nRULECHECKER Prompt:\n")
+                        f.write(f"{safe_instruction_check.get('rule_checker_prompt', 'N/A')}\n")
+                        f.write(f"\nRULECHECKER Response:\n")
+                        f.write(f"{safe_instruction_check.get('rule_checker_response', 'N/A')}\n")
+                        f.write(f"{'-'*80}\n")
+                    
+                    f.write(f"\nMASK Detection Summary:\n")
+                    f.write(f"  Sensitive Fragments: {sensitive_fragments}\n")
+                    f.write(f"  Safe Fragments: {safe_fragments}\n")
+                    f.write(f"{'='*80}\n\n")
         
         # Step 3: Generate fragment attack instructions (only for sensitive fragments if mask check was performed)
         fragment_attacks = self.generate_fragment_attack_instructions(
@@ -421,5 +475,9 @@ class FragmentAttackGenerator:
             result['sensitive_fragments'] = sensitive_fragments
         if safe_fragments is not None:
             result['safe_fragments'] = safe_fragments
+        if mask_detection_log is not None:
+            result['mask_detection_log'] = mask_detection_log
+        if safe_instruction_check is not None:
+            result['safe_instruction_check'] = safe_instruction_check
         
         return result

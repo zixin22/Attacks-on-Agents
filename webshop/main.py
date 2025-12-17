@@ -1529,7 +1529,8 @@ for i in index_list:
             target_instruction=args.attack_target_instruction,
             rule_checker=rule_checker if args.enable_rule_checker else None,
             profile=profile if args.enable_rule_checker else None,
-            query=host_query if args.enable_rule_checker else ""
+            query=host_query if args.enable_rule_checker else "",
+            attack_log_file=attack_log_file
         )
         
         print(f"\nAttack Plan Generated:")
