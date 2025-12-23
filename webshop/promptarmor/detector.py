@@ -36,10 +36,11 @@ class PromptArmorDetector:
             config: Configuration object, if None use default config
         """
         self.config = config or PromptArmorConfig()
+        self.use_new_api = False  # Initialize flag
         self._init_openai_client()
         
     def _init_openai_client(self):
-        """Initialize OpenAI client (using openai 1.x API)"""
+        """Initialize OpenAI API (compatible with both old and new API)"""
         try:
             # Read API Key (same path as main.py)
             if self.config.OPENAI_API_KEY_FILE.exists():
@@ -51,14 +52,26 @@ class PromptArmorDetector:
             if not api_key:
                 raise ValueError(f"OpenAI API key not found in {self.config.OPENAI_API_KEY_FILE} or environment")
             
-            # Use openai 1.x new API
-            self.client = openai.OpenAI(
-                api_key=api_key,
-                base_url=self.config.OPENAI_API_BASE
-            )
+            # Set API key and base URL (compatible with old API format used in main.py)
+            openai.api_key = api_key
+            openai.api_base = self.config.OPENAI_API_BASE
+            
+            # Try to use new API if available, otherwise use old API
+            try:
+                # Try new API (openai >= 1.0.0)
+                self.client = openai.OpenAI(
+                    api_key=api_key,
+                    base_url=self.config.OPENAI_API_BASE
+                )
+                self.use_new_api = True
+            except AttributeError:
+                # Fall back to old API (openai < 1.0.0)
+                self.client = None
+                self.use_new_api = False
             
             if self.config.VERBOSE:
-                print(f"✓ OpenAI client initialized (model: {self.config.DETECTION_MODEL}, base: {self.config.OPENAI_API_BASE})")
+                api_type = "new API" if self.use_new_api else "old API"
+                print(f"✓ OpenAI client initialized (model: {self.config.DETECTION_MODEL}, base: {self.config.OPENAI_API_BASE}, {api_type})")
             
         except Exception as e:
             print(f"✗ Warning: Failed to initialize OpenAI client: {e}")
@@ -66,7 +79,7 @@ class PromptArmorDetector:
     
     def _call_llm(self, system_prompt: str, user_prompt: str) -> str:
         """
-        Call LLM (using openai 1.x API)
+        Call LLM (compatible with both old and new OpenAI API)
         
         Args:
             system_prompt: System prompt
@@ -78,47 +91,77 @@ class PromptArmorDetector:
         max_retries = 5
         for attempt in range(max_retries):
             try:
-                if self.config.DETECTION_MODEL == 'gpt-3.5-turbo-instruct':
-                    # Use Completion API (openai 1.x)
-                    full_prompt = f"{system_prompt}\n\n{user_prompt}"
-                    response = self.client.completions.create(
-                        model='gpt-3.5-turbo-instruct',
-                        prompt=full_prompt,
-                        temperature=self.config.DETECTION_TEMPERATURE,
-                        max_tokens=self.config.DETECTION_MAX_TOKENS,
-                        top_p=1,
-                        frequency_penalty=0.0,
-                        presence_penalty=0.0,
-                        stop=["\n\n"]
-                    )
-                    return response.choices[0].text.strip()
+                if self.use_new_api:
+                    # Use new API (openai >= 1.0.0)
+                    if self.config.DETECTION_MODEL == 'gpt-3.5-turbo-instruct':
+                        full_prompt = f"{system_prompt}\n\n{user_prompt}"
+                        response = self.client.completions.create(
+                            model='gpt-3.5-turbo-instruct',
+                            prompt=full_prompt,
+                            temperature=self.config.DETECTION_TEMPERATURE,
+                            max_tokens=self.config.DETECTION_MAX_TOKENS,
+                            top_p=1,
+                            frequency_penalty=0.0,
+                            presence_penalty=0.0,
+                            stop=["\n\n"]
+                        )
+                        return response.choices[0].text.strip()
+                    else:
+                        completion = self.client.chat.completions.create(
+                            model=self.config.DETECTION_MODEL,
+                            messages=[
+                                {"role": "system", "content": system_prompt},
+                                {"role": "user", "content": user_prompt}
+                            ],
+                            temperature=self.config.DETECTION_TEMPERATURE,
+                            max_tokens=self.config.DETECTION_MAX_TOKENS,
+                            top_p=1,
+                            frequency_penalty=0.0,
+                            presence_penalty=0.0
+                        )
+                        return completion.choices[0].message.content.strip()
                 else:
-                    # Use ChatCompletion API (GPT-4o, GPT-4-0613) (openai 1.x)
-                    completion = self.client.chat.completions.create(
-                        model=self.config.DETECTION_MODEL,
-                        messages=[
-                            {"role": "system", "content": system_prompt},
-                            {"role": "user", "content": user_prompt}
-                        ],
-                        temperature=self.config.DETECTION_TEMPERATURE,
-                        max_tokens=self.config.DETECTION_MAX_TOKENS,
-                        top_p=1,
-                        frequency_penalty=0.0,
-                        presence_penalty=0.0
-                    )
-                    return completion.choices[0].message.content.strip()
+                    # Use old API (openai < 1.0.0) - same as main.py
+                    if self.config.DETECTION_MODEL == 'gpt-3.5-turbo-instruct':
+                        full_prompt = f"{system_prompt}\n\n{user_prompt}"
+                        response = openai.Completion.create(
+                            model='gpt-3.5-turbo-instruct',
+                            prompt=full_prompt,
+                            temperature=self.config.DETECTION_TEMPERATURE,
+                            max_tokens=self.config.DETECTION_MAX_TOKENS,
+                            top_p=1,
+                            frequency_penalty=0.0,
+                            presence_penalty=0.0,
+                            stop=["\n\n"]
+                        )
+                        return response.choices[0].text.strip()
+                    else:
+                        completion = openai.ChatCompletion.create(
+                            model=self.config.DETECTION_MODEL,
+                            messages=[
+                                {"role": "system", "content": system_prompt},
+                                {"role": "user", "content": user_prompt}
+                            ],
+                            temperature=self.config.DETECTION_TEMPERATURE,
+                            max_tokens=self.config.DETECTION_MAX_TOKENS,
+                            top_p=1,
+                            frequency_penalty=0.0,
+                            presence_penalty=0.0
+                        )
+                        return completion.choices[0].message.content.strip()
                     
-            except openai.RateLimitError:
-                # openai 1.x: RateLimitError is directly under openai module
-                wait_time = 5 * (attempt + 1)
-                if self.config.VERBOSE:
-                    print(f"[Warning] OpenAI API rate limit, waiting {wait_time} seconds before retry ({attempt+1}/{max_retries})...")
-                time.sleep(wait_time)
             except Exception as e:
-                # Other exceptions
-                if self.config.VERBOSE:
-                    print(f"[Error] LLM call failed: {e}, waiting 3 seconds before retry ({attempt+1}/{max_retries})...")
-                time.sleep(3)
+                # Handle rate limit errors (compatible with both old and new API)
+                error_str = str(e).lower()
+                if 'rate limit' in error_str or 'ratelimit' in error_str:
+                    wait_time = 5 * (attempt + 1)
+                    if self.config.VERBOSE:
+                        print(f"[Warning] OpenAI API rate limit, waiting {wait_time} seconds before retry ({attempt+1}/{max_retries})...")
+                    time.sleep(wait_time)
+                else:
+                    if self.config.VERBOSE:
+                        print(f"[Error] LLM call failed: {e}, waiting 3 seconds before retry ({attempt+1}/{max_retries})...")
+                    time.sleep(3)
         
         # If all retries failed
         raise Exception(f"Failed to call LLM after {max_retries} retries")

@@ -6,6 +6,7 @@ PromptArmor 测试脚本
 
 import sys
 import os
+import re
 from pathlib import Path
 
 # 获取当前脚本所在目录（promptarmor目录）
@@ -84,6 +85,137 @@ def test_basic_cases():
     return results
 
 
+def extract_instructions_from_v28(log_file: Path) -> dict:
+    """
+    从 attack_7_v28/attack_prompts_log.txt 中提取 Fragment Attack Instruction 和 Trigger Instruction
+    
+    Returns:
+        dict with keys: 'fragment_attack', 'trigger_instruction'
+    """
+    instructions = {}
+    
+    try:
+        with open(log_file, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        # 提取 Fragment Attack Instruction（敏感 fragment 的）
+        # 查找 "Fragment Attacks (1):" 后面的内容
+        fragment_match = re.search(
+            r'Fragment Attacks \(1\):(.*?)Trigger Instruction:',
+            content,
+            re.DOTALL
+        )
+        
+        if fragment_match:
+            fragment_text = fragment_match.group(1)
+            # 提取 C: 后面的内容（敏感 fragment）
+            c_match = re.search(r'\s+C:\s*(.+?)(?=\n\n|$)', fragment_text, re.DOTALL)
+            if c_match:
+                instructions['fragment_attack'] = c_match.group(1).strip()
+        
+        # 提取 Trigger Instruction
+        trigger_match = re.search(
+            r'Trigger Instruction:\s*(.+?)(?=\n={50,}|\n\n|$)',
+            content,
+            re.DOTALL
+        )
+        if trigger_match:
+            instructions['trigger_instruction'] = trigger_match.group(1).strip()
+        
+    except Exception as e:
+        print(f"Error reading {log_file}: {e}")
+    
+    return instructions
+
+
+def test_attack_v28():
+    """测试 attack_7_v28 中的 Fragment Attack Instruction 和 Trigger Instruction"""
+    print("\n" + "=" * 80)
+    print("测试 attack_7_v28 攻击指令")
+    print("=" * 80)
+    
+    # 初始化检测器
+    config = PromptArmorConfig()
+    detector = PromptArmorDetector(config)
+    
+    # 获取 attack_7_v28 目录路径
+    webshop_path = Path(webshop_dir)
+    attack_dir = webshop_path / "attack_7_v28"
+    log_file = attack_dir / "attack_prompts_log.txt"
+    
+    if not log_file.exists():
+        print(f"错误: 找不到文件 {log_file}")
+        return None
+    
+    # 提取指令
+    print(f"\n从 {log_file} 提取指令...")
+    instructions = extract_instructions_from_v28(log_file)
+    
+    if not instructions:
+        print("错误: 无法从日志文件中提取指令")
+        return None
+    
+    print(f"提取到 {len(instructions)} 个指令:")
+    for key in instructions.keys():
+        print(f"  - {key}")
+    
+    # 测试结果
+    results = {}
+    
+    # 测试 Fragment Attack Instruction
+    if 'fragment_attack' in instructions:
+        print("\n" + "-" * 80)
+        print("测试 Fragment Attack Instruction (敏感 fragment)")
+        print("-" * 80)
+        fragment_text = instructions['fragment_attack']
+        print(f"指令: {fragment_text}\n")
+        
+        result = detector.detect(fragment_text)
+        results['fragment_attack'] = result
+        
+        print(f"检测结果: {'✅ 检测到注入' if result.is_injected else '❌ 未检测到注入'}")
+        print(f"置信度: {result.confidence:.2f}")
+        if result.is_injected:
+            print(f"\n提取的注入内容:")
+            print(f"  {result.injection_content}")
+            print(f"\n净化后的文本:")
+            print(f"  {result.cleaned_text}")
+        print(f"\nLLM 原始响应:")
+        print(f"  {result.raw_llm_response}")
+    
+    # 测试 Trigger Instruction
+    if 'trigger_instruction' in instructions:
+        print("\n" + "-" * 80)
+        print("测试 Trigger Instruction")
+        print("-" * 80)
+        trigger_text = instructions['trigger_instruction']
+        print(f"指令: {trigger_text}\n")
+        
+        result = detector.detect(trigger_text)
+        results['trigger_instruction'] = result
+        
+        print(f"检测结果: {'✅ 检测到注入' if result.is_injected else '❌ 未检测到注入'}")
+        print(f"置信度: {result.confidence:.2f}")
+        if result.is_injected:
+            print(f"\n提取的注入内容:")
+            print(f"  {result.injection_content}")
+            print(f"\n净化后的文本:")
+            print(f"  {result.cleaned_text}")
+        print(f"\nLLM 原始响应:")
+        print(f"  {result.raw_llm_response}")
+    
+    # 总结
+    print("\n" + "=" * 80)
+    print("测试总结")
+    print("=" * 80)
+    for key, result in results.items():
+        status = "✅ 检测到注入" if result.is_injected else "❌ 未检测到注入"
+        print(f"{key}: {status} (置信度: {result.confidence:.2f})")
+    print("=" * 80)
+    
+    return results
+
+
 def test_custom_instruction():
     """测试自定义指令"""
     print("\n" + "=" * 80)
@@ -127,6 +259,9 @@ def test_custom_instruction():
 if __name__ == "__main__":
     # 运行基本测试
     test_basic_cases()
+    
+    # 测试 attack_7_v28 的攻击指令
+    test_attack_v28()
     
     # 如果提供了命令行参数，测试自定义指令
     if len(sys.argv) > 1:
