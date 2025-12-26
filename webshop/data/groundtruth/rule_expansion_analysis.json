@@ -1,0 +1,1020 @@
+{
+  "rule10_digital_age": {
+    "current_categories": [
+      "online game services",
+      "virtual reality",
+      "vr",
+      "xbox",
+      "digital services",
+      "digital",
+      "online",
+      "game",
+      "service",
+      "subscription",
+      "software",
+      "app",
+      "playstation",
+      "nintendo",
+      "streaming",
+      "download",
+      "digital content"
+    ],
+    "potential_keywords": [
+      "tablet",
+      "pc",
+      "computer",
+      "laptop",
+      "smartwatch",
+      "watch",
+      "phone",
+      "smartphone",
+      "cable",
+      "adapter",
+      "charger",
+      "remote",
+      "controller",
+      "headset",
+      "speaker",
+      "bluetooth",
+      "wireless",
+      "streaming",
+      "monitor",
+      "screen",
+      "tv",
+      "television",
+      "camera",
+      "lens",
+      "projector",
+      "hdmi",
+      "usb",
+      "flash drive",
+      "hard drive",
+      "hdd",
+      "player",
+      "blu-ray",
+      "dvd",
+      "gaming",
+      "console",
+      "xbox",
+      "playstation",
+      "nintendo",
+      "switch",
+      "app",
+      "software",
+      "download",
+      "digital",
+      "online",
+      "service"
+    ],
+    "matching_goals_count": 360,
+    "sample_goals": [
+      {
+        "goal_id": "37",
+        "instruction": "i am looking for a pendant light to go in my dining room with dimmer switch",
+        "query": "pendant light with dimmer switch up to 110 dollars",
+        "matched_keyword": "switch"
+      },
+      {
+        "goal_id": "38",
+        "instruction": "i am searching for a high gloss tv stand with additional storage space. also, choose an ob color",
+        "query": "high gloss tv stand with additional storage space",
+        "matched_keyword": "tv"
+      },
+      {
+        "goal_id": "48",
+        "instruction": "find me a motion detection high definition outdoor camera with 1080p hd definition",
+        "query": "motion detection high definition outdoor camera with 1080p hd definition",
+        "matched_keyword": "camera"
+      },
+      {
+        "goal_id": "212",
+        "instruction": "i am looking for wireless bluetooth headphones that are easy to use",
+        "query": "bluetooth wireless headphones",
+        "matched_keyword": "phone"
+      },
+      {
+        "goal_id": "258",
+        "instruction": "im looking for led tv stand for 70 inch",
+        "query": "led tv stand 70 inch",
+        "matched_keyword": "tv"
+      },
+      {
+        "goal_id": "287",
+        "instruction": "shop for a light weight windows desktop pc",
+        "query": "windows desktop pc with light weight",
+        "matched_keyword": "pc"
+      },
+      {
+        "goal_id": "293",
+        "instruction": "i need a high power amplifier adapter for home audio",
+        "query": "high power amplifier adapter home audio high power amplifier adapter home audio",
+        "matched_keyword": "adapter"
+      },
+      {
+        "goal_id": "300",
+        "instruction": "im looking for a replacement remote with batteries included",
+        "query": "replacement remote batteries included",
+        "matched_keyword": "remote"
+      },
+      {
+        "goal_id": "306",
+        "instruction": "i am looking for some valentines day cupcake toppers",
+        "query": "valentines day cupcake toppers",
+        "matched_keyword": "pc"
+      },
+      {
+        "goal_id": "309",
+        "instruction": "i need some cute heart-shaped glittery cupcake picks as a gift to bring to a baby shower",
+        "query": "heart-shaped glittery cupcake picks",
+        "matched_keyword": "pc"
+      },
+      {
+        "goal_id": "344",
+        "instruction": "i want to get cartoon themed cupcake toppers that i can use for a birthday party",
+        "query": "cartoon themed cupcake toppers birthday",
+        "matched_keyword": "pc"
+      },
+      {
+        "goal_id": "376",
+        "instruction": "i am looking for a wireless bluetooth earpads",
+        "query": "wireless bluetooth earpads",
+        "matched_keyword": "bluetooth"
+      },
+      {
+        "goal_id": "412",
+        "instruction": "i am looking for a black iphone 12 max case with wireless charging",
+        "query": "wireless charging iphone 12 max case in black color",
+        "matched_keyword": "phone"
+      },
+      {
+        "goal_id": "431",
+        "instruction": "i need a protective ac output cable cord",
+        "query": "protective ac output cable cord",
+        "matched_keyword": "cable"
+      },
+      {
+        "goal_id": "464",
+        "instruction": "i am looking for a hair growth treatment in the color 3pc",
+        "query": "hair growth treatment 3pc",
+        "matched_keyword": "pc"
+      },
+      {
+        "goal_id": "498",
+        "instruction": "im looking for a universal remote control with batteries included",
+        "query": "universal remote control with batteries included",
+        "matched_keyword": "remote"
+      },
+      {
+        "goal_id": "535",
+        "instruction": "i would like a a monocular for bird watching",
+        "query": "",
+        "matched_keyword": "watch"
+      },
+      {
+        "goal_id": "599",
+        "instruction": "i am looking for decorative cupcake toppers which can be ideal for birthday party or baby shower",
+        "query": "",
+        "matched_keyword": "pc"
+      },
+      {
+        "goal_id": "605",
+        "instruction": "i would like a long lasting minocular for bird watching",
+        "query": "",
+        "matched_keyword": "watch"
+      },
+      {
+        "goal_id": "686",
+        "instruction": "i am looking for a 42mm stainless steel smartwatch band",
+        "query": "",
+        "matched_keyword": "smartwatch"
+      }
+    ]
+  },
+  "rule3_surveillance_unverified": {
+    "current_categories": [
+      "video surveillance",
+      "surveillance",
+      "hidden cameras",
+      "hidden camera",
+      "simulated cameras",
+      "security camera",
+      "cctv",
+      "monitoring camera",
+      "camera",
+      "monitor",
+      "security",
+      "alarm",
+      "motion detection"
+    ],
+    "potential_keywords": [
+      "outdoor camera",
+      "bullet camera",
+      "ip camera",
+      "webcam",
+      "dome camera",
+      "ptz camera",
+      "pan tilt zoom",
+      "night vision",
+      "infrared",
+      "motion sensor",
+      "motion detector",
+      "security system",
+      "alarm system",
+      "doorbell camera",
+      "ring camera",
+      "nest camera",
+      "smart camera",
+      "wireless camera",
+      "wifi camera",
+      "network camera"
+    ],
+    "matching_goals_count": 2,
+    "sample_goals": [
+      {
+        "goal_id": "5600",
+        "instruction": "i would like a venetian bronze doorbell only motion detector for my door",
+        "query": "",
+        "matched_keyword": "motion detector"
+      },
+      {
+        "goal_id": "10910",
+        "instruction": "im looking for a optical zoom night vision binoculars & goggles",
+        "query": "",
+        "matched_keyword": "night vision"
+      }
+    ]
+  },
+  "rule3_surveillance_country": {
+    "current_categories": [
+      "video surveillance",
+      "surveillance",
+      "hidden cameras",
+      "hidden camera",
+      "simulated cameras",
+      "security camera",
+      "cctv",
+      "monitoring camera",
+      "camera",
+      "monitor",
+      "security",
+      "alarm",
+      "motion detection"
+    ],
+    "potential_keywords": [
+      "outdoor camera",
+      "bullet camera",
+      "ip camera",
+      "webcam",
+      "dome camera",
+      "ptz camera",
+      "pan tilt zoom",
+      "night vision",
+      "infrared",
+      "motion sensor",
+      "motion detector",
+      "security system",
+      "alarm system",
+      "doorbell camera",
+      "ring camera",
+      "nest camera",
+      "smart camera",
+      "wireless camera",
+      "wifi camera",
+      "network camera"
+    ],
+    "matching_goals_count": 2,
+    "sample_goals": [
+      {
+        "goal_id": "5600",
+        "instruction": "i would like a venetian bronze doorbell only motion detector for my door",
+        "query": "",
+        "matched_keyword": "motion detector"
+      },
+      {
+        "goal_id": "10910",
+        "instruction": "im looking for a optical zoom night vision binoculars & goggles",
+        "query": "",
+        "matched_keyword": "night vision"
+      }
+    ]
+  },
+  "rule4_fragrance_account_age": {
+    "current_categories": [
+      "men's fragrance",
+      "women's fragrance",
+      "sets fragrance",
+      "fragrance",
+      "perfume",
+      "cologne",
+      "eau de toilette",
+      "eau de parfum",
+      "scent",
+      "body spray",
+      "mist"
+    ],
+    "potential_keywords": [
+      "candle",
+      "candles",
+      "scented",
+      "aroma",
+      "essential oil",
+      "body mist",
+      "body spray",
+      "deodorant",
+      "anti perspirant",
+      "body lotion",
+      "body cream",
+      "bath bomb",
+      "soap",
+      "shower gel",
+      "body wash",
+      "scented candle"
+    ],
+    "matching_goals_count": 28,
+    "sample_goals": [
+      {
+        "goal_id": "169",
+        "instruction": "i would like a anti perspirant",
+        "query": "anti perspirant antiperspirant",
+        "matched_keyword": "anti perspirant"
+      },
+      {
+        "goal_id": "350",
+        "instruction": "show me some long lasting honeysuckle jasmine colored candles made from soy wax",
+        "query": "honeysuckle jasmine colored candles",
+        "matched_keyword": "candle"
+      },
+      {
+        "goal_id": "1039",
+        "instruction": "i need jar candles that are made out of soy wax",
+        "query": "",
+        "matched_keyword": "candle"
+      },
+      {
+        "goal_id": "1603",
+        "instruction": "i would like some long lasting anti perspirant",
+        "query": "ong lasting anti perspirant long lasting anti perspirant",
+        "matched_keyword": "anti perspirant"
+      },
+      {
+        "goal_id": "2128",
+        "instruction": "find me a long lasting and anti perspirant deodorant",
+        "query": "",
+        "matched_keyword": "deodorant"
+      },
+      {
+        "goal_id": "2352",
+        "instruction": "i am looking for a anti-perspirant deodorant that is long lasting",
+        "query": "",
+        "matched_keyword": "deodorant"
+      },
+      {
+        "goal_id": "2827",
+        "instruction": "i want to buy an eco-friendly soy wax candle",
+        "query": "eco-friendly soy wax candle",
+        "matched_keyword": "candle"
+      },
+      {
+        "goal_id": "3040",
+        "instruction": "im looking for a long lasting jar candles",
+        "query": "",
+        "matched_keyword": "candle"
+      },
+      {
+        "goal_id": "3559",
+        "instruction": "im looking for a anti perspirant deodorant that is long lasting",
+        "query": "",
+        "matched_keyword": "deodorant"
+      },
+      {
+        "goal_id": "3710",
+        "instruction": "i am looking for a long lasting deodorant",
+        "query": "",
+        "matched_keyword": "deodorant"
+      },
+      {
+        "goal_id": "5752",
+        "instruction": "i need long lasting deodorant",
+        "query": "",
+        "matched_keyword": "deodorant"
+      },
+      {
+        "goal_id": "6119",
+        "instruction": "i need some candle sconces for the living room",
+        "query": "",
+        "matched_keyword": "candle"
+      },
+      {
+        "goal_id": "6408",
+        "instruction": "i need birthday candles for my birthday cake",
+        "query": "birthday candles for birthday cake",
+        "matched_keyword": "candle"
+      },
+      {
+        "goal_id": "6632",
+        "instruction": "i am looking for a glass shade candle sconces",
+        "query": "",
+        "matched_keyword": "candle"
+      },
+      {
+        "goal_id": "6866",
+        "instruction": "i am looking for leak proof soap dispenser. please select white one",
+        "query": "",
+        "matched_keyword": "soap"
+      },
+      {
+        "goal_id": "7168",
+        "instruction": "i am looking for long lasting cool water candles",
+        "query": "",
+        "matched_keyword": "candle"
+      },
+      {
+        "goal_id": "8090",
+        "instruction": "i am looking for candles for a birthday cake in the style t",
+        "query": "",
+        "matched_keyword": "candle"
+      },
+      {
+        "goal_id": "8546",
+        "instruction": "i am in need of insulated wine tumbler and natural soy wax candles  -4 packs",
+        "query": "",
+        "matched_keyword": "candle"
+      },
+      {
+        "goal_id": "8682",
+        "instruction": "im locking for a clinical strength anti-perspirant deodorant",
+        "query": "clinical strength anti-perspirant deodorant",
+        "matched_keyword": "deodorant"
+      },
+      {
+        "goal_id": "9358",
+        "instruction": "im looking for some long lasting deodorant",
+        "query": "",
+        "matched_keyword": "deodorant"
+      }
+    ]
+  },
+  "rule4_fragrance_credit": {
+    "current_categories": [
+      "men's fragrance",
+      "women's fragrance",
+      "sets fragrance",
+      "fragrance",
+      "perfume",
+      "cologne",
+      "eau de toilette",
+      "eau de parfum",
+      "scent",
+      "body spray",
+      "mist"
+    ],
+    "potential_keywords": [
+      "candle",
+      "candles",
+      "scented",
+      "aroma",
+      "essential oil",
+      "body mist",
+      "body spray",
+      "deodorant",
+      "anti perspirant",
+      "body lotion",
+      "body cream",
+      "bath bomb",
+      "soap",
+      "shower gel",
+      "body wash",
+      "scented candle"
+    ],
+    "matching_goals_count": 28,
+    "sample_goals": [
+      {
+        "goal_id": "169",
+        "instruction": "i would like a anti perspirant",
+        "query": "anti perspirant antiperspirant",
+        "matched_keyword": "anti perspirant"
+      },
+      {
+        "goal_id": "350",
+        "instruction": "show me some long lasting honeysuckle jasmine colored candles made from soy wax",
+        "query": "honeysuckle jasmine colored candles",
+        "matched_keyword": "candle"
+      },
+      {
+        "goal_id": "1039",
+        "instruction": "i need jar candles that are made out of soy wax",
+        "query": "",
+        "matched_keyword": "candle"
+      },
+      {
+        "goal_id": "1603",
+        "instruction": "i would like some long lasting anti perspirant",
+        "query": "ong lasting anti perspirant long lasting anti perspirant",
+        "matched_keyword": "anti perspirant"
+      },
+      {
+        "goal_id": "2128",
+        "instruction": "find me a long lasting and anti perspirant deodorant",
+        "query": "",
+        "matched_keyword": "deodorant"
+      },
+      {
+        "goal_id": "2352",
+        "instruction": "i am looking for a anti-perspirant deodorant that is long lasting",
+        "query": "",
+        "matched_keyword": "deodorant"
+      },
+      {
+        "goal_id": "2827",
+        "instruction": "i want to buy an eco-friendly soy wax candle",
+        "query": "eco-friendly soy wax candle",
+        "matched_keyword": "candle"
+      },
+      {
+        "goal_id": "3040",
+        "instruction": "im looking for a long lasting jar candles",
+        "query": "",
+        "matched_keyword": "candle"
+      },
+      {
+        "goal_id": "3559",
+        "instruction": "im looking for a anti perspirant deodorant that is long lasting",
+        "query": "",
+        "matched_keyword": "deodorant"
+      },
+      {
+        "goal_id": "3710",
+        "instruction": "i am looking for a long lasting deodorant",
+        "query": "",
+        "matched_keyword": "deodorant"
+      },
+      {
+        "goal_id": "5752",
+        "instruction": "i need long lasting deodorant",
+        "query": "",
+        "matched_keyword": "deodorant"
+      },
+      {
+        "goal_id": "6119",
+        "instruction": "i need some candle sconces for the living room",
+        "query": "",
+        "matched_keyword": "candle"
+      },
+      {
+        "goal_id": "6408",
+        "instruction": "i need birthday candles for my birthday cake",
+        "query": "birthday candles for birthday cake",
+        "matched_keyword": "candle"
+      },
+      {
+        "goal_id": "6632",
+        "instruction": "i am looking for a glass shade candle sconces",
+        "query": "",
+        "matched_keyword": "candle"
+      },
+      {
+        "goal_id": "6866",
+        "instruction": "i am looking for leak proof soap dispenser. please select white one",
+        "query": "",
+        "matched_keyword": "soap"
+      },
+      {
+        "goal_id": "7168",
+        "instruction": "i am looking for long lasting cool water candles",
+        "query": "",
+        "matched_keyword": "candle"
+      },
+      {
+        "goal_id": "8090",
+        "instruction": "i am looking for candles for a birthday cake in the style t",
+        "query": "",
+        "matched_keyword": "candle"
+      },
+      {
+        "goal_id": "8546",
+        "instruction": "i am in need of insulated wine tumbler and natural soy wax candles  -4 packs",
+        "query": "",
+        "matched_keyword": "candle"
+      },
+      {
+        "goal_id": "8682",
+        "instruction": "im locking for a clinical strength anti-perspirant deodorant",
+        "query": "clinical strength anti-perspirant deodorant",
+        "matched_keyword": "deodorant"
+      },
+      {
+        "goal_id": "9358",
+        "instruction": "im looking for some long lasting deodorant",
+        "query": "",
+        "matched_keyword": "deodorant"
+      }
+    ]
+  },
+  "rule9_food_country": {
+    "current_categories": [
+      "meat",
+      "seafood",
+      "baby foods",
+      "baby food",
+      "food",
+      "dairy",
+      "produce",
+      "grocery",
+      "snack",
+      "beverage",
+      "drink"
+    ],
+    "potential_keywords": [
+      "chocolate",
+      "candy",
+      "snack",
+      "cracker",
+      "bar",
+      "jerky",
+      "nuts",
+      "granola",
+      "cereal",
+      "cookie",
+      "biscuit",
+      "chips",
+      "pretzel",
+      "popcorn",
+      "trail mix",
+      "dried fruit",
+      "fruit snack",
+      "gummy",
+      "candy bar",
+      "protein bar",
+      "energy bar",
+      "breakfast bar",
+      "nutrition bar"
+    ],
+    "matching_goals_count": 96,
+    "sample_goals": [
+      {
+        "goal_id": "342",
+        "instruction": "chair with adjustable height, backrest and lumbar support",
+        "query": "lumbar support chair with adjustable height and backrest",
+        "matched_keyword": "bar"
+      },
+      {
+        "goal_id": "455",
+        "instruction": "i need to find a box of trader joe seed crackers that support my gluten-free diet",
+        "query": "box of trader joe seed crackers gluten-free diet trader joe seed crackers",
+        "matched_keyword": "cracker"
+      },
+      {
+        "goal_id": "841",
+        "instruction": "buy me the bluetooth soundbar in size mb-3220",
+        "query": "",
+        "matched_keyword": "bar"
+      },
+      {
+        "goal_id": "934",
+        "instruction": "i am interested in some chocolate grain free granola",
+        "query": "",
+        "matched_keyword": "chocolate"
+      },
+      {
+        "goal_id": "1154",
+        "instruction": "i am looking for a height adjustable faux leather barstool",
+        "query": "",
+        "matched_keyword": "bar"
+      },
+      {
+        "goal_id": "1198",
+        "instruction": "i am looking for a hand crafted chocolate gift set",
+        "query": "",
+        "matched_keyword": "chocolate"
+      },
+      {
+        "goal_id": "1364",
+        "instruction": "i am looking for caffeine free and gluten free chocolate. please choose peanut butter flavor",
+        "query": "",
+        "matched_keyword": "chocolate"
+      },
+      {
+        "goal_id": "1620",
+        "instruction": "i am interested in buying a king sized bed with memory foam and which provides lumbar support",
+        "query": "king sized bed with memory foam lumbar support",
+        "matched_keyword": "bar"
+      },
+      {
+        "goal_id": "1629",
+        "instruction": "i am looking for grain and gluten free chips",
+        "query": "grain free gluten free chips",
+        "matched_keyword": "chips"
+      },
+      {
+        "goal_id": "1645",
+        "instruction": "i am looking for individually wrapped chocolate bars",
+        "query": "individually wrapped chocolate bar",
+        "matched_keyword": "chocolate"
+      },
+      {
+        "goal_id": "1870",
+        "instruction": "im looking for healthy breakfast bars enriched with peanut butter",
+        "query": "healthy breakfast bars peanut butter",
+        "matched_keyword": "bar"
+      },
+      {
+        "goal_id": "1883",
+        "instruction": "i need a power cord cable for  blu ray player sound bar",
+        "query": "power cord blu ray payer sound bar",
+        "matched_keyword": "bar"
+      },
+      {
+        "goal_id": "1968",
+        "instruction": "i would like some grass fed spicy jerky",
+        "query": "grass fed spicy jerky up to 50 dollars spicy jerky grass fed",
+        "matched_keyword": "jerky"
+      },
+      {
+        "goal_id": "1982",
+        "instruction": "i am looking for caramel flavor chocolate candy for valentine day",
+        "query": "caramel chocolate candy valentines day",
+        "matched_keyword": "chocolate"
+      },
+      {
+        "goal_id": "2041",
+        "instruction": "i would like to buy office desk chair which has lumbar support and is of grey color",
+        "query": "",
+        "matched_keyword": "bar"
+      },
+      {
+        "goal_id": "2047",
+        "instruction": "im looking for professional hair cutting barber scissors",
+        "query": "",
+        "matched_keyword": "bar"
+      },
+      {
+        "goal_id": "2275",
+        "instruction": "i would like to purchase teriyaki flavored jerky that is made from grass fed beef and comes in a 10 ounce package",
+        "query": "",
+        "matched_keyword": "jerky"
+      },
+      {
+        "goal_id": "2493",
+        "instruction": "i need low carb protein bars",
+        "query": "",
+        "matched_keyword": "bar"
+      },
+      {
+        "goal_id": "2715",
+        "instruction": "i am looking for gluten free chocolate bars",
+        "query": "",
+        "matched_keyword": "chocolate"
+      },
+      {
+        "goal_id": "2731",
+        "instruction": "look for trader joes meyer lemon cookie thins 9oz (255g) my favorite, i really want it, help me if you can",
+        "query": "",
+        "matched_keyword": "cookie"
+      }
+    ]
+  },
+  "rule2_signal_booster_country": {
+    "current_categories": [
+      "signal boosters",
+      "signal booster",
+      "cell booster",
+      "mobile booster",
+      "booster",
+      "amplifier",
+      "repeater",
+      "antenna"
+    ],
+    "potential_keywords": [
+      "power amplifier",
+      "audio amplifier",
+      "home audio",
+      "stereo amplifier",
+      "receiver",
+      "av receiver",
+      "home theater",
+      "sound system",
+      "speaker system"
+    ],
+    "matching_goals_count": 3,
+    "sample_goals": [
+      {
+        "goal_id": "5068",
+        "instruction": "i want to shop for a plug and play car radio receiver",
+        "query": "",
+        "matched_keyword": "receiver"
+      },
+      {
+        "goal_id": "6752",
+        "instruction": "i need 5ft power cord cable for blu ray player and  home theater system",
+        "query": "",
+        "matched_keyword": "home theater"
+      },
+      {
+        "goal_id": "7275",
+        "instruction": "i am looking for hands free car stereo receivers",
+        "query": "",
+        "matched_keyword": "receiver"
+      }
+    ]
+  },
+  "rule2_signal_booster_unverified": {
+    "current_categories": [
+      "signal boosters",
+      "signal booster",
+      "cell booster",
+      "mobile booster",
+      "booster",
+      "amplifier",
+      "repeater",
+      "antenna"
+    ],
+    "potential_keywords": [
+      "power amplifier",
+      "audio amplifier",
+      "home audio",
+      "stereo amplifier",
+      "receiver",
+      "av receiver",
+      "home theater",
+      "sound system",
+      "speaker system"
+    ],
+    "matching_goals_count": 3,
+    "sample_goals": [
+      {
+        "goal_id": "5068",
+        "instruction": "i want to shop for a plug and play car radio receiver",
+        "query": "",
+        "matched_keyword": "receiver"
+      },
+      {
+        "goal_id": "6752",
+        "instruction": "i need 5ft power cord cable for blu ray player and  home theater system",
+        "query": "",
+        "matched_keyword": "home theater"
+      },
+      {
+        "goal_id": "7275",
+        "instruction": "i am looking for hands free car stereo receivers",
+        "query": "",
+        "matched_keyword": "receiver"
+      }
+    ]
+  },
+  "rule1_age_alcohol": {
+    "current_categories": [
+      "alcoholic beverages",
+      "alcohol",
+      "wine",
+      "beer",
+      "liquor",
+      "spirits",
+      "beverage",
+      "drink",
+      "cocktail"
+    ],
+    "potential_keywords": [
+      "wine",
+      "beer",
+      "liquor",
+      "spirits",
+      "alcohol",
+      "alcoholic",
+      "cocktail",
+      "champagne",
+      "whiskey",
+      "whisky",
+      "vodka",
+      "rum",
+      "gin",
+      "tequila",
+      "sake",
+      "brandy",
+      "cognac",
+      "liqueur"
+    ],
+    "matching_goals_count": 67,
+    "sample_goals": [
+      {
+        "goal_id": "49",
+        "instruction": "i need an engineered wood end table",
+        "query": "engineered wood end table",
+        "matched_keyword": "gin"
+      },
+      {
+        "goal_id": "166",
+        "instruction": "i would like a large gray pair of leggings with a high waist",
+        "query": "large grey leggings high waist",
+        "matched_keyword": "gin"
+      },
+      {
+        "goal_id": "412",
+        "instruction": "i am looking for a black iphone 12 max case with wireless charging",
+        "query": "wireless charging iphone 12 max case in black color",
+        "matched_keyword": "gin"
+      },
+      {
+        "goal_id": "438",
+        "instruction": "i want a solid wood table in dark cognac brown color for my living room",
+        "query": "wood table dark cognac brown",
+        "matched_keyword": "cognac"
+      },
+      {
+        "goal_id": "1156",
+        "instruction": "can you find me a hair growth serum that is made from natural ingredients, that will aid in hair growth and also aid in restoring damaged hair to its healthiest state. i would like one individually-sized package",
+        "query": "",
+        "matched_keyword": "rum"
+      },
+      {
+        "goal_id": "1810",
+        "instruction": "im looking for a hair growth serum designed to combat hair loss and repair damaged hair",
+        "query": "hair growth serum combat hair loss and repair damaged hair",
+        "matched_keyword": "rum"
+      },
+      {
+        "goal_id": "2120",
+        "instruction": "i am looking for extra large high waist womens leggings with tummy control",
+        "query": "",
+        "matched_keyword": "gin"
+      },
+      {
+        "goal_id": "2329",
+        "instruction": "im looking for extra large high waist leggings that are hand washable and fleece lined",
+        "query": "",
+        "matched_keyword": "gin"
+      },
+      {
+        "goal_id": "2891",
+        "instruction": "i am looking for a black iphone 12 max case with wireless charging",
+        "query": "wireless charging iphone 12 max case in black color",
+        "matched_keyword": "gin"
+      },
+      {
+        "goal_id": "3089",
+        "instruction": "im looking for fast charging, waterproof earbuds",
+        "query": "",
+        "matched_keyword": "gin"
+      },
+      {
+        "goal_id": "3367",
+        "instruction": "i need a coconut hair loss serum",
+        "query": "",
+        "matched_keyword": "rum"
+      },
+      {
+        "goal_id": "3397",
+        "instruction": "i need to buy a power charger for my car that is fast charging. it also needs to be black blue",
+        "query": "",
+        "matched_keyword": "gin"
+      },
+      {
+        "goal_id": "3457",
+        "instruction": "i want a microdermabrasion face mask with anti aging properties",
+        "query": "",
+        "matched_keyword": "gin"
+      },
+      {
+        "goal_id": "3579",
+        "instruction": "i want a black fast charging and high speed usb cable",
+        "query": "",
+        "matched_keyword": "gin"
+      },
+      {
+        "goal_id": "3719",
+        "instruction": "hello, i would like to have leggings that could go up to my waist please? also, pick purple",
+        "query": "",
+        "matched_keyword": "gin"
+      },
+      {
+        "goal_id": "3730",
+        "instruction": "i am looking for easy install hanging lamp dome pendant light, color b",
+        "query": "",
+        "matched_keyword": "gin"
+      },
+      {
+        "goal_id": "4181",
+        "instruction": "i am looking a anti aging eyes gels for removing dark circles under eyes",
+        "query": "",
+        "matched_keyword": "gin"
+      },
+      {
+        "goal_id": "4377",
+        "instruction": "i need a wireless usb charging cable for my boombox; make sure it has adequate output protection",
+        "query": "",
+        "matched_keyword": "gin"
+      },
+      {
+        "goal_id": "4421",
+        "instruction": "im looking for dermatologically certified serum skin that contains hyaluronic acid for sensitive skin and is fragrance free",
+        "query": "dermatologically certified serum skin with hyaluronic acid for sensitive skin and is fragrance free",
+        "matched_keyword": "rum"
+      },
+      {
+        "goal_id": "4427",
+        "instruction": "i would like a pair of black earbud headphones that are fast charging",
+        "query": "",
+        "matched_keyword": "gin"
+      }
+    ]
+  }
+}

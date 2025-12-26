@@ -74,7 +74,7 @@ def generate_random_profile(profile_id: int) -> Dict:
     }
 
 
-def generate_profiles(num_profiles: int = 100) -> List[Dict]:
+def generate_profiles(num_profiles: int = 2000) -> List[Dict]:
     """
     Generate multiple user profiles
     
@@ -133,7 +133,7 @@ def calculate_distribution_stats(profiles: List[Dict]) -> Dict:
 
 def main():
     """Main function to generate profiles and save to JSON file"""
-    num_profiles = 100
+    num_profiles = 2000
     
     print(f"Generating {num_profiles} user profiles with random attribute distributions...")
     
@@ -158,7 +158,7 @@ def main():
     # Save to JSON file in the webshop directory (parent directory)
     script_dir = os.path.dirname(os.path.abspath(__file__))
     webshop_dir = os.path.dirname(script_dir)
-    output_file = os.path.join(webshop_dir, "generated_profiles.json")
+    output_file = os.path.join(webshop_dir, "generated_profiles_2000.json")
     
     with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(output, f, indent=2, ensure_ascii=False)

@@ -25,18 +25,40 @@ class MaskChecker:
         Initialize MaskChecker.
         
         Args:
-            rule_checker: RuleChecker instance to check for violations
+            rule_checker: RuleChecker or GuardAgent instance to check for violations
             profile: UserProfile to use for rule checking
             host_instruction: Original host instruction
             query: Query string (optional, defaults to empty)
             verbose: Whether to print debug information
         """
-        self.rule_checker = rule_checker
+        self.rule_checker = rule_checker  # Can be RuleChecker or GuardAgent
         self.profile = profile
         self.host_instruction = host_instruction
         self.query = query
         self.verbose = verbose
         self.mask_token = "[MASK]"
+    
+    def _safe_str(self, value) -> str:
+        """
+        Safely convert value to string, handling cases where value might be an object.
+        Cleans up object representations like '<autogen.agentchat.assistant_agent.AssistantAgent object>'
+        """
+        try:
+            if value is None:
+                return 'N/A'
+            if isinstance(value, str):
+                # Clean up if it contains object representations
+                if '<' in value and 'object at 0x' in value:
+                    return 'Error: Invalid response format'
+                return value
+            # Convert to string
+            str_value = str(value)
+            # Clean up if it contains object representations
+            if '<' in str_value and 'object at 0x' in str_value:
+                return 'Error: Invalid response format'
+            return str_value
+        except Exception:
+            return 'Error: Failed to convert response to string'
     
     def _create_masked_instruction(self, fragments: List[str], mask_index: int) -> str:
         """
@@ -83,10 +105,22 @@ class MaskChecker:
         
         # First, check the full target instruction (all fragments combined)
         full_instruction = ' '.join([f for f in fragments if f.strip()])
-        result_full = self.rule_checker.check_all_rules(
-            self.profile, full_instruction, self.query, return_details=True
-        )
-        is_valid_full, violated_rules_full, details_full = result_full
+        # Support both RuleChecker (with return_details) and GuardAgent (without return_details)
+        try:
+            result_full = self.rule_checker.check_all_rules(
+                self.profile, full_instruction, self.query, return_details=True
+            )
+            if len(result_full) == 3:
+                is_valid_full, violated_rules_full, details_full = result_full
+            else:
+                is_valid_full, violated_rules_full = result_full
+                details_full = {'prompt': full_instruction, 'response': 'N/A'}
+        except TypeError:
+            # GuardAgent doesn't support return_details
+            is_valid_full, violated_rules_full = self.rule_checker.check_all_rules(
+                self.profile, full_instruction, self.query
+            )
+            details_full = {'prompt': full_instruction, 'response': 'N/A'}
         
         detection_log.append({
             'test_type': 'full_instruction',
@@ -95,8 +129,8 @@ class MaskChecker:
             'violated_rules': violated_rules_full,
             'fragment_label': None,
             'fragment_text': None,
-            'rule_checker_prompt': details_full['prompt'],
-            'rule_checker_response': details_full['response']
+            'rule_checker_prompt': details_full.get('prompt', ''),
+            'rule_checker_response': self._safe_str(details_full.get('response', 'N/A'))  # Ensure it's a string
         })
         
         if self.verbose:
@@ -110,8 +144,10 @@ class MaskChecker:
         # If full instruction is valid (no violation), no fragments are sensitive
         # But we still need to check each fragment to be thorough
         # Only skip if response explicitly says "VALID" (not just empty violated_rules)
+        # IMPORTANT: If GuardAgent execution failed, we should check all fragments (can't trust the result)
+        has_guardagent_error = any(rule.startswith('guardagent_') for rule in violated_rules_full)
         response_upper = details_full.get('response', '').upper().strip()
-        if is_valid_full and (response_upper == "VALID" or not response_upper.startswith("VIOLATED")):
+        if is_valid_full and not has_guardagent_error and (response_upper == "VALID" or not response_upper.startswith("VIOLATED")):
             if self.verbose:
                 print("Full instruction is valid - no sensitive words detected")
             return {label: False for label in labels[:len(fragments)]}, detection_log
@@ -131,11 +167,22 @@ class MaskChecker:
             # Create masked instruction
             masked_instruction = self._create_masked_instruction(fragments, idx)
             
-            # Check with rule_checker (with details)
-            result_masked = self.rule_checker.check_all_rules(
-                self.profile, masked_instruction, self.query, return_details=True
-            )
-            is_valid_masked, violated_rules_masked, details_masked = result_masked
+            # Check with rule_checker or guard_agent (with details if supported)
+            try:
+                result_masked = self.rule_checker.check_all_rules(
+                    self.profile, masked_instruction, self.query, return_details=True
+                )
+                if len(result_masked) == 3:
+                    is_valid_masked, violated_rules_masked, details_masked = result_masked
+                else:
+                    is_valid_masked, violated_rules_masked = result_masked
+                    details_masked = {'prompt': masked_instruction, 'response': 'N/A'}
+            except TypeError:
+                # GuardAgent doesn't support return_details
+                is_valid_masked, violated_rules_masked = self.rule_checker.check_all_rules(
+                    self.profile, masked_instruction, self.query
+                )
+                details_masked = {'prompt': masked_instruction, 'response': 'N/A'}
             
             detection_log.append({
                 'test_type': 'masked_fragment',
@@ -144,8 +191,8 @@ class MaskChecker:
                 'violated_rules': violated_rules_masked,
                 'fragment_label': label,
                 'fragment_text': fragment,
-                'rule_checker_prompt': details_masked['prompt'],
-                'rule_checker_response': details_masked['response']
+                'rule_checker_prompt': details_masked.get('prompt', ''),
+                'rule_checker_response': self._safe_str(details_masked.get('response', 'N/A'))  # Ensure it's a string
             })
             
             if self.verbose:
@@ -160,7 +207,13 @@ class MaskChecker:
             # If masking this fragment makes instruction valid (no violation),
             # then this fragment contains sensitive words
             # If masking this fragment still has violations, this fragment does NOT contain sensitive words
-            sensitive_map[label] = is_valid_masked
+            # IMPORTANT: If GuardAgent execution failed (guardagent_exception, guardagent_execution_failed),
+            # we should mark fragment as sensitive (can't verify = assume unsafe)
+            if any(rule.startswith('guardagent_') for rule in violated_rules_masked):
+                # GuardAgent execution failed - mark as sensitive (security-first)
+                sensitive_map[label] = True
+            else:
+                sensitive_map[label] = is_valid_masked
         
         return sensitive_map, detection_log
     
@@ -213,7 +266,7 @@ class MaskChecker:
                 'violated_rules': violated_rules_safe,
                 'safe_fragments': safe_fragments,
                 'rule_checker_prompt': details_safe['prompt'],
-                'rule_checker_response': details_safe['response']
+                'rule_checker_response': self._safe_str(details_safe.get('response', 'N/A'))
             }
             
             if self.verbose:

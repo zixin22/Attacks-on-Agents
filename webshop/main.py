@@ -6,10 +6,15 @@ import transformers
 import torch
 import argparse
 import re
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Union
 
 # Import rule system components
 from rule_and_profile import RuleChecker, MetricsTracker, UserProfile
+try:
+    from rule_and_profile.webshop_guard_agent import WebShopGuardAgent
+except ImportError:
+    WebShopGuardAgent = None
+    print("[Warning] WebShopGuardAgent not available. GuardAgent defense mode disabled.")
 
 parser = argparse.ArgumentParser()
 # Removed --num_trials parameter, only using memory_1.json for retrieval
@@ -25,6 +30,13 @@ parser.add_argument("--attack_target_instruction", type=str, default=None, help=
 parser.add_argument("--split", type=str, default=None, help="Data split to use (e.g., '0-100', '0-500', 'test', 'eval', 'train'). If not specified, uses value from config file.")
 parser.add_argument("--skip_fragments", action="store_true", help="Skip fragment attacks and only execute trigger attack (fragments should already be in memory)")
 parser.add_argument("--enable_rule_checker", action="store_true", help="Enable RuleChecker (default: disabled)")
+parser.add_argument("--defense_mode", type=str, default="rule_checker", 
+                    choices=["rule_checker", "guard_agent", "none"],
+                    help="Defense mechanism: 'rule_checker' (default), 'guard_agent', or 'none'")
+parser.add_argument("--guard_agent_shots", type=int, default=3, choices=[1, 2, 3],
+                    help="Number of few-shot examples for GuardAgent (1, 2, or 3)")
+parser.add_argument("--guard_agent_seed", type=int, default=42,
+                    help="Random seed for GuardAgent")
 args = parser.parse_args()
 
 os.makedirs(args.output, exist_ok=True)
@@ -326,10 +338,20 @@ def webshop_text(session, page_type, query_string='', page_num=1, asin='', optio
 
 from urllib.parse import quote
 class webshopEnv:
-  def __init__(self, rule_checker=None):
+  def __init__(self, rule_checker=None, guard_agent=None, defense_mode='rule_checker'):
+    """
+    Initialize WebShop environment with defense mechanism
+    
+    Args:
+        rule_checker: RuleChecker instance (for 'rule_checker' mode)
+        guard_agent: WebShopGuardAgent instance (for 'guard_agent' mode)
+        defense_mode: 'rule_checker', 'guard_agent', or 'none'
+    """
     self.sessions = {}
-    # For rule checking
+    # For rule checking - support both RuleChecker and GuardAgent
     self.rule_checker = rule_checker
+    self.guard_agent = guard_agent
+    self.defense_mode = defense_mode  # 'rule_checker', 'guard_agent', or 'none'
     self.violations = {}  # Track violations per session
   
   def step(self, session, action, profile=None):
@@ -402,7 +424,8 @@ class webshopEnv:
     
     # RULE CHECK AT SESSION START (after getting instruction and query from webshop_text)
     # Check rules based on instruction and query, without requiring action
-    if self.rule_checker and profile:
+    # Support both RuleChecker and GuardAgent defense mechanisms
+    if self.defense_mode != 'none' and profile:
         # Get instruction and query from session (set by webshop_text)
         instruction = self.sessions[session].get('instruction', '')
         query = self.sessions[session].get('query', '')
@@ -410,13 +433,22 @@ class webshopEnv:
         # Only check rules if we have instruction and query (session has been initialized)
         # Skip if already checked (to avoid duplicate checks)
         if instruction and query and not self.sessions[session].get('_rules_checked', False):
-            # Check all rules using LLM
-            # Returns: (is_valid: bool, violated_rules: List[str])
-            # - is_valid=True: No violations, session can proceed
-            # - is_valid=False: Violations detected, session MUST be blocked
-            is_valid, violated_rules = self.rule_checker.check_all_rules(
-                profile, instruction, query
-            )
+            is_valid = True
+            violated_rules = []
+            
+            # Use selected defense mechanism
+            if self.defense_mode == 'rule_checker' and self.rule_checker:
+                # Check all rules using RuleChecker
+                # Returns: (is_valid: bool, violated_rules: List[str])
+                is_valid, violated_rules = self.rule_checker.check_all_rules(
+                    profile, instruction, query
+                )
+            elif self.defense_mode == 'guard_agent' and self.guard_agent:
+                # Check all rules using GuardAgent
+                # Returns: (is_valid: bool, violated_rules: List[str])
+                is_valid, violated_rules = self.guard_agent.check_all_rules(
+                    profile, instruction, query
+                )
             
             # Mark as checked to avoid duplicate checks
             self.sessions[session]['_rules_checked'] = True
@@ -425,7 +457,8 @@ class webshopEnv:
             # This is a HARD BLOCK - the session cannot proceed under any circumstances
             if not is_valid:
                 # Block the session and return early
-                observation = f"Session blocked: Rule violation ({', '.join(violated_rules)})"
+                defense_name = 'RuleChecker' if self.defense_mode == 'rule_checker' else 'GuardAgent'
+                observation = f"Session blocked by {defense_name}: Rule violation ({', '.join(violated_rules)})"
                 reward = 0.0
                 done = True
                 
@@ -439,6 +472,7 @@ class webshopEnv:
                 return observation, reward, done, {
                     'rule_violated': True,
                     'violated_rules': violated_rules,
+                    'defense_mode': self.defense_mode,
                     'instruction': instruction,
                     'query': query,
                     'category': self.sessions[session].get('category', ''),
@@ -450,12 +484,47 @@ class webshopEnv:
     reward = info.get('reward', 0.0)
     return observation, reward, done, info
 
-# Initialize rule system first (only if enabled)
-if args.enable_rule_checker:
-    rule_checker = RuleChecker(verbose=True, model=args.model)
-else:
-    rule_checker = None
-env = webshopEnv(rule_checker=rule_checker)  # Pass rule_checker (None if disabled)
+# Initialize defense mechanism based on defense_mode
+rule_checker = None
+guard_agent = None
+defense_mode = 'none'
+
+if args.defense_mode == 'rule_checker':
+    if args.enable_rule_checker:
+        rule_checker = RuleChecker(verbose=True, model=args.model)
+        defense_mode = 'rule_checker'
+        print("[Info] Using RuleChecker defense mechanism")
+    else:
+        print("[Warning] --defense_mode=rule_checker but --enable_rule_checker not set. Disabling defense.")
+        defense_mode = 'none'
+elif args.defense_mode == 'guard_agent':
+    if WebShopGuardAgent is None:
+        print("[Error] WebShopGuardAgent not available. Falling back to no defense.")
+        defense_mode = 'none'
+    else:
+        try:
+            guard_agent = WebShopGuardAgent(
+                verbose=True, 
+                model=args.model,
+                num_shots=args.guard_agent_shots,
+                seed=args.guard_agent_seed
+            )
+            defense_mode = 'guard_agent'
+            print(f"[Info] Using GuardAgent defense mechanism (shots={args.guard_agent_shots}, seed={args.guard_agent_seed})")
+        except Exception as e:
+            print(f"[Error] Failed to initialize GuardAgent: {e}")
+            print("[Warning] Falling back to no defense.")
+            defense_mode = 'none'
+elif args.defense_mode == 'none':
+    print("[Info] Defense mechanism disabled")
+    defense_mode = 'none'
+
+# Initialize environment with selected defense mechanism
+env = webshopEnv(
+    rule_checker=rule_checker,
+    guard_agent=guard_agent,
+    defense_mode=defense_mode
+)
 
 # Profiles will be generated based on actual task count
 profiles = None
@@ -618,6 +687,214 @@ def generate_examples(info, actions, memory, embeddings, reasoning='', k=3, act_
     
     return init_prompt, reasoning, retrieved_ids
 
+def extract_instruction_from_prompt(full_prompt: str) -> str:
+    """
+    Extract instruction from full prompt sent to LLM.
+    Prioritizes current session's instruction (after "reset" or "Here is the task")
+    over memory examples.
+    Looks for lines starting with 'Instruction:' or 'instruction:'
+    Handles various formats including "Instruction: ..." and "instruction: ..."
+    """
+    lines = full_prompt.split('\n')
+    
+    # First pass: look for instruction after "reset" or "Here is the task" (current session)
+    # This ensures we get the current session's instruction, not memory examples
+    reset_found = False
+    task_section = False
+    
+    for i, line in enumerate(lines):
+        line_stripped = line.strip()
+        line_lower = line_stripped.lower()
+        
+        # Check for "reset" marker (indicates start of current session)
+        if 'reset' in line_lower and ('webshop' in line_lower or 'instruction' in line_lower):
+            reset_found = True
+            continue
+        
+        # Check for "Here is the task" marker
+        if 'Here is the task' in line:
+            task_section = True
+            continue
+        
+        # After reset or task section, look for current session's instruction
+        if reset_found or task_section:
+            # Look for "Instruction:" (capitalized, usually current session)
+            if line_stripped.startswith('Instruction:'):
+                colon_idx = line_stripped.find(':')
+                if colon_idx >= 0:
+                    instruction = line_stripped[colon_idx + 1:].strip()
+                    if instruction:
+                        return instruction
+            
+            # Also check for "instruction:" (lowercase) after reset/task
+            if line_lower.startswith('instruction:'):
+                colon_idx = line_stripped.find(':')
+                if colon_idx >= 0:
+                    instruction = line_stripped[colon_idx + 1:].strip()
+                    if instruction:
+                        return instruction
+            
+            # Check for instruction-like patterns after reset/task
+            if any(pattern in line_lower for pattern in ['i am looking', 'i need', 'i want', "i'm looking", 'i would like']):
+                # This might be the instruction itself
+                return line_stripped
+    
+    # Second pass: look for any "Instruction:" (capitalized) in the entire prompt
+    # This is usually the current session's instruction
+    for line in lines:
+        line_stripped = line.strip()
+        if line_stripped.startswith('Instruction:'):
+            colon_idx = line_stripped.find(':')
+            if colon_idx >= 0:
+                instruction = line_stripped[colon_idx + 1:].strip()
+                if instruction:
+                    return instruction
+    
+    # Third pass: look for "instruction:" (lowercase) in the entire prompt (fallback)
+    # This might be from memory examples, but we'll use it if nothing else found
+    for line in lines:
+        line_stripped = line.strip()
+        line_lower = line_stripped.lower()
+        
+        if line_lower.startswith('instruction:'):
+            colon_idx = line_stripped.find(':')
+            if colon_idx >= 0:
+                instruction = line_stripped[colon_idx + 1:].strip()
+                if instruction:
+                    return instruction
+    
+    # Fourth pass: look for instruction-like patterns (fallback)
+    for line in lines:
+        line_stripped = line.strip()
+        if not line_stripped:
+            continue
+        line_lower = line_stripped.lower()
+        if any(line_lower.startswith(pattern) for pattern in 
+               ['i am looking', 'i need', 'i want', "i'm looking", 'i would like']):
+            return line_stripped
+    
+    return ''
+
+
+def check_prompt_with_rulechecker(full_prompt: str, session_id: str, profile, rule_checker, 
+                                   rule_check_log_file: str, step: int, guard_agent=None) -> Tuple[bool, List[str]]:
+    """
+    Check the full prompt with RuleChecker or GuardAgent and log the results.
+    
+    - Step 1: Check the complete full_prompt (session start)
+    - Step 2+: Check the complete full_prompt (after each action)
+    
+    Args:
+        full_prompt: Full prompt to check
+        session_id: Session ID
+        profile: UserProfile instance
+        rule_checker: RuleChecker instance (optional)
+        rule_check_log_file: Log file path
+        step: Step number
+        guard_agent: GuardAgent instance (optional, used if rule_checker is None)
+    
+    Returns:
+        (should_continue, violated_rules)
+        - should_continue: True if session should continue, False if should stop
+        - violated_rules: List of violated rule names
+    """
+    # Use guard_agent if rule_checker is not available
+    defense_mechanism = rule_checker if rule_checker else guard_agent
+    defense_name = "RuleChecker" if rule_checker else "GuardAgent"
+    
+    if not defense_mechanism or not profile:
+        return True, []
+    
+    # Check if full_prompt is empty
+    if not full_prompt or not full_prompt.strip():
+        # If prompt is empty, skip check
+        return True, []
+    
+    # Get query from session
+    query = ''
+    if session_id in env.sessions:
+        query = env.sessions[session_id].get('query', '')
+    
+    # Always check complete full_prompt (both Step 1 and Step 2+)
+    check_input = full_prompt
+    
+    # Check rules with details (support both RuleChecker and GuardAgent)
+    if rule_checker:
+        is_valid, violated_rules, details = rule_checker.check_all_rules(
+            profile, check_input, query, return_details=True
+        )
+    elif guard_agent:
+        # GuardAgent now supports return_details
+        result = guard_agent.check_all_rules(
+            profile, check_input, query, return_details=True
+        )
+        if len(result) == 3:
+            is_valid, violated_rules, details = result
+        else:
+            is_valid, violated_rules = result
+            details = {'prompt': check_input, 'response': f'{defense_name} check'}
+    else:
+        return True, []
+    
+    # Log to file (append mode, create file if doesn't exist)
+    # First write: create file with header if it's the first step
+    file_exists = os.path.exists(rule_check_log_file)
+    with open(rule_check_log_file, 'a', encoding='utf-8') as f:
+        if not file_exists and step == 1:
+            f.write(f"{'='*80}\n")
+            defense_name = "RuleChecker" if rule_checker else "GuardAgent"
+            f.write(f"{defense_name} Prompt Log for Session: {session_id}\n")
+            f.write(f"{'='*80}\n")
+            f.write(f"Profile ID: {profile.profile_id}\n")
+            f.write(f"Profile Details: age={profile.age}, verified={profile.is_verified}, "
+                   f"country={profile.country}, credit_score={profile.credit_score}, "
+                   f"account_age_days={profile.account_age_days}, return_rate={profile.return_rate:.1f}%\n")
+            f.write(f"{'='*80}\n\n")
+        f.write(f"\n{'='*80}\n")
+        defense_name = "RuleChecker" if rule_checker else "GuardAgent"
+        f.write(f"Step {step} - {defense_name} Check\n")
+        f.write(f"{'='*80}\n")
+        f.write(f"Session ID: {session_id}\n")
+        f.write(f"Profile ID: {profile.profile_id}\n")
+        if step == 1:
+            f.write(f"\nCheck Type: Session Start (Full Prompt)\n")
+        else:
+            f.write(f"\nCheck Type: After Action (Full Prompt)\n")
+        f.write(f"\nFull Prompt to RAP (checked by RuleChecker):\n")
+        f.write(f"{'='*60}\n")
+        f.write(full_prompt)
+        f.write(f"\n{'='*60}\n")
+        f.write(f"Query: {query}\n")
+        f.write(f"\n{'='*80}\n")
+        f.write("RuleChecker Prompt:\n")
+        f.write(f"{'='*80}\n")
+        f.write(details.get('prompt', 'N/A') + "\n")
+        f.write(f"\n{'='*80}\n")
+        f.write("RuleChecker Response:\n")
+        f.write(f"{'='*80}\n")
+        # Ensure response is always a string (handle case where it might be an object)
+        response_value = details.get('response', 'N/A')
+        if not isinstance(response_value, str):
+            response_value = str(response_value)
+        f.write(response_value + "\n")
+        f.write(f"\n{'='*80}\n")
+        f.write(f"Result: {'VALID' if is_valid else 'VIOLATED'}\n")
+        if violated_rules:
+            f.write(f"Violated Rules: {', '.join(violated_rules)}\n")
+        f.write(f"{'='*80}\n\n")
+    
+    # If violated, stop the session
+    if not is_valid:
+        print(f"\n{'='*60}")
+        print(f"❌ RuleChecker detected violation at Step {step}")
+        print(f"Violated Rules: {', '.join(violated_rules)}")
+        print(f"Session {session_id} will be stopped.")
+        print(f"{'='*60}\n")
+        return False, violated_rules
+    
+    return True, violated_rules
+
+
 def webshop_run_react(idx, prompt, profile=None, to_print=True, return_log=False, attack_instruction=None):
     action = 'reset'
     init_prompt = prompt
@@ -706,6 +983,46 @@ def webshop_run_react(idx, prompt, profile=None, to_print=True, return_log=False
             execution_log.append(full_prompt_react)
             execution_log.append(f"{'='*60}")
         
+        # Check prompt with defense mechanism (RuleChecker or GuardAgent) before sending to LLM
+        if (env.rule_checker or env.guard_agent) and profile:
+            # In attack mode, use a single defense log file for all sessions
+            # Otherwise, use per-session log files
+            if hasattr(args, 'attack') and args.attack:
+                defense_log_file = args.output + '/rulechecker_log.txt' if env.rule_checker else args.output + '/guardagent_log.txt'
+            else:
+                defense_log_file = args.output + f'/rulechecker_prompt_log_{idx}.txt' if env.rule_checker else args.output + f'/guardagent_prompt_log_{idx}.txt'
+            should_continue, violated_rules = check_prompt_with_rulechecker(
+                full_prompt_react, idx, profile, env.rule_checker, defense_log_file, i, guard_agent=env.guard_agent
+            )
+            if not should_continue:
+                # Stop session due to rule violation
+                # Handle case where res[3] might be None
+                info_dict = res[3] if len(res) > 3 and res[3] is not None else {}
+                if return_log:
+                    execution_log.append(f"[Step {i}] Session stopped due to rule violation: {', '.join(violated_rules)}")
+                    return 0.0, {
+                        'Id': idx,
+                        'Instruction': saved_instruction if saved_instruction else info_dict.get('instruction', ''),
+                        'Actions': actions,
+                        'Success': False,
+                        'Reward': 0.0,
+                        'Category': info_dict.get('category', ''),
+                        'Query': info_dict.get('query', ''),
+                        'RuleViolated': True,
+                        'ViolatedRules': violated_rules
+                    }, execution_log
+                return 0.0, {
+                    'Id': idx,
+                    'Instruction': saved_instruction if saved_instruction else info_dict.get('instruction', ''),
+                    'Actions': actions,
+                    'Success': False,
+                    'Reward': 0.0,
+                    'Category': info_dict.get('category', ''),
+                    'Query': info_dict.get('query', ''),
+                    'RuleViolated': True,
+                    'ViolatedRules': violated_rules
+                }
+        
         action = llm(full_prompt_react, stop=['\n']).lstrip(' ')
         
         # Log LLM response
@@ -738,7 +1055,9 @@ def webshop_run_react(idx, prompt, profile=None, to_print=True, return_log=False
             actions = [actions[i] for i in range(len(actions)) if i not in inv_act_idx]
             
             # Use attack_instruction if provided, otherwise use environment instruction
-            final_instruction = saved_instruction if saved_instruction else res[3].get('instruction', '')
+            # Handle case where res[3] might be None (e.g., when session is blocked)
+            info_dict = res[3] if len(res) > 3 and res[3] is not None else {}
+            final_instruction = saved_instruction if saved_instruction else info_dict.get('instruction', '')
             if final_instruction and final_instruction.startswith('Instruction: '):
                 final_instruction = final_instruction.replace('Instruction: ', '', 1)
             
@@ -748,8 +1067,8 @@ def webshop_run_react(idx, prompt, profile=None, to_print=True, return_log=False
                 'Actions': actions[2:-1],
                 'Success': (res[1] == 1.0),  # Success=True only if Reward == 1.0
                 'Reward': res[1],
-                'Category': res[3].get('category', ''),
-                'Query': res[3].get('query', '')
+                'Category': info_dict.get('category', ''),
+                'Query': info_dict.get('query', '')
             }
             if return_log:
                 return res[1], data, execution_log
@@ -796,7 +1115,9 @@ def webshop_run_rap(idx, prompt, memory, embeddings, profile=None, to_print=True
             instruction = saved_instruction
             if instruction.startswith('Instruction: '):
                 instruction = instruction.replace('Instruction: ', '', 1)
-            res[3]['instruction'] = instruction
+            # Handle case where res[3] might be None
+            if len(res) > 3 and res[3] is not None:
+                res[3]['instruction'] = instruction
             # IMPORTANT: Also update session's instruction so RuleChecker uses attack instruction
             if idx in env.sessions:
                 env.sessions[idx]['instruction'] = instruction
@@ -832,10 +1153,10 @@ def webshop_run_rap(idx, prompt, memory, embeddings, profile=None, to_print=True
                     new_lines.insert(insert_idx, f'Instruction: {instruction}')
                 
                 observation = '\n'.join(new_lines)
-        elif instruction is None and res[3].get('instruction', None) is not None:
+        elif instruction is None and len(res) > 3 and res[3] is not None and res[3].get('instruction', None) is not None:
             instruction = res[3]['instruction'].replace('Instruction: ', '')
             res[3]['instruction'] = instruction
-        elif res[3].get('instruction', None) is None:
+        elif len(res) > 3 and res[3] is not None and res[3].get('instruction', None) is None:
             res[3]['instruction'] = instruction
 
         if i:
@@ -873,6 +1194,46 @@ def webshop_run_rap(idx, prompt, memory, embeddings, profile=None, to_print=True
             execution_log.append(full_prompt)
             execution_log.append(f"{'='*60}")
 
+        # Check prompt with defense mechanism (RuleChecker or GuardAgent) before sending to LLM
+        if (env.rule_checker or env.guard_agent) and profile:
+            # In attack mode, use a single defense log file for all sessions
+            # Otherwise, use per-session log files
+            if hasattr(args, 'attack') and args.attack:
+                defense_log_file = args.output + '/rulechecker_log.txt' if env.rule_checker else args.output + '/guardagent_log.txt'
+            else:
+                defense_log_file = args.output + f'/rulechecker_prompt_log_{idx}.txt' if env.rule_checker else args.output + f'/guardagent_prompt_log_{idx}.txt'
+            should_continue, violated_rules = check_prompt_with_rulechecker(
+                full_prompt, idx, profile, env.rule_checker, defense_log_file, i, guard_agent=env.guard_agent
+            )
+            if not should_continue:
+                # Stop session due to rule violation
+                # Handle case where res[3] might be None
+                info_dict = res[3] if len(res) > 3 and res[3] is not None else {}
+                if return_log:
+                    execution_log.append(f"[Step {i}] Session stopped due to rule violation: {', '.join(violated_rules)}")
+                    return 0.0, {
+                        'Id': idx,
+                        'Instruction': saved_instruction if saved_instruction else info_dict.get('instruction', ''),
+                        'Actions': actions,
+                        'Success': False,
+                        'Reward': 0.0,
+                        'Category': info_dict.get('category', ''),
+                        'Query': info_dict.get('query', ''),
+                        'RuleViolated': True,
+                        'ViolatedRules': violated_rules
+                    }, execution_log
+                return 0.0, {
+                    'Id': idx,
+                    'Instruction': saved_instruction if saved_instruction else info_dict.get('instruction', ''),
+                    'Actions': actions,
+                    'Success': False,
+                    'Reward': 0.0,
+                    'Category': info_dict.get('category', ''),
+                    'Query': info_dict.get('query', ''),
+                    'RuleViolated': True,
+                    'ViolatedRules': violated_rules
+                }
+
         action = llm(full_prompt, stop=['\n']).lstrip(' ')
         
         # Log LLM response
@@ -902,7 +1263,9 @@ def webshop_run_rap(idx, prompt, memory, embeddings, profile=None, to_print=True
             actions = [actions[i] for i in range(len(actions)) if i not in inv_act_idx]
             
             # Use saved attack_instruction if provided, otherwise use environment instruction
-            final_instruction = saved_instruction if saved_instruction else res[3].get('instruction', '')
+            # Handle case where res[3] might be None (e.g., when session is blocked)
+            info_dict = res[3] if len(res) > 3 and res[3] is not None else {}
+            final_instruction = saved_instruction if saved_instruction else info_dict.get('instruction', '')
             if final_instruction and final_instruction.startswith('Instruction: '):
                 final_instruction = final_instruction.replace('Instruction: ', '', 1)
             
@@ -913,8 +1276,8 @@ def webshop_run_rap(idx, prompt, memory, embeddings, profile=None, to_print=True
                 'Actions': actions[2:-1],
                 'Success': (res[1] == 1.0),  # Success=True only if Reward == 1.0
                 'Reward': res[1],  # Can be 0.0, but still saved to memory if done=True
-                'Category': res[3].get('category', ''),
-                'Query': res[3].get('query', '')
+                'Category': info_dict.get('category', ''),
+                'Query': info_dict.get('query', '')
             }
 
             if len(memory) > 0:
@@ -1318,6 +1681,11 @@ rule_violation_file = args.output + '/rule_violation.txt'
 if os.path.exists(rule_violation_file):
     os.remove(rule_violation_file)  # Clear previous run's data
 
+# Initialize rulechecker prompt log directory
+# Individual log files will be created per session: rulechecker_prompt_log_{session_id}.txt
+rulechecker_log_dir = args.output
+os.makedirs(rulechecker_log_dir, exist_ok=True)
+
 # Memory file path - only using memory_1.json
 memory_file = args.output + '/memory_1.json'
 
@@ -1523,13 +1891,15 @@ for i in index_list:
         print(f"Host Instruction: {host_instruction}")
         print(f"Host Query: {host_query}")
         
-        # Step 2: Generate attack plan (with mask check if rule_checker is enabled)
+        # Step 2: Generate attack plan (with mask check if defense mechanism is enabled)
+        # Use rule_checker or guard_agent for mask checking
+        defense_for_mask = rule_checker if args.defense_mode == 'rule_checker' else guard_agent
         attack_plan = attack_generator.generate_attack_plan(
             host_instruction=host_instruction,
             target_instruction=args.attack_target_instruction,
-            rule_checker=rule_checker if args.enable_rule_checker else None,
-            profile=profile if args.enable_rule_checker else None,
-            query=host_query if args.enable_rule_checker else "",
+            rule_checker=defense_for_mask if args.defense_mode != 'none' else None,
+            profile=profile if args.defense_mode != 'none' else None,
+            query=host_query if args.defense_mode != 'none' else "",
             attack_log_file=attack_log_file
         )
         
