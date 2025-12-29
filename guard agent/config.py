@@ -47,18 +47,21 @@ def model_config(model):
     
     # Use custom API base URL (same as RuleChecker)
     # This allows using a proxy or custom OpenAI-compatible endpoint
-    # Note: autogen uses 'base_url' in config_list, not 'api_base'
-    # IMPORTANT: Do NOT include 'api_base' in config_list for autogen, as it causes
-    # TypeError with newer OpenAI clients. Only 'base_url' should be used.
+    # IMPORTANT: autogen 1.0.16 with OpenAI 1.7.2 compatibility issue:
+    # - autogen may internally convert 'base_url' to 'api_base' when passing to OpenAI client
+    # - OpenAI 1.7.2's Completions.create() doesn't accept 'api_base' parameter
+    # Solution: Set base_url via environment variable BEFORE importing autogen
+    # This way autogen will use the environment variable instead of config_list
     base_url = "http://152.53.53.64:3000/v1"
+    os.environ["OPENAI_BASE_URL"] = base_url
     
     config = {
         "model": model_name,
         "api_key": api_key,
-        "base_url": base_url,  # autogen uses 'base_url' for custom API endpoints
-        # NOTE: 'api_base' is NOT included here to avoid passing it to OpenAI client
-        # For direct OpenAI client calls (in task_decomposition, error_debugger),
-        # we use 'api_base' from a separate variable, not from config_list
+        # NOTE: 'base_url' is NOT included in config_list to avoid autogen's incorrect conversion
+        # Instead, we set OPENAI_BASE_URL environment variable which autogen will use
+        # For direct API calls in GuardAgent (task_decomposition, error_debugger),
+        # we manually create OpenAI client with base_url parameter (see guardagent.py lines 65-69, 216-220)
     }
     
     return config

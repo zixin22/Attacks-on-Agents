@@ -172,6 +172,23 @@ class GuardAgent(UserProxyAgent):
 
     def send(self, message: Union[Dict, str], recipient: Agent, request_reply: Optional[bool] = None,
              silent: Optional[bool] = False):
+        # Ensure message has valid content (not None)
+        if isinstance(message, dict):
+            # If message is a dict, ensure content is not None
+            if 'content' in message and message['content'] is None:
+                # If content is None but function_call exists, that's OK (function_call messages don't need content)
+                if 'function_call' not in message or message.get('function_call') is None:
+                    # If no function_call either, set content to empty string
+                    message['content'] = ""
+            elif 'content' not in message:
+                # If content key doesn't exist, add it
+                if 'function_call' not in message or message.get('function_call') is None:
+                    message['content'] = ""
+        elif isinstance(message, str):
+            # If message is a string, ensure it's not None
+            if message is None:
+                message = ""
+        
         valid = self._append_oai_message(message, "assistant", recipient)
         if valid:
             recipient.receive(message, self, request_reply, silent)
@@ -192,11 +209,96 @@ class GuardAgent(UserProxyAgent):
             request_reply: Optional[bool] = None,
             silent: Optional[bool] = False,
     ):
+        # Ensure received message has valid content
+        if isinstance(message, dict):
+            if 'content' in message and message['content'] is None:
+                if 'function_call' not in message or message.get('function_call') is None:
+                    message['content'] = ""
+            elif 'content' not in message:
+                if 'function_call' not in message or message.get('function_call') is None:
+                    message['content'] = ""
+        elif isinstance(message, str) and message is None:
+            message = ""
+        
         self._process_received_message(message, sender, silent)
         if request_reply is False or request_reply is None and self.reply_at_receive[sender] is False:
             return
-        reply = self.generate_reply(messages=self.chat_messages[sender], sender=sender)
+        
+        # Filter out messages with None content before generating reply
+        # This prevents OpenAI API errors
+        if sender in self.chat_messages:
+            filtered_messages = []
+            for msg in self.chat_messages[sender]:
+                if isinstance(msg, dict):
+                    # Keep message if it has content (even if empty string) or function_call
+                    if msg.get('content') is not None or msg.get('function_call') is not None:
+                        # Ensure content is not None (set to empty string if None)
+                        if 'content' in msg and msg['content'] is None:
+                            msg = msg.copy()  # Don't modify original
+                            msg['content'] = ""
+                        filtered_messages.append(msg)
+                    # Skip messages with both content=None and no function_call
+                else:
+                    # Keep non-dict messages (strings, etc.)
+                    filtered_messages.append(msg)
+            # Update chat_messages with filtered list
+            self.chat_messages[sender] = filtered_messages
+        
+        # Clean messages before generating reply to prevent None content errors
+        cleaned_messages = []
+        for msg in self.chat_messages[sender]:
+            if isinstance(msg, dict):
+                # Create a copy to avoid modifying the original
+                msg_copy = msg.copy()
+                # Ensure content is not None and is a string
+                has_function_call = 'function_call' in msg_copy and msg_copy.get('function_call') is not None
+                
+                if 'content' in msg_copy:
+                    if msg_copy['content'] is None:
+                        # If content is None and no function_call, set content to empty string
+                        if not has_function_call:
+                            msg_copy['content'] = ""
+                    elif not isinstance(msg_copy['content'], str):
+                        # If content is not a string, convert it to string
+                        msg_copy['content'] = str(msg_copy['content']) if msg_copy['content'] is not None else ""
+                else:
+                    # If content key doesn't exist and no function_call, add empty string
+                    if not has_function_call:
+                        msg_copy['content'] = ""
+                
+                # Ensure role is present (required by OpenAI API)
+                if 'role' not in msg_copy:
+                    msg_copy['role'] = 'user'  # Default role
+                
+                cleaned_messages.append(msg_copy)
+            else:
+                # Keep non-dict messages as-is
+                cleaned_messages.append(msg)
+        
+        # CRITICAL: Also clean messages in chat_messages[sender] directly
+        # This ensures autogen's internal methods see cleaned messages
+        if sender in self.chat_messages:
+            self.chat_messages[sender] = cleaned_messages
+        
+        # Also clean _oai_messages if they exist
+        if hasattr(self, '_oai_messages') and self._oai_messages is not None:
+            if sender in self._oai_messages:
+                self._oai_messages[sender] = cleaned_messages
+        
+        # Use cleaned messages for generate_reply
+        reply = self.generate_reply(messages=cleaned_messages, sender=sender)
         if reply is not None:
+            # Ensure reply has valid content before sending
+            if isinstance(reply, dict):
+                if 'content' in reply and reply['content'] is None:
+                    if 'function_call' not in reply or reply.get('function_call') is None:
+                        reply['content'] = ""
+                elif 'content' not in reply:
+                    if 'function_call' not in reply or reply.get('function_call') is None:
+                        reply['content'] = ""
+            elif isinstance(reply, str) and reply is None:
+                reply = ""
+            
             self.send(reply, sender, silent=silent)
 
     def error_debugger(self, config, code, error_info):

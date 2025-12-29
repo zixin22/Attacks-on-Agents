@@ -12,6 +12,100 @@ def run_code_webshop(cell):
     Returns formatted results similar to run_code_seeact.
     """
     from prompts_guard import CodeHeader
+    
+    # Auto-fix: If code only defines a function but doesn't call it, try to fix it
+    cell_lines = cell.split('\n')
+    has_function_def = False
+    function_name = None
+    has_function_call = False
+    has_direct_execution = False
+    
+    # Check if code defines a function
+    for line in cell_lines:
+        stripped = line.strip()
+        if stripped.startswith('def '):
+            has_function_def = True
+            # Extract function name
+            func_match = stripped.split('def ')[1].split('(')[0].strip()
+            if func_match:
+                function_name = func_match
+        # Check if function is called
+        if function_name and function_name in stripped and '(' in stripped:
+            if not stripped.startswith('def ') and '=' not in stripped.split('(')[0]:
+                has_function_call = True
+        # Check if there's direct execution (not just function definition)
+        if stripped and not stripped.startswith('def ') and not stripped.startswith('#'):
+            if '=' in stripped or 'if ' in stripped or 'for ' in stripped or 'print(' in stripped:
+                has_direct_execution = True
+    
+    # If code only defines function but doesn't call it, try to extract and execute function body
+    if has_function_def and not has_function_call and not has_direct_execution:
+        # Try to extract function body and execute it directly
+        # This is a simple heuristic - extract code inside function definition
+        try:
+            import ast
+            tree = ast.parse(cell)
+            for node in ast.walk(tree):
+                if isinstance(node, ast.FunctionDef):
+                    # Found function definition, try to extract body
+                    # Convert function body to executable code
+                    func_body_lines = []
+                    for stmt in node.body:
+                        func_body_lines.append(ast.unparse(stmt))
+                    # Replace function definition with its body
+                    cell = '\n'.join(func_body_lines)
+                    break
+        except Exception as e:
+            # If AST parsing fails, try simple string manipulation
+            # Find function definition and extract body
+            lines = cell.split('\n')
+            in_function = False
+            indent_level = 0
+            func_body = []
+            for i, line in enumerate(lines):
+                if line.strip().startswith('def '):
+                    in_function = True
+                    # Get indentation level
+                    indent_level = len(line) - len(line.lstrip())
+                    # Extract function parameters to understand what's needed
+                    func_params = line.split('(')[1].split(')')[0] if '(' in line and ')' in line else ''
+                    continue
+                if in_function:
+                    current_indent = len(line) - len(line.lstrip()) if line.strip() else indent_level + 1
+                    if line.strip() and current_indent <= indent_level:
+                        # End of function
+                        break
+                    # Add function body line (remove one level of indentation)
+                    if line.strip():
+                        func_body.append(line[indent_level:] if len(line) > indent_level else line.lstrip())
+                    else:
+                        func_body.append('')
+            
+            # If we extracted function body, check if it needs parameters
+            if func_body:
+                func_body_str = '\n'.join(func_body)
+                # Check if function body uses user_profile or purchase_request
+                needs_user_profile = 'user_profile' in func_body_str
+                needs_purchase_request = 'purchase_request' in func_body_str
+                
+                # If function needs parameters, add placeholder extraction code before function body
+                if needs_user_profile or needs_purchase_request:
+                    # Add code to extract user_profile from Agent input (if available in context)
+                    # This is a best-effort attempt - we can't access Agent input directly here
+                    # So we'll add a comment and try to execute anyway
+                    prepended_code = []
+                    if needs_user_profile:
+                        prepended_code.append("# Note: user_profile should be extracted from Agent input")
+                        prepended_code.append("# For now, creating a placeholder - code may need manual adjustment")
+                        prepended_code.append("user_profile = {}  # Placeholder - should be extracted from Agent input")
+                    if needs_purchase_request:
+                        prepended_code.append("# Note: purchase_request should be extracted from Agent input")
+                        prepended_code.append("purchase_request = {}  # Placeholder - should be extracted from Agent input")
+                    
+                    cell = '\n'.join(prepended_code) + '\n' + func_body_str
+                else:
+                    cell = func_body_str
+    
     try:
         global_var = {
             "action_denied": None,
@@ -47,7 +141,11 @@ def run_code_webshop(cell):
         
         # Validate that we got a result
         if not ('ACTION DENIED' in output or "ACTION GRANTED" in output):
-            return "Missing variables. Code must print either 'ACTION DENIED' or 'ACTION GRANTED'."
+            # Check if code only defined a function but didn't call it
+            if has_function_def and not has_function_call:
+                return "Error: Code defines a function but doesn't call it. The code must be EXECUTABLE directly - do NOT just define a function. Write code that runs immediately when executed. Extract user information from Agent input and create user_info/user_profile dictionary, then call CheckRule and print 'ACTION DENIED' or 'ACTION GRANTED'."
+            else:
+                return "Missing variables. Code must print either 'ACTION DENIED' or 'ACTION GRANTED'. Make sure the code executes directly and prints the result."
         
         return "GuardAgent results:\naction_denied: {}\ninaccessible_actions: {}\nguardrailed_answer: {}\n(End of results)".format(
             int(action_denied), inaccessible_actions, guardrailed_answer

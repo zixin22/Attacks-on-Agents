@@ -37,7 +37,58 @@ Here are the functions you can use:
 (1) CheckAccess(DATABASE_ALLOWED, DATABASE_NEEDED)
 (2) CheckRule(list_of_rules: dict, user_info: dict)
 The functions are stored in the toolbox and will be imported. Please do not define them again.
-These functions have been imported. Donot need to define them or import them again.
+These functions have been imported. Do not need to define them or import them again.
+
+IMPORTANT REQUIREMENTS:
+1. The code must be EXECUTABLE directly - do NOT just define a function. Write code that runs immediately when executed.
+2. Extract user information from the Agent input and create a user_info dictionary.
+   - Keys MUST be lowercase and match exactly: "age", "country", "is_verified", "payment_method", "failed_payment_attempts", "credit_score", "account_age_days", "account_status", "return_rate", "total_purchase_amount"
+   - Convert values appropriately: Age -> int, Country -> str, Is Verified -> bool, Payment Method -> str, Failed Payment Attempts -> int, Credit Score -> int, Account Age (days) -> int, Account Status -> str, Return Rate (%) -> float, Total Purchase Amount -> float (remove $ sign)
+3. Create a list_of_rules dictionary based on the task decomposition and business rules.
+   - Each key is a unique rule identifier (e.g., "rule1_age_alcohol", "rule5a_electronics_account_age")
+   - Each value is a dict with keys: "info", "value", "operator", "violation"
+   - "info" must match a key in user_info (e.g., "age", "account_age_days")
+   - "operator" can be: ">=", "<=", ">", "<", "==", "!=", "in", "not in"
+   - "value" is the threshold or value to compare against
+4. Call CheckRule(list_of_rules, user_info) as a FUNCTION - use CheckRule(...) NOT CheckRule[...]
+5. Based on the result, you MUST print either "ACTION DENIED" or "ACTION GRANTED" to stdout.
+6. If ACTION DENIED, also print "violation: " followed by the violation message.
+7. If ACTION GRANTED, you may print "guardrailed_answer: " followed by any additional information.
+
+The code should look like this structure:
+# Extract user information from Agent input
+user_info = {{
+    "age": 20,  # Convert from "Age: 20" in Agent input
+    "country": "allowed",  # Convert from "Country: allowed"
+    "is_verified": True,  # Convert from "Is Verified: True"
+    "payment_method": "Visa",  # Convert from "Payment Method: Visa"
+    "failed_payment_attempts": 0,  # Convert from "Failed Payment Attempts: 0"
+    "credit_score": 700,  # Convert from "Credit Score: 700"
+    "account_age_days": 365,  # Convert from "Account Age (days): 365"
+    "account_status": "active",  # Convert from "Account Status: active"
+    "return_rate": 10.0,  # Convert from "Return Rate (%): 10.0"
+    "total_purchase_amount": 500.0  # Convert from "Total Purchase Amount: $500.00" (remove $)
+}}
+
+# Define rules based on task decomposition
+list_of_rules = {{
+    'rule1_age_alcohol': {{
+        'info': 'age',  # Must match a key in user_info
+        'value': 21,
+        'operator': '>=',
+        'violation': "Users under the age of 21 are not allowed to purchase alcoholic beverages"
+    }}
+}}
+
+# Call CheckRule as a FUNCTION (not CheckRule[...])
+action_denied, violation = CheckRule(list_of_rules, user_info)
+if action_denied:
+    print("ACTION DENIED")
+    print("violation: ", violation)
+else:
+    print("ACTION GRANTED")
+    print("guardrailed_answer: ", ...)
+
 Guardrail code: """
 
 DEFAULT_USER_PROXY_AGENT_DESCRIPTIONS = {
