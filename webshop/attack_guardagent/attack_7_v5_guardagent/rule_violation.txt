@@ -2,11 +2,11 @@
 ============================================================
 METRICS SUMMARY
 ============================================================
-Total Episodes: 4
+Total Episodes: 0
 Blocked Episodes: 0
-Allowed Episodes: 4
+Allowed Episodes: 0
 Successful Purchases: 0
-Failed Purchases: 4
+Failed Purchases: 0
 
 Block Rate: 0.000
 (% of episodes where purchase was blocked)

@@ -25,13 +25,13 @@ class MaskChecker:
         Initialize MaskChecker.
         
         Args:
-            rule_checker: RuleChecker or GuardAgent instance to check for violations
+            rule_checker: RuleChecker instance to check for violations
             profile: UserProfile to use for rule checking
             host_instruction: Original host instruction
             query: Query string (optional, defaults to empty)
             verbose: Whether to print debug information
         """
-        self.rule_checker = rule_checker  # Can be RuleChecker or GuardAgent
+        self.rule_checker = rule_checker  # RuleChecker instance
         self.profile = profile
         self.host_instruction = host_instruction
         self.query = query
@@ -105,22 +105,41 @@ class MaskChecker:
         
         # First, check the full target instruction (all fragments combined)
         full_instruction = ' '.join([f for f in fragments if f.strip()])
-        # Support both RuleChecker (with return_details) and GuardAgent (without return_details)
-        try:
-            result_full = self.rule_checker.check_all_rules(
-                self.profile, full_instruction, self.query, return_details=True
-            )
-            if len(result_full) == 3:
-                is_valid_full, violated_rules_full, details_full = result_full
-            else:
-                is_valid_full, violated_rules_full = result_full
+        # Support both RuleChecker and GuardAgent
+        # RuleChecker has check_all_rules(profile, instruction, query, return_details=True)
+        # GuardAgentWebShop has check(agent_input, agent_output, user_profile, use_full_prompt=False)
+        if hasattr(self.rule_checker, 'check_all_rules'):
+            # RuleChecker interface
+            try:
+                result_full = self.rule_checker.check_all_rules(
+                    self.profile, full_instruction, self.query, return_details=True
+                )
+                if len(result_full) == 3:
+                    is_valid_full, violated_rules_full, details_full = result_full
+                else:
+                    is_valid_full, violated_rules_full = result_full
+                    details_full = {'prompt': full_instruction, 'response': 'N/A'}
+            except TypeError:
+                # RuleChecker without return_details
+                is_valid_full, violated_rules_full = self.rule_checker.check_all_rules(
+                    self.profile, full_instruction, self.query
+                )
                 details_full = {'prompt': full_instruction, 'response': 'N/A'}
-        except TypeError:
-            # GuardAgent doesn't support return_details
-            is_valid_full, violated_rules_full = self.rule_checker.check_all_rules(
-                self.profile, full_instruction, self.query
+        elif hasattr(self.rule_checker, 'check'):
+            # GuardAgentWebShop interface
+            # GuardAgent.check returns (is_valid, violated_rules, details_dict)
+            is_valid_full, violated_rules_full, guard_details = self.rule_checker.check(
+                agent_input=full_instruction,
+                agent_output=self.query,
+                user_profile=self.profile,
+                use_full_prompt=False
             )
-            details_full = {'prompt': full_instruction, 'response': 'N/A'}
+            details_full = {
+                'prompt': guard_details.get('formatted_input', full_instruction),
+                'response': f"is_valid={is_valid_full}, violated_rules={violated_rules_full}"
+            }
+        else:
+            raise ValueError(f"rule_checker must have either 'check_all_rules' or 'check' method, got {type(self.rule_checker)}")
         
         detection_log.append({
             'test_type': 'full_instruction',
@@ -168,21 +187,37 @@ class MaskChecker:
             masked_instruction = self._create_masked_instruction(fragments, idx)
             
             # Check with rule_checker or guard_agent (with details if supported)
-            try:
-                result_masked = self.rule_checker.check_all_rules(
-                    self.profile, masked_instruction, self.query, return_details=True
-                )
-                if len(result_masked) == 3:
-                    is_valid_masked, violated_rules_masked, details_masked = result_masked
-                else:
-                    is_valid_masked, violated_rules_masked = result_masked
+            if hasattr(self.rule_checker, 'check_all_rules'):
+                # RuleChecker interface
+                try:
+                    result_masked = self.rule_checker.check_all_rules(
+                        self.profile, masked_instruction, self.query, return_details=True
+                    )
+                    if len(result_masked) == 3:
+                        is_valid_masked, violated_rules_masked, details_masked = result_masked
+                    else:
+                        is_valid_masked, violated_rules_masked = result_masked
+                        details_masked = {'prompt': masked_instruction, 'response': 'N/A'}
+                except TypeError:
+                    # RuleChecker without return_details
+                    is_valid_masked, violated_rules_masked = self.rule_checker.check_all_rules(
+                        self.profile, masked_instruction, self.query
+                    )
                     details_masked = {'prompt': masked_instruction, 'response': 'N/A'}
-            except TypeError:
-                # GuardAgent doesn't support return_details
-                is_valid_masked, violated_rules_masked = self.rule_checker.check_all_rules(
-                    self.profile, masked_instruction, self.query
+            elif hasattr(self.rule_checker, 'check'):
+                # GuardAgentWebShop interface
+                is_valid_masked, violated_rules_masked, guard_details = self.rule_checker.check(
+                    agent_input=masked_instruction,
+                    agent_output=self.query,
+                    user_profile=self.profile,
+                    use_full_prompt=False
                 )
-                details_masked = {'prompt': masked_instruction, 'response': 'N/A'}
+                details_masked = {
+                    'prompt': guard_details.get('formatted_input', masked_instruction),
+                    'response': f"is_valid={is_valid_masked}, violated_rules={violated_rules_masked}"
+                }
+            else:
+                raise ValueError(f"rule_checker must have either 'check_all_rules' or 'check' method, got {type(self.rule_checker)}")
             
             detection_log.append({
                 'test_type': 'masked_fragment',
@@ -250,24 +285,42 @@ class MaskChecker:
             else:
                 safe_fragments.append(fragment)
         
-        # Check partial instruction (only safe fragments) with RULECHECKER
+        # Check partial instruction (only safe fragments) with RULECHECKER or GuardAgent
         safe_instruction_check = None
         if safe_fragments:
             safe_instruction = ' '.join(safe_fragments)
-            result_safe = self.rule_checker.check_all_rules(
-                self.profile, safe_instruction, self.query, return_details=True
-            )
-            is_valid_safe, violated_rules_safe, details_safe = result_safe
-            
-            safe_instruction_check = {
-                'test_type': 'safe_fragments_only',
-                'instruction': safe_instruction,
-                'is_valid': is_valid_safe,
-                'violated_rules': violated_rules_safe,
-                'safe_fragments': safe_fragments,
-                'rule_checker_prompt': details_safe['prompt'],
-                'rule_checker_response': self._safe_str(details_safe.get('response', 'N/A'))
-            }
+            if hasattr(self.rule_checker, 'check_all_rules'):
+                # RuleChecker interface
+                result_safe = self.rule_checker.check_all_rules(
+                    self.profile, safe_instruction, self.query, return_details=True
+                )
+                is_valid_safe, violated_rules_safe, details_safe = result_safe
+                safe_instruction_check = {
+                    'test_type': 'safe_fragments_only',
+                    'instruction': safe_instruction,
+                    'is_valid': is_valid_safe,
+                    'violated_rules': violated_rules_safe,
+                    'safe_fragments': safe_fragments,
+                    'rule_checker_prompt': details_safe.get('prompt', safe_instruction),
+                    'rule_checker_response': self._safe_str(details_safe.get('response', 'N/A'))
+                }
+            elif hasattr(self.rule_checker, 'check'):
+                # GuardAgentWebShop interface
+                is_valid_safe, violated_rules_safe, guard_details = self.rule_checker.check(
+                    agent_input=safe_instruction,
+                    agent_output=self.query,
+                    user_profile=self.profile,
+                    use_full_prompt=False
+                )
+                safe_instruction_check = {
+                    'test_type': 'safe_fragments_only',
+                    'instruction': safe_instruction,
+                    'is_valid': is_valid_safe,
+                    'violated_rules': violated_rules_safe,
+                    'safe_fragments': safe_fragments,
+                    'rule_checker_prompt': guard_details.get('formatted_input', safe_instruction),
+                    'rule_checker_response': self._safe_str(f"is_valid={is_valid_safe}, violated_rules={violated_rules_safe}")
+                }
             
             if self.verbose:
                 print(f"\n{'='*60}")

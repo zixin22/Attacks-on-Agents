@@ -65,16 +65,6 @@ def run_code_ehragent(cell):
         return error_info
 
 
-# Import WebShop function
-try:
-    from toolset_webshop import run_code_webshop
-except ImportError:
-    # Fallback: use seeact implementation if webshop not available
-    def run_code_webshop(cell):
-        """Fallback WebShop code execution - uses seeact implementation"""
-        return run_code_seeact(cell)
-
-
 def run_code_seeact(cell):
     """
     Returns the path to the python interpreter.
@@ -169,13 +159,3 @@ def run_code_seeact(cell):
         error_info += '\nPlease make modifications accordingly and make sure the rest code works well with the modification.'
 
         return error_info
-
-
-# Import WebShop function
-try:
-    from toolset_webshop import run_code_webshop
-except ImportError:
-    # Fallback: use seeact implementation if webshop not available
-    def run_code_webshop(cell):
-        """Fallback WebShop code execution - uses seeact implementation"""
-        return run_code_seeact(cell)

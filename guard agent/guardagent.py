@@ -4,7 +4,12 @@ import logging
 import openai
 import json
 from openai import OpenAI
-from autogen.agentchat import Agent, UserProxyAgent, ConversableAgent
+try:
+    # Try new AutoGen 0.10.0+ import
+    from autogen_agentchat import UserProxyAgent, ConversableAgent
+except ImportError:
+    # Fallback to old AutoGen 0.2.x import
+    from autogen.agentchat import Agent, UserProxyAgent, ConversableAgent
 from termcolor import colored
 import Levenshtein
 
@@ -50,7 +55,7 @@ class GuardAgent(UserProxyAgent):
         # Returns the related information to the given query.
         patience = 2
         sleep_time = 30
-        openai.api_key = config["api_key"]
+        # Note: API key is now passed to OpenAI client constructor, not set globally
         engine = config["model"]
         query_message = Example_Decomposition.format(user_request=user_request,
                                                      agent_specification=agent_specification,
@@ -60,13 +65,11 @@ class GuardAgent(UserProxyAgent):
         from prompts_guard import SYSTEM_PROMPT_DECOMPOSITION
         messages = [{"role": "system", "content": SYSTEM_PROMPT_DECOMPOSITION},
                     {"role": "user", "content": query_message}]
-        # Use custom API base URL if provided in config
-        # Note: config_list uses 'base_url', but we check both for compatibility
-        api_base = config.get("api_base") or config.get("base_url", None)
-        if api_base:
-            client = OpenAI(api_key=config["api_key"], base_url=api_base)
-        else:
-            client = OpenAI(api_key=config["api_key"])
+        # Use api_base from config if provided
+        client_kwargs = {"api_key": config["api_key"]}
+        if "api_base" in config and config["api_base"]:
+            client_kwargs["base_url"] = config["api_base"]
+        client = OpenAI(**client_kwargs)
         while patience > 0:
             patience -= 1
             try:
@@ -89,34 +92,11 @@ class GuardAgent(UserProxyAgent):
         return "Fail to retrieve related knowledge, please try again later."
 
     def retrieve_examples(self, agent_input, agent_output):
-        # Validate memory and num_shots
-        if not hasattr(self, 'memory') or self.memory is None:
-            self.memory = []  # Initialize empty memory if not set
-        if not isinstance(self.memory, list):
-            raise ValueError(f"self.memory must be a list. Got: {type(self.memory)}")
-        if not hasattr(self, 'num_shots') or self.num_shots is None:
-            self.num_shots = 0  # Default to 0 if not set
-        
-        # If memory is empty, return empty examples
-        if len(self.memory) == 0:
-            return ""
-        
         levenshtein_dist = {}
         for i in range(len(self.memory)):
-            # Validate memory item structure
-            if not isinstance(self.memory[i], dict):
-                continue  # Skip invalid items
-            required_keys = ["agent input", "agent output", "subtasks", "code"]
-            if not all(key in self.memory[i] for key in required_keys):
-                continue  # Skip items with missing keys
-            
             mem_input = self.memory[i]["agent input"]
             mem_output = self.memory[i]["agent output"]
             levenshtein_dist[i] = Levenshtein.distance(agent_input, mem_input) + Levenshtein.distance(agent_output, mem_output)
-        
-        if len(levenshtein_dist) == 0:
-            return ""  # No valid examples found
-        
         levenshtein_dist = sorted(levenshtein_dist.items(), key=lambda x: x[1], reverse=False)
         selected_indexes = [levenshtein_dist[i][0] for i in range(min(self.num_shots, len(levenshtein_dist)))]
         examples = []
@@ -130,27 +110,12 @@ class GuardAgent(UserProxyAgent):
         return examples
 
     def generate_init_message(self, **context):
-        # Validate required context keys
-        required_keys = ["user_request", "agent_specification", "agent_input", "agent_output", "agent_task_deco_examples"]
-        missing_keys = [key for key in required_keys if key not in context]
-        if missing_keys:
-            raise KeyError(f"Missing required keys in context: {missing_keys}")
 
         self.user_request = context["user_request"]
         self.agent_specification = context["agent_specification"]
         self.agent_input = context["agent_input"]
         self.agent_output = context["agent_output"]
         self.agent_task_deco_examples = context["agent_task_deco_examples"]
-
-        # Validate config_list
-        if self.config_list is None:
-            raise ValueError("config_list is None. GuardAgent must be initialized with config_list.")
-        if not isinstance(self.config_list, list) or len(self.config_list) == 0:
-            raise ValueError(f"config_list must be a non-empty list. Got: {type(self.config_list)}")
-        if not isinstance(self.config_list[0], dict):
-            raise ValueError(f"config_list[0] must be a dict. Got: {type(self.config_list[0])}")
-        if "api_key" not in self.config_list[0] or "model" not in self.config_list[0]:
-            raise KeyError(f"config_list[0] must contain 'api_key' and 'model' keys. Got keys: {list(self.config_list[0].keys())}")
 
         # import prompt
         from prompts_guard import GuardAgent_Message_Prompt
@@ -197,6 +162,9 @@ class GuardAgent(UserProxyAgent):
             return
         reply = self.generate_reply(messages=self.chat_messages[sender], sender=sender)
         if reply is not None:
+            # Ensure reply content is not None
+            if isinstance(reply, dict) and reply.get('content') is None:
+                reply['content'] = ''
             self.send(reply, sender, silent=silent)
 
     def error_debugger(self, config, code, error_info):
@@ -205,19 +173,17 @@ class GuardAgent(UserProxyAgent):
         # Returns the related information to the given query.
         patience = 1
         sleep_time = 30
-        openai.api_key = config["api_key"]
+        # Note: API key is now passed to OpenAI client constructor, not set globally
         engine = config["model"]
         query_message = CodeDebugger.format(subtasks=self.subtasks, code=code, error_info=error_info)
         messages = [{"role": "system",
                      "content": "You are an AI assistant that helps people debug their code. Only list one most possible reason to the errors."},
                     {"role": "user", "content": query_message}]
-        # Use custom API base URL if provided in config
-        # Note: config_list uses 'base_url', but we check both for compatibility
-        api_base = config.get("api_base") or config.get("base_url", None)
-        if api_base:
-            client = OpenAI(api_key=config["api_key"], base_url=api_base)
-        else:
-            client = OpenAI(api_key=config["api_key"])
+        # Use api_base from config if provided
+        client_kwargs = {"api_key": config["api_key"]}
+        if "api_base" in config and config["api_base"]:
+            client_kwargs["base_url"] = config["api_base"]
+        client = OpenAI(**client_kwargs)
         while patience > 0:
             patience -= 1
             try:

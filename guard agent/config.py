@@ -1,66 +1,15 @@
 def model_config(model):
-    """
-    Create model configuration with API key loaded from file.
-    
-    Args:
-        model: Model name (e.g., 'gpt-4', 'gpt-3.5-turbo', 'gpt-4o')
-    
-    Returns:
-        Dictionary with 'model' and 'api_key' keys
-    """
-    import os
-    
-    # Try multiple possible paths for API key file
-    possible_paths = [
-        os.path.join(os.path.dirname(__file__), '..', 'webshop', 'OpenAI_api_key.txt'),  # Relative to config.py
-        os.path.join(os.path.dirname(__file__), '..', '..', 'webshop', 'OpenAI_api_key.txt'),  # Alternative relative path
-        r"C:\Users\22749\Desktop\rap-main\webshop\OpenAI_api_key.txt",  # Absolute path (fallback)
-        'OpenAI_api_key.txt'  # Current directory
-    ]
-    
-    api_key_path = None
-    for path in possible_paths:
-        if os.path.exists(path):
-            api_key_path = path
-            break
-    
-    if api_key_path:
-        try:
-            with open(api_key_path, "r") as f:
-                api_key = f.read().strip()
-        except Exception as e:
-            print(f"[Warning] Failed to read API key from {api_key_path}: {e}")
-            api_key = "<YOUR_API_KEY>"  # Fallback to placeholder
+    if model == 'gpt-3.5-turbo':
+        config = {
+            "model": "gpt-3.5-turbo",
+            "api_key": "<YOUR_API_KEY>",
+        }
     else:
-        print(f"[Warning] OpenAI API key file not found. Tried: {possible_paths}")
-        api_key = "<YOUR_API_KEY>"  # Fallback to placeholder
-    
-    # Determine model name (handle variations like 'gpt-4o')
-    if 'gpt-3.5-turbo' in model.lower():
-        model_name = "gpt-3.5-turbo"
-    elif 'gpt-4o' in model.lower():
-        model_name = "gpt-4o"
-    elif 'gpt-4' in model.lower():
-        model_name = "gpt-4"
-    else:
-        model_name = "gpt-4"  # Default
-    
-    # Use custom API base URL (same as RuleChecker)
-    # This allows using a proxy or custom OpenAI-compatible endpoint
-    # Note: autogen uses 'base_url' in config_list, not 'api_base'
-    # IMPORTANT: Do NOT include 'api_base' in config_list for autogen, as it causes
-    # TypeError with newer OpenAI clients. Only 'base_url' should be used.
-    base_url = "http://152.53.53.64:3000/v1"
-    
-    config = {
-        "model": model_name,
-        "api_key": api_key,
-        "base_url": base_url,  # autogen uses 'base_url' for custom API endpoints
-        # NOTE: 'api_base' is NOT included here to avoid passing it to OpenAI client
-        # For direct OpenAI client calls (in task_decomposition, error_debugger),
-        # we use 'api_base' from a separate variable, not from config_list
-    }
-    
+        config = {
+            "model": "gpt-4",
+            "api_key": "<YOUR_API_KEY>",
+        }
+
     return config
 
 
