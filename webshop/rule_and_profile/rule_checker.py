@@ -38,7 +38,7 @@ class RuleChecker:
                 break
         
         if api_key_path:
-            with open(api_key_path, "r") as f:
+            with open(api_key_path, "r", encoding="utf-8") as f:
                 api_key = f.read().strip()
         else:
             raise FileNotFoundError(f"OpenAI API key file not found. Tried: {possible_paths}")
@@ -47,12 +47,11 @@ class RuleChecker:
         try:
             # Try new API (openai >= 1.0.0)
             from openai import OpenAI
-            self.client = OpenAI(api_key=api_key, base_url="http://152.53.53.64:3000/v1")
+            self.client = OpenAI(api_key=api_key)
             self.use_new_api = True
         except ImportError:
             # Fall back to old API (openai < 1.0.0)
             openai.api_key = api_key
-            openai.api_base = "http://152.53.53.64:3000/v1"
             self.use_new_api = False
     
     def _call_llm(self, prompt: str, max_retries: int = 3) -> str:

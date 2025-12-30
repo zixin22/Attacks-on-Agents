@@ -1,0 +1,25 @@
+================================================================================
+GuardAgent Error Traceback
+Timestamp: 2025-12-30 16:50:44
+Error Type: TypeError
+Error Details: argument of type 'NoneType' is not iterable
+================================================================================
+
+Full Traceback:
+--------------------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\22749\Desktop\rap-main\webshop\rule_and_profile\webshop_guard_agent.py", line 460, in check_all_rules
+    self.guard_agent.initiate_chat(
+  File "C:\Users\22749\Desktop\rap-main\webshop\rule_and_profile\..\..\guard agent\guardagent.py", line 203, in initiate_chat
+    self.send(self.generate_init_message(**context), recipient, silent=silent)
+  File "C:\Users\22749\Desktop\rap-main\webshop\rule_and_profile\..\..\guard agent\guardagent.py", line 194, in send
+    recipient.receive(message, self, request_reply, silent)
+  File "C:\Users\22749\miniconda3\envs\rap-py310\lib\site-packages\autogen\agentchat\conversable_agent.py", line 1234, in receive
+    reply = self.generate_reply(messages=self.chat_messages[sender], sender=sender)
+  File "C:\Users\22749\Desktop\rap-main\webshop\rule_and_profile\webshop_guard_agent.py", line 231, in generate_reply
+    return super().generate_reply(messages=messages, sender=sender, exclude=exclude)
+  File "C:\Users\22749\miniconda3\envs\rap-py310\lib\site-packages\autogen\agentchat\conversable_agent.py", line 2876, in generate_reply
+    if reply_func in exclude:
+TypeError: argument of type 'NoneType' is not iterable
+
+================================================================================

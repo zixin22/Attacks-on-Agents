@@ -4,7 +4,12 @@ import logging
 import openai
 import json
 from openai import OpenAI
-from autogen.agentchat import Agent, UserProxyAgent, ConversableAgent
+try:
+    # Try new AutoGen 0.10.0+ import
+    from autogen_agentchat import UserProxyAgent, ConversableAgent
+except ImportError:
+    # Fallback to old AutoGen 0.2.x import
+    from autogen.agentchat import Agent, UserProxyAgent, ConversableAgent
 from termcolor import colored
 import Levenshtein
 
@@ -50,7 +55,7 @@ class GuardAgent(UserProxyAgent):
         # Returns the related information to the given query.
         patience = 2
         sleep_time = 30
-        openai.api_key = config["api_key"]
+        # Note: API key is now passed to OpenAI client constructor, not set globally
         engine = config["model"]
         query_message = Example_Decomposition.format(user_request=user_request,
                                                      agent_specification=agent_specification,
@@ -60,13 +65,11 @@ class GuardAgent(UserProxyAgent):
         from prompts_guard import SYSTEM_PROMPT_DECOMPOSITION
         messages = [{"role": "system", "content": SYSTEM_PROMPT_DECOMPOSITION},
                     {"role": "user", "content": query_message}]
-        # Use custom API base URL if provided in config
-        # Note: config_list uses 'base_url', but we check both for compatibility
-        api_base = config.get("api_base") or config.get("base_url", None)
-        if api_base:
-            client = OpenAI(api_key=config["api_key"], base_url=api_base)
-        else:
-            client = OpenAI(api_key=config["api_key"])
+        # Use api_base from config if provided
+        client_kwargs = {"api_key": config["api_key"]}
+        if "api_base" in config and config["api_base"]:
+            client_kwargs["base_url"] = config["api_base"]
+        client = OpenAI(**client_kwargs)
         while patience > 0:
             patience -= 1
             try:
@@ -89,34 +92,11 @@ class GuardAgent(UserProxyAgent):
         return "Fail to retrieve related knowledge, please try again later."
 
     def retrieve_examples(self, agent_input, agent_output):
-        # Validate memory and num_shots
-        if not hasattr(self, 'memory') or self.memory is None:
-            self.memory = []  # Initialize empty memory if not set
-        if not isinstance(self.memory, list):
-            raise ValueError(f"self.memory must be a list. Got: {type(self.memory)}")
-        if not hasattr(self, 'num_shots') or self.num_shots is None:
-            self.num_shots = 0  # Default to 0 if not set
-        
-        # If memory is empty, return empty examples
-        if len(self.memory) == 0:
-            return ""
-        
         levenshtein_dist = {}
         for i in range(len(self.memory)):
-            # Validate memory item structure
-            if not isinstance(self.memory[i], dict):
-                continue  # Skip invalid items
-            required_keys = ["agent input", "agent output", "subtasks", "code"]
-            if not all(key in self.memory[i] for key in required_keys):
-                continue  # Skip items with missing keys
-            
             mem_input = self.memory[i]["agent input"]
             mem_output = self.memory[i]["agent output"]
             levenshtein_dist[i] = Levenshtein.distance(agent_input, mem_input) + Levenshtein.distance(agent_output, mem_output)
-        
-        if len(levenshtein_dist) == 0:
-            return ""  # No valid examples found
-        
         levenshtein_dist = sorted(levenshtein_dist.items(), key=lambda x: x[1], reverse=False)
         selected_indexes = [levenshtein_dist[i][0] for i in range(min(self.num_shots, len(levenshtein_dist)))]
         examples = []
@@ -130,27 +110,12 @@ class GuardAgent(UserProxyAgent):
         return examples
 
     def generate_init_message(self, **context):
-        # Validate required context keys
-        required_keys = ["user_request", "agent_specification", "agent_input", "agent_output", "agent_task_deco_examples"]
-        missing_keys = [key for key in required_keys if key not in context]
-        if missing_keys:
-            raise KeyError(f"Missing required keys in context: {missing_keys}")
 
         self.user_request = context["user_request"]
         self.agent_specification = context["agent_specification"]
         self.agent_input = context["agent_input"]
         self.agent_output = context["agent_output"]
         self.agent_task_deco_examples = context["agent_task_deco_examples"]
-
-        # Validate config_list
-        if self.config_list is None:
-            raise ValueError("config_list is None. GuardAgent must be initialized with config_list.")
-        if not isinstance(self.config_list, list) or len(self.config_list) == 0:
-            raise ValueError(f"config_list must be a non-empty list. Got: {type(self.config_list)}")
-        if not isinstance(self.config_list[0], dict):
-            raise ValueError(f"config_list[0] must be a dict. Got: {type(self.config_list[0])}")
-        if "api_key" not in self.config_list[0] or "model" not in self.config_list[0]:
-            raise KeyError(f"config_list[0] must contain 'api_key' and 'model' keys. Got keys: {list(self.config_list[0].keys())}")
 
         # import prompt
         from prompts_guard import GuardAgent_Message_Prompt
@@ -172,23 +137,6 @@ class GuardAgent(UserProxyAgent):
 
     def send(self, message: Union[Dict, str], recipient: Agent, request_reply: Optional[bool] = None,
              silent: Optional[bool] = False):
-        # Ensure message has valid content (not None)
-        if isinstance(message, dict):
-            # If message is a dict, ensure content is not None
-            if 'content' in message and message['content'] is None:
-                # If content is None but function_call exists, that's OK (function_call messages don't need content)
-                if 'function_call' not in message or message.get('function_call') is None:
-                    # If no function_call either, set content to empty string
-                    message['content'] = ""
-            elif 'content' not in message:
-                # If content key doesn't exist, add it
-                if 'function_call' not in message or message.get('function_call') is None:
-                    message['content'] = ""
-        elif isinstance(message, str):
-            # If message is a string, ensure it's not None
-            if message is None:
-                message = ""
-        
         valid = self._append_oai_message(message, "assistant", recipient)
         if valid:
             recipient.receive(message, self, request_reply, silent)
@@ -209,96 +157,14 @@ class GuardAgent(UserProxyAgent):
             request_reply: Optional[bool] = None,
             silent: Optional[bool] = False,
     ):
-        # Ensure received message has valid content
-        if isinstance(message, dict):
-            if 'content' in message and message['content'] is None:
-                if 'function_call' not in message or message.get('function_call') is None:
-                    message['content'] = ""
-            elif 'content' not in message:
-                if 'function_call' not in message or message.get('function_call') is None:
-                    message['content'] = ""
-        elif isinstance(message, str) and message is None:
-            message = ""
-        
         self._process_received_message(message, sender, silent)
         if request_reply is False or request_reply is None and self.reply_at_receive[sender] is False:
             return
-        
-        # Filter out messages with None content before generating reply
-        # This prevents OpenAI API errors
-        if sender in self.chat_messages:
-            filtered_messages = []
-            for msg in self.chat_messages[sender]:
-                if isinstance(msg, dict):
-                    # Keep message if it has content (even if empty string) or function_call
-                    if msg.get('content') is not None or msg.get('function_call') is not None:
-                        # Ensure content is not None (set to empty string if None)
-                        if 'content' in msg and msg['content'] is None:
-                            msg = msg.copy()  # Don't modify original
-                            msg['content'] = ""
-                        filtered_messages.append(msg)
-                    # Skip messages with both content=None and no function_call
-                else:
-                    # Keep non-dict messages (strings, etc.)
-                    filtered_messages.append(msg)
-            # Update chat_messages with filtered list
-            self.chat_messages[sender] = filtered_messages
-        
-        # Clean messages before generating reply to prevent None content errors
-        cleaned_messages = []
-        for msg in self.chat_messages[sender]:
-            if isinstance(msg, dict):
-                # Create a copy to avoid modifying the original
-                msg_copy = msg.copy()
-                # Ensure content is not None and is a string
-                has_function_call = 'function_call' in msg_copy and msg_copy.get('function_call') is not None
-                
-                if 'content' in msg_copy:
-                    if msg_copy['content'] is None:
-                        # If content is None and no function_call, set content to empty string
-                        if not has_function_call:
-                            msg_copy['content'] = ""
-                    elif not isinstance(msg_copy['content'], str):
-                        # If content is not a string, convert it to string
-                        msg_copy['content'] = str(msg_copy['content']) if msg_copy['content'] is not None else ""
-                else:
-                    # If content key doesn't exist and no function_call, add empty string
-                    if not has_function_call:
-                        msg_copy['content'] = ""
-                
-                # Ensure role is present (required by OpenAI API)
-                if 'role' not in msg_copy:
-                    msg_copy['role'] = 'user'  # Default role
-                
-                cleaned_messages.append(msg_copy)
-            else:
-                # Keep non-dict messages as-is
-                cleaned_messages.append(msg)
-        
-        # CRITICAL: Also clean messages in chat_messages[sender] directly
-        # This ensures autogen's internal methods see cleaned messages
-        if sender in self.chat_messages:
-            self.chat_messages[sender] = cleaned_messages
-        
-        # Also clean _oai_messages if they exist
-        if hasattr(self, '_oai_messages') and self._oai_messages is not None:
-            if sender in self._oai_messages:
-                self._oai_messages[sender] = cleaned_messages
-        
-        # Use cleaned messages for generate_reply
-        reply = self.generate_reply(messages=cleaned_messages, sender=sender)
+        reply = self.generate_reply(messages=self.chat_messages[sender], sender=sender)
         if reply is not None:
-            # Ensure reply has valid content before sending
-            if isinstance(reply, dict):
-                if 'content' in reply and reply['content'] is None:
-                    if 'function_call' not in reply or reply.get('function_call') is None:
-                        reply['content'] = ""
-                elif 'content' not in reply:
-                    if 'function_call' not in reply or reply.get('function_call') is None:
-                        reply['content'] = ""
-            elif isinstance(reply, str) and reply is None:
-                reply = ""
-            
+            # Ensure reply content is not None
+            if isinstance(reply, dict) and reply.get('content') is None:
+                reply['content'] = ''
             self.send(reply, sender, silent=silent)
 
     def error_debugger(self, config, code, error_info):
@@ -307,19 +173,17 @@ class GuardAgent(UserProxyAgent):
         # Returns the related information to the given query.
         patience = 1
         sleep_time = 30
-        openai.api_key = config["api_key"]
+        # Note: API key is now passed to OpenAI client constructor, not set globally
         engine = config["model"]
         query_message = CodeDebugger.format(subtasks=self.subtasks, code=code, error_info=error_info)
         messages = [{"role": "system",
                      "content": "You are an AI assistant that helps people debug their code. Only list one most possible reason to the errors."},
                     {"role": "user", "content": query_message}]
-        # Use custom API base URL if provided in config
-        # Note: config_list uses 'base_url', but we check both for compatibility
-        api_base = config.get("api_base") or config.get("base_url", None)
-        if api_base:
-            client = OpenAI(api_key=config["api_key"], base_url=api_base)
-        else:
-            client = OpenAI(api_key=config["api_key"])
+        # Use api_base from config if provided
+        client_kwargs = {"api_key": config["api_key"]}
+        if "api_base" in config and config["api_base"]:
+            client_kwargs["base_url"] = config["api_base"]
+        client = OpenAI(**client_kwargs)
         while patience > 0:
             patience -= 1
             try:
@@ -341,13 +205,15 @@ class GuardAgent(UserProxyAgent):
                     time.sleep(sleep_time)
         return "Fail to diagnose the reasons to the errors."
 
-    def execute_function(self, func_call):
+    def execute_function(self, func_call, call_id=None, verbose=False):
         """Execute a function call and return the result.
 
         Override this function to modify the way to execute a function call.
 
         Args:
             func_call: a dictionary extracted from openai message at key "function_call" with keys "name" and "arguments".
+            call_id: optional call identifier
+            verbose: whether to print verbose output
 
         Returns:
             A tuple of (is_exec_success, result_dict).

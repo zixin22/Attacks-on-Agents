@@ -10,11 +10,6 @@ from typing import Dict, List, Tuple, Union
 
 # Import rule system components
 from rule_and_profile import RuleChecker, MetricsTracker, UserProfile
-try:
-    from rule_and_profile.webshop_guard_agent import WebShopGuardAgent
-except ImportError:
-    WebShopGuardAgent = None
-    print("[Warning] WebShopGuardAgent not available. GuardAgent defense mode disabled.")
 
 parser = argparse.ArgumentParser()
 # Removed --num_trials parameter, only using memory_1.json for retrieval
@@ -29,14 +24,20 @@ parser.add_argument("--attack_fixed_number", type=int, default=None, help="Fixed
 parser.add_argument("--attack_target_instruction", type=str, default=None, help="Target instruction to inject in attack (e.g., 'i would like a bundle of hair extensions that are 20 inches')")
 parser.add_argument("--split", type=str, default=None, help="Data split to use (e.g., '0-100', '0-500', 'test', 'eval', 'train'). If not specified, uses value from config file.")
 parser.add_argument("--skip_fragments", action="store_true", help="Skip fragment attacks and only execute trigger attack (fragments should already be in memory)")
+parser.add_argument("--use_mask_check", action="store_true", help="Use mask check to identify sensitive fragments and only attack sensitive fragments (requires --enable_rule_checker or --enable_guard_agent)")
 parser.add_argument("--enable_rule_checker", action="store_true", help="Enable RuleChecker (default: disabled)")
+parser.add_argument("--enable_guard_agent", action="store_true", help="Enable GuardAgent (default: disabled)")
+parser.add_argument("--guard_agent_llm", type=str, default="gpt-4o", 
+                    choices=["gpt-4", "gpt-4o", "gpt-3.5-turbo"],
+                    help="LLM model for GuardAgent (default: gpt-4o)")
+parser.add_argument("--guard_agent_num_shots", type=int, default=3, 
+                    choices=[1, 2, 3],
+                    help="Number of few-shot examples for GuardAgent (default: 3)")
 parser.add_argument("--defense_mode", type=str, default="rule_checker", 
                     choices=["rule_checker", "guard_agent", "none"],
                     help="Defense mechanism: 'rule_checker' (default), 'guard_agent', or 'none'")
-parser.add_argument("--guard_agent_shots", type=int, default=3, choices=[1, 2, 3],
-                    help="Number of few-shot examples for GuardAgent (1, 2, or 3)")
-parser.add_argument("--guard_agent_seed", type=int, default=42,
-                    help="Random seed for GuardAgent")
+parser.add_argument("--check_only_session_start", action="store_true", 
+                    help="If True, only check at session start (using instruction, query, and user_profile). If False, also check before each action (default: False)")
 args = parser.parse_args()
 
 os.makedirs(args.output, exist_ok=True)
@@ -47,6 +48,9 @@ with open('./configs/base_config.yaml') as reader:
 # llama2
 from transformers import AutoModelForCausalLM
 from transformers import AutoTokenizer
+
+# Initialize openai_client as None (will be set if GPT model is used)
+openai_client = None
 
 if 'Llama-2' in args.model or any(map(args.model.__contains__, AutoModelForCausalLM._model_mapping._model_mapping)):
     model_name = args.model
@@ -60,21 +64,15 @@ if 'Llama-2' in args.model or any(map(args.model.__contains__, AutoModelForCausa
         model=model,
         tokenizer=tokenizer,
     )
-#elif 'gpt' in args.model:
-    #openai
-    #import openai
-    #from openai import OpenAI
-    #os.environ["OPENAI_API_KEY"] = open('OpenAI_api_key.txt').readline()
-    #openai.api_key = os.environ["OPENAI_API_KEY"]
-    #client = OpenAI()
 
 elif 'gpt' in args.model:
-    import openai
-    #os.environ["OPENAI_API_KEY"] = open('OpenAI_api_key.txt').readline().strip()
-    #openai.api_key = os.environ["OPENAI_API_KEY"]
-    with open(r"C:\Users\22749\Desktop\rap-main\webshop\OpenAI_api_key.txt", "r") as f:
-        openai.api_key = f.read().strip()
-    openai.api_base = "http://152.53.53.64:3000/v1"
+    from openai import OpenAI
+    # Initialize OpenAI client with new API (>= 1.0.0)
+    with open(r"C:\Users\22749\Desktop\rap-main\webshop\OpenAI_api_key.txt", "r", encoding="utf-8") as f:
+        api_key = f.read().strip()
+    openai_client = OpenAI(
+        api_key=api_key
+    )
 else:
     print('LLM currently not supported')
     sys.exit(0)
@@ -82,12 +80,12 @@ else:
    
 
 import time
-import openai
 
 def llm(prompt, stop=["\n"]):
     """
     Universal LLM calling function, compatible with Llama-2, GPT-3.5-turbo-instruct, GPT-4-0613, GPT-4o.
     Automatic retry with error handling.
+    Uses OpenAI API v1.0+ (new API).
     """
     max_retries = 5
     for attempt in range(max_retries):
@@ -106,7 +104,8 @@ def llm(prompt, stop=["\n"]):
                 text = sequences[0]['generated_text']
 
             elif args.model == 'gpt-3.5-turbo-instruct':
-                response = openai.Completion.create(
+                # Use new API for completion models
+                response = openai_client.completions.create(
                     model='gpt-3.5-turbo-instruct',
                     prompt=prompt,
                     temperature=config['params'].get('temperature', 0),
@@ -119,7 +118,8 @@ def llm(prompt, stop=["\n"]):
                 text = response.choices[0].text
 
             elif args.model == 'gpt-4-0613':
-                completion = openai.ChatCompletion.create(
+                # Use new API for chat models
+                completion = openai_client.chat.completions.create(
                     model="gpt-4-0613",
                     messages=[
                         {"role": "system", "content": "You are a helpful assistant for household task."},
@@ -135,7 +135,8 @@ def llm(prompt, stop=["\n"]):
                 text = completion.choices[0].message.content
 
             elif args.model == 'gpt-4o':
-                completion = openai.ChatCompletion.create(
+                # Use new API for chat models
+                completion = openai_client.chat.completions.create(
                     model="gpt-4o",
                     messages=[
                         {"role": "system", "content": "You are a helpful assistant for household task."},
@@ -155,13 +156,29 @@ def llm(prompt, stop=["\n"]):
 
             break  # Successfully called, exit retry loop
 
-        except openai.error.RateLimitError:
-            wait_time = 5 * (attempt + 1)
-            print(f"[Warning] OpenAI API rate limit, waiting {wait_time} seconds before retry ({attempt+1}/{max_retries})...")
-            time.sleep(wait_time)
         except Exception as e:
-            print(f"[Error] LLM call failed: {e}, waiting 3 seconds before retry ({attempt+1}/{max_retries})...")
-            time.sleep(3)
+            # Handle RateLimitError for both old and new OpenAI API versions
+            error_type = type(e).__name__
+            error_str = str(e).lower()
+            
+            # Check for rate limit errors (compatible with both old and new API)
+            if 'RateLimit' in error_type or 'rate_limit' in error_str or '429' in error_str:
+                wait_time = 5 * (attempt + 1)
+                print(f"[Warning] OpenAI API rate limit, waiting {wait_time} seconds before retry ({attempt+1}/{max_retries})...")
+                time.sleep(wait_time)
+            # Check for API key errors
+            elif 'api_key' in error_str or 'authentication' in error_str or '401' in error_str:
+                print(f"[Error] OpenAI API authentication failed: {e}")
+                print("[Error] Please check your API key configuration.")
+                time.sleep(3)
+            # Check for server errors
+            elif '500' in error_str or '502' in error_str or '503' in error_str or 'server' in error_str:
+                wait_time = 3 * (attempt + 1)
+                print(f"[Warning] OpenAI API server error, waiting {wait_time} seconds before retry ({attempt+1}/{max_retries})...")
+                time.sleep(wait_time)
+            else:
+                print(f"[Error] LLM call failed: {e}, waiting 3 seconds before retry ({attempt+1}/{max_retries})...")
+                time.sleep(3)
     else:
         print("[Error] Exceeded maximum retry attempts, returning empty string.")
         return ""
@@ -338,20 +355,22 @@ def webshop_text(session, page_type, query_string='', page_num=1, asin='', optio
 
 from urllib.parse import quote
 class webshopEnv:
-  def __init__(self, rule_checker=None, guard_agent=None, defense_mode='rule_checker'):
+  def __init__(self, rule_checker=None, guard_agent=None, defense_mode='rule_checker', check_only_session_start=False):
     """
     Initialize WebShop environment with defense mechanism
     
     Args:
         rule_checker: RuleChecker instance (for 'rule_checker' mode)
-        guard_agent: WebShopGuardAgent instance (for 'guard_agent' mode)
+        guard_agent: GuardAgentWebShop instance (for 'guard_agent' mode)
         defense_mode: 'rule_checker', 'guard_agent', or 'none'
+        check_only_session_start: If True, only check at session start. If False, also check before each action.
     """
     self.sessions = {}
-    # For rule checking - support both RuleChecker and GuardAgent
+    # For rule checking - RuleChecker or GuardAgent
     self.rule_checker = rule_checker
     self.guard_agent = guard_agent
     self.defense_mode = defense_mode  # 'rule_checker', 'guard_agent', or 'none'
+    self.check_only_session_start = check_only_session_start  # Control check frequency
     self.violations = {}  # Track violations per session
   
   def step(self, session, action, profile=None):
@@ -422,9 +441,9 @@ class webshopEnv:
       observation = observation_
     self.sessions[session].update(info)
     
-    # RULE CHECK AT SESSION START (after getting instruction and query from webshop_text)
+    # DEFENSE CHECK AT SESSION START (after getting instruction and query from webshop_text)
     # Check rules based on instruction and query, without requiring action
-    # Support both RuleChecker and GuardAgent defense mechanisms
+    # Use selected defense mechanism (RuleChecker or GuardAgent)
     if self.defense_mode != 'none' and profile:
         # Get instruction and query from session (set by webshop_text)
         instruction = self.sessions[session].get('instruction', '')
@@ -436,18 +455,32 @@ class webshopEnv:
             is_valid = True
             violated_rules = []
             
-            # Use selected defense mechanism
+            # Use RuleChecker defense mechanism
             if self.defense_mode == 'rule_checker' and self.rule_checker:
                 # Check all rules using RuleChecker
                 # Returns: (is_valid: bool, violated_rules: List[str])
                 is_valid, violated_rules = self.rule_checker.check_all_rules(
                     profile, instruction, query
                 )
+            
+            # Use GuardAgent defense mechanism
             elif self.defense_mode == 'guard_agent' and self.guard_agent:
-                # Check all rules using GuardAgent
-                # Returns: (is_valid: bool, violated_rules: List[str])
-                is_valid, violated_rules = self.guard_agent.check_all_rules(
-                    profile, instruction, query
+                # Check rules using GuardAgent
+                # Session start: use instruction only (not full_prompt)
+                # Also log the check to defense log file
+                # Construct a minimal full_prompt for logging purposes
+                minimal_full_prompt = f"Interact with a webshop application.\n\nInstruction: {instruction}\nQuery: {query}"
+                
+                # Determine defense log file path
+                if hasattr(args, 'attack') and args.attack:
+                    defense_log_file = args.output + f'/{self.defense_mode}_log.txt'
+                else:
+                    defense_log_file = args.output + f'/{self.defense_mode}_prompt_log_{session}.txt'
+                
+                # Use check_prompt_with_defense to log the check
+                is_valid, violated_rules = check_prompt_with_defense(
+                    minimal_full_prompt, session, profile, None, self.guard_agent,
+                    self.defense_mode, defense_log_file, 1
                 )
             
             # Mark as checked to avoid duplicate checks
@@ -457,7 +490,7 @@ class webshopEnv:
             # This is a HARD BLOCK - the session cannot proceed under any circumstances
             if not is_valid:
                 # Block the session and return early
-                defense_name = 'RuleChecker' if self.defense_mode == 'rule_checker' else 'GuardAgent'
+                defense_name = "RuleChecker" if self.defense_mode == 'rule_checker' else "GuardAgent"
                 observation = f"Session blocked by {defense_name}: Rule violation ({', '.join(violated_rules)})"
                 reward = 0.0
                 done = True
@@ -493,28 +526,35 @@ if args.defense_mode == 'rule_checker':
     if args.enable_rule_checker:
         rule_checker = RuleChecker(verbose=True, model=args.model)
         defense_mode = 'rule_checker'
-        print("[Info] Using RuleChecker defense mechanism")
+        check_frequency = "session start only" if args.check_only_session_start else "session start + before each action"
+        print(f"[Info] Using RuleChecker defense mechanism (check frequency: {check_frequency})")
     else:
         print("[Warning] --defense_mode=rule_checker but --enable_rule_checker not set. Disabling defense.")
         defense_mode = 'none'
 elif args.defense_mode == 'guard_agent':
-    if WebShopGuardAgent is None:
-        print("[Error] WebShopGuardAgent not available. Falling back to no defense.")
-        defense_mode = 'none'
-    else:
+    if args.enable_guard_agent:
         try:
-            guard_agent = WebShopGuardAgent(
-                verbose=True, 
-                model=args.model,
-                num_shots=args.guard_agent_shots,
-                seed=args.guard_agent_seed
+            from guard_agent_webshop import GuardAgentWebShop
+            # Determine detailed log file path
+            import os
+            detailed_log_file = os.path.join(args.output, 'guard_agent_detailed_log.txt')
+            print(f"[Info] GuardAgent detailed log file: {detailed_log_file}")
+            guard_agent = GuardAgentWebShop(
+                llm=args.guard_agent_llm,
+                num_shots=args.guard_agent_num_shots,
+                verbose=True,
+                detailed_log_file=detailed_log_file
             )
             defense_mode = 'guard_agent'
-            print(f"[Info] Using GuardAgent defense mechanism (shots={args.guard_agent_shots}, seed={args.guard_agent_seed})")
+            check_frequency = "session start only" if args.check_only_session_start else "session start + before each action"
+            print(f"[Info] Using GuardAgent defense mechanism (LLM: {args.guard_agent_llm}, num_shots: {args.guard_agent_num_shots}, check frequency: {check_frequency})")
         except Exception as e:
             print(f"[Error] Failed to initialize GuardAgent: {e}")
             print("[Warning] Falling back to no defense.")
             defense_mode = 'none'
+    else:
+        print("[Warning] --defense_mode=guard_agent but --enable_guard_agent not set. Disabling defense.")
+        defense_mode = 'none'
 elif args.defense_mode == 'none':
     print("[Info] Defense mechanism disabled")
     defense_mode = 'none'
@@ -523,7 +563,8 @@ elif args.defense_mode == 'none':
 env = webshopEnv(
     rule_checker=rule_checker,
     guard_agent=guard_agent,
-    defense_mode=defense_mode
+    defense_mode=defense_mode,
+    check_only_session_start=args.check_only_session_start
 )
 
 # Profiles will be generated based on actual task count
@@ -776,10 +817,10 @@ def extract_instruction_from_prompt(full_prompt: str) -> str:
     return ''
 
 
-def check_prompt_with_rulechecker(full_prompt: str, session_id: str, profile, rule_checker, 
-                                   rule_check_log_file: str, step: int, guard_agent=None) -> Tuple[bool, List[str]]:
+def check_prompt_with_defense(full_prompt: str, session_id: str, profile, rule_checker, guard_agent,
+                               defense_mode: str, defense_log_file: str, step: int) -> Tuple[bool, List[str]]:
     """
-    Check the full prompt with RuleChecker or GuardAgent and log the results.
+    Check the full prompt with defense mechanism (RuleChecker or GuardAgent) and log the results.
     
     - Step 1: Check the complete full_prompt (session start)
     - Step 2+: Check the complete full_prompt (after each action)
@@ -788,21 +829,24 @@ def check_prompt_with_rulechecker(full_prompt: str, session_id: str, profile, ru
         full_prompt: Full prompt to check
         session_id: Session ID
         profile: UserProfile instance
-        rule_checker: RuleChecker instance (optional)
-        rule_check_log_file: Log file path
+        rule_checker: RuleChecker instance (for 'rule_checker' mode)
+        guard_agent: GuardAgentWebShop instance (for 'guard_agent' mode)
+        defense_mode: Defense mode ('rule_checker' or 'guard_agent')
+        defense_log_file: Log file path
         step: Step number
-        guard_agent: GuardAgent instance (optional, used if rule_checker is None)
     
     Returns:
         (should_continue, violated_rules)
         - should_continue: True if session should continue, False if should stop
         - violated_rules: List of violated rule names
     """
-    # Use guard_agent if rule_checker is not available
-    defense_mechanism = rule_checker if rule_checker else guard_agent
-    defense_name = "RuleChecker" if rule_checker else "GuardAgent"
+    if defense_mode == 'none' or not profile:
+        return True, []
     
-    if not defense_mechanism or not profile:
+    if defense_mode == 'rule_checker' and not rule_checker:
+        return True, []
+    
+    if defense_mode == 'guard_agent' and not guard_agent:
         return True, []
     
     # Check if full_prompt is empty
@@ -818,31 +862,60 @@ def check_prompt_with_rulechecker(full_prompt: str, session_id: str, profile, ru
     # Always check complete full_prompt (both Step 1 and Step 2+)
     check_input = full_prompt
     
-    # Check rules with details (support both RuleChecker and GuardAgent)
-    if rule_checker:
+    # Extract instruction from full_prompt (needed for GuardAgent)
+    instruction = extract_instruction_from_prompt(full_prompt)
+    
+    # Check rules based on defense mode
+    is_valid = True
+    violated_rules = []
+    details = {}
+    
+    if defense_mode == 'rule_checker' and rule_checker:
+        # Use RuleChecker
         is_valid, violated_rules, details = rule_checker.check_all_rules(
             profile, check_input, query, return_details=True
         )
-    elif guard_agent:
-        # GuardAgent now supports return_details
-        result = guard_agent.check_all_rules(
-            profile, check_input, query, return_details=True
-        )
-        if len(result) == 3:
-            is_valid, violated_rules, details = result
+        defense_name = "RuleChecker"
+    elif defense_mode == 'guard_agent' and guard_agent:
+        # Use GuardAgent
+        # For action-by-action checks, use full_prompt directly
+        # For session start checks, use extracted instruction
+        if step == 1:
+            # Session start: use instruction only
+            is_valid, violated_rules, guard_details = guard_agent.check(
+                agent_input=instruction,
+                agent_output=query,
+                user_profile=profile,
+                use_full_prompt=False
+            )
         else:
-            is_valid, violated_rules = result
-            details = {'prompt': check_input, 'response': f'{defense_name} check'}
+            # Action-by-action: use full_prompt
+            is_valid, violated_rules, guard_details = guard_agent.check(
+                agent_input=full_prompt,
+                agent_output=query,
+                user_profile=profile,
+                use_full_prompt=True
+            )
+        details = {
+            'prompt': f"GuardAgent check for instruction: {instruction}, query: {query}",
+            'response': f"is_valid={is_valid}, violated_rules={violated_rules}",
+            'task_decomposition': guard_details.get('task_decomposition', ''),
+            'task_decomposition_prompt': guard_details.get('task_decomposition_prompt', ''),
+            'guardrail_code': guard_details.get('guardrail_code', ''),
+            'guardrail_code_prompt': guard_details.get('guardrail_code_prompt', ''),
+            'formatted_input': guard_details.get('formatted_input', ''),
+            'formatted_output': guard_details.get('formatted_output', '')
+        }
+        defense_name = "GuardAgent"
     else:
         return True, []
     
     # Log to file (append mode, create file if doesn't exist)
     # First write: create file with header if it's the first step
-    file_exists = os.path.exists(rule_check_log_file)
-    with open(rule_check_log_file, 'a', encoding='utf-8') as f:
+    file_exists = os.path.exists(defense_log_file)
+    with open(defense_log_file, 'a', encoding='utf-8') as f:
         if not file_exists and step == 1:
             f.write(f"{'='*80}\n")
-            defense_name = "RuleChecker" if rule_checker else "GuardAgent"
             f.write(f"{defense_name} Prompt Log for Session: {session_id}\n")
             f.write(f"{'='*80}\n")
             f.write(f"Profile ID: {profile.profile_id}\n")
@@ -851,7 +924,6 @@ def check_prompt_with_rulechecker(full_prompt: str, session_id: str, profile, ru
                    f"account_age_days={profile.account_age_days}, return_rate={profile.return_rate:.1f}%\n")
             f.write(f"{'='*80}\n\n")
         f.write(f"\n{'='*80}\n")
-        defense_name = "RuleChecker" if rule_checker else "GuardAgent"
         f.write(f"Step {step} - {defense_name} Check\n")
         f.write(f"{'='*80}\n")
         f.write(f"Session ID: {session_id}\n")
@@ -860,17 +932,39 @@ def check_prompt_with_rulechecker(full_prompt: str, session_id: str, profile, ru
             f.write(f"\nCheck Type: Session Start (Full Prompt)\n")
         else:
             f.write(f"\nCheck Type: After Action (Full Prompt)\n")
-        f.write(f"\nFull Prompt to RAP (checked by RuleChecker):\n")
+        f.write(f"\nFull Prompt to RAP (checked by {defense_name}):\n")
         f.write(f"{'='*60}\n")
         f.write(full_prompt)
         f.write(f"\n{'='*60}\n")
         f.write(f"Query: {query}\n")
+        f.write(f"Instruction: {instruction}\n")
         f.write(f"\n{'='*80}\n")
-        f.write("RuleChecker Prompt:\n")
+        f.write(f"{defense_name} Prompt:\n")
         f.write(f"{'='*80}\n")
         f.write(details.get('prompt', 'N/A') + "\n")
+        
+        # For GuardAgent, also log task decomposition and guardrail code generation details
+        if defense_mode == 'guard_agent' and details.get('task_decomposition_prompt'):
+            f.write(f"\n{'='*80}\n")
+            f.write(f"Task Decomposition LLM Call:\n")
+            f.write(f"{'='*80}\n")
+            f.write(details.get('task_decomposition_prompt', 'N/A') + "\n")
+            f.write(f"\n{'='*80}\n")
+            f.write(f"Task Decomposition Output:\n")
+            f.write(f"{'='*80}\n")
+            f.write(details.get('task_decomposition', 'N/A') + "\n")
+            
+            f.write(f"\n{'='*80}\n")
+            f.write(f"Guardrail Code Generation LLM Call:\n")
+            f.write(f"{'='*80}\n")
+            f.write(details.get('guardrail_code_prompt', 'N/A') + "\n")
+            f.write(f"\n{'='*80}\n")
+            f.write(f"Generated Guardrail Code:\n")
+            f.write(f"{'='*80}\n")
+            f.write(details.get('guardrail_code', 'N/A') + "\n")
+        
         f.write(f"\n{'='*80}\n")
-        f.write("RuleChecker Response:\n")
+        f.write(f"{defense_name} Response:\n")
         f.write(f"{'='*80}\n")
         # Ensure response is always a string (handle case where it might be an object)
         response_value = details.get('response', 'N/A')
@@ -886,7 +980,7 @@ def check_prompt_with_rulechecker(full_prompt: str, session_id: str, profile, ru
     # If violated, stop the session
     if not is_valid:
         print(f"\n{'='*60}")
-        print(f"❌ RuleChecker detected violation at Step {step}")
+        print(f"❌ {defense_name} detected violation at Step {step}")
         print(f"Violated Rules: {', '.join(violated_rules)}")
         print(f"Session {session_id} will be stopped.")
         print(f"{'='*60}\n")
@@ -983,16 +1077,18 @@ def webshop_run_react(idx, prompt, profile=None, to_print=True, return_log=False
             execution_log.append(full_prompt_react)
             execution_log.append(f"{'='*60}")
         
-        # Check prompt with defense mechanism (RuleChecker or GuardAgent) before sending to LLM
-        if (env.rule_checker or env.guard_agent) and profile:
+        # Check prompt with defense mechanism before sending to LLM
+        # Only check if check_only_session_start is False (i.e., check before each action)
+        if (env.rule_checker or env.guard_agent) and profile and not env.check_only_session_start:
             # In attack mode, use a single defense log file for all sessions
             # Otherwise, use per-session log files
             if hasattr(args, 'attack') and args.attack:
-                defense_log_file = args.output + '/rulechecker_log.txt' if env.rule_checker else args.output + '/guardagent_log.txt'
+                defense_log_file = args.output + f'/{env.defense_mode}_log.txt'
             else:
-                defense_log_file = args.output + f'/rulechecker_prompt_log_{idx}.txt' if env.rule_checker else args.output + f'/guardagent_prompt_log_{idx}.txt'
-            should_continue, violated_rules = check_prompt_with_rulechecker(
-                full_prompt_react, idx, profile, env.rule_checker, defense_log_file, i, guard_agent=env.guard_agent
+                defense_log_file = args.output + f'/{env.defense_mode}_prompt_log_{idx}.txt'
+            should_continue, violated_rules = check_prompt_with_defense(
+                full_prompt_react, idx, profile, env.rule_checker, env.guard_agent,
+                env.defense_mode, defense_log_file, i
             )
             if not should_continue:
                 # Stop session due to rule violation
@@ -1194,16 +1290,18 @@ def webshop_run_rap(idx, prompt, memory, embeddings, profile=None, to_print=True
             execution_log.append(full_prompt)
             execution_log.append(f"{'='*60}")
 
-        # Check prompt with defense mechanism (RuleChecker or GuardAgent) before sending to LLM
-        if (env.rule_checker or env.guard_agent) and profile:
+        # Check prompt with defense mechanism before sending to LLM
+        # Only check if check_only_session_start is False (i.e., check before each action)
+        if (env.rule_checker or env.guard_agent) and profile and not env.check_only_session_start:
             # In attack mode, use a single defense log file for all sessions
             # Otherwise, use per-session log files
             if hasattr(args, 'attack') and args.attack:
-                defense_log_file = args.output + '/rulechecker_log.txt' if env.rule_checker else args.output + '/guardagent_log.txt'
+                defense_log_file = args.output + f'/{env.defense_mode}_log.txt'
             else:
-                defense_log_file = args.output + f'/rulechecker_prompt_log_{idx}.txt' if env.rule_checker else args.output + f'/guardagent_prompt_log_{idx}.txt'
-            should_continue, violated_rules = check_prompt_with_rulechecker(
-                full_prompt, idx, profile, env.rule_checker, defense_log_file, i, guard_agent=env.guard_agent
+                defense_log_file = args.output + f'/{env.defense_mode}_prompt_log_{idx}.txt'
+            should_continue, violated_rules = check_prompt_with_defense(
+                full_prompt, idx, profile, env.rule_checker, env.guard_agent,
+                env.defense_mode, defense_log_file, i
             )
             if not should_continue:
                 # Stop session due to rule violation
@@ -1891,15 +1989,29 @@ for i in index_list:
         print(f"Host Instruction: {host_instruction}")
         print(f"Host Query: {host_query}")
         
-        # Step 2: Generate attack plan (with mask check if defense mechanism is enabled)
-        # Use rule_checker or guard_agent for mask checking
-        defense_for_mask = rule_checker if args.defense_mode == 'rule_checker' else guard_agent
+        # Step 2: Generate attack plan (with mask check by default if defense mechanism is enabled)
+        # Default behavior: Use mask check (one fragment attack mode) if defense mechanism is enabled
+        # This means only sensitive fragments will be attacked, not all fragments
+        # If --use_mask_check is explicitly set, use mask check even if defense_mode is 'none'
+        use_mask_check = hasattr(args, 'use_mask_check') and args.use_mask_check
+        # Default: Use mask check if defense mechanism is enabled (one fragment mode)
+        should_use_mask_check = (args.defense_mode != 'none') or use_mask_check
+        
+        if should_use_mask_check:
+            # Use rule_checker for mask check if available, otherwise use guard_agent
+            mask_checker = rule_checker if rule_checker else guard_agent
+            if not mask_checker:
+                raise ValueError("Mask check (one fragment mode) requires --enable_rule_checker or --enable_guard_agent to be set")
+        else:
+            # No mask check: attack all fragments (legacy behavior)
+            mask_checker = None
+        
         attack_plan = attack_generator.generate_attack_plan(
             host_instruction=host_instruction,
             target_instruction=args.attack_target_instruction,
-            rule_checker=defense_for_mask if args.defense_mode != 'none' else None,
-            profile=profile if args.defense_mode != 'none' else None,
-            query=host_query if args.defense_mode != 'none' else "",
+            rule_checker=mask_checker if should_use_mask_check else None,
+            profile=profile if should_use_mask_check else None,
+            query=host_query if should_use_mask_check else "",
             attack_log_file=attack_log_file
         )
         

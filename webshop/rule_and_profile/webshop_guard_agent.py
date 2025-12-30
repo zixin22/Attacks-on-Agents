@@ -75,35 +75,26 @@ class WebShopGuardAgent:
                 """Helper function to clean a single message"""
                 if isinstance(msg, dict):
                     msg_copy = msg.copy()
-                    # Ensure content is not None
-                    # Check if message has function_call (function_call messages can have None content)
+                    # Ensure content is not None - ALWAYS set content to string for OpenAI API
                     has_function_call = 'function_call' in msg_copy and msg_copy.get('function_call') is not None
-                    msg_role = msg_copy.get('role', 'user')
-                    
-                    # Special handling for function role messages - OpenAI API requires content to be string
-                    if msg_role == 'function':
-                        if msg_copy.get('content') is None:
+                    has_tool_calls = 'tool_calls' in msg_copy and msg_copy.get('tool_calls') is not None
+
+                    # For OpenAI API, content must always be a string (never None)
+                    if 'content' not in msg_copy or msg_copy.get('content') is None:
+                        if not has_function_call and not has_tool_calls:
                             msg_copy['content'] = ""
-                        elif not isinstance(msg_copy.get('content'), str):
-                            msg_copy['content'] = str(msg_copy['content']) if msg_copy['content'] is not None else ""
-                    elif 'content' in msg_copy:
-                        if msg_copy['content'] is None:
-                            # If content is None and no function_call, set content to empty string
-                            if not has_function_call:
-                                msg_copy['content'] = ""
-                        elif not isinstance(msg_copy['content'], str):
-                            # If content is not a string, convert it to string
-                            msg_copy['content'] = str(msg_copy['content'])
-                    else:
-                        # If content key doesn't exist and no function_call, add empty string
-                        if not has_function_call:
+                        else:
+                            # For function/tool call messages, content can be None but we set it to empty string anyway
                             msg_copy['content'] = ""
-                    
+                    elif not isinstance(msg_copy['content'], str):
+                        # Convert content to string if it's not already
+                        msg_copy['content'] = str(msg_copy['content'])
+
                     # Ensure role is present (required by OpenAI API)
                     if 'role' not in msg_copy:
                         # Try to infer role from context, default to 'user'
                         msg_copy['role'] = 'user'
-                    
+
                     return msg_copy
                 elif isinstance(msg, str):
                     # If message is a string, ensure it's not None
@@ -112,7 +103,7 @@ class WebShopGuardAgent:
                     # For other types, convert to string
                     return str(msg) if msg is not None else ""
             
-            def _append_oai_message(self, message, role, sender):
+            def _append_oai_message(self, message, conversation_id, role='assistant', name=None):
                 """
                 Override _append_oai_message to clean messages before they're stored.
                 This ensures all messages in internal storage are clean.
@@ -127,7 +118,7 @@ class WebShopGuardAgent:
                             cleaned_message = cleaned_message.copy()
                             cleaned_message['content'] = ""
                 # Call parent's _append_oai_message with cleaned message
-                return super()._append_oai_message(cleaned_message, role, sender)
+                return super()._append_oai_message(cleaned_message, conversation_id, role, name)
             
             def _process_received_message(self, message, sender, silent):
                 """
@@ -226,8 +217,15 @@ class WebShopGuardAgent:
                 if messages is not None:
                     messages = [self._clean_message(msg) for msg in messages]
                 
+                # Additional safety: ensure all messages in the messages list are properly cleaned
+                if messages is not None:
+                    messages = [self._clean_message(msg) for msg in messages]
+
                 # Call parent's generate_reply with cleaned messages
                 # This will internally call generate_oai_reply, which we've also overridden
+                # Ensure exclude is not None
+                if exclude is None:
+                    exclude = []
                 return super().generate_reply(messages=messages, sender=sender, exclude=exclude)
         
         self.chatbot = FilteredAssistantAgent(

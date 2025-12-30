@@ -18,7 +18,7 @@ class PromptArmorConfig:
     
     # API configuration (consistent with main.py)
     OPENAI_API_KEY_FILE = PROJECT_ROOT / "OpenAI_api_key.txt"
-    OPENAI_API_BASE = os.getenv("OPENAI_API_BASE", "http://152.53.53.64:3000/v1")
+    OPENAI_API_BASE = os.getenv("OPENAI_API_BASE", "https://api.openai.com/v1")
     
     # Detection prompt template (following PromptArmor principle)
     # System instruction: Ask if data contains prompt injection, output "Yes" or "No"

@@ -1,0 +1,25 @@
+================================================================================
+GuardAgent Error Traceback
+Timestamp: 2025-12-30 16:47:21
+Error Type: TypeError
+Error Details: WebShopGuardAgent.__init__.<locals>.FilteredAssistantAgent._append_oai_message() got multiple values for argument 'role'
+================================================================================
+
+Full Traceback:
+--------------------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\22749\Desktop\rap-main\webshop\rule_and_profile\webshop_guard_agent.py", line 460, in check_all_rules
+    self.guard_agent.initiate_chat(
+  File "C:\Users\22749\Desktop\rap-main\webshop\rule_and_profile\..\..\guard agent\guardagent.py", line 203, in initiate_chat
+    self.send(self.generate_init_message(**context), recipient, silent=silent)
+  File "C:\Users\22749\Desktop\rap-main\webshop\rule_and_profile\..\..\guard agent\guardagent.py", line 194, in send
+    recipient.receive(message, self, request_reply, silent)
+  File "C:\Users\22749\miniconda3\envs\rap-py310\lib\site-packages\autogen\agentchat\conversable_agent.py", line 1231, in receive
+    self._process_received_message(message, sender, silent)
+  File "C:\Users\22749\Desktop\rap-main\webshop\rule_and_profile\webshop_guard_agent.py", line 147, in _process_received_message
+    return super()._process_received_message(cleaned_message, sender, silent)
+  File "C:\Users\22749\miniconda3\envs\rap-py310\lib\site-packages\autogen\agentchat\conversable_agent.py", line 1189, in _process_received_message
+    valid = self._append_oai_message(message, sender, role="user", name=sender.name)
+TypeError: WebShopGuardAgent.__init__.<locals>.FilteredAssistantAgent._append_oai_message() got multiple values for argument 'role'
+
+================================================================================
