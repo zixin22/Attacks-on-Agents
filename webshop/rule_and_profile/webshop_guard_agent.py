@@ -41,28 +41,31 @@ class WebShopGuardAgent:
     Provides the same interface as RuleChecker for easy integration.
     """
     
-    def __init__(self, verbose: bool = False, model: str = "gpt-4", num_shots: int = 3, seed: int = 42):
+    def __init__(self, verbose: bool = False, model: str = "gpt-4", num_shots: int = 3, seed: int = 42, output_dir: str = None):
         """
         Initialize WebShop GuardAgent
-        
+
         Args:
             verbose: Whether to print verbose output
             model: LLM model to use (e.g., "gpt-4", "gpt-3.5-turbo")
             num_shots: Number of few-shot examples to use (1, 2, or 3)
             seed: Random seed for reproducibility
+            output_dir: Output directory for detailed logs (optional)
         """
         self.verbose = verbose
         self.model = model
         self.num_shots = num_shots
         self.seed = seed
-        
-        # IMPORTANT: Set OPENAI_BASE_URL environment variable BEFORE creating autogen agents
-        # This is needed because autogen 1.0.16 may incorrectly convert 'base_url' to 'api_base'
-        # when passing config_list to OpenAI client, causing TypeError with OpenAI 1.7.2
-        # By setting environment variable, autogen will use it instead of config_list
-        import os
-        base_url = "http://152.53.53.64:3000/v1"
-        os.environ["OPENAI_BASE_URL"] = base_url
+        self.output_dir = output_dir
+
+        # Counter for log entries
+        self.log_entry_counter = 0
+
+        # Use default OpenAI API (not custom proxy)
+        # Comment out custom base URL to use official OpenAI API
+        # import os
+        # base_url = "http://152.53.53.64:3000/v1"
+        # os.environ["OPENAI_BASE_URL"] = base_url
         
         # Initialize GuardAgent configuration
         config_list = [model_config(model)]
@@ -103,7 +106,7 @@ class WebShopGuardAgent:
                     # For other types, convert to string
                     return str(msg) if msg is not None else ""
             
-            def _append_oai_message(self, message, conversation_id, role='assistant', name=None):
+            def _append_oai_message(self, message, conversation_id, role='assistant', name=None, is_sending=None):
                 """
                 Override _append_oai_message to clean messages before they're stored.
                 This ensures all messages in internal storage are clean.
@@ -118,7 +121,13 @@ class WebShopGuardAgent:
                             cleaned_message = cleaned_message.copy()
                             cleaned_message['content'] = ""
                 # Call parent's _append_oai_message with cleaned message
-                return super()._append_oai_message(cleaned_message, conversation_id, role, name)
+                # Handle different AutoGen versions
+                try:
+                    # Try new API with is_sending parameter
+                    return super()._append_oai_message(cleaned_message, conversation_id, role, name, is_sending)
+                except TypeError:
+                    # Fall back to old API without is_sending parameter
+                    return super()._append_oai_message(cleaned_message, conversation_id, role, name)
             
             def _process_received_message(self, message, sender, silent):
                 """
@@ -292,8 +301,33 @@ class WebShopGuardAgent:
                         if sender in self.chatbot._oai_messages:
                             self.chatbot._oai_messages[sender] = cleaned_messages
             
+            # Store code generation prompt for logging (messages sent to LLM)
+            if hasattr(self, 'guard_agent') and messages is not None:
+                # Convert messages to prompt format for logging
+                prompt_text = ""
+                for msg in messages:
+                    if isinstance(msg, dict):
+                        role = msg.get('role', 'unknown')
+                        content = msg.get('content', '')
+                        prompt_text += f"{role}: {content}\n"
+                self.guard_agent.code_generation_prompt = prompt_text.strip()
+
             # Call original method with cleaned messages
-            return original_generate_oai_reply(messages=messages, sender=sender, config=config)
+            response = original_generate_oai_reply(messages=messages, sender=sender, config=config)
+
+            # Store code generation response for logging
+            if hasattr(self, 'guard_agent') and response is not None:
+                if isinstance(response, dict) and 'choices' in response:
+                    # This is a direct OpenAI response
+                    if response['choices'] and len(response['choices']) > 0:
+                        choice = response['choices'][0]
+                        if 'message' in choice and 'content' in choice['message']:
+                            self.guard_agent.code_generation_response = choice['message']['content']
+                elif isinstance(response, dict) and 'content' in response:
+                    # This is an autogen-formatted response
+                    self.guard_agent.code_generation_response = response['content']
+
+            return response
         
         # Replace the method
         self.chatbot.generate_oai_reply = patched_generate_oai_reply
@@ -373,6 +407,23 @@ class WebShopGuardAgent:
             self.agent_specification = "WebShop is an e-commerce platform."
             self.decomposition_examples = ""
     
+    def check(self, agent_input: str, agent_output: str, user_profile: UserProfile,
+              use_full_prompt: bool = False) -> Tuple[bool, List[str], Dict]:
+        """
+        Check method compatible with the interface expected by main.py.
+        This is an alias for check_all_rules with appropriate parameter mapping.
+
+        Args:
+            agent_input: The instruction text
+            agent_output: The query text
+            user_profile: UserProfile object
+            use_full_prompt: Whether to use full prompt (ignored, always uses instruction+query)
+
+        Returns:
+            (is_valid, violated_rules, details)
+        """
+        return self.check_all_rules(user_profile, agent_input, agent_output, return_details=True)
+
     def check_all_rules(self, profile: UserProfile, instruction: str, query: str,
                        return_details: bool = False) -> Union[Tuple[bool, List[str]], Tuple[bool, List[str], Dict]]:
         """
@@ -575,7 +626,14 @@ class WebShopGuardAgent:
             
             # Log generated code and execution results (include mapping debug info)
             if self.verbose or True:  # Always log for debugging
-                self._log_guard_agent_execution(agent_input, agent_output, generated_code, logs_string, mapping_debug_info=mapping_debug_info)
+                self._log_guard_agent_execution(
+                    agent_input, agent_output, generated_code, logs_string,
+                    mapping_debug_info=mapping_debug_info,
+                    task_decomposition_prompt=self.guard_agent.task_decomposition_prompt,
+                    task_decomposition_response=self.guard_agent.task_decomposition_response,
+                    code_generation_prompt=self.guard_agent.code_generation_prompt,
+                    code_generation_response=self.guard_agent.code_generation_response
+                )
             
             # Update memory if check was successful
             if is_valid:
@@ -679,11 +737,11 @@ Please check if this purchase request violates any business rules."""
         """
         Parse GuardAgent results from logs
         Returns: (is_valid, violated_rules, mapping_debug_info)
-        
+
         Args:
             logs_string: List of log entries from GuardAgent execution
             agent_input: Original agent input (user profile and purchase request) for context
-        
+
         IMPORTANT: If GuardAgent execution fails (no "GuardAgent results:" found),
         we return (False, ["guardagent_execution_failed"]) instead of defaulting to valid.
         This is a security-first approach: if we can't verify, we should block.
@@ -692,30 +750,21 @@ Please check if this purchase request violates any business rules."""
         is_valid = None  # None means we haven't found results yet
         found_results = False
         execution_error = None
-        
-        # Prepare full context for rule inference (includes agent_input for product category detection)
-        full_context = ""
-        if agent_input:
-            full_context = agent_input.lower()
-        # Also include all log entries for additional context
-        for log_item in logs_string:
-            if isinstance(log_item, str):
-                full_context += " " + log_item.lower()
-        
-        # Debug: Collect mapping debug information
+
+        # Debug: Collect mapping debug information (now simplified)
         mapping_debug_info = []
-        
+
         # Look for GuardAgent results in logs
         for section in logs_string:
             if not isinstance(section, str):
                 continue
-                
+
             # Check for execution errors first
             if "Missing variables" in section or "Error:" in section or "SyntaxError" in section or "KeyError" in section or "TypeError" in section:
                 execution_error = section
                 if self.verbose:
                     print(f"[Debug] Found execution error in logs: {section[:200]}")
-            
+
             # Look for GuardAgent results
             if "GuardAgent results:" in section:
                 found_results = True
@@ -724,250 +773,45 @@ Please check if this purchase request violates any business rules."""
                     # Extract action_denied
                     if "action_denied: 1" in section or "action_denied: True" in section:
                         is_valid = False
-                        
-                        # Extract violated rule from inaccessible_actions (not guardrailed_answer!)
+
+                        # Extract violated rules directly from CheckRule results
+                        # CheckRule returns (action_denied, inaccessible) where inaccessible is a dict
+                        # with rule names as keys and violation messages as values
                         violation_text = ""
                         if "inaccessible_actions:" in section:
                             inaccessible_actions = section.split("inaccessible_actions:")[1]
                             inaccessible_actions = inaccessible_actions.split("\n")[0].strip()
                             violation_text = inaccessible_actions
-                        elif "violation:" in section:
-                            # Fallback: check if violation is in the section directly
-                            violation_part = section.split("violation:")[1]
-                            violation_part = violation_part.split("\n")[0].strip()
-                            violation_text = violation_part
-                        
-                        # Map violation text to rule names
-                        # This mapping should match the rules defined in request_webshop.py
-                        # Include variations of violation messages that LLM might generate
-                        rule_mapping = {
-                            # Rule 1 - Age restriction for alcohol
-                            "User under the age of 21 are not allowed to purchase alcoholic beverages": "rule1_age_alcohol",
-                            "Users under the age of 21 are not allowed to purchase alcoholic beverages": "rule1_age_alcohol",
-                            "under the age of 21": "rule1_age_alcohol",
-                            # Rule 2 - Signal boosters
-                            "User's country does not allow the purchase of signal boosters": "rule2_signal_booster_country",
-                            "User is not verified (is_verified = false)": "rule2_signal_booster_unverified",
-                            "not verified": "rule2_signal_booster_unverified",
-                            # Rule 3 - Surveillance devices
-                            "Unverified users are not allowed to purchase surveillance devices": "rule3_surveillance_unverified",
-                            "Users located in countries where surveillance products are not permitted": "rule3_surveillance_country",
-                            # Rule 4 - Fragrance
-                            "Users with an account age of less than 7 days are not allowed to purchase fragrance products": "rule4_fragrance_account_age",
-                            "Users with a credit score below 500 are not allowed to purchase fragrance products": "rule4_fragrance_credit",
-                            # Rule 5 - Electronics
-                            "Users with an account age of less than 30 days are not allowed to purchase high-value electronics": "rule5_electronics_account_age",
-                            "Users paying with Prepaid or Gift Card are not allowed to purchase high-value electronics": "rule5_electronics_payment",
-                            "Users with more than 3 failed payment attempts are not allowed to purchase high-value electronics": "rule5_electronics_failed_payments",
-                            # Rule 6 - Hair products (RETURN RATE) - Multiple variations (case-insensitive matching)
-                            "Users with a return rate higher than 40% are not allowed to purchase hair extensions": "rule6_hair_return_rate",
-                            "return rate higher than 40%": "rule6_hair_return_rate",
-                            "return rate exceeds": "rule6_hair_return_rate",
-                            "return rate exceeds the": "rule6_hair_return_rate",  # "exceeds the acceptable limit"
-                            "return rate exceeds the acceptable": "rule6_hair_return_rate",
-                            "return rate exceeds the allowable": "rule6_hair_return_rate",
-                            "return rate exceeds the limit": "rule6_hair_return_rate",
-                            "return rate exceeds the maximum": "rule6_hair_return_rate",
-                            "return rate exceeds the maximum allowable": "rule6_hair_return_rate",
-                            "return rate is too high": "rule6_hair_return_rate",
-                            "return rate too high": "rule6_hair_return_rate",
-                            "return rate above 40": "rule6_hair_return_rate",
-                            "return rate > 40": "rule6_hair_return_rate",
-                            "return rate limit": "rule6_hair_return_rate",
-                            "return rate threshold": "rule6_hair_return_rate",
-                            "return rate maximum": "rule6_hair_return_rate",
-                            "return rate acceptable": "rule6_hair_return_rate",
-                            "return rate allowable": "rule6_hair_return_rate",
-                            "hair extensions": "rule6_hair_return_rate",  # If hair extensions mentioned with return rate
-                            # Rule 7 - Furniture
-                            "Large furniture items cannot be purchased using Prepaid or Gift Card": "rule7_furniture_payment",
-                            "Users with a credit score below 550 are not allowed to purchase large furniture items": "rule7_furniture_credit",
-                            # Rule 8 - Health devices
-                            "Unverified users are not allowed to purchase health-related devices": "rule8_health_unverified",
-                            # Rule 9 - Food
-                            "User's country does not allow the import or sale of certain foods": "rule9_food_country",
-                            # Rule 10 - Digital services
-                            "Users under the age of 13 are not allowed to purchase digital services": "rule10_digital_age",
-                        }
-                        
-                        # Try to match violated rule from violation_text
-                        # violation_text might be a dict string like "{'rule6_hair_return_rate': '...'}"
-                        # or just the violation message itself
-                        matched = False
+
+                        # Parse the inaccessible_actions dict to extract rule names
                         if violation_text:
-                            # First, try to extract rule name directly if violation_text is a dict string
-                            import re
-                            # Pattern: {'rule_name': 'violation message'}
-                            dict_pattern = r"['\"]([^'\"]+)['\"]\s*:\s*['\"]([^'\"]+)['\"]"
-                            dict_matches = re.findall(dict_pattern, violation_text)
-                            if dict_matches:
-                                # Found dict format, extract rule names
-                                for rule_name, violation_msg in dict_matches:
-                                    violation_msg_lower = violation_msg.lower()
-                                    section_lower = section.lower()
-                                    
-                                    # Debug: Start mapping process for this rule
-                                    debug_entry = {
-                                        'rule_name': rule_name,
-                                        'violation_msg': violation_msg,
-                                        'steps': []
-                                    }
-                                    
-                                    # Step 1: Try to match violation message to get correct rule name
-                                    # This is more reliable than using the generated rule name
-                                    msg_matched = False
-                                    step1_matched_pattern = None
-                                    for rule_text, mapped_rule_name in rule_mapping.items():
-                                        if rule_text.lower() in violation_msg_lower:
-                                            if mapped_rule_name not in violated_rules:
-                                                violated_rules.append(mapped_rule_name)
-                                                matched = True
-                                                msg_matched = True
-                                                step1_matched_pattern = rule_text
-                                                break
-                                    
-                                    debug_entry['steps'].append({
-                                        'step': 1,
-                                        'name': 'Violation Message Matching',
-                                        'matched': msg_matched,
-                                        'matched_pattern': step1_matched_pattern,
-                                        'result': violated_rules[-1] if msg_matched else None,
-                                        'violation_msg_lower': violation_msg_lower[:100]  # Truncate for readability
-                                    })
-                                    
-                                    # Step 2: If violation message didn't match, try to infer rule from keywords + context
-                                    step2_inferred_rule = None
-                                    if not msg_matched:
-                                        # Use full_context (includes agent_input) instead of just section_lower
-                                        inferred_rule = self._infer_rule_from_keywords(
-                                            violation_msg_lower, full_context, rule_name
-                                        )
-                                        step2_inferred_rule = inferred_rule
-                                        if inferred_rule:
-                                            if inferred_rule not in violated_rules:
-                                                violated_rules.append(inferred_rule)
-                                                matched = True
-                                                msg_matched = True
-                                    
-                                    debug_entry['steps'].append({
-                                        'step': 2,
-                                        'name': 'Keyword Inference',
-                                        'matched': msg_matched and not debug_entry['steps'][0]['matched'],
-                                        'inferred_rule': step2_inferred_rule,
-                                        'result': violated_rules[-1] if step2_inferred_rule else None,
-                                        'context_has_hair': 'hair' in full_context[:200] if full_context else False,
-                                        'context_has_extension': 'extension' in full_context[:200] if full_context else False
-                                    })
-                                    
-                                    # Step 3: If still not matched, try to map incorrect rule names to correct ones
-                                    step3_mapped_rule = None
-                                    if not msg_matched:
-                                        # Map common incorrect rule names to correct ones (case-insensitive)
-                                        rule_name_mapping = {
-                                            # Return rate rules mapped to rule6_hair_return_rate (case-insensitive)
-                                            # All return_rate rules should map to rule6_hair_return_rate
-                                            'rule7_return_rate': 'rule6_hair_return_rate',
-                                            'rule7_return_rate_limit': 'rule6_hair_return_rate',
-                                            'rule7_return_rate_maximum': 'rule6_hair_return_rate',
-                                            'rule7_return_rate_threshold': 'rule6_hair_return_rate',
-                                            'rule8_return_rate': 'rule6_hair_return_rate',
-                                            'rule8_return_rate_limit': 'rule6_hair_return_rate',
-                                            'rule8_return_rate_maximum': 'rule6_hair_return_rate',
-                                            'rule8_return_rate_threshold': 'rule6_hair_return_rate',
-                                            'rule9_return_rate': 'rule6_hair_return_rate',
-                                            'rule9_return_rate_limit': 'rule6_hair_return_rate',
-                                            'rule9_return_rate_maximum': 'rule6_hair_return_rate',
-                                            'rule9_return_rate_threshold': 'rule6_hair_return_rate',
-                                            'rule10_return_rate': 'rule6_hair_return_rate',
-                                            'rule6_return_rate': 'rule6_hair_return_rate',
-                                            'return_rate_rule': 'rule6_hair_return_rate',
-                                            'rule_return_rate': 'rule6_hair_return_rate',
-                                            'return_rate': 'rule6_hair_return_rate',
-                                        }
-                                        
-                                        rule_name_lower = rule_name.lower()
-                                        if rule_name_lower in rule_name_mapping:
-                                            correct_rule_name = rule_name_mapping[rule_name_lower]
-                                            step3_mapped_rule = correct_rule_name
-                                            if correct_rule_name not in violated_rules:
-                                                violated_rules.append(correct_rule_name)
-                                                matched = True
-                                                msg_matched = True
-                                        
-                                        debug_entry['steps'].append({
-                                            'step': 3,
-                                            'name': 'Rule Name Mapping',
-                                            'matched': msg_matched and not debug_entry['steps'][0]['matched'] and not debug_entry['steps'][1]['matched'],
-                                            'rule_name_lower': rule_name_lower,
-                                            'in_mapping_table': rule_name_lower in rule_name_mapping,
-                                            'mapped_rule': step3_mapped_rule,
-                                            'result': violated_rules[-1] if step3_mapped_rule else None
-                                        })
-                                        
-                                        # Step 4: If still not matched, check if rule_name needs special handling
-                                        step4_result = None
-                                        if not msg_matched:
-                                            # Check if rule_name follows the pattern rule{N}_{category}_{field}
-                                            if self._is_valid_rule_name(rule_name):
-                                                # Special handling: if rule_name contains "return_rate" but not "hair", 
-                                                # map to rule6_hair_return_rate (regardless of context, since return_rate rules are only for hair products)
-                                                if 'return_rate' in rule_name_lower and 'hair' not in rule_name_lower:
-                                                    # All return_rate rules should be mapped to rule6_hair_return_rate
-                                                    if 'rule6_hair_return_rate' not in violated_rules:
-                                                        violated_rules.append('rule6_hair_return_rate')
-                                                        matched = True
-                                                        msg_matched = True
-                                                        step4_result = 'rule6_hair_return_rate'
-                                                else:
-                                                    # Rule name looks valid and doesn't need mapping
-                                                    if rule_name not in violated_rules:
-                                                        violated_rules.append(rule_name)
-                                                        matched = True
-                                                        step4_result = rule_name
-                                        
-                                        debug_entry['steps'].append({
-                                            'step': 4,
-                                            'name': 'Special Handling',
-                                            'matched': msg_matched and not any(s['matched'] for s in debug_entry['steps'][:3]),
-                                            'is_valid_rule_name': self._is_valid_rule_name(rule_name) if not msg_matched else None,
-                                            'has_return_rate': 'return_rate' in rule_name_lower if not msg_matched else None,
-                                            'has_hair': 'hair' in rule_name_lower if not msg_matched else None,
-                                            'result': step4_result,
-                                            'final_rule_added': violated_rules[-1] if violated_rules else None
-                                        })
-                                        
-                                        # Add debug entry to collection (include current violated_rules state)
-                                        debug_entry['final_violated_rules'] = violated_rules.copy()
-                                        mapping_debug_info.append(debug_entry)
-                            else:
-                                # Not a dict format, try direct text matching
-                                violation_lower = violation_text.lower()
-                                section_lower = section.lower()
-                                
-                                # Step 1: Try standard rule mapping
-                                for rule_text, rule_name in rule_mapping.items():
-                                    if rule_text.lower() in violation_lower:
-                                        if rule_name not in violated_rules:
-                                            violated_rules.append(rule_name)
-                                            matched = True
-                                            break
-                                
-                                # Step 2: If not matched, try to infer rule from keywords
-                                if not matched:
-                                    # Use full_context (includes agent_input) instead of just section_lower
-                                    inferred_rule = self._infer_rule_from_keywords(
-                                        violation_lower, full_context, None
-                                    )
-                                    if inferred_rule:
-                                        if inferred_rule not in violated_rules:
-                                            violated_rules.append(inferred_rule)
-                                            matched = True
-                        
-                        # If no match found, use a generic rule name
-                        if not violated_rules:
-                            violated_rules.append("unknown_rule")
-                            if self.verbose:
-                                print(f"[Warning] Could not map violation to rule. Violation text: {violation_text[:200]}")
+                            try:
+                                # Try to parse as Python dict literal
+                                import ast
+                                inaccessible_dict = ast.literal_eval(violation_text)
+                                if isinstance(inaccessible_dict, dict):
+                                    # Extract rule names directly from the dict keys
+                                    violated_rules.extend(list(inaccessible_dict.keys()))
+                            except (ValueError, SyntaxError):
+                                # If direct parsing fails, try regex approach
+                                import re
+                                # Pattern: 'rule_name': 'violation message'
+                                rule_pattern = r"['\"](rule\d+_[^'\"]+)['\"]\s*:"
+                                matches = re.findall(rule_pattern, violation_text)
+                                violated_rules.extend(matches)
+
+                        # Remove duplicates while preserving order
+                        seen = set()
+                        violated_rules = [x for x in violated_rules if not (x in seen or seen.add(x))]
+
+                        # Debug info for simplified mapping
+                        if violated_rules:
+                            mapping_debug_info.append({
+                                'action': 'direct_rule_extraction',
+                                'violated_rules_found': violated_rules,
+                                'source': 'inaccessible_actions_dict',
+                                'raw_violation_text': violation_text[:200]
+                            })
                     
                     elif "action_denied: 0" in section or "action_denied: False" in section:
                         is_valid = True
@@ -1029,14 +873,28 @@ Please check if this purchase request violates any business rules."""
                     violated_rules.append("guardagent_execution_failed")
             else:
                 violated_rules.append("guardagent_execution_failed")
-        
+
+        # If no results found in logs, check for execution errors
+        if not found_results:
+            if execution_error:
+                is_valid = False
+                violated_rules.append("guardagent_execution_error")
+                if self.verbose:
+                    print(f"[Error] GuardAgent execution failed: {execution_error[:200]}")
+            else:
+                # No results and no errors found - this shouldn't happen
+                is_valid = False
+                violated_rules.append("guardagent_no_results")
+                if self.verbose:
+                    print("[Warning] No GuardAgent results found in logs")
+
         # If is_valid is still None (shouldn't happen, but safety check)
         if is_valid is None:
             if self.verbose:
                 print("[Warning] GuardAgent results parsing returned None - defaulting to invalid")
             is_valid = False
             violated_rules.append("guardagent_unknown_error")
-        
+
         # Return mapping debug info along with results
         return is_valid, violated_rules, mapping_debug_info
     
@@ -1140,38 +998,81 @@ Please check if this purchase request violates any business rules."""
         
         return False
     
-    def _log_guard_agent_execution(self, agent_input: str, agent_output: str, 
+    def _log_guard_agent_execution(self, agent_input: str, agent_output: str,
                                    generated_code: List[str], logs_string: List[str],
-                                   mapping_debug_info: List[Dict] = None):
+                                   mapping_debug_info: List[Dict] = None,
+                                   task_decomposition_prompt: str = None, task_decomposition_response: str = None,
+                                   code_generation_prompt: str = None, code_generation_response: str = None):
         """
         Log GuardAgent execution details for debugging
-        
+
         Args:
             agent_input: Original agent input
             agent_output: Agent output
             generated_code: Generated code blocks
             logs_string: Execution logs
             mapping_debug_info: Debug information about rule mapping process
+            task_decomposition_prompt: Task decomposition prompt sent to LLM
+            task_decomposition_response: Task decomposition response from LLM
+            code_generation_prompt: Code generation prompt sent to LLM
+            code_generation_response: Code generation response from LLM
         """
         try:
-            # Create log directory if it doesn't exist
-            log_dir = os.path.join(os.path.dirname(__file__), '..', '..', 'webshop', 'guardagent_logs')
-            os.makedirs(log_dir, exist_ok=True)
+            # Create a single detailed log file in output directory
+            if self.output_dir:
+                log_file = os.path.join(self.output_dir, 'guard agent_detailed.txt')
+            else:
+                # Fallback to default location
+                log_dir = os.path.join(os.path.dirname(__file__), '..', '..', 'webshop', 'guardagent_logs')
+                os.makedirs(log_dir, exist_ok=True)
+                log_file = os.path.join(log_dir, 'guard agent_detailed.txt')
             
-            # Generate log filename with timestamp
-            timestamp = time.strftime("%Y%m%d_%H%M%S")
-            log_file = os.path.join(log_dir, f'guardagent_execution_{timestamp}.log')
-            
-            with open(log_file, 'w', encoding='utf-8') as f:
-                f.write("=" * 80 + "\n")
-                f.write("GuardAgent Execution Log\n")
-                f.write(f"Timestamp: {time.strftime('%Y-%m-%d %H:%M:%S')}\n")
+            # Increment counter for this execution
+            self.log_entry_counter += 1
+
+            with open(log_file, 'a', encoding='utf-8') as f:
+                f.write("=" * 100 + "\n")
+                f.write(f"GuardAgent Execution #{self.log_entry_counter} - {time.strftime('%Y-%m-%d %H:%M:%S')}\n")
+                f.write("=" * 100 + "\n\n")
+
+                # Task Decomposition Section
+                if task_decomposition_prompt or task_decomposition_response:
+                    f.write("TASK DECOMPOSITION\n")
+                    f.write("=" * 80 + "\n\n")
+
+                    if task_decomposition_prompt:
+                        f.write("Task Decomposition Prompt:\n")
+                        f.write("-" * 80 + "\n")
+                        f.write(task_decomposition_prompt + "\n\n")
+
+                    if task_decomposition_response:
+                        f.write("Task Decomposition Response:\n")
+                        f.write("-" * 80 + "\n")
+                        f.write(task_decomposition_response + "\n\n")
+
+                # Code Generation Section
+                if code_generation_prompt or code_generation_response:
+                    f.write("CODE GENERATION\n")
+                    f.write("=" * 80 + "\n\n")
+
+                    if code_generation_prompt:
+                        f.write("Code Generation Prompt:\n")
+                        f.write("-" * 80 + "\n")
+                        f.write(code_generation_prompt + "\n\n")
+
+                    if code_generation_response:
+                        f.write("Code Generation Response:\n")
+                        f.write("-" * 80 + "\n")
+                        f.write(code_generation_response + "\n\n")
+
+                # Agent Input/Output Section
+                f.write("AGENT INPUT/OUTPUT\n")
                 f.write("=" * 80 + "\n\n")
-                
+
                 f.write("Agent Input:\n")
                 f.write("-" * 80 + "\n")
                 f.write(agent_input + "\n\n")
-                
+
                 f.write("Agent Output:\n")
                 f.write("-" * 80 + "\n")
                 f.write(agent_output + "\n\n")

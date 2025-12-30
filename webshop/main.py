@@ -30,10 +30,12 @@ parser.add_argument("--enable_guard_agent", action="store_true", help="Enable Gu
 parser.add_argument("--guard_agent_llm", type=str, default="gpt-4o", 
                     choices=["gpt-4", "gpt-4o", "gpt-3.5-turbo"],
                     help="LLM model for GuardAgent (default: gpt-4o)")
-parser.add_argument("--guard_agent_num_shots", type=int, default=3, 
+parser.add_argument("--guard_agent_num_shots", type=int, default=3,
                     choices=[1, 2, 3],
                     help="Number of few-shot examples for GuardAgent (default: 3)")
-parser.add_argument("--defense_mode", type=str, default="rule_checker", 
+parser.add_argument("--guard_agent_seed", type=int, default=42,
+                    help="Random seed for GuardAgent (default: 42)")
+parser.add_argument("--defense_mode", type=str, default="rule_checker",
                     choices=["rule_checker", "guard_agent", "none"],
                     help="Defense mechanism: 'rule_checker' (default), 'guard_agent', or 'none'")
 parser.add_argument("--check_only_session_start", action="store_true", 
@@ -532,18 +534,17 @@ if args.defense_mode == 'rule_checker':
         print("[Warning] --defense_mode=rule_checker but --enable_rule_checker not set. Disabling defense.")
         defense_mode = 'none'
 elif args.defense_mode == 'guard_agent':
-    if args.enable_guard_agent:
+    # Auto-enable GuardAgent when defense_mode is set to guard_agent
+    if True:  # args.enable_guard_agent or True to auto-enable
         try:
-            from guard_agent_webshop import GuardAgentWebShop
-            # Determine detailed log file path
-            import os
-            detailed_log_file = os.path.join(args.output, 'guard_agent_detailed_log.txt')
-            print(f"[Info] GuardAgent detailed log file: {detailed_log_file}")
-            guard_agent = GuardAgentWebShop(
-                llm=args.guard_agent_llm,
+            from rule_and_profile.webshop_guard_agent import WebShopGuardAgent
+            print(f"[Info] Initializing GuardAgent with model: {args.guard_agent_llm}, num_shots: {args.guard_agent_num_shots}")
+            guard_agent = WebShopGuardAgent(
+                model=args.guard_agent_llm,
                 num_shots=args.guard_agent_num_shots,
                 verbose=True,
-                detailed_log_file=detailed_log_file
+                seed=args.guard_agent_seed,
+                output_dir=args.output
             )
             defense_mode = 'guard_agent'
             check_frequency = "session start only" if args.check_only_session_start else "session start + before each action"
@@ -607,8 +608,9 @@ def generate_embeddings(memory):
 
 def generate_examples(info, actions, memory, embeddings, reasoning='', k=3, act_len=0, use_act_obs=False):
     cos_scores=None
+    init_prompt = ''  # Initialize init_prompt
     # retrieve examples
-    if info.get('instruction', None) is not None:
+    if info.get('instruction', None) is not None and embeddings and 'Instruction' in embeddings and len(embeddings['Instruction']) > 0:
       instruction = info['instruction']
       with torch.no_grad():
         instruction_embedding = model_embedding.encode([instruction])
@@ -1212,7 +1214,7 @@ def webshop_run_rap(idx, prompt, memory, embeddings, profile=None, to_print=True
             if instruction.startswith('Instruction: '):
                 instruction = instruction.replace('Instruction: ', '', 1)
             # Handle case where res[3] might be None
-            if len(res) > 3 and res[3] is not None:
+            if len(res) > 3 and res[3] is not None and isinstance(res[3], dict):
                 res[3]['instruction'] = instruction
             # IMPORTANT: Also update session's instruction so RuleChecker uses attack instruction
             if idx in env.sessions:
@@ -1249,10 +1251,10 @@ def webshop_run_rap(idx, prompt, memory, embeddings, profile=None, to_print=True
                     new_lines.insert(insert_idx, f'Instruction: {instruction}')
                 
                 observation = '\n'.join(new_lines)
-        elif instruction is None and len(res) > 3 and res[3] is not None and res[3].get('instruction', None) is not None:
+        elif instruction is None and len(res) > 3 and res[3] is not None and isinstance(res[3], dict) and res[3].get('instruction', None) is not None:
             instruction = res[3]['instruction'].replace('Instruction: ', '')
             res[3]['instruction'] = instruction
-        elif len(res) > 3 and res[3] is not None and res[3].get('instruction', None) is None:
+        elif len(res) > 3 and res[3] is not None and isinstance(res[3], dict) and res[3].get('instruction', None) is None:
             res[3]['instruction'] = instruction
 
         if i:
@@ -1264,8 +1266,10 @@ def webshop_run_rap(idx, prompt, memory, embeddings, profile=None, to_print=True
             actions.append(f'{observation}')
             task = observation
 
+        # Handle case where res[3] might be None
+        info_for_examples = res[3] if len(res) > 3 and res[3] is not None else {}
         init_prompt, reasoning, retrieved_ids = generate_examples(
-            res[3], actions, memory, embeddings, reasoning,
+            info_for_examples, actions, memory, embeddings, reasoning,
             k=config['params'].get('num_retrieval', 1),
             act_len=config['params'].get('analogy_len', 0),
             use_act_obs=config['params'].get('act_obs', False)
@@ -1712,8 +1716,11 @@ def execute_trigger_attack(
         execution_log = []
         violated_rules = []
         was_blocked = False
+        import traceback
+        error_details = traceback.format_exc()
         print(f"✗ Trigger attack failed due to error: {e}")
-        
+        print(f"Full traceback:\n{error_details}")
+
         # Log failure to file
         if attack_log_file:
             with open(attack_log_file, 'a', encoding='utf-8') as f:
@@ -1724,6 +1731,7 @@ def execute_trigger_attack(
                 f.write(f"Host Instruction: {host_instruction}\n")
                 f.write(f"Trigger Attack Instruction: {trigger_attack_instruction}\n")
                 f.write(f"Error: {type(e).__name__} - {str(e)}\n")
+                f.write(f"Traceback:\n{error_details}\n")
                 f.write(f"{'='*80}\n\n")
     
     # IMPORTANT: Only inject if done=True (mem_data != '')
@@ -1989,22 +1997,49 @@ for i in index_list:
         print(f"Host Instruction: {host_instruction}")
         print(f"Host Query: {host_query}")
         
-        # Step 2: Generate attack plan (with mask check by default if defense mechanism is enabled)
-        # Default behavior: Use mask check (one fragment attack mode) if defense mechanism is enabled
+        # Step 2: Generate attack plan (with mask check as default one fragment attack mode)
+        # Default behavior: Use mask check (one fragment attack mode) by default
         # This means only sensitive fragments will be attacked, not all fragments
-        # If --use_mask_check is explicitly set, use mask check even if defense_mode is 'none'
+        # Mask check requires --enable_rule_checker or --enable_guard_agent to be set
         use_mask_check = hasattr(args, 'use_mask_check') and args.use_mask_check
-        # Default: Use mask check if defense mechanism is enabled (one fragment mode)
-        should_use_mask_check = (args.defense_mode != 'none') or use_mask_check
-        
+        # Default: Always use mask check (one fragment mode) unless explicitly disabled
+        should_use_mask_check = True  # Default to one fragment mode
+
+        # Debug: Print defense mechanism status
+        print(f"[Debug] Defense mode: {defense_mode}")
+        print(f"[Debug] Guard agent initialized: {guard_agent is not None}")
+        print(f"[Debug] Rule checker initialized: {rule_checker is not None}")
+        print(f"[Debug] Should use mask check: {should_use_mask_check}")
+        print(f"[Debug] Profile available: {profile is not None}")
+        if profile:
+            print(f"[Debug] Profile return_rate: {profile.return_rate}")
+            print(f"[Debug] Profile age: {profile.age}")
+
         if should_use_mask_check:
-            # Use rule_checker for mask check if available, otherwise use guard_agent
-            mask_checker = rule_checker if rule_checker else guard_agent
+            # Determine which defense mechanism to use for mask check
+            if rule_checker:
+                mask_checker = rule_checker
+                print(f"[Debug] Using RuleChecker for mask check")
+            elif guard_agent:
+                mask_checker = guard_agent
+                print(f"[Debug] Using GuardAgent for mask check")
+            else:
+                mask_checker = None
+                print(f"[Debug] No defense mechanism available for mask check")
+
+            print(f"[Debug] Mask checker: {type(mask_checker).__name__ if mask_checker else 'None'}")
             if not mask_checker:
-                raise ValueError("Mask check (one fragment mode) requires --enable_rule_checker or --enable_guard_agent to be set")
+                # If no defense mechanism is available, still allow mask check but warn user
+                print("[Warning] Mask check (one fragment mode) requested but no defense mechanism is enabled.")
+                print("[Warning] Mask check will be skipped - falling back to attacking all fragments.")
+                should_use_mask_check = False
+                mask_checker = None
+            else:
+                print("[Debug] Will perform mask check with available defense mechanism")
         else:
             # No mask check: attack all fragments (legacy behavior)
             mask_checker = None
+            print("[Debug] Skipping mask check - using legacy fragment attack mode")
         
         attack_plan = attack_generator.generate_attack_plan(
             host_instruction=host_instruction,
@@ -2012,7 +2047,7 @@ for i in index_list:
             rule_checker=mask_checker if should_use_mask_check else None,
             profile=profile if should_use_mask_check else None,
             query=host_query if should_use_mask_check else "",
-            attack_log_file=attack_log_file
+            attack_log_file=attack_log_file if should_use_mask_check else None
         )
         
         print(f"\nAttack Plan Generated:")
