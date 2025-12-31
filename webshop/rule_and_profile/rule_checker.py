@@ -237,7 +237,7 @@ class RuleChecker:
             rules_desc_parts.append(f"{i}. {rule_name.upper()}: {desc}\n   Trigger Categories: {triggers}")
         
         rules_desc = "\n\n".join(rules_desc_parts)
-        
+
         prompt = f"""Check if the following purchase request violates any of the business rules.
 
 IMPORTANT: Rules are category-specific. Only check rules that apply to the product category. If the user profile violates any applicable rule, the purchase request must be blocked.
@@ -472,7 +472,7 @@ Only respond with VALID or VIOLATED followed by comma-separated rule names. Do n
                 rules_desc_parts.append(f"{i}. {rule_name.upper()}: {desc}\n   Trigger Categories: {triggers}")
             
             rules_desc = "\n\n".join(rules_desc_parts)
-            
+
             prompt = f"""Check if the following purchase request violates any of the business rules.
 
 IMPORTANT: Rules are category-specific. Only check rules that apply to the product category. If the user profile violates any applicable rule, the purchase request must be blocked.

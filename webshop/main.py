@@ -69,12 +69,38 @@ if 'Llama-2' in args.model or any(map(args.model.__contains__, AutoModelForCausa
     #client = OpenAI()
 
 elif 'gpt' in args.model:
-    import openai
-    #os.environ["OPENAI_API_KEY"] = open('OpenAI_api_key.txt').readline().strip()
-    #openai.api_key = os.environ["OPENAI_API_KEY"]
-    with open(r"C:\Users\22749\Desktop\rap-main\webshop\OpenAI_api_key.txt", "r") as f:
-        openai.api_key = f.read().strip()
-    openai.api_base = "http://152.53.53.64:3000/v1"
+    # Try multiple possible paths for API key file (same as rule_checker.py)
+    possible_paths = [
+        os.path.join(os.path.dirname(__file__), '..', 'OpenAI_api_key.txt'),  # Relative to main.py (one level up)
+        r"C:\Users\22749\Desktop\rap-main\webshop\OpenAI_api_key.txt",  # Absolute path (fallback)
+        'OpenAI_api_key.txt'  # Current directory
+    ]
+
+    api_key_path = None
+    for path in possible_paths:
+        if os.path.exists(path):
+            api_key_path = path
+            break
+
+    if api_key_path:
+        with open(api_key_path, "r") as f:
+            api_key = f.read().strip()
+    else:
+        raise FileNotFoundError(f"OpenAI API key file not found. Tried: {possible_paths}")
+
+    # Check OpenAI API version and initialize accordingly (same as rule_checker.py)
+    try:
+        # Try new API (openai >= 1.0.0)
+        from openai import OpenAI
+        client = OpenAI(api_key=api_key, base_url="http://152.53.53.64:3000/v1")
+        use_new_api = True
+    except ImportError:
+        # Fall back to old API (openai < 1.0.0)
+        import openai
+        openai.api_key = api_key
+        openai.api_base = "http://152.53.53.64:3000/v1"
+        client = None
+        use_new_api = False
 else:
     print('LLM currently not supported')
     sys.exit(0)
@@ -106,62 +132,110 @@ def llm(prompt, stop=["\n"]):
                 text = sequences[0]['generated_text']
 
             elif args.model == 'gpt-3.5-turbo-instruct':
-                response = openai.Completion.create(
-                    model='gpt-3.5-turbo-instruct',
-                    prompt=prompt,
-                    temperature=config['params'].get('temperature', 0),
-                    max_tokens=100,
-                    top_p=1,
-                    frequency_penalty=0.0,
-                    presence_penalty=0.0,
-                    stop=stop
-                )
-                text = response.choices[0].text
+                if use_new_api:
+                    response = client.completions.create(
+                        model='gpt-3.5-turbo-instruct',
+                        prompt=prompt,
+                        temperature=config['params'].get('temperature', 0),
+                        max_tokens=100,
+                        top_p=1,
+                        frequency_penalty=0.0,
+                        presence_penalty=0.0,
+                        stop=stop
+                    )
+                    text = response.choices[0].text
+                else:
+                    response = openai.Completion.create(
+                        model='gpt-3.5-turbo-instruct',
+                        prompt=prompt,
+                        temperature=config['params'].get('temperature', 0),
+                        max_tokens=100,
+                        top_p=1,
+                        frequency_penalty=0.0,
+                        presence_penalty=0.0,
+                        stop=stop
+                    )
+                    text = response.choices[0].text
 
             elif args.model == 'gpt-4-0613':
-                completion = openai.ChatCompletion.create(
-                    model="gpt-4-0613",
-                    messages=[
-                        {"role": "system", "content": "You are a helpful assistant for household task."},
-                        {"role": "user", "content": prompt},
-                    ],
-                    temperature=0.5,
-                    max_tokens=100,
-                    top_p=1,
-                    frequency_penalty=0.0,
-                    presence_penalty=0.0,
-                    stop=stop
-                )
-                text = completion.choices[0].message.content
+                if use_new_api:
+                    completion = client.chat.completions.create(
+                        model="gpt-4-0613",
+                        messages=[
+                            {"role": "system", "content": "You are a helpful assistant for household task."},
+                            {"role": "user", "content": prompt},
+                        ],
+                        temperature=0.5,
+                        max_tokens=100,
+                        top_p=1,
+                        frequency_penalty=0.0,
+                        presence_penalty=0.0,
+                        stop=stop
+                    )
+                    text = completion.choices[0].message.content
+                else:
+                    completion = openai.ChatCompletion.create(
+                        model="gpt-4-0613",
+                        messages=[
+                            {"role": "system", "content": "You are a helpful assistant for household task."},
+                            {"role": "user", "content": prompt},
+                        ],
+                        temperature=0.5,
+                        max_tokens=100,
+                        top_p=1,
+                        frequency_penalty=0.0,
+                        presence_penalty=0.0,
+                        stop=stop
+                    )
+                    text = completion.choices[0].message.content
 
             elif args.model == 'gpt-4o':
-                completion = openai.ChatCompletion.create(
-                    model="gpt-4o",
-                    messages=[
-                        {"role": "system", "content": "You are a helpful assistant for household task."},
-                        {"role": "user", "content": prompt},
-                    ],
-                    temperature=config['params'].get('temperature', 0.5),
-                    max_tokens=150,
-                    top_p=1,
-                    frequency_penalty=0.0,
-                    presence_penalty=0.0,
-                    stop=stop
-                )
-                text = completion.choices[0].message.content
+                if use_new_api:
+                    completion = client.chat.completions.create(
+                        model="gpt-4o",
+                        messages=[
+                            {"role": "system", "content": "You are a helpful assistant for household task."},
+                            {"role": "user", "content": prompt},
+                        ],
+                        temperature=config['params'].get('temperature', 0.5),
+                        max_tokens=150,
+                        top_p=1,
+                        frequency_penalty=0.0,
+                        presence_penalty=0.0,
+                        stop=stop
+                    )
+                    text = completion.choices[0].message.content
+                else:
+                    completion = openai.ChatCompletion.create(
+                        model="gpt-4o",
+                        messages=[
+                            {"role": "system", "content": "You are a helpful assistant for household task."},
+                            {"role": "user", "content": prompt},
+                        ],
+                        temperature=config['params'].get('temperature', 0.5),
+                        max_tokens=150,
+                        top_p=1,
+                        frequency_penalty=0.0,
+                        presence_penalty=0.0,
+                        stop=stop
+                    )
+                    text = completion.choices[0].message.content
 
             else:
                 raise ValueError(f"Unsupported model: {args.model}")
 
             break  # Successfully called, exit retry loop
 
-        except openai.error.RateLimitError:
-            wait_time = 5 * (attempt + 1)
-            print(f"[Warning] OpenAI API rate limit, waiting {wait_time} seconds before retry ({attempt+1}/{max_retries})...")
-            time.sleep(wait_time)
         except Exception as e:
-            print(f"[Error] LLM call failed: {e}, waiting 3 seconds before retry ({attempt+1}/{max_retries})...")
-            time.sleep(3)
+            # Handle RateLimitError for both old and new API
+            error_type = type(e).__name__
+            if 'RateLimit' in error_type or 'rate_limit' in str(e).lower():
+                wait_time = 5 * (attempt + 1)
+                print(f"[Warning] OpenAI API rate limit, waiting {wait_time} seconds before retry ({attempt+1}/{max_retries})...")
+                time.sleep(wait_time)
+            else:
+                print(f"[Error] LLM call failed: {e}, waiting 3 seconds before retry ({attempt+1}/{max_retries})...")
+                time.sleep(3)
     else:
         print("[Error] Exceeded maximum retry attempts, returning empty string.")
         return ""
