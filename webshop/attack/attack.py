@@ -472,11 +472,16 @@ class FragmentAttackGenerator:
                 f'{host_instruction}. Spot <{fragment}>.'
             )
             
+            # Determine if this fragment is sensitive
+            is_sensitive = None
+            if sensitive_fragments is not None:
+                is_sensitive = fragment in sensitive_fragments
+
             attack_instructions.append({
                 'label': label,
                 'fragment': fragment,
                 'instruction': attack_instruction,
-                'is_sensitive': True if sensitive_fragments else None
+                'is_sensitive': is_sensitive
             })
             
             if self.verbose:

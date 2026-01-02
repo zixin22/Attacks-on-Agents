@@ -49,11 +49,19 @@ class RuleChecker:
             from openai import OpenAI
             self.client = OpenAI(api_key=api_key, base_url="http://152.53.53.64:3000/v1")
             self.use_new_api = True
-        except ImportError:
-            # Fall back to old API (openai < 1.0.0)
-            openai.api_key = api_key
-            openai.api_base = "http://152.53.53.64:3000/v1"
-            self.use_new_api = False
+        except (ImportError, TypeError, Exception) as e:
+            # Fall back to old API (openai < 1.0.0) on any initialization error
+            if isinstance(e, ImportError) or 'Client.__init__' in str(e) or 'proxies' in str(e):
+                try:
+                    import openai
+                    openai.api_key = api_key
+                    openai.api_base = "http://152.53.53.64:3000/v1"
+                    self.client = None  # Old API doesn't use client object
+                    self.use_new_api = False
+                except Exception as fallback_e:
+                    raise Exception(f"Failed to initialize both new and old OpenAI API: new={e}, old={fallback_e}")
+            else:
+                raise  # Re-raise if it's a different kind of error
     
     def _call_llm(self, prompt: str, max_retries: int = 3) -> str:
         """Call LLM with retry logic"""
