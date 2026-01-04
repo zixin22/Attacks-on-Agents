@@ -106,7 +106,7 @@ class WebShopGuardAgent:
                     # For other types, convert to string
                     return str(msg) if msg is not None else ""
             
-            def _append_oai_message(self, message, conversation_id, role='assistant', name=None, is_sending=None):
+            def _append_oai_message(self, message, role, conversation_id, is_sending):
                 """
                 Override _append_oai_message to clean messages before they're stored.
                 This ensures all messages in internal storage are clean.
@@ -121,13 +121,8 @@ class WebShopGuardAgent:
                             cleaned_message = cleaned_message.copy()
                             cleaned_message['content'] = ""
                 # Call parent's _append_oai_message with cleaned message
-                # Handle different AutoGen versions
-                try:
-                    # Try new API with is_sending parameter
-                    return super()._append_oai_message(cleaned_message, conversation_id, role, name, is_sending)
-                except TypeError:
-                    # Fall back to old API without is_sending parameter
-                    return super()._append_oai_message(cleaned_message, conversation_id, role, name)
+                # Parameters are now in the correct order: message, role, conversation_id, is_sending
+                return super()._append_oai_message(cleaned_message, role, conversation_id, is_sending)
             
             def _process_received_message(self, message, sender, silent):
                 """
@@ -629,10 +624,10 @@ class WebShopGuardAgent:
                 self._log_guard_agent_execution(
                     agent_input, agent_output, generated_code, logs_string,
                     mapping_debug_info=mapping_debug_info,
-                    task_decomposition_prompt=self.guard_agent.task_decomposition_prompt,
-                    task_decomposition_response=self.guard_agent.task_decomposition_response,
-                    code_generation_prompt=self.guard_agent.code_generation_prompt,
-                    code_generation_response=self.guard_agent.code_generation_response
+                    task_decomposition_prompt=getattr(self.guard_agent, 'task_decomposition_prompt', ''),
+                    task_decomposition_response=getattr(self.guard_agent, 'task_decomposition_response', ''),
+                    code_generation_prompt=getattr(self.guard_agent, 'code_generation_prompt', ''),
+                    code_generation_response=getattr(self.guard_agent, 'code_generation_response', '')
                 )
             
             # Update memory if check was successful
@@ -1079,6 +1074,16 @@ Please check if this purchase request violates any business rules."""
                 
                 f.write("Generated Code:\n")
                 f.write("-" * 80 + "\n")
+
+                # 如果generated_code为空，尝试从logs_string中提取代码
+                if not generated_code:
+                    # 从logs_string中查找包含Python代码的条目
+                    for log_item in logs_string:
+                        if isinstance(log_item, str) and 'user_info = {' in log_item:
+                            # 找到了守卫代码
+                            generated_code = [log_item]
+                            break
+
                 if generated_code:
                     for idx, code in enumerate(generated_code, 1):
                         f.write(f"\n[Code Block {idx}]\n")

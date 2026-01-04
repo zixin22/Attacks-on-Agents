@@ -117,6 +117,19 @@ class GuardAgent(UserProxyAgent):
         self.agent_output = context["agent_output"]
         self.agent_task_deco_examples = context["agent_task_deco_examples"]
 
+        # Extract instruction and query from agent_output (they are embedded in the formatted string)
+        # Parse instruction and query from agent_output
+        instruction = ""
+        query = ""
+        if self.agent_output:
+            # Parse from agent_output format: "User wants to purchase a product based on:\n- Instruction: {instruction}\n- Query: {query}"
+            lines = self.agent_output.split('\n')
+            for line in lines:
+                if line.strip().startswith('- Instruction:'):
+                    instruction = line.strip().replace('- Instruction:', '').strip()
+                elif line.strip().startswith('- Query:'):
+                    query = line.strip().replace('- Query:', '').strip()
+
         # import prompt
         from prompts_guard import GuardAgent_Message_Prompt
         subtasks = self.task_decomposition(self.config_list[0],
@@ -127,17 +140,16 @@ class GuardAgent(UserProxyAgent):
                                            self.agent_task_deco_examples)
         self.subtasks = subtasks
 
-        examples = self.retrieve_examples(self.agent_input, self.agent_output)
-
-        init_message = GuardAgent_Message_Prompt.format(examples=examples,
-                                                        agent_input=self.agent_input,
-                                                        agent_output=self.agent_output,
-                                                        subtasks=subtasks)
+        # Using hard-coded examples instead of dynamic retrieval
+        init_message = GuardAgent_Message_Prompt.format(agent_output=self.agent_output,
+                                                         subtasks=subtasks,
+                                                         instruction=instruction,
+                                                         query=query)
         return init_message
 
     def send(self, message: Union[Dict, str], recipient: Agent, request_reply: Optional[bool] = None,
              silent: Optional[bool] = False):
-        valid = self._append_oai_message(message, "assistant", recipient)
+        valid = self._append_oai_message(message, "assistant", recipient, is_sending=False)
         if valid:
             recipient.receive(message, self, request_reply, silent)
         else:

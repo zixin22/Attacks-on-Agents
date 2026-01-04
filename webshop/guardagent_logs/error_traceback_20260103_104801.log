@@ -1,0 +1,19 @@
+================================================================================
+GuardAgent Error Traceback
+Timestamp: 2026-01-03 10:48:01
+Error Type: KeyError
+Error Details: "\n       'info'"
+================================================================================
+
+Full Traceback:
+--------------------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\22749\Desktop\rap-main\webshop\rule_and_profile\webshop_guard_agent.py", line 504, in check_all_rules
+    self.guard_agent.initiate_chat(
+  File "C:\Users\22749\Desktop\rap-main\webshop\rule_and_profile\..\..\guard agent\guardagent.py", line 166, in initiate_chat
+    self.send(self.generate_init_message(**context), recipient, silent=silent)
+  File "C:\Users\22749\Desktop\rap-main\webshop\rule_and_profile\..\..\guard agent\guardagent.py", line 145, in generate_init_message
+    init_message = GuardAgent_Message_Prompt.format(examples=examples,
+KeyError: "\n       'info'"
+
+================================================================================
