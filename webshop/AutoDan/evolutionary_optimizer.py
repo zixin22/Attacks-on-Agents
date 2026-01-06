@@ -1,0 +1,306 @@
+"""
+Evolutionary Optimizer Module
+主进化优化器模块：协调整个进化过程
+"""
+
+import os
+import time
+import json
+from typing import List, Dict, Any, Optional, Tuple
+from datetime import datetime
+
+from config import Config
+from population import Population, Individual
+from proposer import Proposer
+from evaluator import Evaluator
+
+
+class EvolutionaryOptimizer:
+    """AutoDan进化优化器主控制器"""
+
+    def __init__(self, config: Config):
+        self.config = config
+        self.population = Population(config)
+        self.proposer = Proposer(config)
+        self.evaluator = Evaluator(config)
+
+        # 优化状态跟踪
+        self.current_generation = 0
+        self.best_individual: Optional[Individual] = None
+        self.convergence_history: List[float] = []
+        self.start_time: Optional[float] = None
+
+        # 结果存储
+        self.optimization_log: List[Dict[str, Any]] = []
+
+    def optimize(self, target_instruction: str, max_generations: Optional[int] = None) -> List[Individual]:
+        """
+        执行进化优化
+        返回: 优化过程中发现的最佳个体列表
+        """
+        if max_generations is None:
+            max_generations = self.config.num_generations
+
+        print("=" * 80)
+        print("开始AutoDan进化优化")
+        print("=" * 80)
+        print(f"目标指令: {target_instruction}")
+        print(f"最大代数: {max_generations}")
+        print(f"种群大小: {self.config.population_size}")
+        print(f"收敛阈值: {self.config.convergence_threshold}")
+        print()
+
+        self.start_time = time.time()
+
+        # 初始化种群
+        self._initialize_population()
+
+        # 优化循环
+        best_individuals = []
+        no_improvement_count = 0
+        previous_best_score = 0.0
+
+        for generation in range(max_generations):
+            self.current_generation = generation
+            print(f"\n--- 第 {generation + 1} 代 ---")
+
+            # 1. 生成候选
+            candidates = self._generate_candidates()
+            if not candidates:
+                print("警告: 未能生成新的候选个体")
+                continue
+
+            print(f"生成了 {len(candidates)} 个候选个体")
+
+            # 2. 评价候选trigger instructions
+            # 传入memory examples（如果有的话）
+            memory_examples = []  # 暂时为空，可以后续扩展
+            total_scores, goal_scores, quality_scores = self.evaluator.evaluate_population(
+                candidates, memory_examples=memory_examples
+            )
+            # 为了保持向后兼容，设置jailbreak_scores = goal_scores
+            jailbreak_scores = goal_scores
+
+            # 3. 添加到种群
+            self._add_candidates_to_population(candidates, total_scores, jailbreak_scores, quality_scores)
+
+            # 4. 选择和更新
+            self._select_and_update_population()
+
+            # 5. 记录最佳个体
+            current_best = self.population.get_best_individual()
+            if current_best:
+                best_individuals.append(current_best)
+                print(".3f")
+            # 6. 检查终止条件
+            if self._check_termination_conditions(current_best, previous_best_score, no_improvement_count):
+                print("达到终止条件，停止优化")
+                break
+
+            # 更新无改进计数器
+            if current_best and current_best.score > previous_best_score:
+                previous_best_score = current_best.score
+                no_improvement_count = 0
+            else:
+                no_improvement_count += 1
+
+            # 记录这一代的信息
+            self._log_generation_info(generation, current_best)
+
+        # 优化完成
+        self._finalize_optimization(best_individuals)
+        return best_individuals
+
+    def _initialize_population(self) -> None:
+        """初始化种群"""
+        print("正在初始化种群...")
+        try:
+            self.population.initialize_from_seeds()
+            print(f"成功从种子文件加载了 {len(self.population)} 个个体")
+        except Exception as e:
+            print(f"初始化种群失败: {e}")
+            raise
+
+    def _generate_candidates(self) -> List[str]:
+        """生成候选个体"""
+        current_prompts = [ind.prompt for ind in self.population.members]
+        return self.proposer.generate_candidates(current_prompts)
+
+    def _add_candidates_to_population(self, candidates: List[str],
+                                    total_scores: List[float],
+                                    goal_scores: List[float],
+                                    quality_scores: List[float]) -> None:
+        """将候选添加到种群"""
+        # 为每个候选创建父代ID列表（模拟）
+        parent_ids = [[i] for i in range(len(candidates))]
+
+        self.population.add_candidates(
+            candidates, total_scores, goal_scores, quality_scores, parent_ids
+        )
+
+    def _select_and_update_population(self) -> None:
+        """选择和更新种群"""
+        self.population.evolve_population()
+
+    def _check_termination_conditions(self, current_best: Optional[Individual],
+                                    previous_best_score: float,
+                                    no_improvement_count: int) -> bool:
+        """检查终止条件"""
+        # 1. 收敛检查
+        if current_best and current_best.score >= self.config.convergence_threshold:
+            print(".3f")
+            return True
+
+        # 2. 无改进检查
+        if no_improvement_count >= self.config.no_improvement_generations:
+            print(f"连续 {no_improvement_count} 代无改进，停止优化")
+            return True
+
+        return False
+
+    def _log_generation_info(self, generation: int, current_best: Optional[Individual]) -> None:
+        """记录一代的信息"""
+        stats = self.population.get_statistics()
+
+        log_entry = {
+            'generation': generation,
+            'timestamp': datetime.now().isoformat(),
+            'population_size': len(self.population),
+            'statistics': stats,
+            'best_individual': current_best.to_dict() if current_best else None,
+            'diversity': stats.get('diversity', 0.0),
+            'elapsed_time': time.time() - self.start_time if self.start_time else 0
+        }
+
+        self.optimization_log.append(log_entry)
+
+        # 实时保存日志
+        self._save_optimization_log()
+
+    def _finalize_optimization(self, best_individuals: List[Individual]) -> None:
+        """完成优化过程"""
+        elapsed_time = time.time() - self.start_time if self.start_time else 0
+
+        print("\n" + "=" * 80)
+        print("进化优化完成")
+        print("=" * 80)
+        print(".2f")
+        print(f"总代数: {self.current_generation + 1}")
+        print(f"最佳个体数量: {len(best_individuals)}")
+
+        if best_individuals:
+            final_best = max(best_individuals, key=lambda x: x.score)
+            print("\n最终最佳个体:")
+            print(f"  Prompt: {final_best.prompt}")
+            print(".3f")
+            print(".3f")
+            print(f"  出生代数: {final_best.generation}")
+
+        # 保存最终结果
+        self._save_final_results(best_individuals)
+
+    def _save_optimization_log(self) -> None:
+        """保存优化日志"""
+        try:
+            with open(self.config.optimization_log_file, 'w', encoding='utf-8') as f:
+                json.dump(self.optimization_log, f, indent=2, ensure_ascii=False)
+        except Exception as e:
+            print(f"保存优化日志失败: {e}")
+
+    def _save_final_results(self, best_individuals: List[Individual]) -> None:
+        """保存最终结果"""
+        try:
+            # 保存最佳个体
+            best_data = {
+                'optimization_completed_at': datetime.now().isoformat(),
+                'total_generations': self.current_generation + 1,
+                'best_individuals': [ind.to_dict() for ind in best_individuals],
+                'final_best': max(best_individuals, key=lambda x: x.score).to_dict() if best_individuals else None,
+                'config': self.config.to_dict()
+            }
+
+            with open(self.config.best_triggers_file, 'w', encoding='utf-8') as f:
+                json.dump(best_data, f, indent=2, ensure_ascii=False)
+
+            # 保存种群历史
+            self.population.save_history(self.config.population_history_file)
+
+            print(f"结果已保存到: {self.config.results_dir}")
+
+        except Exception as e:
+            print(f"保存最终结果失败: {e}")
+
+    def get_optimization_summary(self) -> Dict[str, Any]:
+        """获取优化摘要"""
+        if not self.optimization_log:
+            return {}
+
+        final_log = self.optimization_log[-1]
+        best_individuals = [log['best_individual'] for log in self.optimization_log
+                           if log['best_individual'] is not None]
+
+        return {
+            'total_generations': len(self.optimization_log),
+            'final_population_size': final_log['population_size'],
+            'final_statistics': final_log['statistics'],
+            'best_score_progression': [ind['score'] for ind in best_individuals] if best_individuals else [],
+            'optimization_time': final_log.get('elapsed_time', 0),
+            'convergence_achieved': any(ind['score'] >= self.config.convergence_threshold
+                                      for ind in best_individuals) if best_individuals else False
+        }
+
+    def resume_optimization(self, checkpoint_file: str, target_instruction: str) -> List[Individual]:
+        """从检查点恢复优化"""
+        try:
+            # 加载检查点
+            with open(checkpoint_file, 'r', encoding='utf-8') as f:
+                checkpoint = json.load(f)
+
+            # 恢复状态
+            self.current_generation = checkpoint.get('current_generation', 0)
+            self.optimization_log = checkpoint.get('optimization_log', [])
+
+            # 恢复种群
+            if 'population' in checkpoint:
+                self.population = Population(self.config)
+                population_data = checkpoint['population']
+                self.population.members = [Individual.from_dict(ind_data)
+                                         for ind_data in population_data.get('members', [])]
+                self.population.generation = population_data.get('generation', 0)
+
+            print(f"从检查点恢复优化: 第 {self.current_generation + 1} 代")
+
+            # 继续优化
+            remaining_generations = self.config.num_generations - self.current_generation - 1
+            return self.optimize(target_instruction, remaining_generations)
+
+        except Exception as e:
+            print(f"恢复优化失败: {e}")
+            return []
+
+    def save_checkpoint(self, checkpoint_file: str) -> None:
+        """保存检查点"""
+        try:
+            checkpoint = {
+                'current_generation': self.current_generation,
+                'optimization_log': self.optimization_log,
+                'population': {
+                    'generation': self.population.generation,
+                    'members': [ind.to_dict() for ind in self.population.members]
+                },
+                'config': self.config.to_dict(),
+                'timestamp': datetime.now().isoformat()
+            }
+
+            with open(checkpoint_file, 'w', encoding='utf-8') as f:
+                json.dump(checkpoint, f, indent=2, ensure_ascii=False)
+
+        except Exception as e:
+            print(f"保存检查点失败: {e}")
+
+    def __str__(self) -> str:
+        """字符串表示"""
+        summary = self.get_optimization_summary()
+        return f"EvolutionaryOptimizer(代数={summary.get('total_generations', 0)}, " \
+               f"种群大小={summary.get('final_population_size', 0)}, " \
+               f"优化时间={summary.get('optimization_time', 0):.1f}s)"

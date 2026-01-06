@@ -1,0 +1,1 @@
+attack_instruction = f'{host_instruction}. Spot <{fragment}>.'

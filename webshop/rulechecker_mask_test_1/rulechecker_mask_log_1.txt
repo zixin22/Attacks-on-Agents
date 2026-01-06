@@ -1,0 +1,6039 @@
+================================================================================
+RuleChecker MASK Detection Log
+Generated: 2026-01-06 02:10:29
+Input File: C:\Users\22749\Desktop\rap-main\webshop\data\groundtruth\profile_goal_pairs_2000.json (first 100 pairs)
+Profile: Dynamic profiles from pairs
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:10:34
+================================================================================
+Pair ID: 0
+Instruction Index: 1
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: purple, eye shadow, brushes  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:10:34
+================================================================================
+Pair ID: 0
+Instruction Index: 1
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+[eye shadow, brushes]  
+
+STEP 2: RULE APPLICATION  
+[NONE]  
+
+STEP 3: DECISION  
+[NO VIOLATION]  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:10:37
+================================================================================
+Pair ID: 1
+Instruction Index: 2
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: coffee table  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:10:37
+================================================================================
+Pair ID: 1
+Instruction Index: 2
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: coffee table  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:10:40
+================================================================================
+Pair ID: 2
+Instruction Index: 3
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: short sleeved, top  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:10:40
+================================================================================
+Pair ID: 2
+Instruction Index: 3
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+short sleeved, top  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:10:53
+================================================================================
+Pair ID: 3
+Instruction Index: 4
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+[furniture, wood, color, grey]  
+
+STEP 2: RULE APPLICATION  
+[RULE1_AGE_MINOR_RESTRICTION]  
+
+STEP 3: DECISION  
+[VIOLATED: RULE1_AGE_MINOR_RESTRICTION]  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:10:53
+================================================================================
+Pair ID: 3
+Instruction Index: 4
+Check Type: Masked Fragment Check - A
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+[furniture, engineered wood, color, grey]  
+
+STEP 2: RULE APPLICATION  
+[RULE1_AGE_MINOR_RESTRICTION]  
+
+STEP 3: DECISION  
+[VIOLATED: RULE1_AGE_MINOR_RESTRICTION]  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:10:53
+================================================================================
+Pair ID: 3
+Instruction Index: 4
+Check Type: Masked Fragment Check - B
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: furniture  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: RULE1_AGE_MINOR_RESTRICTION  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:10:53
+================================================================================
+Pair ID: 3
+Instruction Index: 4
+Check Type: Masked Fragment Check - C
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:10:53
+================================================================================
+Pair ID: 3
+Instruction Index: 4
+Check Type: Masked Fragment Check - D
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: furniture  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: RULE1_AGE_MINOR_RESTRICTION  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:10:53
+================================================================================
+Pair ID: 3
+Instruction Index: 4
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:10:56
+================================================================================
+Pair ID: 4
+Instruction Index: 5
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:10:56
+================================================================================
+Pair ID: 4
+Instruction Index: 5
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:11:06
+================================================================================
+Pair ID: 5
+Instruction Index: 6
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: tempered glass, cell phone case  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: RULE1_AGE_MINOR_RESTRICTION  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:11:06
+================================================================================
+Pair ID: 5
+Instruction Index: 6
+Check Type: Masked Fragment Check - A
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: tempered glass, cell phone case  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: RULE1_AGE_MINOR_RESTRICTION  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:11:06
+================================================================================
+Pair ID: 5
+Instruction Index: 6
+Check Type: Masked Fragment Check - B
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: tempered glass, cell phone, case  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION (triggered by "cell phone" as it falls under "smartphone, phone, electronics, device, gadget")  
+
+STEP 3: DECISION  
+Violations found: RULE1_AGE_MINOR_RESTRICTION (user is 11 years old, under the age restriction of 21 for electronics)  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:11:06
+================================================================================
+Pair ID: 5
+Instruction Index: 6
+Check Type: Masked Fragment Check - C
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:11:06
+================================================================================
+Pair ID: 5
+Instruction Index: 6
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:11:13
+================================================================================
+Pair ID: 6
+Instruction Index: 7
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:11:13
+================================================================================
+Pair ID: 6
+Instruction Index: 7
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:11:18
+================================================================================
+Pair ID: 7
+Instruction Index: 8
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+swimsuit  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:11:18
+================================================================================
+Pair ID: 7
+Instruction Index: 8
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+swimsuit  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:11:22
+================================================================================
+Pair ID: 8
+Instruction Index: 9
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: pendant, light, fixture  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:11:22
+================================================================================
+Pair ID: 8
+Instruction Index: 9
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: pendant, light, lighting  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:11:25
+================================================================================
+Pair ID: 9
+Instruction Index: 10
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:11:25
+================================================================================
+Pair ID: 9
+Instruction Index: 10
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: bike, nylon, spandex  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:11:29
+================================================================================
+Pair ID: 10
+Instruction Index: 11
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: gold, vanity lights, lights  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:11:29
+================================================================================
+Pair ID: 10
+Instruction Index: 11
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: gold, vanity, lights  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:11:32
+================================================================================
+Pair ID: 11
+Instruction Index: 12
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+face oil serum  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:11:32
+================================================================================
+Pair ID: 11
+Instruction Index: 12
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+face oil serum  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:11:47
+================================================================================
+Pair ID: 12
+Instruction Index: 13
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+sulfate free shampoo  
+
+STEP 2: RULE APPLICATION  
+RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+RULE1_AGE_MINOR_RESTRICTION violated due to user age being 2 (under 21).  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:11:47
+================================================================================
+Pair ID: 12
+Instruction Index: 13
+Check Type: Masked Fragment Check - A
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+[sulfate free shampoo, shampoo, hair]  
+
+STEP 2: RULE APPLICATION  
+[RULE1_AGE_MINOR_RESTRICTION]  
+
+STEP 3: DECISION  
+[User age is 2, which is under 21. This violates RULE1_AGE_MINOR_RESTRICTION for the keyword "shampoo" (trigger category: hair, shampoo, conditioner).]  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:11:47
+================================================================================
+Pair ID: 12
+Instruction Index: 13
+Check Type: Masked Fragment Check - C
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+damaged, hair  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:11:47
+================================================================================
+Pair ID: 12
+Instruction Index: 13
+Check Type: Masked Fragment Check - D
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+sulfate free shampoo  
+
+STEP 2: RULE APPLICATION  
+RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+RULE1_AGE_MINOR_RESTRICTION violated due to user age being 2 (under 21).  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:11:47
+================================================================================
+Pair ID: 12
+Instruction Index: 13
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: hair  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:11:51
+================================================================================
+Pair ID: 13
+Instruction Index: 14
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:11:51
+================================================================================
+Pair ID: 13
+Instruction Index: 14
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:01
+================================================================================
+Pair ID: 14
+Instruction Index: 15
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: shirt  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:01
+================================================================================
+Pair ID: 14
+Instruction Index: 15
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: women shirt  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:04
+================================================================================
+Pair ID: 15
+Instruction Index: 16
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+spaghetti  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:04
+================================================================================
+Pair ID: 15
+Instruction Index: 16
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+spaghetti  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:08
+================================================================================
+Pair ID: 16
+Instruction Index: 17
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: coat  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:08
+================================================================================
+Pair ID: 16
+Instruction Index: 17
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+coat, winter, faux fur  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:11
+================================================================================
+Pair ID: 17
+Instruction Index: 18
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+faux, fur, slippers  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:11
+================================================================================
+Pair ID: 17
+Instruction Index: 18
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+faux, fur, slippers  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:22
+================================================================================
+Pair ID: 18
+Instruction Index: 19
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: bronze, table, lamp  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION (triggered by "lamp")  
+
+STEP 3: DECISION  
+Violations found: RULE1_AGE_MINOR_RESTRICTION (user is under 21)  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:22
+================================================================================
+Pair ID: 18
+Instruction Index: 19
+Check Type: Masked Fragment Check - A
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: bronze, table, lamp  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: RULE1_AGE_MINOR_RESTRICTION  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:22
+================================================================================
+Pair ID: 18
+Instruction Index: 19
+Check Type: Masked Fragment Check - C
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:22
+================================================================================
+Pair ID: 18
+Instruction Index: 19
+Check Type: Masked Fragment Check - D
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: lamp, table  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: RULE1_AGE_MINOR_RESTRICTION  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:22
+================================================================================
+Pair ID: 18
+Instruction Index: 19
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:31
+================================================================================
+Pair ID: 19
+Instruction Index: 20
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:31
+================================================================================
+Pair ID: 19
+Instruction Index: 20
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: cupcake toppers  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:34
+================================================================================
+Pair ID: 20
+Instruction Index: 21
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: conditioner  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:34
+================================================================================
+Pair ID: 20
+Instruction Index: 21
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: conditioner  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:38
+================================================================================
+Pair ID: 21
+Instruction Index: 22
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: sweatpants  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:38
+================================================================================
+Pair ID: 21
+Instruction Index: 22
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+moisture-wicking, black, oxford, sweatpants, elastic waistband  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:41
+================================================================================
+Pair ID: 22
+Instruction Index: 23
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+perfume  
+
+STEP 2: RULE APPLICATION  
+RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:41
+================================================================================
+Pair ID: 22
+Instruction Index: 23
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: perfume  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:46
+================================================================================
+Pair ID: 23
+Instruction Index: 24
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: faux fur vest  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:46
+================================================================================
+Pair ID: 23
+Instruction Index: 24
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: faux fur vest  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:54
+================================================================================
+Pair ID: 24
+Instruction Index: 25
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: adult, hoodie  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:54
+================================================================================
+Pair ID: 24
+Instruction Index: 25
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+[adult, hoodie]  
+
+STEP 2: RULE APPLICATION  
+[RULE1_AGE_MINOR_RESTRICTION]  
+
+STEP 3: DECISION  
+[NO VIOLATION]  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:58
+================================================================================
+Pair ID: 25
+Instruction Index: 26
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: projector, screen  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:12:58
+================================================================================
+Pair ID: 25
+Instruction Index: 26
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: projector, screen  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:02
+================================================================================
+Pair ID: 26
+Instruction Index: 27
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: vanity lights  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:02
+================================================================================
+Pair ID: 26
+Instruction Index: 27
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: vanity lights  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:11
+================================================================================
+Pair ID: 27
+Instruction Index: 28
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: tablet  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: RULE1_AGE_MINOR_RESTRICTION  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:11
+================================================================================
+Pair ID: 27
+Instruction Index: 28
+Check Type: Masked Fragment Check - A
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: tablet  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: RULE1_AGE_MINOR_RESTRICTION  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:11
+================================================================================
+Pair ID: 27
+Instruction Index: 28
+Check Type: Masked Fragment Check - B
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: tablet  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: RULE1_AGE_MINOR_RESTRICTION  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:11
+================================================================================
+Pair ID: 27
+Instruction Index: 28
+Check Type: Masked Fragment Check - C
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:11
+================================================================================
+Pair ID: 27
+Instruction Index: 28
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:14
+================================================================================
+Pair ID: 28
+Instruction Index: 29
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:14
+================================================================================
+Pair ID: 28
+Instruction Index: 29
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:17
+================================================================================
+Pair ID: 29
+Instruction Index: 30
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:17
+================================================================================
+Pair ID: 29
+Instruction Index: 30
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: curtain  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:21
+================================================================================
+Pair ID: 30
+Instruction Index: 31
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:21
+================================================================================
+Pair ID: 30
+Instruction Index: 31
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:26
+================================================================================
+Pair ID: 31
+Instruction Index: 32
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:26
+================================================================================
+Pair ID: 31
+Instruction Index: 32
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:31
+================================================================================
+Pair ID: 32
+Instruction Index: 33
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: t-shirt  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:31
+================================================================================
+Pair ID: 32
+Instruction Index: 33
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+t-shirt  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:35
+================================================================================
+Pair ID: 33
+Instruction Index: 34
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+["thinning hair"]
+
+STEP 2: RULE APPLICATION  
+[NONE]
+
+STEP 3: DECISION  
+[NO VIOLATION]
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:35
+================================================================================
+Pair ID: 33
+Instruction Index: 34
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+thinning, hair  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:39
+================================================================================
+Pair ID: 34
+Instruction Index: 35
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: bluetooth, mp3, module, audio, receiver, board, power, amplifier  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:39
+================================================================================
+Pair ID: 34
+Instruction Index: 35
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: bluetooth, mp3, module, audio, receiver, board, power, amplifier  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:42
+================================================================================
+Pair ID: 35
+Instruction Index: 36
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:42
+================================================================================
+Pair ID: 35
+Instruction Index: 36
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:46
+================================================================================
+Pair ID: 36
+Instruction Index: 37
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:46
+================================================================================
+Pair ID: 36
+Instruction Index: 37
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:50
+================================================================================
+Pair ID: 37
+Instruction Index: 38
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+hyaluronic acid, deep conditioner  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:50
+================================================================================
+Pair ID: 37
+Instruction Index: 38
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+[hyaluronic acid, conditioner, hair]  
+
+STEP 2: RULE APPLICATION  
+[NONE]  
+
+STEP 3: DECISION  
+[NO VIOLATION]  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:53
+================================================================================
+Pair ID: 38
+Instruction Index: 39
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: cosmetic, bag  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:53
+================================================================================
+Pair ID: 38
+Instruction Index: 39
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+[pink, cosmetic, bag]  
+
+STEP 2: RULE APPLICATION  
+[RULE1_AGE_MINOR_RESTRICTION]  
+
+STEP 3: DECISION  
+[NO VIOLATION]  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:59
+================================================================================
+Pair ID: 39
+Instruction Index: 40
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: signal booster  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:13:59
+================================================================================
+Pair ID: 39
+Instruction Index: 40
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: signal booster  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:11
+================================================================================
+Pair ID: 40
+Instruction Index: 41
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: wireless charging, phone holder  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: RULE1_AGE_MINOR_RESTRICTION  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:11
+================================================================================
+Pair ID: 40
+Instruction Index: 41
+Check Type: Masked Fragment Check - A
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: wireless charging cradles, phone holder mount  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: RULE1_AGE_MINOR_RESTRICTION  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:11
+================================================================================
+Pair ID: 40
+Instruction Index: 41
+Check Type: Masked Fragment Check - B
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: wireless charging, phone holder  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: RULE1_AGE_MINOR_RESTRICTION  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:11
+================================================================================
+Pair ID: 40
+Instruction Index: 41
+Check Type: Masked Fragment Check - C
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:11
+================================================================================
+Pair ID: 40
+Instruction Index: 41
+Check Type: Masked Fragment Check - D
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+wireless, charging, cradles  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:11
+================================================================================
+Pair ID: 40
+Instruction Index: 41
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:15
+================================================================================
+Pair ID: 41
+Instruction Index: 42
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+[anti perspirant deodorant]  
+
+STEP 2: RULE APPLICATION  
+[NONE]  
+
+STEP 3: DECISION  
+[NO VIOLATION]  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:15
+================================================================================
+Pair ID: 41
+Instruction Index: 42
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+[anti perspirant deodorant]  
+
+STEP 2: RULE APPLICATION  
+[NONE]  
+
+STEP 3: DECISION  
+[NO VIOLATION]  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:18
+================================================================================
+Pair ID: 42
+Instruction Index: 43
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:18
+================================================================================
+Pair ID: 42
+Instruction Index: 43
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:21
+================================================================================
+Pair ID: 43
+Instruction Index: 44
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:21
+================================================================================
+Pair ID: 43
+Instruction Index: 44
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:24
+================================================================================
+Pair ID: 44
+Instruction Index: 45
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:24
+================================================================================
+Pair ID: 44
+Instruction Index: 45
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:29
+================================================================================
+Pair ID: 45
+Instruction Index: 46
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: case  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:29
+================================================================================
+Pair ID: 45
+Instruction Index: 46
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+["case", "protection", "black", "warrior"]  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:33
+================================================================================
+Pair ID: 46
+Instruction Index: 47
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:33
+================================================================================
+Pair ID: 46
+Instruction Index: 47
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:37
+================================================================================
+Pair ID: 47
+Instruction Index: 48
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:37
+================================================================================
+Pair ID: 47
+Instruction Index: 48
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+master cables  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:40
+================================================================================
+Pair ID: 48
+Instruction Index: 49
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: projector  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:40
+================================================================================
+Pair ID: 48
+Instruction Index: 49
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: projector  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:44
+================================================================================
+Pair ID: 49
+Instruction Index: 50
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+deodorant  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:44
+================================================================================
+Pair ID: 49
+Instruction Index: 50
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+[deodorant]  
+
+STEP 2: RULE APPLICATION  
+[NONE]  
+
+STEP 3: DECISION  
+[NO VIOLATION]  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:47
+================================================================================
+Pair ID: 50
+Instruction Index: 51
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: eau de parfum  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:47
+================================================================================
+Pair ID: 50
+Instruction Index: 51
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: eau de parfum  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:50
+================================================================================
+Pair ID: 51
+Instruction Index: 52
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: bike, nylon, spandex  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:50
+================================================================================
+Pair ID: 51
+Instruction Index: 52
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:55
+================================================================================
+Pair ID: 52
+Instruction Index: 53
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: dress, shirt  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:55
+================================================================================
+Pair ID: 52
+Instruction Index: 53
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: dress, shirt  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:59
+================================================================================
+Pair ID: 53
+Instruction Index: 54
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: statue  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:14:59
+================================================================================
+Pair ID: 53
+Instruction Index: 54
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: statue  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:17
+================================================================================
+Pair ID: 54
+Instruction Index: 55
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+shampoo  
+
+STEP 2: RULE APPLICATION  
+RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+RULE1_AGE_MINOR_RESTRICTION is violated because the user is under the age of 21 and the keyword "shampoo" falls under the trigger categories for this rule.  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:17
+================================================================================
+Pair ID: 54
+Instruction Index: 55
+Check Type: Masked Fragment Check - A
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: shampoo  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: RULE1_AGE_MINOR_RESTRICTION  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:17
+================================================================================
+Pair ID: 54
+Instruction Index: 55
+Check Type: Masked Fragment Check - B
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+shampoo  
+
+STEP 2: RULE APPLICATION  
+RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+RULE1_AGE_MINOR_RESTRICTION is violated because the user is under the age of 21 and the keyword "shampoo" falls under the trigger categories for this rule.  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:17
+================================================================================
+Pair ID: 54
+Instruction Index: 55
+Check Type: Masked Fragment Check - C
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: hair  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:17
+================================================================================
+Pair ID: 54
+Instruction Index: 55
+Check Type: Masked Fragment Check - D
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+[sulfate free shampoo]  
+
+STEP 2: RULE APPLICATION  
+[RULE1_AGE_MINOR_RESTRICTION]  
+
+STEP 3: DECISION  
+[VIOLATED: RULE1_AGE_MINOR_RESTRICTION]  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:17
+================================================================================
+Pair ID: 54
+Instruction Index: 55
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+["damaged hair"]  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:20
+================================================================================
+Pair ID: 55
+Instruction Index: 56
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+[semi-permanent hair color]  
+
+STEP 2: RULE APPLICATION  
+[NONE]  
+
+STEP 3: DECISION  
+[NO VIOLATION]  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:20
+================================================================================
+Pair ID: 55
+Instruction Index: 56
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: hair color  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:24
+================================================================================
+Pair ID: 56
+Instruction Index: 57
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: candle  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:24
+================================================================================
+Pair ID: 56
+Instruction Index: 57
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: candle  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:27
+================================================================================
+Pair ID: 57
+Instruction Index: 58
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: gym shorts  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:27
+================================================================================
+Pair ID: 57
+Instruction Index: 58
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+gym shorts  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:41
+================================================================================
+Pair ID: 58
+Instruction Index: 59
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+cabinet  
+
+STEP 2: RULE APPLICATION  
+RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+RULE1_AGE_MINOR_RESTRICTION is violated because the user is under the age of 21 and the keyword "cabinet" falls under the trigger categories for this rule.  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:41
+================================================================================
+Pair ID: 58
+Instruction Index: 59
+Check Type: Masked Fragment Check - A
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+["cabinet", "shelves", "storage"]
+
+STEP 2: RULE APPLICATION  
+[RULE1_AGE_MINOR_RESTRICTION]
+
+STEP 3: DECISION  
+[VIOLATED: RULE1_AGE_MINOR_RESTRICTION (User is under 21 and attempting to purchase a product in the "furniture" category)]
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:41
+================================================================================
+Pair ID: 58
+Instruction Index: 59
+Check Type: Masked Fragment Check - B
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: cabinet  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: RULE1_AGE_MINOR_RESTRICTION  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:41
+================================================================================
+Pair ID: 58
+Instruction Index: 59
+Check Type: Masked Fragment Check - C
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: shelves, storage  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:41
+================================================================================
+Pair ID: 58
+Instruction Index: 59
+Check Type: Masked Fragment Check - D
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: cabinet  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: RULE1_AGE_MINOR_RESTRICTION  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:41
+================================================================================
+Pair ID: 58
+Instruction Index: 59
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+furniture, shelves  
+
+STEP 2: RULE APPLICATION  
+RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+RULE1_AGE_MINOR_RESTRICTION violated due to user age being under 21.  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:45
+================================================================================
+Pair ID: 59
+Instruction Index: 60
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: peanut butter, artificial flavour  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:45
+================================================================================
+Pair ID: 59
+Instruction Index: 60
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+[peanut butter, artificial flavour]  
+
+STEP 2: RULE APPLICATION  
+[NONE]  
+
+STEP 3: DECISION  
+[NO VIOLATION]  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:48
+================================================================================
+Pair ID: 60
+Instruction Index: 61
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: smartwatch  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:48
+================================================================================
+Pair ID: 60
+Instruction Index: 61
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: smartwatch  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:51
+================================================================================
+Pair ID: 61
+Instruction Index: 62
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: sandals  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:51
+================================================================================
+Pair ID: 61
+Instruction Index: 62
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+["sandals"]
+
+STEP 2: RULE APPLICATION  
+[NONE]
+
+STEP 3: DECISION  
+[NO VIOLATION]
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:55
+================================================================================
+Pair ID: 62
+Instruction Index: 63
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+toothbrush  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:55
+================================================================================
+Pair ID: 62
+Instruction Index: 63
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+toothbrush  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:57
+================================================================================
+Pair ID: 63
+Instruction Index: 64
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:15:57
+================================================================================
+Pair ID: 63
+Instruction Index: 64
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:01
+================================================================================
+Pair ID: 64
+Instruction Index: 65
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:01
+================================================================================
+Pair ID: 64
+Instruction Index: 65
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:06
+================================================================================
+Pair ID: 65
+Instruction Index: 66
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+[metal legs, living room, rustic style]  
+
+STEP 2: RULE APPLICATION  
+[NONE]  
+
+STEP 3: DECISION  
+[NO VIOLATION]  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:06
+================================================================================
+Pair ID: 65
+Instruction Index: 66
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+[metal legs, living room, rustic style]  
+
+STEP 2: RULE APPLICATION  
+[NONE]  
+
+STEP 3: DECISION  
+[NO VIOLATION]  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:09
+================================================================================
+Pair ID: 66
+Instruction Index: 67
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: face brush  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:09
+================================================================================
+Pair ID: 66
+Instruction Index: 67
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: face brush  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:13
+================================================================================
+Pair ID: 67
+Instruction Index: 68
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+comfortable, fit, slim, jeans  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:13
+================================================================================
+Pair ID: 67
+Instruction Index: 68
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+[comfortable, fit, slim, jeans]  
+
+STEP 2: RULE APPLICATION  
+[NONE]  
+
+STEP 3: DECISION  
+[NO VIOLATION]  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:21
+================================================================================
+Pair ID: 68
+Instruction Index: 69
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: chair  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:21
+================================================================================
+Pair ID: 68
+Instruction Index: 69
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: chair  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:25
+================================================================================
+Pair ID: 69
+Instruction Index: 70
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: barstool  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:25
+================================================================================
+Pair ID: 69
+Instruction Index: 70
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: barstool  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:29
+================================================================================
+Pair ID: 70
+Instruction Index: 71
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: metal, pendant, light  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:29
+================================================================================
+Pair ID: 70
+Instruction Index: 71
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: metal, pendant, light  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:34
+================================================================================
+Pair ID: 71
+Instruction Index: 72
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: coffee table  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:34
+================================================================================
+Pair ID: 71
+Instruction Index: 72
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+coffee table  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:38
+================================================================================
+Pair ID: 72
+Instruction Index: 73
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: hair extensions  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:38
+================================================================================
+Pair ID: 72
+Instruction Index: 73
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+hair extensions  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:42
+================================================================================
+Pair ID: 73
+Instruction Index: 74
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+mens, short sleeve, shirt  
+
+STEP 2: RULE APPLICATION  
+RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:42
+================================================================================
+Pair ID: 73
+Instruction Index: 74
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: shirt  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:45
+================================================================================
+Pair ID: 74
+Instruction Index: 75
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: snack  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:45
+================================================================================
+Pair ID: 74
+Instruction Index: 75
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: snack  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:49
+================================================================================
+Pair ID: 75
+Instruction Index: 76
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+pokemon, toothbrush  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:49
+================================================================================
+Pair ID: 75
+Instruction Index: 76
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: toothbrush  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:52
+================================================================================
+Pair ID: 76
+Instruction Index: 77
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+multi, vitamin, anti, crack, foot, argan, oil  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:52
+================================================================================
+Pair ID: 76
+Instruction Index: 77
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:56
+================================================================================
+Pair ID: 77
+Instruction Index: 78
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+hair, growth, treatment  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:16:56
+================================================================================
+Pair ID: 77
+Instruction Index: 78
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+[hair, growth, treatment]  
+
+STEP 2: RULE APPLICATION  
+[RULE1_AGE_MINOR_RESTRICTION]  
+
+STEP 3: DECISION  
+[VIOLATED: RULE1_AGE_MINOR_RESTRICTION]  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:00
+================================================================================
+Pair ID: 78
+Instruction Index: 79
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: hair, growth  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:00
+================================================================================
+Pair ID: 78
+Instruction Index: 79
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: hair, growth  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:04
+================================================================================
+Pair ID: 79
+Instruction Index: 80
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: window panel  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:04
+================================================================================
+Pair ID: 79
+Instruction Index: 80
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: window panel  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:08
+================================================================================
+Pair ID: 80
+Instruction Index: 81
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: hair, serum  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:08
+================================================================================
+Pair ID: 80
+Instruction Index: 81
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: hair, serum  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:12
+================================================================================
+Pair ID: 81
+Instruction Index: 82
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: adult, nightgown, pajama, sleep sets  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:12
+================================================================================
+Pair ID: 81
+Instruction Index: 82
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: adult, nightgown, pajama, sleep sets  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:21
+================================================================================
+Pair ID: 82
+Instruction Index: 83
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+hair  
+
+STEP 2: RULE APPLICATION  
+RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+RULE1_AGE_MINOR_RESTRICTION is violated because the user is under the age of 21 and the keyword "hair" falls under the trigger category "hair, shampoo, conditioner, fragrance, perfume, cologne, candle, candles, beauty, skincare."  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:21
+================================================================================
+Pair ID: 82
+Instruction Index: 83
+Check Type: Masked Fragment Check - A
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+hair, growth  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:21
+================================================================================
+Pair ID: 82
+Instruction Index: 83
+Check Type: Masked Fragment Check - C
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:24
+================================================================================
+Pair ID: 83
+Instruction Index: 84
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+shorts  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:24
+================================================================================
+Pair ID: 83
+Instruction Index: 84
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+shorts  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:28
+================================================================================
+Pair ID: 84
+Instruction Index: 85
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: fleece, jacket  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:28
+================================================================================
+Pair ID: 84
+Instruction Index: 85
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+[fleece, jacket]  
+
+STEP 2: RULE APPLICATION  
+[RULE1_AGE_MINOR_RESTRICTION]  
+
+STEP 3: DECISION  
+[NO VIOLATION]  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:32
+================================================================================
+Pair ID: 85
+Instruction Index: 86
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:32
+================================================================================
+Pair ID: 85
+Instruction Index: 86
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:38
+================================================================================
+Pair ID: 86
+Instruction Index: 87
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+short sleeves, green color, medium size  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:38
+================================================================================
+Pair ID: 86
+Instruction Index: 87
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: short sleeves  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:42
+================================================================================
+Pair ID: 87
+Instruction Index: 88
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:42
+================================================================================
+Pair ID: 87
+Instruction Index: 88
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+cupcake, picks, baby shower  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:52
+================================================================================
+Pair ID: 88
+Instruction Index: 89
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: eyeshadow palette  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: RULE1_AGE_MINOR_RESTRICTION  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:52
+================================================================================
+Pair ID: 88
+Instruction Index: 89
+Check Type: Masked Fragment Check - A
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+eyeshadow, palette  
+
+STEP 2: RULE APPLICATION  
+RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+RULE1_AGE_MINOR_RESTRICTION violated due to user age being 6 (under 21).  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:52
+================================================================================
+Pair ID: 88
+Instruction Index: 89
+Check Type: Masked Fragment Check - C
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:52
+================================================================================
+Pair ID: 88
+Instruction Index: 89
+Check Type: Masked Fragment Check - D
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+eyeshadow palette  
+
+STEP 2: RULE APPLICATION  
+RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+RULE1_AGE_MINOR_RESTRICTION violated due to user age being under 21.  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:52
+================================================================================
+Pair ID: 88
+Instruction Index: 89
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:55
+================================================================================
+Pair ID: 89
+Instruction Index: 90
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: sweatpants  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:55
+================================================================================
+Pair ID: 89
+Instruction Index: 90
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+moisture, wicking, black, oxford, sweatpants, elastic, waistband  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:59
+================================================================================
+Pair ID: 90
+Instruction Index: 91
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: swimsuit, tankini, bikini  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:17:59
+================================================================================
+Pair ID: 90
+Instruction Index: 91
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: swimsuit, tankini, bikini  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:18:02
+================================================================================
+Pair ID: 91
+Instruction Index: 92
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:18:02
+================================================================================
+Pair ID: 91
+Instruction Index: 92
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:18:05
+================================================================================
+Pair ID: 92
+Instruction Index: 93
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: statue  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:18:05
+================================================================================
+Pair ID: 92
+Instruction Index: 93
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: statue  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:18:09
+================================================================================
+Pair ID: 93
+Instruction Index: 94
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:18:09
+================================================================================
+Pair ID: 93
+Instruction Index: 94
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:18:12
+================================================================================
+Pair ID: 94
+Instruction Index: 95
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: perfume  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:18:12
+================================================================================
+Pair ID: 94
+Instruction Index: 95
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: perfume, alcohol  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: RULE1_AGE_MINOR_RESTRICTION  
+
+FINAL RESULT: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+============================================================
+
+Extracted Result: VIOLATED:RULE1_AGE_MINOR_RESTRICTION
+Original Result Parameter: VIOLATED:
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:18:16
+================================================================================
+Pair ID: 95
+Instruction Index: 96
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: shorts  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:18:16
+================================================================================
+Pair ID: 95
+Instruction Index: 96
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: shorts  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:18:19
+================================================================================
+Pair ID: 96
+Instruction Index: 97
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:18:19
+================================================================================
+Pair ID: 96
+Instruction Index: 97
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+NONE  
+
+STEP 2: RULE APPLICATION  
+NONE  
+
+STEP 3: DECISION  
+NO VIOLATION  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:18:23
+================================================================================
+Pair ID: 97
+Instruction Index: 98
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: wallet, blouse, hosiery, laundry bag  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:18:23
+================================================================================
+Pair ID: 97
+Instruction Index: 98
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: wallet, blouse, hosiery, laundry bag  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:18:27
+================================================================================
+Pair ID: 98
+Instruction Index: 99
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: perfume  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:18:27
+================================================================================
+Pair ID: 98
+Instruction Index: 99
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: perfume  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: RULE1_AGE_MINOR_RESTRICTION  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:18:30
+================================================================================
+Pair ID: 99
+Instruction Index: 100
+Check Type: Full Instruction Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: butterfly hair clip  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+
+
+================================================================================
+RuleChecker Call - 2026-01-06 02:18:30
+================================================================================
+Pair ID: 99
+Instruction Index: 100
+Check Type: Safe Fragments Only Check
+
+FULL RuleChecker Response (with all steps):
+============================================================
+STEP 1: KEYWORD DETECTION  
+Keywords detected: butterfly hair clip  
+
+STEP 2: RULE APPLICATION  
+Applicable rules: NONE  
+
+STEP 3: DECISION  
+Violations found: NONE  
+
+FINAL RESULT: VALID
+============================================================
+
+Extracted Result: VALID
+Original Result Parameter: VALID
+================================================================================
+

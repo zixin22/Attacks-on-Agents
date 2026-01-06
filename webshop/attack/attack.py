@@ -269,11 +269,11 @@ class FragmentAttackGenerator:
         if f1_end == 0:
             for i in range(len(doc) - 1):
                 if doc[i].text == "looking" and i + 1 < len(doc) and doc[i+1].text == "for":
-                    # Include subject if present
+                    # For "looking for", only include "looking", leave "for" for F2
                     if i > 0 and doc[i-1].text.lower() in ["i", "im", "i'm", "am"]:
-                        f1_end = i + 2
+                        f1_end = i + 1  # Include subject + "looking"
                     else:
-                        f1_end = i + 2
+                        f1_end = i + 1  # Just "looking"
                     break
         
         # If no verb found, try to find first determiner/article
@@ -289,7 +289,7 @@ class FragmentAttackGenerator:
         
         if f2_start < len(doc):
             token = doc[f2_start]
-            # Check for determiner (a, an, the, some)
+            # Check for determiner (a, an, the, some) or preposition (for)
             if token.pos_ == "DET":
                 f2_end = f2_start + 1
                 # Check for quantifier patterns: "a bundle of", "a pair of", "some of"
@@ -300,57 +300,16 @@ class FragmentAttackGenerator:
                             f2_end = f2_end + 2
                     elif token.text == "some" and next_token.text == "of":
                         f2_end = f2_end + 1
+            elif token.pos_ == "ADP" and token.text == "for":
+                # Handle "looking for" pattern - "for" becomes F2
+                f2_end = f2_start + 1
         
-        # Step 3: Identify F4 (Attribute/Modifier phrase) - look for relative clauses and prepositions
-        f4_start = len(doc)
-        
-        # Look for relative clauses: "that is/are", "which is/are"
-        for i, token in enumerate(doc):
-            if token.text in ["that", "which"]:
-                if i + 1 < len(doc) and doc[i + 1].text in ["is", "are", "has", "have"]:
-                    f4_start = i
-                    break
-        
-        # If no relative clause, look for prepositional phrases: "with", "for", "in", "of"
-        if f4_start == len(doc):
-            for i in range(len(doc) - 1, max(f2_end, len(doc) // 2), -1):
-                token = doc[i]
-                if token.pos_ == "ADP" and token.text in ["with", "for", "in", "of", "having"]:
-                    # Make sure it's not part of the intent (e.g., "looking for")
-                    if i > 2:  # Not at the beginning
-                        f4_start = i
-                        break
-        
-        # Step 4: F3 (Product/Item) is between F2 and F4
-        f3_start = f2_end
-        f3_end = f4_start
-        
-        # Try to refine F3 using noun chunks (more accurate product identification)
-        if f3_start < f3_end:
-            # Extract noun chunks in the F3 region
-            noun_chunks = list(doc.noun_chunks)
-            if noun_chunks:
-                # Find the largest noun chunk that overlaps with F3 region
-                best_chunk = None
-                best_start = f3_start
-                best_end = f3_end
-                
-                for chunk in noun_chunks:
-                    chunk_start = chunk.start
-                    chunk_end = chunk.end
-                    # Check if chunk overlaps with F3 region
-                    if chunk_start >= f3_start and chunk_end <= f3_end:
-                        # Prefer longer chunks (more specific product names)
-                        if best_chunk is None or (chunk_end - chunk_start) > (best_end - best_start):
-                            best_chunk = chunk
-                            best_start = chunk_start
-                            best_end = chunk_end
-                
-                # If we found a good noun chunk, use it for F3
-                if best_chunk:
-                    f3_start = best_start
-                    f3_end = best_end
-        
+        # Step 3: Identify F4 (Attribute/Modifier phrase) - enhanced boundary detection
+        f4_start = self._identify_f4_boundary(doc, f2_end)
+
+        # Step 4: F3 (Product/Item) - enhanced product phrase identification
+        original_f3_start, original_f3_end = f2_end, f4_start
+        f3_start, f3_end = self._identify_product_phrase(doc, f2_end, f4_start)
         # Build fragments
         f1 = ' '.join([token.text for token in doc[:f1_end]]) if f1_end > 0 else ''
         f2 = ' '.join([token.text for token in doc[f2_start:f2_end]]) if f2_end > f2_start else ''
@@ -360,8 +319,11 @@ class FragmentAttackGenerator:
         fragments = [f1.strip(), f2.strip(), f3.strip(), f4.strip()]
         
         # Fallback: If we got fewer than 4 non-empty fragments, use pattern-based method
+        # But don't fallback if F3 is a good product name (has multiple words or noun chunks)
         non_empty_count = sum(1 for f in fragments if f)
-        if non_empty_count < 4 and len(words) >= 4:
+        f3_has_good_product = len(f3.split()) >= 2  # F3 has at least 2 words
+
+        if non_empty_count < 4 and len(words) >= 4 and not f3_has_good_product:
             if self.verbose:
                 print(f"NER method produced {non_empty_count} fragments, falling back to pattern-based method")
             return self.decompose_target_instruction(target_instruction)
@@ -419,7 +381,198 @@ class FragmentAttackGenerator:
                 return f"mentions items that are {fragment}"
         else:
             return f"relates to {fragment}"
-    
+
+    def _identify_f4_boundary(self, doc, f2_end):
+        """
+        智能识别F4边界，区分定义性从句和非定义性从句
+        """
+        f4_start = len(doc)
+
+        # 查找关系从句
+        for i, token in enumerate(doc):
+            if token.text in ["that", "which"]:
+                # 判断是从句类型
+                clause_type = self._classify_relative_clause(doc, i)
+
+                if clause_type == "non-defining":  # 非定义性从句 -> F4
+                    f4_start = i
+                    break
+                # 定义性从句保持在F3中，不影响边界
+
+        # 如果没找到非定义性从句，查找其他属性指示符
+        if f4_start == len(doc):
+            # 查找属性介词
+            for i in range(len(doc) - 1, max(f2_end, len(doc) // 2), -1):
+                token = doc[i]
+                if token.pos_ == "ADP" and token.text in ["with", "for", "in", "of", "having"]:
+                    if i > 2 and not self._is_part_of_intent(doc, i):
+                        f4_start = i
+                        break
+
+            # 查找尺寸/颜色等属性词
+            if f4_start == len(doc):
+                attribute_indicators = ["inches", "cm", "mm", "feet", "pounds", "kg", "color", "size", "large", "small"]
+                for i in range(len(doc) - 1, f2_end, -1):
+                    if doc[i].text.lower() in attribute_indicators:
+                        f4_start = i
+                        break
+
+        return f4_start
+
+    def _classify_relative_clause(self, doc, clause_start):
+        """
+        分类关系从句：定义性 vs 非定义性
+        """
+        # 定义性从句：紧跟名词，提供身份定义
+        # 非定义性从句：提供额外属性信息
+
+        # 检查从句前是否有名词
+        if clause_start > 0:
+            prev_token = doc[clause_start - 1]
+            if prev_token.pos_ in ["NOUN", "PROPN"]:
+                # 检查从句内容是否是定义性
+                defining_patterns = ["is", "are", "was", "were", "has", "have", "contain", "contains"]
+                for i in range(clause_start + 1, min(clause_start + 5, len(doc))):
+                    if doc[i].text in defining_patterns:
+                        return "defining"  # 定义性从句，留在F3中
+
+        return "non-defining"  # 非定义性从句，移到F4
+
+    def _is_part_of_intent(self, doc, pos):
+        """检查位置是否属于意图短语"""
+        # 避免将"looking for"中的"for"误认为属性开始
+        if pos > 0 and doc[pos-1].text == "looking" and doc[pos].text == "for":
+            return True
+        return False
+
+    def _identify_product_phrase(self, doc, f2_end, f4_start):
+        """
+        智能识别产品短语，支持形容词-名词复合结构
+        """
+        f3_start = f2_end
+        f3_end = f4_start
+
+        if f3_start >= f3_end:
+            return f3_start, f3_end
+
+        # 策略1: 查找最大连续的形容词+名词序列
+        best_product_span = self._find_compound_product_name(doc, f3_start, f3_end)
+        if best_product_span:
+            return best_product_span[0], best_product_span[1]
+
+        # 策略2: 使用spaCy名词块 (原有逻辑)
+        noun_chunks = list(doc.noun_chunks)
+        if noun_chunks:
+            best_chunk = None
+            best_score = 0
+
+            for chunk in noun_chunks:
+                chunk_start = chunk.start
+                chunk_end = chunk.end
+                # 检查chunk是否在F3区域内
+                if chunk_start >= f3_start and chunk_end <= f3_end:
+                    # 计算chunk质量分数
+                    score = self._calculate_chunk_score(doc, chunk_start, chunk_end)
+                    if score > best_score:
+                        best_chunk = chunk
+                        best_score = score
+
+            if best_chunk:
+                return best_chunk.start, best_chunk.end
+
+        # 策略3: 回退到原始范围
+        return f3_start, f3_end
+
+    def _find_compound_product_name(self, doc, start, end):
+        """
+        查找形容词-名词复合产品名
+        如: "brown wire-framed coffee table"
+        支持复合形容词和连字符结构
+        """
+        best_span = None
+        best_score = 0
+
+        # 策略1: 查找名词块中最大的产品相关span
+        for chunk in doc.noun_chunks:
+            chunk_start = chunk.start
+            chunk_end = chunk.end
+
+            # 检查chunk是否与F3区域有交集
+            if chunk_start < end and chunk_end > start:
+                # 取与F3区域的交集
+                actual_start = max(chunk_start, start)
+                actual_end = min(chunk_end, end)
+
+                if actual_end > actual_start:
+                    score = self._calculate_product_span_score(doc, actual_start, actual_end)
+                    if score > best_score:
+                        best_span = (actual_start, actual_end)
+                        best_score = score
+
+        # 策略2: 如果没找到好的名词块，手动查找复合结构
+        if not best_span:
+            # 从end往前查找名词
+            for noun_pos in range(end - 1, start - 1, -1):
+                if doc[noun_pos].pos_ in ["NOUN", "PROPN"]:
+                    # 从名词往前查找复合结构（形容词、名词、连字符等）
+                    search_start = noun_pos
+                    while search_start > start:
+                        prev_token = doc[search_start - 1]
+                        # 接受形容词、名词、连字符、数字等产品相关token
+                        if prev_token.pos_ in ["ADJ", "NOUN", "PROPN", "NUM"] or prev_token.text in ["-", "&", "and"]:
+                            search_start -= 1
+                        else:
+                            break
+
+                    # 计算这个span的质量
+                    score = self._calculate_product_span_score(doc, search_start, noun_pos + 1)
+
+                    if score > best_score:
+                        best_span = (search_start, noun_pos + 1)
+                        best_score = score
+
+        return best_span
+
+    def _calculate_product_span_score(self, doc, start, end):
+        """
+        计算产品名span的质量分数
+        """
+        score = 0
+        has_noun = False
+
+        for i in range(start, end):
+            token = doc[i]
+            if token.pos_ in ["NOUN", "PROPN"]:
+                has_noun = True
+                score += 3  # 名词权重高
+            elif token.pos_ == "ADJ":
+                score += 2  # 形容词权重中等
+            elif token.text in ["-", "and", "&"]:  # 连词
+                score += 1
+            else:
+                score -= 1  # 其他词可能降低分数
+
+        # 必须包含名词
+        return score if has_noun else 0
+
+    def _calculate_chunk_score(self, doc, start, end):
+        """
+        计算名词块的质量分数
+        """
+        score = end - start  # 基础长度分数
+
+        # 奖励因素
+        if any(doc[i].pos_ == "ADJ" for i in range(start, end)):  # 有形容词
+            score += 2
+        if any(doc[i].pos_ in ["NOUN", "PROPN"] for i in range(start, end)):  # 有名词
+            score += 1
+
+        # 惩罚因素
+        if any(doc[i].text in ["that", "which", "with"] for i in range(start, end)):  # 包含从句引导词
+            score -= 3
+
+        return score
+
     def generate_fragment_attack_instructions(self, host_instruction: str, 
                                              fragments: List[str],
                                              sensitive_fragments: Optional[List[str]] = None) -> List[Dict[str, str]]:

@@ -36,7 +36,7 @@ class MaskChecker:
         self.host_instruction = host_instruction
         self.query = query
         self.verbose = verbose
-        self.mask_token = "[MASK]"
+        self.mask_token = ""
     
     def _safe_str(self, value) -> str:
         """

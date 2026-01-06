@@ -1,0 +1,400 @@
+100个有明确sensitive fragments的violated instruction案例
+================================================================================
+--------------------------------------------------
+
+1. Pair ID: 3
+   Instruction: im looking for furniture engineered wood at the living room the color was grey
+   Sensitive Fragments: ['furniture engineered wood']
+
+2. Pair ID: 5
+   Instruction: im looking for a tempered glass cell phone case
+   Sensitive Fragments: ['a tempered glass cell phone case']
+
+3. Pair ID: 22
+   Instruction: i am interested in a long lasting perfume
+   Sensitive Fragments: ['long lasting perfume']
+
+4. Pair ID: 25
+   Instruction: i need a 60 inch projector screen with an aspect ratio of 4:3 that mounts on the wall. it should be easy to install it
+   Sensitive Fragments: ['60 inch projector screen']
+
+5. Pair ID: 27
+   Instruction: i need an intel quad core tablet which is certified refurbished
+   Sensitive Fragments: ['intel quad core tablet']
+
+6. Pair ID: 31
+   Instruction: i want a large summer o neck womens short sleeve blouse
+   Sensitive Fragments: ['large summer o neck womens']
+
+7. Pair ID: 33
+   Instruction: im looking for organic shampoo for thinning hair and hair loss
+   Sensitive Fragments: ['thinning hair']
+
+8. Pair ID: 38
+   Instruction: i would like a pink cosmetic bag that is easy to clean
+   Sensitive Fragments: ['pink cosmetic bag']
+
+9. Pair ID: 40
+   Instruction: i am looking for a wireless charging cradles of silence phone holder mount color
+   Sensitive Fragments: ['a wireless charging cradles', 'of silence phone holder mount color']
+
+10. Pair ID: 48
+   Instruction: i am looking for a high definition video projector
+   Sensitive Fragments: ['a high definition video projector']
+
+11. Pair ID: 49
+   Instruction: im looking for some long lasting deodorant
+   Sensitive Fragments: ['some long lasting deodorant']
+
+12. Pair ID: 54
+   Instruction: i am looking for sulfate free shampoo that repairs damaged hair
+   Sensitive Fragments: ['that repairs damaged hair']
+
+13. Pair ID: 56
+   Instruction: i am looking for a long lasting brown soy wax candle
+   Sensitive Fragments: ['a long lasting brown soy wax candle']
+
+14. Pair ID: 65
+   Instruction: looking for a coffee table with metal legs for living room rustic style
+   Sensitive Fragments: ['for living room rustic style']
+
+15. Pair ID: 68
+   Instruction: i need a yellow home office chair that is easy to assemble
+   Sensitive Fragments: ['yellow home office chair']
+
+16. Pair ID: 69
+   Instruction: i am looking for a height adjustable faux leather barstool
+   Sensitive Fragments: ['a height adjustable faux leather barstool']
+
+17. Pair ID: 72
+   Instruction: i would like a bundle of hair extensions that are 20 inches
+   Sensitive Fragments: ['hair extensions']
+
+18. Pair ID: 77
+   Instruction: i would like a clinically proven hair growth treatment
+   Sensitive Fragments: ['clinically proven hair growth treatment']
+
+19. Pair ID: 80
+   Instruction: i am looking for hair growth serum for men
+   Sensitive Fragments: ['hair growth serum']
+
+20. Pair ID: 98
+   Instruction: i am looking for a long lasting perfume
+   Sensitive Fragments: ['a long lasting perfume']
+
+21. Pair ID: 99
+   Instruction: high quality butterfly hair clip for women
+   Sensitive Fragments: ['high quality butterfly hair clip']
+
+22. Pair ID: 117
+   Instruction: i want a nourishing hair treatment that is sulfate free
+   Sensitive Fragments: ['nourishing hair treatment']
+
+23. Pair ID: 145
+   Instruction: i am looking for grey color steel metal bedframe that is heavy duty
+   Sensitive Fragments: ['color steel metal bedframe that is heavy duty']
+
+24. Pair ID: 153
+   Instruction: im looking for a high quality anti-static hair brush
+   Sensitive Fragments: ['a high quality anti - static hair brush']
+
+25. Pair ID: 158
+   Instruction: i need a 60 inch projector screen with an aspect ratio of 4:3 that mounts on the wall. it should be easy to install it
+   Sensitive Fragments: ['60 inch projector screen']
+
+26. Pair ID: 159
+   Instruction: i am looking for a gift basket for teacher which is hand crafted
+   Sensitive Fragments: ['i am looking', 'a gift basket']
+
+27. Pair ID: 170
+   Instruction: i am looking for non toxic lip gloss that has organic certificate. please select the rose one
+   Sensitive Fragments: ['non toxic lip gloss']
+
+28. Pair ID: 171
+   Instruction: i would like a standard sofa table that has a wood finish
+   Sensitive Fragments: ['standard sofa table']
+
+29. Pair ID: 174
+   Instruction: i am looking for a steel framed brown 5 tier bookcase
+   Sensitive Fragments: ['a steel framed brown 5 tier bookcase']
+
+30. Pair ID: 175
+   Instruction: i am looking for a noise cancelling headset
+   Sensitive Fragments: ['a noise cancelling headset']
+
+31. Pair ID: 180
+   Instruction: im looking for furniture for space saving in living room
+   Sensitive Fragments: ['furniture']
+
+32. Pair ID: 190
+   Instruction: i am interested in 6 inch hair cutting shears
+   Sensitive Fragments: ['6 inch hair']
+
+33. Pair ID: 192
+   Instruction: i would like a high performance tablet
+   Sensitive Fragments: ['high performance tablet']
+
+34. Pair ID: 194
+   Instruction: i need a sulfate and paraben free bottle of shampoo
+   Sensitive Fragments: [ 'of shampoo']
+
+35. Pair ID: 195
+   Instruction: i would like a anti perspirant
+   Sensitive Fragments: ['anti perspirant']
+
+36. Pair ID: 196
+   Instruction: i am in the need of an end table that has to be put together
+   Sensitive Fragments: ['an end table']
+
+37. Pair ID: 201
+   Instruction: i would like some stainless steel sheers to cut my hair
+   Sensitive Fragments: ['stainless steel sheers']
+
+38. Pair ID: 213
+   Instruction: i am interested in 24 inch hair extensions
+   Sensitive Fragments: ['24 inch hair extensions']
+
+39. Pair ID: 215
+   Instruction: i need a cosmetic bag for my nail polish
+   Sensitive Fragments: ['cosmetic bag']
+
+40. Pair ID: 241
+   Instruction: i am looking for a wireless hidden camera that can be easily used with shirts pocket
+   Sensitive Fragments: ['a wireless hidden camera']
+
+41. Pair ID: 249
+   Instruction: my sister have natural hair in  12 inch
+   Sensitive Fragments: ['natural hair']
+
+42. Pair ID: 250
+   Instruction: i want high quality hair in water wave bundles with closure. it should remedy my hair loss
+   Sensitive Fragments: ['water wave bundles']
+
+43. Pair ID: 255
+   Instruction: i am looking for some highly pigmented neon eyeshadow
+   Sensitive Fragments: ['some highly pigmented neon eyeshadow']
+
+44. Pair ID: 257
+   Instruction: im looking for furniture for living room that wood framed furniture is easy to use
+   Sensitive Fragments: ['living room']
+
+45. Pair ID: 262
+   Instruction: i would like a high def gold plated hdmi cable
+   Sensitive Fragments: ['i would like', 'a', 'high def gold']
+
+46. Pair ID: 282
+   Instruction: i want to shop for a wooden bedframe in grey
+   Sensitive Fragments: ['a wooden bedframe']
+
+47. Pair ID: 288
+   Instruction: i need a facial scrub that is anti aging and is made of natural ingredients
+   Sensitive Fragments: ['facial scrub']
+
+48. Pair ID: 296
+   Instruction: im looking for a black colored short sleeved womens casual summer off the shoulder dress. please select the size small
+   Sensitive Fragments: [ 'a black colored short sleeved womens']
+
+49. Pair ID: 315
+   Instruction: i am looking for long lasting leau de parfum spray for women
+   Sensitive Fragments: [ 'long lasting leau de parfum spray']
+
+50. Pair ID: 330
+   Instruction: i am looking for a x-large jacket fleece that is water resistant. and please get me the red color
+   Sensitive Fragments: ['a x-large jacket fleece']
+
+51. Pair ID: 331
+   Instruction: i need a valentines day chocolate gift box
+   Sensitive Fragments: ['valentines day chocolate gift box']
+
+52. Pair ID: 333
+   Instruction: i am looking for a high performance pink color on-ear headphones
+   Sensitive Fragments: ['color on - ear headphones']
+
+53. Pair ID: 339
+   Instruction: i need a box spring mattress
+   Sensitive Fragments: ['box spring mattress']
+
+54. Pair ID: 344
+   Instruction: i am looking for sulfate free shampoo that repairs damaged hair
+   Sensitive Fragments: ['sulfate free shampoo']
+
+55. Pair ID: 351
+   Instruction: i am looking for some dining room barstools
+   Sensitive Fragments: ['some dining room barstools']
+
+56. Pair ID: 359
+   Instruction: im looking for a large pink travel makeup bag thats not only high-quality but also easy to carry and clean
+   Sensitive Fragments: ['a large pink travel makeup bag']
+
+57. Pair ID: 392
+   Instruction: i want to find a yellow cle gaming chair that is easy to install
+   Sensitive Fragments: ['a yellow cle gaming chair']
+
+58. Pair ID: 396
+   Instruction: i am looking for high quality eau de parfum for women
+   Sensitive Fragments: ['high quality eau de parfum']
+
+59. Pair ID: 402
+   Instruction: i need a easy to clean hair extension
+   Sensitive Fragments: ['hair extension']
+
+60. Pair ID: 404
+   Instruction: i am looking for long lasting leau de parfum spray for women
+   Sensitive Fragments: ['long lasting leau de parfum spray']
+
+61. Pair ID: 409
+   Instruction: i would like to buy three chairs for my dining room that i can assemble at home
+   Sensitive Fragments: ['my dining room']
+
+62. Pair ID: 410
+   Instruction: i want to find a yellow cle gaming chair that is easy to install
+   Sensitive Fragments: ['a yellow cle gaming chair']
+
+63. Pair ID: 411
+   Instruction: i am looking for an end table that has a white finish
+   Sensitive Fragments: ['an end table']
+
+64. Pair ID: 413
+   Instruction: i want a serum made from hyaluronic acid
+   Sensitive Fragments: ['hyaluronic acid']
+
+65. Pair ID: 416
+   Instruction: i want to find a television stand for my living room that is nature-colored with some grey as well
+   Sensitive Fragments: ['a television stand']
+
+66. Pair ID: 423
+   Instruction: i want a long lasting, womens spray perfume
+   Sensitive Fragments: ['spray perfume']
+
+67. Pair ID: 428
+   Instruction: find a chair for home office with memory foam seat
+   Sensitive Fragments: ['with memory foam seat']
+
+68. Pair ID: 431
+   Instruction: i need a high quality skin care tool
+   Sensitive Fragments: ['high quality skin care tool']
+
+69. Pair ID: 435
+   Instruction: i need a bottle of marc anthony argan oil
+   Sensitive Fragments: ['marc anthony argan oil']
+
+70. Pair ID: 438
+   Instruction: i am looking for eco friendly scented candles
+   Sensitive Fragments: ['eco friendly scented candles']
+
+71. Pair ID: 449
+   Instruction: i need a wall mounted floating tv stand
+   Sensitive Fragments: ['tv stand']
+
+72. Pair ID: 463
+   Instruction: can you direct me to an office desk thats easy to assemble and the size is 40x24? thank you
+   Sensitive Fragments: ['office desk']
+
+74. Pair ID: 471
+   Instruction: find an light brown organic hair dye that is also usda certified organic and is also cruelty free
+   Sensitive Fragments: ['light brown organic hair dye']
+
+75. Pair ID: 472
+   Instruction: i would like a queen size blue linen bed with drawers with a contemporary design
+   Sensitive Fragments: ['queen size blue linen bed']
+
+76. Pair ID: 475
+   Instruction: im looking for clothing accessories for carry a laundry bags
+   Sensitive Fragments: ['clothing accessories']
+
+77. Pair ID: 481
+   Instruction: i would like to buy three chairs for my dining room that i can assemble at home
+   Sensitive Fragments: ['my dining room']
+
+78. Pair ID: 489
+   Instruction: my sister have natural hair in  12 inch
+   Sensitive Fragments: ['natural hair']
+
+79. Pair ID: 492
+   Instruction: i need jar candles that are made out of soy wax
+   Sensitive Fragments: ['jar candles']
+
+80. Pair ID: 500
+   Instruction: i would like a charcoal ottoman thats button tufted
+   Sensitive Fragments: ['charcoal ottoman']
+
+81. Pair ID: 502
+   Instruction: i would like to buy three chairs for my dining room that i can assemble at home
+   Sensitive Fragments: ['my dining room']
+
+82. Pair ID: 507
+   Instruction: i am looking for high quality hair cutting scissor make up of thinning shears
+   Sensitive Fragments: ['high quality hair']
+
+83. Pair ID: 517
+   Instruction: i am looking for a long lasting deodorant
+   Sensitive Fragments: ['a long lasting deodorant']
+
+84. Pair ID: 518
+   Instruction: i am looking for twin size bed. color should be light grey
+   Sensitive Fragments: ['twin size bed']
+
+85. Pair ID: 529
+   Instruction: i need a fleece jacket for the winter that is warm and gray
+   Sensitive Fragments: ['fleece jacket']
+
+86. Pair ID: 534
+   Instruction: i am looking for fully assembled file cabinets
+   Sensitive Fragments: ['fully assembled file cabinets']
+
+87. Pair ID: 538
+   Instruction: i would like a high performance tablet
+   Sensitive Fragments: ['high performance tablet']
+
+88. Pair ID: 542
+   Instruction: i want a herbal magic hair loss treatment for promoting hair growth. make sure that it is non-toxic
+   Sensitive Fragments: ['herbal magic hair loss treatment']
+
+89. Pair ID: 553
+   Instruction: i am interested in 6 inch hair cutting shears
+   Sensitive Fragments: ['6 inch hair']
+
+90. Pair ID: 567
+   Instruction: im looking for a hair growth serum designed to combat hair loss and repair damaged hair
+   Sensitive Fragments: ['a hair growth serum']
+
+91. Pair ID: 572
+   Instruction: i would like a pink body brush that has a long handle
+   Sensitive Fragments: ['pink body brush']
+
+92. Pair ID: 583
+   Instruction: i need a light fixture that has glass lampshades with a grain finish
+   Sensitive Fragments: ['glass lampshades']
+
+93. Pair ID: 584
+   Instruction: im looking for a stainless steel pair of tweezers for hair removal
+   Sensitive Fragments: ['for hair removal']
+
+94. Pair ID: 585
+   Instruction: i want a moonlight lip glosses that is cruelty free
+   Sensitive Fragments: ['moonlight lip glosses']
+
+95. Pair ID: 595
+   Instruction: i am looking a long handle bath body  brush easy usable quality should be high
+   Sensitive Fragments: ['long handle bath body   brush']
+
+96. Pair ID: 608
+   Instruction: i am looking or grey throw for couch sofa with machine washable feature
+   Sensitive Fragments: ['couch sofa']
+
+97. Pair ID: 614
+   Instruction: i am looking for a 2pcs set  cosmetic bags which is easy to carry
+   Sensitive Fragments: ['a 2pcs set   cosmetic bags']
+
+98. Pair ID: 626
+   Instruction: im looking for a pack of synthetic hair extensions to clip onto my curly hair; please choose the 24 length
+   Sensitive Fragments: ['synthetic hair extensions']
+
+99. Pair ID: 636
+   Instruction: i want a portable wireless bluetooth waterproof speaker
+   Sensitive Fragments: ['portable wireless']
+
+100. Pair ID: 641
+   Instruction: i am looking for some dining room barstools
+   Sensitive Fragments: ['some dining room barstools']
+
