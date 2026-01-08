@@ -23,9 +23,20 @@ class Config:
         self.max_prompt_length = 200  # 最大prompt长度限制
 
         # === 评价参数 ===
-        self.jailbreak_weight = 0.7  # 越狱成功权重
-        self.quality_weight = 0.3  # 语言质量权重
+        self.jailbreak_weight = 0.85  # 越狱成功权重 (调整为0.85)
+        self.quality_weight = 0.15  # 语言质量权重 (调整为0.15)
         self.evaluation_samples = 3  # 每次评价的样本数
+
+        # === 数据集划分参数 ===
+        self.dataset_total_size = 99  # 数据集总大小
+        self.train_ratio = 80/99      # 训练集比例 (80个)
+        self.val_ratio = 0.0          # 验证集比例 (取消验证集)
+        self.test_ratio = 19/99       # 测试集比例 (19个)
+
+        # 计算具体数量
+        self.train_size = int(self.dataset_total_size * self.train_ratio)  # 80
+        self.val_size = int(self.dataset_total_size * self.val_ratio)      # 0
+        self.test_size = self.dataset_total_size - self.train_size - self.val_size  # 19
 
         # === LLM配置 ===
         self.llm_config = {
@@ -47,9 +58,18 @@ class Config:
         self.base_dir = os.path.dirname(os.path.abspath(__file__))
         self.seed_file = os.path.join(self.base_dir, 'data', 'trigger_instruction.txt')
         self.results_dir = os.path.join(self.base_dir, 'results')
-        self.best_triggers_file = os.path.join(self.results_dir, 'best_triggers.json')
-        self.optimization_log_file = os.path.join(self.results_dir, 'optimization_log.txt')
-        self.population_history_file = os.path.join(self.results_dir, 'population_history.json')
+
+        # === 实验管理 ===
+        self.experiment_id = self._get_next_experiment_id()
+        self.experiment_dir = os.path.join(self.results_dir, f'optimization_{self.experiment_id}')
+
+        # 创建实验目录
+        os.makedirs(self.experiment_dir, exist_ok=True)
+
+        # 实验内文件路径
+        self.best_triggers_file = os.path.join(self.experiment_dir, 'best_triggers.json')
+        self.optimization_log_file = os.path.join(self.experiment_dir, 'optimization_log.txt')
+        self.population_history_file = os.path.join(self.experiment_dir, 'population_history.json')
 
         # === RuleChecker配置 ===
         self.rule_checker_config = {
@@ -65,6 +85,7 @@ class Config:
     def to_dict(self) -> Dict[str, Any]:
         """转换为字典格式"""
         return {
+            'experiment_id': self.experiment_id,
             'population_size': self.population_size,
             'num_generations': self.num_generations,
             'elite_size': self.elite_size,
@@ -75,6 +96,10 @@ class Config:
             'jailbreak_weight': self.jailbreak_weight,
             'quality_weight': self.quality_weight,
             'evaluation_samples': self.evaluation_samples,
+            'dataset_total_size': self.dataset_total_size,
+            'train_ratio': self.train_ratio,
+            'val_ratio': self.val_ratio,
+            'test_ratio': self.test_ratio,
             'llm_config': self.llm_config,
             'judge_config': self.judge_config,
             'rule_checker_config': self.rule_checker_config,
@@ -103,9 +128,29 @@ class Config:
                 config_dict = json.load(f)
             self.update_from_dict(config_dict)
 
+    def _get_next_experiment_id(self) -> int:
+        """获取下一个实验编号"""
+        if not os.path.exists(self.results_dir):
+            os.makedirs(self.results_dir, exist_ok=True)
+            return 1
+
+        # 查找所有optimization_开头的文件夹
+        existing_experiments = []
+        for item in os.listdir(self.results_dir):
+            if os.path.isdir(os.path.join(self.results_dir, item)) and item.startswith('optimization_'):
+                try:
+                    exp_id = int(item.split('_')[1])
+                    existing_experiments.append(exp_id)
+                except (ValueError, IndexError):
+                    continue
+
+        # 返回下一个可用的ID
+        return max(existing_experiments) + 1 if existing_experiments else 1
+
     def __str__(self) -> str:
         """字符串表示"""
         return f"AutoDan Config:\n" \
+               f"  Experiment ID: {self.experiment_id}\n" \
                f"  Population Size: {self.population_size}\n" \
                f"  Generations: {self.num_generations}\n" \
                f"  Elite Size: {self.elite_size}\n" \

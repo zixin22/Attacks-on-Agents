@@ -92,6 +92,10 @@ class EvolutionaryOptimizer:
             if current_best:
                 best_individuals.append(current_best)
                 print(".3f")
+
+            # 记录这一代的信息（在终止检查前记录，确保最后一代也被记录）
+            self._log_generation_info(generation, current_best)
+
             # 6. 检查终止条件
             if self._check_termination_conditions(current_best, previous_best_score, no_improvement_count):
                 print("达到终止条件，停止优化")
@@ -104,9 +108,6 @@ class EvolutionaryOptimizer:
             else:
                 no_improvement_count += 1
 
-            # 记录这一代的信息
-            self._log_generation_info(generation, current_best)
-
         # 优化完成
         self._finalize_optimization(best_individuals)
         return best_individuals
@@ -115,8 +116,8 @@ class EvolutionaryOptimizer:
         """初始化种群"""
         print("正在初始化种群...")
         try:
-            self.population.initialize_from_seeds()
-            print(f"成功从种子文件加载了 {len(self.population)} 个个体")
+            self.population.initialize_from_seeds(evaluator=self.evaluator)
+            print(f"成功初始化了 {len(self.population)} 个精英模板个体")
         except Exception as e:
             print(f"初始化种群失败: {e}")
             raise
@@ -146,12 +147,7 @@ class EvolutionaryOptimizer:
                                     previous_best_score: float,
                                     no_improvement_count: int) -> bool:
         """检查终止条件"""
-        # 1. 收敛检查
-        if current_best and current_best.score >= self.config.convergence_threshold:
-            print(".3f")
-            return True
-
-        # 2. 无改进检查
+        # 只检查无改进情况，不再检查收敛阈值（让进化完整运行指定代数）
         if no_improvement_count >= self.config.no_improvement_generations:
             print(f"连续 {no_improvement_count} 代无改进，停止优化")
             return True
@@ -210,12 +206,25 @@ class EvolutionaryOptimizer:
     def _save_final_results(self, best_individuals: List[Individual]) -> None:
         """保存最终结果"""
         try:
+            # 获取最终最佳个体
+            final_best = max(best_individuals, key=lambda x: x.score) if best_individuals else None
+
+            # 在测试集上评估最终最佳个体
+            test_score = 0.0
+            if final_best:
+                try:
+                    test_score = self.evaluator.evaluate_on_test_set(final_best.prompt, sample_size=5)
+                    print(f"测试集评估得分: {test_score:.4f}")
+                except Exception as e:
+                    print(f"测试集评估失败: {e}")
+
             # 保存最佳个体
             best_data = {
                 'optimization_completed_at': datetime.now().isoformat(),
                 'total_generations': self.current_generation + 1,
                 'best_individuals': [ind.to_dict() for ind in best_individuals],
-                'final_best': max(best_individuals, key=lambda x: x.score).to_dict() if best_individuals else None,
+                'final_best': final_best.to_dict() if final_best else None,
+                'test_set_score': test_score,  # 添加测试集得分
                 'config': self.config.to_dict()
             }
 
@@ -225,7 +234,10 @@ class EvolutionaryOptimizer:
             # 保存种群历史
             self.population.save_history(self.config.population_history_file)
 
-            print(f"结果已保存到: {self.config.results_dir}")
+            # 确保优化日志也被保存
+            self._save_optimization_log()
+
+            print(f"结果已保存到: {self.config.experiment_dir}")
 
         except Exception as e:
             print(f"保存最终结果失败: {e}")

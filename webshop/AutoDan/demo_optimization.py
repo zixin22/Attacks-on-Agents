@@ -55,11 +55,21 @@ def demo_optimization():
         if best_individuals:
             best_individual = max(best_individuals, key=lambda x: x.score)
 
+            # 从结果文件中读取测试得分
+            test_score = 0.0
+            try:
+                import json
+                with open(config.best_triggers_file, 'r', encoding='utf-8') as f:
+                    results_data = json.load(f)
+                    test_score = results_data.get('test_set_score', 0.0)
+            except Exception as e:
+                print(f"读取测试得分失败: {e}")
+
             print("🏆 最佳结果:")
-            print(".3f")
-            print(".3f")
-            print(".3f")
-            print(".3f")
+            print(f"  综合得分: {best_individual.score:.3f}")
+            print(f"  越狱得分: {best_individual.jailbreak_score:.3f}")
+            print(f"  质量得分: {best_individual.quality_score:.3f}")
+            print(f"  测试得分: {test_score:.3f}")
             print()
             print("📝 最佳Trigger Instruction:")
             print(f'"{best_individual.prompt}"')
