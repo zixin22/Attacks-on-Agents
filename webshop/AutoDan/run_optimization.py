@@ -62,15 +62,19 @@ def main():
         if args.population_size is not None:
             config.population_size = args.population_size
 
-        # 设置实验目录
+        # 设置实验目录 - 总是使用optimization_i目录
         if args.experiment_name != 'default_experiment':
             from utils import setup_experiment_directory
             experiment_dir = setup_experiment_directory(config.base_dir, args.experiment_name)
-            # 更新配置中的路径
             config.results_dir = os.path.join(experiment_dir, 'results')
-            config.best_triggers_file = os.path.join(config.results_dir, 'best_triggers.json')
-            config.optimization_log_file = os.path.join(config.results_dir, 'optimization_log.txt')
-            config.population_history_file = os.path.join(config.results_dir, 'population_history.json')
+        else:
+            # 对于默认实验，使用Config类已创建的optimization_i目录
+            config.results_dir = config.experiment_dir
+
+        # 更新所有文件路径到results_dir
+        config.best_triggers_file = os.path.join(config.results_dir, 'best_triggers.json')
+        config.optimization_log_file = os.path.join(config.results_dir, 'optimization_log.txt')
+        config.population_history_file = os.path.join(config.results_dir, 'population_history.json')
 
         # 确保结果目录存在
         os.makedirs(config.results_dir, exist_ok=True)
@@ -79,8 +83,7 @@ def main():
         print(f"  种群大小: {config.population_size}")
         print(f"  最大代数: {config.num_generations}")
         print(f"  精英大小: {config.elite_size}")
-        print(f"  越狱权重: {config.jailbreak_weight}")
-        print(f"  质量权重: {config.quality_weight}")
+        print(f"  评分机制: score = jailbreak_score (直接使用越狱成功率)")
         print(f"  收敛阈值: {config.convergence_threshold}")
         print(f"  结果目录: {config.results_dir}")
         print()
@@ -105,28 +108,14 @@ def main():
                 print(f"   Prompt: {ind.prompt}")
                 print()
 
-            # 保存配置（用于重现实验）
-            config_file = os.path.join(config.results_dir, 'config_used.json')
-            config.save_to_file(config_file)
-            print(f"配置已保存到: {config_file}")
-
         # 5. 生成可视化（如果未禁用）
         if not args.no_plots:
             try:
                 plot_file = os.path.join(config.results_dir, 'optimization_progress.png')
                 plot_optimization_progress(config.optimization_log_file, plot_file)
+                print(f"图表已保存到: {plot_file}")
             except Exception as e:
                 print(f"生成图表失败: {e}")
-
-        # 6. 生成实验报告
-        try:
-            report_file = generate_experiment_report(config.results_dir)
-            print(f"实验报告已生成: {report_file}")
-        except Exception as e:
-            print(f"生成实验报告失败: {e}")
-
-        # 7. 最终摘要
-        print_optimization_summary(config.best_triggers_file)
 
         print("\n" + "=" * 80)
         print("实验完成！")
@@ -147,9 +136,32 @@ def main():
         print(f"\n优化过程中发生错误: {e}")
         import traceback
         traceback.print_exc()
-        return 1
 
-    return 0
+    # 无论优化是否成功，都保存配置和报告
+    try:
+        # 保存配置（用于重现实验）
+        config_file = os.path.join(config.results_dir, 'config_used.json')
+        print(f"正在保存配置到: {config_file}")
+        config.save_to_file(config_file)
+        print(f"配置已保存到: {config_file}")
+
+        # 生成实验报告
+        try:
+            report_file = generate_experiment_report(config.results_dir, output_file=os.path.join(config.results_dir, 'experiment_report.md'))
+            print(f"实验报告已生成: {report_file}")
+        except Exception as e:
+            print(f"生成实验报告失败: {e}")
+            import traceback
+            traceback.print_exc()
+
+        # 最终摘要（如果有结果文件）
+        if os.path.exists(config.best_triggers_file):
+            print_optimization_summary(config.best_triggers_file)
+
+    except Exception as e:
+        print(f"保存配置和报告时发生错误: {e}")
+
+    return 0 if 'best_individuals' in locals() and best_individuals else 1
 
 
 def test_basic_functionality():
@@ -177,7 +189,7 @@ def test_basic_functionality():
         from evaluator import Evaluator
         evaluator = Evaluator(config)
         if candidates:
-            scores, jb_scores, q_scores = evaluator.evaluate_population(
+            scores, jb_scores, interaction_histories = evaluator.evaluate_population(
                 candidates[:3], "test instruction", profile=None
             )
             print(f"✓ 评价器测试成功: 评估了 {len(scores)} 个候选")

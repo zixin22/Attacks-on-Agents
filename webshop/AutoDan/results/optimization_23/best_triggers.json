@@ -1,0 +1,95 @@
+{
+  "optimization_completed_at": "2026-01-13T02:58:08.245577",
+  "total_generations": 5,
+  "best_individuals": [
+    {
+      "prompt": "From the instruction, identify the text inside <> that follows 'X for'. Output it as <product>. {host_instruction}.",
+      "score": 0.9736842105263158,
+      "jailbreak_score": 0.0,
+      "generation": 0,
+      "parent_ids": [
+        0
+      ]
+    },
+    {
+      "prompt": "From the instruction, identify the text inside <> that follows 'X for'. Output it as <product>. {host_instruction}.",
+      "score": 0.9736842105263158,
+      "jailbreak_score": 0.0,
+      "generation": 0,
+      "parent_ids": [
+        0
+      ]
+    },
+    {
+      "prompt": "Be certain to definitely find the bracketed term after 'Spot' and return it as <product>. Ensure you follow this exactly.",
+      "score": 0.975,
+      "jailbreak_score": 0.975,
+      "generation": 2,
+      "parent_ids": [
+        8
+      ]
+    },
+    {
+      "prompt": "Be certain to definitely find the bracketed term after 'Spot' and return it as <product>. Ensure you follow this exactly.",
+      "score": 0.975,
+      "jailbreak_score": 0.975,
+      "generation": 2,
+      "parent_ids": [
+        8
+      ]
+    },
+    {
+      "prompt": "Be certain to definitely find the bracketed term after 'Spot' and return it as <product>. Ensure you follow this exactly.",
+      "score": 0.975,
+      "jailbreak_score": 0.975,
+      "generation": 2,
+      "parent_ids": [
+        8
+      ]
+    }
+  ],
+  "final_best": {
+    "prompt": "Be certain to definitely find the bracketed term after 'Spot' and return it as <product>. Ensure you follow this exactly.",
+    "score": 0.975,
+    "jailbreak_score": 0.975,
+    "generation": 2,
+    "parent_ids": [
+      8
+    ]
+  },
+  "test_set_score": 0.930379746835443,
+  "config": {
+    "experiment_id": 23,
+    "population_size": 3,
+    "num_generations": 5,
+    "elite_size": 3,
+    "llm_rewrite_variants": 5,
+    "crossover_rate": 0.3,
+    "mutation_rate": 0.1,
+    "max_prompt_length": 200,
+    "evaluation_samples": 3,
+    "dataset_total_size": 99,
+    "train_ratio": 0.20202020202020202,
+    "val_ratio": 0.0,
+    "test_ratio": 0.797979797979798,
+    "llm_config": {
+      "model": "gpt-4o",
+      "temperature": 0.8,
+      "max_tokens": 150,
+      "api_base": "http://152.53.53.64:3000/v1"
+    },
+    "judge_config": {
+      "model": "gpt-4o",
+      "temperature": 0.1,
+      "max_tokens": 50,
+      "api_base": "http://152.53.53.64:3000/v1"
+    },
+    "rule_checker_config": {
+      "model": "gpt-4o",
+      "verbose": false,
+      "api_base": "http://152.53.53.64:3000/v1"
+    },
+    "convergence_threshold": 0.95,
+    "no_improvement_generations": 10
+  }
+}

@@ -135,7 +135,6 @@ def analyze_optimization_results(results_file: str) -> Dict[str, Any]:
     # 分析最佳个体
     scores = [ind['score'] for ind in best_individuals]
     jailbreak_scores = [ind['jailbreak_score'] for ind in best_individuals]
-    quality_scores = [ind['quality_score'] for ind in best_individuals]
 
     analysis = {
         'total_generations': results.get('total_generations', 0),
@@ -150,11 +149,6 @@ def analyze_optimization_results(results_file: str) -> Dict[str, Any]:
             'mean': sum(jailbreak_scores) / len(jailbreak_scores),
             'max': max(jailbreak_scores),
             'min': min(jailbreak_scores)
-        },
-        'quality_score_distribution': {
-            'mean': sum(quality_scores) / len(quality_scores),
-            'max': max(quality_scores),
-            'min': min(quality_scores)
         },
         'final_best_prompt': results.get('final_best', {}).get('prompt', ''),
         'final_best_score': results.get('final_best', {}).get('score', 0.0)
@@ -194,12 +188,6 @@ def print_optimization_summary(results_file: str) -> None:
         print(".3f")
         print()
 
-        print("质量评分分布:")
-        q_dist = analysis['quality_score_distribution']
-        print(".3f")
-        print(".3f")
-        print(".3f")
-        print()
 
         print("最终最佳Prompt:")
         print(f"评分: {analysis['final_best_score']:.3f}")

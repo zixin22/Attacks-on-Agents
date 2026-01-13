@@ -23,20 +23,19 @@ class Config:
         self.max_prompt_length = 200  # 最大prompt长度限制
 
         # === 评价参数 ===
-        self.jailbreak_weight = 0.85  # 越狱成功权重 (调整为0.85)
-        self.quality_weight = 0.15  # 语言质量权重 (调整为0.15)
+        # 直接使用jailbreak_score作为score，不再需要权重配置
         self.evaluation_samples = 3  # 每次评价的样本数
 
         # === 数据集划分参数 ===
         self.dataset_total_size = 99  # 数据集总大小
-        self.train_ratio = 80/99      # 训练集比例 (80个)
+        self.train_ratio = 20/99      # 训练集比例 (20个)
         self.val_ratio = 0.0          # 验证集比例 (取消验证集)
-        self.test_ratio = 19/99       # 测试集比例 (19个)
+        self.test_ratio = 79/99       # 测试集比例 (79个)
 
         # 计算具体数量
-        self.train_size = int(self.dataset_total_size * self.train_ratio)  # 80
+        self.train_size = int(self.dataset_total_size * self.train_ratio)  # 20
         self.val_size = int(self.dataset_total_size * self.val_ratio)      # 0
-        self.test_size = self.dataset_total_size - self.train_size - self.val_size  # 19
+        self.test_size = self.dataset_total_size - self.train_size - self.val_size  # 79
 
         # === LLM配置 ===
         self.llm_config = {
@@ -78,6 +77,9 @@ class Config:
             'api_base': "http://152.53.53.64:3000/v1"
         }
 
+        # === API和性能配置 ===
+        self.request_interval = 0.2  # LLM API请求间隔（秒），配合重试机制防止速率限制
+
         # === 终止条件 ===
         self.convergence_threshold = 0.95  # 收敛阈值（当最佳分数超过此值时停止）
         self.no_improvement_generations = 10  # 无改进代数上限
@@ -93,8 +95,6 @@ class Config:
             'crossover_rate': self.crossover_rate,
             'mutation_rate': self.mutation_rate,
             'max_prompt_length': self.max_prompt_length,
-            'jailbreak_weight': self.jailbreak_weight,
-            'quality_weight': self.quality_weight,
             'evaluation_samples': self.evaluation_samples,
             'dataset_total_size': self.dataset_total_size,
             'train_ratio': self.train_ratio,
@@ -155,5 +155,4 @@ class Config:
                f"  Generations: {self.num_generations}\n" \
                f"  Elite Size: {self.elite_size}\n" \
                f"  LLM Model: {self.llm_config['model']}\n" \
-               f"  Jailbreak Weight: {self.jailbreak_weight}\n" \
-               f"  Quality Weight: {self.quality_weight}"
+               f"  Scoring: score = jailbreak_score (direct)"

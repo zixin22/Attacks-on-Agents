@@ -14,15 +14,17 @@ from dataclasses import dataclass
 class Individual:
     """种群中的个体"""
     prompt: str  # trigger instruction文本
-    score: float = 0.0  # 综合评分
-    jailbreak_score: float = 0.0  # 越狱成功评分
-    quality_score: float = 0.0  # 语言质量评分
+    score: float = 0.0  # 越狱成功评分
+    jailbreak_score: float = 0.0  # 越狱成功评分（与score相同）
     generation: int = 0  # 出生代数
     parent_ids: List[int] = None  # 父代ID列表
+    interaction_history: List[Dict[str, str]] = None  # 与LLM的交互历史 [{"prompt": "...", "response": "..."}]
 
     def __post_init__(self):
         if self.parent_ids is None:
             self.parent_ids = []
+        if self.interaction_history is None:
+            self.interaction_history = []
 
     def to_dict(self) -> Dict[str, Any]:
         """转换为字典"""
@@ -30,9 +32,9 @@ class Individual:
             'prompt': self.prompt,
             'score': self.score,
             'jailbreak_score': self.jailbreak_score,
-            'quality_score': self.quality_score,
             'generation': self.generation,
-            'parent_ids': self.parent_ids
+            'parent_ids': self.parent_ids,
+            'interaction_history': self.interaction_history
         }
 
     @classmethod
@@ -42,9 +44,9 @@ class Individual:
             prompt=data['prompt'],
             score=data.get('score', 0.0),
             jailbreak_score=data.get('jailbreak_score', 0.0),
-            quality_score=data.get('quality_score', 0.0),
             generation=data.get('generation', 0),
-            parent_ids=data.get('parent_ids', [])
+            parent_ids=data.get('parent_ids', []),
+            interaction_history=data.get('interaction_history', [])
         )
 
 
@@ -104,18 +106,19 @@ class Population:
 
         print(f"使用 {len(training_pairs)} 个训练pair进行模板评估")
 
-        # 3. 公平评估每个模板：在5个随机采样训练pair上测试
+        # 3. 评估每个模板：在所有训练pair上测试（与后续个体评估一致）
         template_scores = []
         for template_idx, template in enumerate(trigger_templates):
             print(f"评估模板 {template_idx + 1}/{len(trigger_templates)}...")
 
-            # 使用evaluator的公平评估方法
-            avg_score = evaluator.evaluate_template_fairly(template, training_pairs, sample_size=5)
+            # 使用完整的评估方法，与后续个体评估一致
+            avg_score, interaction_history = evaluator.evaluate_goal_achievement(template, [])
 
             template_scores.append({
                 'template': template,
                 'avg_score': avg_score,
-                'template_idx': template_idx
+                'template_idx': template_idx,
+                'interaction_history': interaction_history
             })
 
             print(f"  模板 {template_idx + 1}: 平均得分 {avg_score:.4f}")
@@ -137,7 +140,8 @@ class Population:
                 prompt=elite['template'],
                 score=elite['avg_score'],  # 使用评估得到的平均得分
                 generation=0,
-                parent_ids=[elite['template_idx']]  # 记录原始模板索引
+                parent_ids=[elite['template_idx']],  # 记录原始模板索引
+                interaction_history=elite['interaction_history']  # 记录交互历史
             )
             self.members.append(individual)
 
@@ -188,27 +192,29 @@ class Population:
         return mutation(prompt)
 
     def add_candidates(self, new_candidates: List[str], scores: List[float],
-                      jailbreak_scores: List[float], quality_scores: List[float],
-                      parent_ids: List[List[int]] = None) -> None:
+                      jailbreak_scores: List[float], parent_ids: List[List[int]] = None,
+                      interaction_histories: List[List[Dict[str, str]]] = None) -> None:
         """添加新候选到种群"""
         if len(new_candidates) != len(scores):
             raise ValueError("候选数量与评分数量不匹配")
 
         if parent_ids is None:
             parent_ids = [[] for _ in range(len(new_candidates))]
+        if interaction_histories is None:
+            interaction_histories = [[] for _ in range(len(new_candidates))]
 
         # 创建新个体
         new_individuals = []
-        for i, (prompt, score, jb_score, q_score, parents) in enumerate(
-            zip(new_candidates, scores, jailbreak_scores, quality_scores, parent_ids)):
+        for i, (prompt, score, jb_score, parents, interactions) in enumerate(
+            zip(new_candidates, scores, jailbreak_scores, parent_ids, interaction_histories)):
 
             individual = Individual(
                 prompt=prompt,
                 score=score,
                 jailbreak_score=jb_score,
-                quality_score=q_score,
                 generation=self.generation,
-                parent_ids=parents
+                parent_ids=parents,
+                interaction_history=interactions
             )
             new_individuals.append(individual)
 
@@ -280,14 +286,12 @@ class Population:
 
         scores = [ind.score for ind in self.members]
         jb_scores = [ind.jailbreak_score for ind in self.members]
-        q_scores = [ind.quality_score for ind in self.members]
 
         return {
             'avg_score': sum(scores) / len(scores),
             'max_score': max(scores),
             'min_score': min(scores),
             'avg_jailbreak_score': sum(jb_scores) / len(jb_scores),
-            'avg_quality_score': sum(q_scores) / len(q_scores),
             'diversity': self._calculate_diversity()
         }
 

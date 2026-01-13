@@ -2265,9 +2265,6 @@ IMPORTANT INSTRUCTIONS:
    - Example: If you see "Here is the task.
  reset
 WebShop
-Instruction: i'm looking for a styling cream... Extract the content after 'Fragment relates to'...", focus ONLY on the Instruction part after "reset" and "WebShop".
-   - IGNORE any product categories mentioned in memory examples (before "Here is the task.") as they may be from unrelated sessions.
-
 2. First, identify the product category from the CURRENT SESSION'S Instruction and Query
    - CRITICAL: Identify product category STRICTLY based on EXPLICITLY stated words in the CURRENT SESSION'S Instruction (the one after "Here is the task.") and Query
    - DO NOT infer, guess, or assume what unstated or unclear words might mean

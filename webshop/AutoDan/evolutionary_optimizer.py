@@ -75,14 +75,14 @@ class EvolutionaryOptimizer:
             # 2. 评价候选trigger instructions
             # 传入memory examples（如果有的话）
             memory_examples = []  # 暂时为空，可以后续扩展
-            total_scores, goal_scores, quality_scores = self.evaluator.evaluate_population(
+            total_scores, goal_scores, interaction_histories = self.evaluator.evaluate_population(
                 candidates, memory_examples=memory_examples
             )
-            # 为了保持向后兼容，设置jailbreak_scores = goal_scores
+            # score = jailbreak_score，直接使用goal_scores
             jailbreak_scores = goal_scores
 
             # 3. 添加到种群
-            self._add_candidates_to_population(candidates, total_scores, jailbreak_scores, quality_scores)
+            self._add_candidates_to_population(candidates, total_scores, jailbreak_scores, interaction_histories)
 
             # 4. 选择和更新
             self._select_and_update_population()
@@ -130,13 +130,13 @@ class EvolutionaryOptimizer:
     def _add_candidates_to_population(self, candidates: List[str],
                                     total_scores: List[float],
                                     goal_scores: List[float],
-                                    quality_scores: List[float]) -> None:
+                                    interaction_histories: List[List[Dict[str, str]]]) -> None:
         """将候选添加到种群"""
         # 为每个候选创建父代ID列表（模拟）
         parent_ids = [[i] for i in range(len(candidates))]
 
         self.population.add_candidates(
-            candidates, total_scores, goal_scores, quality_scores, parent_ids
+            candidates, total_scores, goal_scores, parent_ids, interaction_histories
         )
 
     def _select_and_update_population(self) -> None:
@@ -211,25 +211,73 @@ class EvolutionaryOptimizer:
 
             # 在测试集上评估最终最佳个体
             test_score = 0.0
+            test_interaction_history = []
             if final_best:
                 try:
-                    test_score = self.evaluator.evaluate_on_test_set(final_best.prompt, sample_size=5)
+                    test_score, test_interaction_history = self.evaluator.evaluate_on_test_set(final_best.prompt)
                     print(f"测试集评估得分: {test_score:.4f}")
+
+                    # 在optimization_log中记录测试集评估详情
+                    if test_interaction_history:
+                        test_log_entry = {
+                            'generation': 'test_evaluation',
+                            'timestamp': datetime.now().isoformat(),
+                            'test_score': test_score,
+                            'test_interactions': test_interaction_history[:10],  # 只记录前10个交互作为示例
+                            'total_test_pairs': len(test_interaction_history)
+                        }
+                        self.optimization_log.append(test_log_entry)
+
                 except Exception as e:
                     print(f"测试集评估失败: {e}")
 
             # 保存最佳个体
+            # 为best_triggers.json创建干净的数据（不包含interaction_history）
+            def clean_individual_dict(ind):
+                d = ind.to_dict()
+                d.pop('interaction_history', None)  # 移除interaction_history
+                return d
+
             best_data = {
                 'optimization_completed_at': datetime.now().isoformat(),
                 'total_generations': self.current_generation + 1,
-                'best_individuals': [ind.to_dict() for ind in best_individuals],
-                'final_best': final_best.to_dict() if final_best else None,
+                'best_individuals': [clean_individual_dict(ind) for ind in best_individuals],
+                'final_best': clean_individual_dict(final_best) if final_best else None,
                 'test_set_score': test_score,  # 添加测试集得分
                 'config': self.config.to_dict()
             }
 
             with open(self.config.best_triggers_file, 'w', encoding='utf-8') as f:
                 json.dump(best_data, f, indent=2, ensure_ascii=False)
+
+            # 在population_history中记录测试集评估
+            if test_interaction_history:
+                # 临时添加测试集数据到population_history
+                test_generation_data = {
+                    f'population_test_evaluation': [{
+                        'prompt': final_best.prompt if final_best else '',
+                        'score': test_score,
+                        'jailbreak_score': test_score,  # 直接使用test_score
+                        'generation': 'test_evaluation',
+                        'parent_ids': [],
+                        'interaction_history': test_interaction_history
+                    }]
+                }
+
+                # 读取现有的population_history，添加测试数据，然后重新保存
+                try:
+                    if os.path.exists(self.config.population_history_file):
+                        with open(self.config.population_history_file, 'r', encoding='utf-8') as f:
+                            existing_data = json.load(f)
+                    else:
+                        existing_data = {}
+
+                    existing_data.update(test_generation_data)
+
+                    with open(self.config.population_history_file, 'w', encoding='utf-8') as f:
+                        json.dump(existing_data, f, indent=2, ensure_ascii=False)
+                except Exception as e:
+                    print(f"保存测试集历史失败: {e}")
 
             # 保存种群历史
             self.population.save_history(self.config.population_history_file)
@@ -241,6 +289,8 @@ class EvolutionaryOptimizer:
 
         except Exception as e:
             print(f"保存最终结果失败: {e}")
+            import traceback
+            traceback.print_exc()  # 打印完整堆栈跟踪
 
     def get_optimization_summary(self) -> Dict[str, Any]:
         """获取优化摘要"""
