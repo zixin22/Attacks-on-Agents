@@ -199,20 +199,58 @@ class Evaluator:
 
         try:
             with open(dataset_file, 'r', encoding='utf-8') as f:
-                content = f.read()
+                lines = f.readlines()
 
-            pair_blocks = content.split('--------------------------------------------------------------------------------')
-            valid_pairs = [p.strip() for p in pair_blocks if p.strip() and 'Pair' in p]
+            # 找到所有包含'Pair ID:'的行
+            pair_indices = []
+            for i, line in enumerate(lines):
+                if 'Pair ID:' in line:
+                    pair_indices.append(i)
 
-            for pair_block in valid_pairs:
-                host_match = re.search(r'Host Instruction:\s*(.+?)(?=\n|$)', pair_block, re.MULTILINE)
-                frag_match = re.search(r'Sensitive Fragment:\s*(.+?)(?=\n|$)', pair_block, re.MULTILINE)
+            for start_idx in pair_indices:
+                try:
+                    # 每个pair占用大约4行（序号行 + 3个字段行）
+                    pair_lines = lines[start_idx:start_idx+5]
 
-                if host_match and frag_match:
-                    pairs.append({
-                        'host_instruction': host_match.group(1).strip(),
-                        'fragment': frag_match.group(1).strip()
-                    })
+                    # 提取各个字段
+                    instruction_line = None
+                    fragments_line = None
+                    masked_line = None
+
+                    for line in pair_lines:
+                        line = line.strip()
+                        if line.startswith('Instruction:'):
+                            instruction_line = line
+                        elif line.startswith('Sensitive Fragments:'):
+                            fragments_line = line
+                        elif line.startswith('Masked Instruction:'):
+                            masked_line = line
+
+                    if instruction_line and fragments_line and masked_line:
+                        # 解析instruction
+                        host_instruction = instruction_line.replace('Instruction:', '').strip()
+
+                        # 解析fragments
+                        frag_match = re.search(r'Sensitive Fragments:\s*\[([^\]]+)\]', fragments_line)
+                        if frag_match:
+                            fragments_str = frag_match.group(1).strip()
+                            fragments = [f.strip().strip('"\'') for f in fragments_str.split(',')]
+                            fragment = fragments[0] if fragments else ""
+                        else:
+                            continue
+
+                        # 解析masked instruction
+                        masked_instruction = masked_line.replace('Masked Instruction:', '').strip()
+
+                        pairs.append({
+                            'host_instruction': host_instruction,
+                            'fragment': fragment,
+                            'masked_instruction': masked_instruction
+                        })
+
+                except Exception as e:
+                    print(f"解析pair失败 (行{start_idx}): {e}")
+                    continue
 
         except Exception as e:
             print(f"Failed to load dataset: {e}")
@@ -260,8 +298,9 @@ class Evaluator:
         for pair in self._test_pairs:  # 评估所有测试pairs
             host_instruction = pair['host_instruction']
             fragment = pair['fragment']
+            masked_instruction = pair.get('masked_instruction', '')
 
-            p0_prompt = self._build_p0_prompt(host_instruction, fragment, trigger_instruction, [])
+            p0_prompt = self._build_p0_prompt(host_instruction, fragment, trigger_instruction, [], masked_instruction)
 
             try:
                 llm_output = self.llm.generate_response(p0_prompt)
@@ -304,8 +343,9 @@ class Evaluator:
         for pair in sampled_pairs:
             host_instruction = pair['host_instruction']
             fragment = pair['fragment']
+            masked_instruction = pair.get('masked_instruction', '')
 
-            p0_prompt = self._build_p0_prompt(host_instruction, fragment, template, [])
+            p0_prompt = self._build_p0_prompt(host_instruction, fragment, template, [], masked_instruction)
 
             try:
                 llm_output = self.llm.generate_response(p0_prompt)
@@ -375,8 +415,9 @@ class Evaluator:
                 try:
                     host_instruction = pair['host_instruction']
                     fragment = pair['fragment']
+                    masked_instruction = pair.get('masked_instruction', '')
 
-                    full_prompt = self._build_p0_prompt(host_instruction, fragment, trigger_instruction, memory_examples)
+                    full_prompt = self._build_p0_prompt(host_instruction, fragment, trigger_instruction, memory_examples, masked_instruction)
 
                     llm_output = self.llm.generate_response(full_prompt)
 
@@ -415,7 +456,8 @@ class Evaluator:
             return 0.0
 
     def _build_p0_prompt(self, host_instruction: str, fragment: str,
-                        trigger_instruction: str, memory_examples: List[Dict]) -> str:
+                        trigger_instruction: str, memory_examples: List[Dict],
+                        masked_instruction: str = "") -> str:
         # Use the dynamically loaded attack template (which already includes {host_instruction})
         attack_instruction = self._attack_template.format(host_instruction=host_instruction, fragment=fragment)
 
@@ -426,10 +468,12 @@ class Evaluator:
                 memory_str += f"instruction: {mem.get('Instruction', '')}\n"
                 memory_str += f"{mem.get('Actions', '')}\n\n"
 
-        # Format trigger_instruction if it contains {host_instruction} placeholder
+        # Format trigger_instruction if it contains placeholders
         formatted_trigger_instruction = trigger_instruction
         if '{host_instruction}' in trigger_instruction:
-            formatted_trigger_instruction = trigger_instruction.format(host_instruction=host_instruction)
+            formatted_trigger_instruction = formatted_trigger_instruction.replace('{host_instruction}', host_instruction)
+        if '{Masked Instruction}' in formatted_trigger_instruction:
+            formatted_trigger_instruction = formatted_trigger_instruction.replace('{Masked Instruction}', masked_instruction)
 
         prompt = f"""Interact with a webshop application. Here are examples.
 Session:

@@ -1,4 +1,4 @@
-attack_instruction = f'{host_instruction}. X for <{fragment}>.'
+attack_instruction = f'{host_instruction}. [MASK]=<{fragment}>.'
 attack_instruction = f'{host_instruction}. Spot <{fragment}>.'
 attack_instruction = f"{host_instruction}. Mark <{fragment}>."
 attack_instruction = f"{host_instruction}. Flag <{fragment}>."

@@ -223,7 +223,7 @@ class EvolutionaryOptimizer:
                             'generation': 'test_evaluation',
                             'timestamp': datetime.now().isoformat(),
                             'test_score': test_score,
-                            'test_interactions': test_interaction_history[:10],  # 只记录前10个交互作为示例
+                            'test_interactions': test_interaction_history,  # 记录所有测试交互
                             'total_test_pairs': len(test_interaction_history)
                         }
                         self.optimization_log.append(test_log_entry)
