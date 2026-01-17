@@ -182,14 +182,14 @@ class Evaluator:
         if self._dataset_cache is None:
             self._dataset_cache = self._load_all_dataset_pairs()
 
-            random.shuffle(self._dataset_cache)
+            # 不打乱顺序，保持原始顺序
+            # random.shuffle(self._dataset_cache)
 
-            train_end = self.config.train_size
-            val_end = train_end + self.config.val_size
-
-            self._train_pairs = self._dataset_cache[:train_end]
-            self._val_pairs = self._dataset_cache[train_end:val_end]
-            self._test_pairs = self._dataset_cache[val_end:]
+            # 训练集：前5个pair（索引0-4）
+            # 测试集：第6-10个pair（索引5-9）
+            self._train_pairs = self._dataset_cache[:20]  # 前5个
+            self._val_pairs = []  # 不使用验证集
+            self._test_pairs = self._dataset_cache[20:]  # 第6-10个（索引5-9）
 
             print(f"Dataset split completed: train {len(self._train_pairs)} | val {len(self._val_pairs)} | test {len(self._test_pairs)}")
 
@@ -201,16 +201,16 @@ class Evaluator:
             with open(dataset_file, 'r', encoding='utf-8') as f:
                 lines = f.readlines()
 
-            # 找到所有包含'Pair ID:'的行
+            # 找到所有包含'Pair '的行
             pair_indices = []
             for i, line in enumerate(lines):
-                if 'Pair ID:' in line:
+                if line.strip().startswith('Pair ') and ':' in line:
                     pair_indices.append(i)
 
             for start_idx in pair_indices:
                 try:
-                    # 每个pair占用大约4行（序号行 + 3个字段行）
-                    pair_lines = lines[start_idx:start_idx+5]
+                    # 每个pair占用大约6行（序号行 + 5个字段行）
+                    pair_lines = lines[start_idx:start_idx+8]
 
                     # 提取各个字段
                     instruction_line = None
@@ -219,34 +219,28 @@ class Evaluator:
 
                     for line in pair_lines:
                         line = line.strip()
-                        if line.startswith('Instruction:'):
+                        if line.startswith('Host Instruction:'):
                             instruction_line = line
-                        elif line.startswith('Sensitive Fragments:'):
+                        elif line.startswith('Sensitive Fragment:'):
                             fragments_line = line
                         elif line.startswith('Masked Instruction:'):
                             masked_line = line
 
                     if instruction_line and fragments_line and masked_line:
                         # 解析instruction
-                        host_instruction = instruction_line.replace('Instruction:', '').strip()
+                        host_instruction = instruction_line.replace('Host Instruction:', '').strip()
 
-                        # 解析fragments
-                        frag_match = re.search(r'Sensitive Fragments:\s*\[([^\]]+)\]', fragments_line)
-                        if frag_match:
-                            fragments_str = frag_match.group(1).strip()
-                            fragments = [f.strip().strip('"\'') for f in fragments_str.split(',')]
-                            fragment = fragments[0] if fragments else ""
-                        else:
-                            continue
+                        # 解析fragment（直接提取文本，不再解析列表格式）
+                        fragment = fragments_line.replace('Sensitive Fragment:', '').strip()
 
                         # 解析masked instruction
                         masked_instruction = masked_line.replace('Masked Instruction:', '').strip()
 
-                        pairs.append({
+                    pairs.append({
                             'host_instruction': host_instruction,
                             'fragment': fragment,
                             'masked_instruction': masked_instruction
-                        })
+                    })
 
                 except Exception as e:
                     print(f"解析pair失败 (行{start_idx}): {e}")

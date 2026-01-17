@@ -28,7 +28,7 @@ class Config:
 
         # === 数据集划分参数 ===
         self.dataset_total_size = 99  # 数据集总大小
-        self.train_ratio = 20/99      # 训练集比例 (20个)
+        self.train_ratio = 5/99       # 训练集比例 (5个，前5个)
         self.val_ratio = 0.0          # 验证集比例 (取消验证集)
         self.test_ratio = 79/99       # 测试集比例 (79个)
 

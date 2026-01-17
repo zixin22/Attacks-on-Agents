@@ -179,7 +179,11 @@ class Population:
         return combinations
 
     def _simple_mutate(self, prompt: str) -> str:
-        """简单的变异操作（用于初始化扩展）"""
+        """简单的变异操作（用于初始化扩展，保护[MASK]）"""
+        # 跳过包含[MASK]的prompt，避免破坏结构
+        if '[MASK]' in prompt or '[mask]' in prompt:
+            return prompt
+
         mutations = [
             lambda x: x.replace("Extract", "Find"),
             lambda x: x.replace("Output", "Return"),
@@ -193,7 +197,8 @@ class Population:
 
     def add_candidates(self, new_candidates: List[str], scores: List[float],
                       jailbreak_scores: List[float], parent_ids: List[List[int]] = None,
-                      interaction_histories: List[List[Dict[str, str]]] = None) -> None:
+                      interaction_histories: List[List[Dict[str, str]]] = None,
+                      generation: int = None) -> None:
         """添加新候选到种群"""
         if len(new_candidates) != len(scores):
             raise ValueError("候选数量与评分数量不匹配")
@@ -212,7 +217,7 @@ class Population:
                 prompt=prompt,
                 score=score,
                 jailbreak_score=jb_score,
-                generation=self.generation,
+                generation=generation if generation is not None else self.generation,
                 parent_ids=parents,
                 interaction_history=interactions
             )
@@ -236,8 +241,6 @@ class Population:
 
     def evolve_population(self) -> None:
         """进化到下一代"""
-        # 保存当前代的历史
-        self.history.append([ind.to_dict() for ind in self.members])
 
         # 选择下一代
         elites = self.get_elites()

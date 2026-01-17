@@ -1,6 +1,6 @@
 # AutoDan 进化优化实验报告
 
-生成时间: 2026-01-13 20:51:43
+生成时间: 2026-01-14 00:04:05
 
 ## 文件结构
 - 结果目录: C:\Users\22749\Desktop\rap-main\webshop\AutoDan\results\optimization_27

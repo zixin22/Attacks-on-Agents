@@ -87,6 +87,9 @@ class EvolutionaryOptimizer:
             # 4. 选择和更新
             self._select_and_update_population()
 
+            # 保存当前代的历史（在选择和更新后）
+            self.population.history.append([ind.to_dict() for ind in self.population.members])
+
             # 5. 记录最佳个体
             current_best = self.population.get_best_individual()
             if current_best:
@@ -135,8 +138,11 @@ class EvolutionaryOptimizer:
         # 为每个候选创建父代ID列表（模拟）
         parent_ids = [[i] for i in range(len(candidates))]
 
+        # 新候选属于当前代数
+        current_gen = self.current_generation
+
         self.population.add_candidates(
-            candidates, total_scores, goal_scores, parent_ids, interaction_histories
+            candidates, total_scores, goal_scores, parent_ids, interaction_histories, generation=current_gen
         )
 
     def _select_and_update_population(self) -> None:
