@@ -54,7 +54,7 @@ def load_goals(goals_file: str, limit: int = 2000) -> Dict[str, str]:
     """Load goals from extracted_goals.json"""
     with open(goals_file, 'r', encoding='utf-8') as f:
         goals = json.load(f)
-    
+
     # Get first limit goals (sorted by key as integer)
     goal_items = sorted(goals.items(), key=lambda x: int(x[0]))[:limit]
     return dict(goal_items)

@@ -28,53 +28,42 @@ class RuleChecker:
             verbose: Whether to print debug information
         """
         if api_key is None:
-            # Try to read from file first
-            api_key_paths = [
-                os.path.join(os.path.dirname(__file__), '..', 'OpenAI_api_key.txt'),  # Relative to rule_checker.py (one level up)
-                r"C:\Users\22749\Desktop\rap-main\webshop\OpenAI_api_key.txt",  # Absolute path (fallback)
-                'OpenAI_api_key.txt'  # Current directory
-            ]
+            # Try environment variables first (like AutoDan)
+            api_key = os.getenv('OPENAI_API_KEY') or os.getenv('API_KEY')
 
-            api_key_path = None
-            for path in api_key_paths:
-                if os.path.exists(path):
-                    api_key_path = path
-                    break
+            if not api_key:
+                # Fall back to file if environment variables not set
+                api_key_paths = [
+                    os.path.join(os.path.dirname(__file__), '..', 'OpenAI_api_key.txt'),  # Relative to rule_checker.py (one level up)
+                    r"C:\Users\22749\Desktop\rap-main\webshop\OpenAI_api_key.txt",  # Absolute path (fallback)
+                    'OpenAI_api_key.txt'  # Current directory
+                ]
 
-            if api_key_path:
-                with open(api_key_path, "r") as f:
-                    api_key = f.read().strip()
-            else:
-                # Fall back to environment variable
-                api_key = os.getenv('OPENAI_API_KEY')
+                api_key_path = None
+                for path in api_key_paths:
+                    if os.path.exists(path):
+                        api_key_path = path
+                        break
+
+                if api_key_path:
+                    with open(api_key_path, "r") as f:
+                        api_key = f.read().strip()
 
         if not api_key:
-            raise ValueError("OpenAI API key not found. Please ensure OpenAI_api_key.txt exists or set OPENAI_API_KEY environment variable.")
+            raise ValueError("API key not found in environment variables (OPENAI_API_KEY or API_KEY) or API key file. Please set API key and try again.")
 
         # Initialize OpenAI client with fallback options
         from openai import OpenAI
 
-        try:
-            # Try proxy server first (since it was working before)
-            self.client = OpenAI(api_key=api_key, base_url="http://152.53.53.64:3000/v1")
-            print("[Info] Using proxy server connection")
-        except Exception as e1:
-            try:
-                # Fallback: Try direct OpenAI API with custom httpx client
-                import httpx
-                http_client = httpx.Client(timeout=60.0)
-                self.client = OpenAI(
-                    api_key=api_key,
-                    http_client=http_client
-                )
-                print("[Info] Using direct OpenAI API with custom httpx client")
-            except Exception as e2:
-                try:
-                    # Last resort: Direct OpenAI API without custom client
-                    self.client = OpenAI(api_key=api_key)
-                    print("[Info] Using direct OpenAI API (basic)")
-                except Exception as e3:
-                    raise ValueError(f"All OpenAI client initialization methods failed:\nProxy: {e1}\nCustom httpx: {e2}\nBasic: {e3}")
+        # Force proxy server connection (matching AutoDan config)
+        import httpx
+        http_client = httpx.Client(timeout=60.0, base_url="http://152.53.53.64:3000/v1")
+        self.client = OpenAI(
+            api_key=api_key,
+            base_url="http://152.53.53.64:3000/v1",
+            http_client=http_client
+        )
+        print("[Info] Using proxy server connection (forced)")
 
         self.use_new_api = True
         self.model = model
