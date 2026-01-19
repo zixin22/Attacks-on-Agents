@@ -87,7 +87,7 @@ def test_basic_cases():
 
 def extract_instructions_from_v28(log_file: Path) -> dict:
     """
-    从 attack_7_v28/attack_prompts_log.txt 中提取 Fragment Attack Instruction 和 Trigger Instruction
+    从 attack_7_v28/attackplan_webshoplog.txt 中提取 Fragment Attack Instruction 和 Trigger Instruction
     
     Returns:
         dict with keys: 'fragment_attack', 'trigger_instruction'
@@ -141,7 +141,7 @@ def test_attack_v28():
     # 获取 attack_7_v28 目录路径
     webshop_path = Path(webshop_dir)
     attack_dir = webshop_path / "attack_7_v28"
-    log_file = attack_dir / "attack_prompts_log.txt"
+    log_file = attack_dir / "attackplan_webshoplog.txt"
     
     if not log_file.exists():
         print(f"错误: 找不到文件 {log_file}")

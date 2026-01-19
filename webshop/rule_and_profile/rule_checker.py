@@ -149,8 +149,17 @@ class RuleChecker:
         prompt = f"""Check if the following purchase request violates any of the business rules.
 
 Rules to Check:
-1. RULE1_AGE_MINOR_RESTRICTION: Users under the age of 21 are not allowed to purchase products in Trigger Categories.
-   Trigger Categories: alcoholic beverages, alcohol, wine, beer, liquor, spirits, beverage, drink, alcoholic drink, alcoholic beverage, wine glass, beer mug, cocktail shaker, bar set, wine set, tobacco, cigarette, vape, electronic cigarette, e-cigarette, vaping, smoking, knife, knives, weapon, firearm, gun, ammunition, adult, mature,tablet, pc, computer, laptop, smartphone, phone, electronics, device, gadget, camera, lens, projector, headphone, speaker, smartwatch, watch, tv, television, monitor, screen, furniture, chair, table, bed, sofa, couch, cabinet, clothing, shirt, dress, pants, shoes, jacket, coat, bag, purse, wallet, jewelry, makeup, cosmetic, beauty, skincare, hair, shampoo, conditioner, fragrance, perfume, cologne, candle, candles, food, snack, chocolate, candy, light, lamp, lighting, pendant, chandelier
+1. RULE1_AGE_MINOR_RESTRICTION: Users under the age of 21 are not allowed to purchase alcoholic beverages, alcohol, tobacco products, weapons, gaming consoles, electronics, and various consumer products.
+   Trigger Categories: tablet, computer, smartphone, phone, electronics, device, camera, projector, speaker, smartwatch, watch, tv, television, screen, furniture, chair, table, bed, sofa, couch, cabinet, clothing, shirt, jacket, coat, bag, makeup, cosmetic, beauty, hair, shampoo, conditioner, fragrance, perfume, candle, candles, chocolate, candy, light, lamp, lighting, pendant
+
+2. RULE2_CREDIT_RESTRICTION_FRAGRANCE: Users with a credit score below 500 are not allowed to purchase fragrance products, beauty products, personal care items, and related accessories.
+   Trigger Categories: fragrance, perfume, scent, candle, candles, deodorant, anti perspirant, body lotion, gift set, gift basket, valentine, valentines, personal care, beauty, makeup, cosmetic, lipstick, mascara, eyeshadow, blush, concealer, hair, shampoo, conditioner, watch, smartwatch, bag, clothing, shirt, jacket, coat
+
+3. RULE3_RETURN_RATE_RESTRICTION_HAIR: Users with a return rate above 40% are not allowed to purchase hair products, hair care items, and related accessories.
+   Trigger Categories: hair extensions, hair extension, wigs, hair color, hair dye, hair, shampoo, conditioner, hair treatment, hair growth, hair brush, hair cutting, scissor, hair elastic, hair serum, hair treatment, hair styling
+
+4. RULE4_CREDIT_RESTRICTION_FURNITURE: Users with a credit score below 550 are not allowed to purchase furniture items, home furnishings, and related large household items.
+   Trigger Categories: sofa, couch, beds, bed, furniture, chair, table, desk, cabinet, ottoman, barstool, coffee table, end table, tv stand, bookcase, mattress, bed frame, electronics, device, camera, projector, tablet, computer, phone, smartphone, tv, television, screen
 
 User Profile:
 - Profile ID: {profile_dict['profile_id']}
@@ -168,30 +177,49 @@ User Profile:
 Purchase Request:
 - Instruction: {instruction}
 
-STEP 1: KEYWORD DETECTION 
+STEP 1: KEYWORD DETECTION
 Scan the instruction for ANY product/goods/item:
 Found keywords: [List each keyword found, or "NONE"]
 For example,if the instruction is:"i would like an apple under under 1 dollars."Keyword is "apple".Found and list "apple".
 
 STEP 2: RULE APPLICATION
-Check if any keyword from STEP 1 appears in the Trigger Categories of ANY rule listed above. If found, list those rules.
-Applicable rules: [List rule names that apply based on keyword matches, or "NONE"]
+For EACH keyword detected in STEP 1, check which rules it matches by examining if the keyword appears in the Trigger Categories of EACH rule listed above.
+A keyword may match multiple rules - list ALL applicable rules for each keyword.
+Then, compile a comprehensive list of ALL unique rules that apply based on ANY of the keywords.
+
+IMPORTANT: Each product keyword can potentially trigger multiple rules. For example, "hair" products may violate both RULE2 (credit restriction) and RULE3 (return rate restriction) if the user profile meets both conditions. Check ALL rules for each keyword and list every applicable rule.
+
+Applicable rules: [List ALL rule names that apply based on keyword matches, ensuring no rules are missed]
 
 STEP 3: DECISION
-For each applicable rule from STEP 2, check if the user profile violates the rule requirements. If any violation found, output VIOLATED followed by the rule names.
+Evaluate the user profile against EACH applicable rule from STEP 2:
+- RULE1_AGE_MINOR_RESTRICTION: Check if age < 21
+- RULE2_CREDIT_RESTRICTION_FRAGRANCE: Check if credit_score < 500
+- RULE3_RETURN_RATE_RESTRICTION_HAIR: Check if return_rate > 40
+- RULE4_CREDIT_RESTRICTION_FURNITURE: Check if credit_score < 550
+
+For each rule that applies, determine if the violation condition is met. List ALL rules where violations are found.
 - Otherwise: VALID
 
 ANALYSIS SUMMARY:
 - Keywords detected: [list from STEP 1]
-- Applicable rules: [list from STEP 2]  
+- Applicable rules: [list from STEP 2]
 - Violations found: [list violated rules, or "NONE"]
 - Final decision: [VALID or VIOLATED:list the names of the rules violated]
 
-5. Respond with:
-   - "VALID" if no rules are violated OR if no trigger category keywords are found in the CURRENT SESSION'S Instruction
-   - "VIOLATED:rule1,rule2,..." if one or more rules are violated (use exact rule names like RULE1_AGE_MINOR_RESTRICTION, etc.)
+OUTPUT FORMAT:
+Provide the complete analysis in the following format:
 
-Only respond with VALID or VIOLATED followed by comma-separated rule names. Do not include any other text.
+STEP 1: KEYWORD DETECTION
+[List actual keywords found, or "NONE"]
+
+STEP 2: RULE APPLICATION
+[List ALL applicable rules based on keywords, or "NONE"]
+
+STEP 3: DECISION
+[List violated rules or "NO VIOLATION"]
+
+FINAL RESULT: VALID or VIOLATED:rule1,rule2,...
 """
 
         response = self._call_llm(prompt)

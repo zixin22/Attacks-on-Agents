@@ -24,7 +24,7 @@ from promptarmor.config import PromptArmorConfig
 
 def extract_instructions_from_log(log_file: Path) -> Dict[str, str]:
     """
-    从 attack_prompts_log.txt 中提取 instructions
+    从 attackplan_webshoplog.txt 中提取 instructions
     
     Returns:
         dict with keys: 'fragment_A', 'fragment_B', 'fragment_C', 'fragment_D', 'trigger'
@@ -99,7 +99,7 @@ def test_all_attacks():
     # 处理每个版本
     for version in versions:
         version_dir = webshop_dir / f"attak_7_v{version}"
-        log_file = version_dir / "attack_prompts_log.txt"
+        log_file = version_dir / "attackplan_webshoplog.txt"
         
         if not log_file.exists():
             print(f"警告: {log_file} 不存在，跳过版本 v{version}")
