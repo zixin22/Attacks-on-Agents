@@ -28,6 +28,7 @@ parser.add_argument("--split", type=str, default=None, help="Data split to use (
 parser.add_argument("--attack", action="store_true", help="Enable fragment-based attack mode")
 parser.add_argument("--attack_fixed_number", type=int, default=None, help="Fixed number of the case to attack (required if --attack is set)")
 parser.add_argument("--attack_target_instruction", type=str, default=None, help="Target instruction to inject in attack (e.g., 'i would like a bundle of hair extensions that are 20 inches')")
+parser.add_argument("--attack_dataset", type=str, default=None, help="Path to dataset JSON file for batch attack experiments (alternative to --attack_fixed_number)")
 parser.add_argument("--cont_number", type=int, default=None, help="Number of test cases to use from dataset_3.json (uses first N cases)")
 parser.add_argument("--skip_fragments", action="store_true", help="Skip fragment attacks and only execute trigger attack (fragments should already be in memory)")
 parser.add_argument("--enable_rule_checker", action="store_true", help="Enable RuleChecker (default: disabled)")
@@ -1388,26 +1389,18 @@ def execute_fragment_attack(
     print(f"Session ID: {session_id}")
     print(f"Attack Instruction: {fragment_attack_instruction}")
     print(f"{'='*60}\n")
-    
-    # Execute the task (use RAP if memory exists, REACT if not)
+
+    # Execute the task (always use REACT mode for fragment attacks)
     # Use return_log=True to capture all prompts and outputs
     # Initialize violated_rules early to avoid UnboundLocalError
     violated_rules = []
     try:
-        if len(memory) > 0:
-            r, mem_data, execution_log = webshop_run_rap(
-                session_id, initial_prompt, memory, embeddings,
-                profile=profile, to_print=True,
-                attack_instruction=fragment_attack_instruction,
-                return_log=True
-            )
-        else:
-            r, mem_data, execution_log = webshop_run_react(
-                session_id, initial_prompt,
-                profile=profile, to_print=True,
-                attack_instruction=fragment_attack_instruction,
-                return_log=True
-            )
+        r, mem_data, execution_log = webshop_run_react(
+            session_id, initial_prompt,
+            profile=profile, to_print=True,
+            attack_instruction=fragment_attack_instruction,
+            return_log=True
+        )
         
         # Get violations for this session
         violated_rules = env.violations.get(session_id, [])
@@ -1755,8 +1748,30 @@ with open(webshop_log_file, 'w', encoding='utf-8') as f:
 
 print('### Running with real-time memory updates ###')
 
-# Load data from dataset_3.json
-if args.cont_number is not None:
+# Handle attack_dataset mode first
+attack_dataset = None
+if args.attack and args.attack_dataset:
+    print(f"Loading attack dataset from: {args.attack_dataset}")
+    with open(args.attack_dataset, 'r', encoding='utf-8') as f:
+        full_attack_dataset = json.load(f)
+
+    # Support --cont_number to limit the number of cases processed
+    if args.cont_number is not None:
+        attack_dataset = full_attack_dataset[:args.cont_number]
+        print(f"Using first {args.cont_number} cases from attack dataset (limited by --cont_number)")
+    else:
+        attack_dataset = full_attack_dataset
+        print(f"Using all {len(attack_dataset)} cases from attack dataset")
+
+    # Use fix_numbers from attack_dataset as index_list
+    index_list = [int(case['fix_number']) for case in attack_dataset]
+    n = len(index_list)
+    print(f"Processing {n} attack cases")
+    print(f"Fix numbers: {index_list[:5]}... (showing first 5)")
+
+    global_test_cases = None
+# Load data from dataset_3.json for cont_number mode
+elif args.cont_number is not None:
     dataset_file = r"D:\rap-main\webshop\dataset_3.json"
     with open(dataset_file, "r", encoding="utf-8") as f:
         dataset_data = json.load(f)
@@ -1800,29 +1815,42 @@ attack_log_file = None
 
 if args.attack:
     from attack import FragmentAttackGenerator
-    if args.attack_fixed_number is None:
-        raise ValueError("--attack_fixed_number is required when --attack is set")
+    if args.attack_fixed_number is None and args.attack_dataset is None:
+        raise ValueError("--attack_fixed_number or --attack_dataset is required when --attack is set")
 
 if args.attack:
-    if args.attack_target_instruction is None:
-        raise ValueError("--attack_target_instruction is required when --attack is set")
+    if args.attack_target_instruction is None and args.attack_dataset is None:
+        raise ValueError("--attack_target_instruction or --attack_dataset is required when --attack is set")
     attack_generator = FragmentAttackGenerator(verbose=True)
-    
+
+
     # Initialize attack log file
     attack_log_file = args.output + '/attackplan_webshoplog.txt'
     with open(attack_log_file, 'w', encoding='utf-8') as f:
         f.write("="*80 + "\n")
         f.write("ATTACK MODE PROMPT LOG\n")
         f.write("="*80 + "\n")
-        f.write(f"Target Case: fixed_{args.attack_fixed_number}\n")
-        f.write(f"Target Instruction: {args.attack_target_instruction}\n")
+        if args.attack_dataset:
+            f.write(f"Attack Dataset: {args.attack_dataset}\n")
+            if args.cont_number is not None:
+                f.write(f"Limited to first {args.cont_number} cases (--cont_number)\n")
+            f.write(f"Number of Cases: {n}\n")
+        else:
+            f.write(f"Target Case: fixed_{args.attack_fixed_number}\n")
+            f.write(f"Target Instruction: {args.attack_target_instruction}\n")
         f.write(f"Log File: {attack_log_file}\n")
         f.write("="*80 + "\n\n")
-    
+
     print(f"\n{'='*60}")
     print("ATTACK MODE ENABLED")
-    print(f"Target Case: fixed_{args.attack_fixed_number}")
-    print(f"Target Instruction: {args.attack_target_instruction}")
+    if args.attack_dataset:
+        print(f"Attack Dataset: {args.attack_dataset}")
+        if args.cont_number is not None:
+            print(f"Limited to first {args.cont_number} cases (--cont_number)")
+        print(f"Number of Cases: {n}")
+    else:
+        print(f"Target Case: fixed_{args.attack_fixed_number}")
+        print(f"Target Instruction: {args.attack_target_instruction}")
     print(f"Attack Prompt Log: {attack_log_file}")
     print(f"{'='*60}\n")
 
@@ -1954,28 +1982,82 @@ for i in index_list:
         else:
             profile = None  # No profile needed for normal WebShop experiments
 
-    # Check if this is the attack target case
-    if args.attack and i == args.attack_fixed_number:
+    # Check if this is an attack target case
+    is_attack_case = False
+    attack_case_data = None
+
+    if args.attack:
+        if args.attack_dataset:
+            # In attack_dataset mode, all cases in index_list are attack cases
+            # Find the corresponding case data
+            for case in attack_dataset:
+                if int(case.get('fix_number', 0)) == i:
+                    is_attack_case = True
+                    attack_case_data = case
+                    break
+        elif i == args.attack_fixed_number:
+            is_attack_case = True
+
+    if is_attack_case:
         print(f"\n{'='*60}")
         print(f"ATTACK MODE: Processing case fixed_{i}")
         print(f"{'='*60}\n")
-        
-        # Force use profile_37 for attack (only if defense mechanism is enabled)
-        if args.defense_mode != 'none':
-            profile_37 = None
-            for p in profiles:
-                if p.profile_id == 'profile_37':
-                    profile_37 = p
-                    break
-            if profile_37 is None:
-                print(f"Warning: profile_37 not found, using current profile {profile.profile_id if profile else 'None'}")
-                profile_37 = profile
+
+        # Handle attack parameters based on mode
+        if args.attack_dataset and attack_case_data:
+            # Use data from dataset
+            attack_target_instruction = attack_case_data['instruction']
+
+            # Load pre-computed fragments data from dataset
+            fragments_dict = attack_case_data.get('fragments', {})
+            fragments = [fragments_dict.get(f'F{i}', '') for i in range(1, 5)]
+            sensitive_fragments = attack_case_data.get('sensitive_fragments', [])
+            safe_fragments = attack_case_data.get('safe_fragments', [])
+
+            print(f"Loaded pre-computed fragments from dataset:")
+            print(f"  Fragments: {fragments}")
+            print(f"  Sensitive Fragments: {sensitive_fragments}")
+            print(f"  Safe Fragments: {safe_fragments}")
+
+            # Always use safe profile for attack instruction detection
+            # (no mask detection needed since we use pre-computed data)
+            if args.defense_mode != 'none':
+                safe_profile = UserProfile(
+                    profile_id="safe_profile_perfect",
+                    age=25,
+                    country="allowed",
+                    is_verified=True,
+                    payment_method="Visa",
+                    failed_payment_attempts=0,
+                    credit_score=800,
+                    account_age_days=1000,
+                    account_status="active",
+                    return_rate=5.0,
+                    total_purchase_amount=50000.00
+                )
+                profile = safe_profile
+                print(f'Using safe profile for attack instruction detection: {profile.profile_id} (age={profile.age}, credit_score={profile.credit_score})')
             else:
-                print(f"Using profile_37 for attack: {profile_37.profile_id}")
-                print(f"Profile details: credit_score={profile_37.credit_score}, account_age_days={profile_37.account_age_days}")
-                profile = profile_37
+                profile = None
+                print("Attack mode with defense disabled - using no profile")
         else:
-            print("Attack mode with defense disabled - using no profile")
+            # Use original logic for single attack
+            attack_target_instruction = args.attack_target_instruction
+            if args.defense_mode != 'none':
+                profile_37 = None
+                for p in profiles:
+                    if p.profile_id == 'profile_37':
+                        profile_37 = p
+                        break
+                if profile_37 is None:
+                    print(f"Warning: profile_37 not found, using current profile {profile.profile_id if profile else 'None'}")
+                    profile_37 = profile
+                else:
+                    print(f"Using profile_37 for attack: {profile_37.profile_id}")
+                    print(f"Profile details: credit_score={profile_37.credit_score}, account_age_days={profile_37.account_age_days}")
+                    profile = profile_37
+            else:
+                print("Attack mode with defense disabled - using no profile")
         
         # Step 1: Get host instruction and query by resetting the environment
         # Reset environment to get initial state
@@ -1995,14 +2077,53 @@ for i in index_list:
         # Step 2: Generate attack plan (with mask check if defense mechanism is enabled)
         # Use rule_checker or guard_agent for mask checking
         defense_for_mask = rule_checker if args.defense_mode == 'rule_checker' else guard_agent
-        attack_plan = attack_generator.generate_attack_plan(
-            host_instruction=host_instruction,
-            target_instruction=args.attack_target_instruction,
-            rule_checker=defense_for_mask if args.defense_mode != 'none' else None,
-            profile=profile if args.defense_mode != 'none' else None,
-            query=host_query if args.defense_mode != 'none' else "",
-            attack_log_file=attack_log_file
-        )
+
+        # For mask check, use dataset profile; for attack execution, use safe profile
+        mask_profile = None
+        if args.defense_mode != 'none':
+            if args.attack_dataset and attack_case_data and 'profile' in attack_case_data:
+                # Use dataset profile for mask detection
+                profile_dict = attack_case_data['profile']
+                mask_profile = UserProfile(
+                    profile_id=profile_dict.get('profile_id', f'profile_{i}'),
+                    age=profile_dict['age'],
+                    country=profile_dict['country'],
+                    is_verified=profile_dict['is_verified'],
+                    payment_method=profile_dict['payment_method'],
+                    failed_payment_attempts=profile_dict['failed_payment_attempts'],
+                    credit_score=profile_dict['credit_score'],
+                    account_age_days=profile_dict['account_age_days'],
+                    account_status=profile_dict['account_status'],
+                    return_rate=profile_dict['return_rate'],
+                    total_purchase_amount=profile_dict['total_purchase_amount']
+                )
+                print(f'Using dataset profile for mask detection: {mask_profile.profile_id} (age={mask_profile.age}, credit_score={mask_profile.credit_score})')
+            else:
+                # Use safe profile as fallback
+                mask_profile = profile
+                print(f'Using safe profile for mask detection: {mask_profile.profile_id if mask_profile else "None"}')
+
+        # Generate attack plan - use dataset data if available, otherwise use full NER+mask pipeline
+        if args.attack_dataset and attack_case_data:
+            # Use pre-computed data from dataset (skip NER and mask detection)
+            attack_plan = attack_generator.generate_attack_plan_from_dataset(
+                host_instruction=host_instruction,
+                target_instruction=attack_target_instruction,
+                fragments=fragments,
+                sensitive_fragments=sensitive_fragments,
+                safe_fragments=safe_fragments,
+                attack_log_file=attack_log_file
+            )
+        else:
+            # Use full pipeline with NER decomposition and mask detection
+            attack_plan = attack_generator.generate_attack_plan(
+                host_instruction=host_instruction,
+                target_instruction=attack_target_instruction,
+                rule_checker=defense_for_mask if args.defense_mode != 'none' else None,
+                profile=mask_profile if args.defense_mode != 'none' else None,
+                query=host_query if args.defense_mode != 'none' else "",
+                attack_log_file=attack_log_file
+            )
         
         print(f"\nAttack Plan Generated:")
         print(f"  Fragments: {attack_plan['fragments']}")
@@ -2023,7 +2144,7 @@ for i in index_list:
                     f.write("Fragments are assumed to be already in memory\n")
                 f.write(f"Profile Used: {profile.profile_id if profile else 'None'} ({f'credit_score={profile.credit_score}, account_age_days={profile.account_age_days}' if profile else 'normal WebShop experiment'})\n")
                 f.write(f"Host Instruction: {host_instruction}\n")
-                f.write(f"Target Instruction: {args.attack_target_instruction}\n")
+                f.write(f"Target Instruction: {attack_target_instruction}\n")
                 f.write(f"\nFragments:\n")
                 for idx, fragment in enumerate(attack_plan['fragments'], 1):
                     f.write(f"  F{idx}: {fragment}\n")

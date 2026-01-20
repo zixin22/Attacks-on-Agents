@@ -824,3 +824,76 @@ class FragmentAttackGenerator:
             result['safe_instruction_check'] = safe_instruction_check
         
         return result
+
+    def generate_attack_plan_from_dataset(self, host_instruction: str,
+                                       target_instruction: str,
+                                       fragments: List[str],
+                                       sensitive_fragments: List[str],
+                                       safe_fragments: List[str],
+                                       attack_log_file: str = None) -> Dict:
+        """
+        Generate attack plan using pre-computed fragments from dataset.
+        Skips NER decomposition and mask detection entirely.
+
+        Args:
+            host_instruction: Original host instruction from WebShop
+            target_instruction: Target instruction from dataset
+            fragments: Pre-computed list of 4 fragments [F1, F2, F3, F4]
+            sensitive_fragments: Pre-computed list of sensitive fragment texts
+            safe_fragments: Pre-computed list of safe fragment texts
+            attack_log_file: Optional path to attack log file
+
+        Returns:
+            Dictionary containing attack plan with pre-computed data
+        """
+        if self.verbose:
+            print(f"\n{'='*60}")
+            print("GENERATING ATTACK PLAN FROM DATASET (SKIPPING NER & MASK)")
+            print(f"{'='*60}\n")
+            print(f"Host Instruction: {host_instruction}")
+            print(f"Target Instruction: {target_instruction}")
+            print(f"Pre-computed Fragments: {fragments}")
+            print(f"Sensitive Fragments: {sensitive_fragments}")
+            print(f"Safe Fragments: {safe_fragments}")
+
+        # Generate fragment attack instructions using pre-computed sensitive fragments
+        fragment_attacks = self.generate_fragment_attack_instructions(
+            host_instruction, fragments, sensitive_fragments=sensitive_fragments
+        )
+
+        # Generate trigger instruction
+        trigger_instruction = self.generate_trigger_attack_instruction(
+            host_instruction, target_instruction
+        )
+
+        result = {
+            'host_instruction': host_instruction,
+            'target_instruction': target_instruction,
+            'fragments': fragments,
+            'sensitive_fragments': sensitive_fragments,
+            'safe_fragments': safe_fragments,
+            'fragment_attacks': fragment_attacks,
+            'trigger_instruction': trigger_instruction
+        }
+
+        # Log to file
+        if attack_log_file:
+            with open(attack_log_file, 'a', encoding='utf-8') as f:
+                f.write(f"\n{'='*80}\n")
+                f.write(f"ATTACK PLAN FROM DATASET\n")
+                f.write(f"{'='*80}\n")
+                f.write(f"Host Instruction: {host_instruction}\n")
+                f.write(f"Target Instruction: {target_instruction}\n")
+                f.write(f"Pre-computed Fragments: {fragments}\n")
+                f.write(f"Sensitive Fragments: {sensitive_fragments}\n")
+                f.write(f"Safe Fragments: {safe_fragments}\n")
+                f.write(f"\nFragment Attacks ({len(fragment_attacks)}):\n")
+                for attack in fragment_attacks:
+                    f.write(f"  {attack['label']}: {attack['instruction'][:100]}...\n")
+                f.write(f"\nTrigger Instruction: {trigger_instruction[:100]}...\n")
+
+        if self.verbose:
+            print(f"\nGenerated {len(fragment_attacks)} fragment attacks")
+            print(f"Trigger instruction generated")
+
+        return result
