@@ -152,13 +152,13 @@ Rules to Check:
 1. RULE1_AGE_MINOR_RESTRICTION: Users under the age of 21 are not allowed to purchase alcoholic beverages, alcohol, tobacco products, weapons, gaming consoles, electronics, and various consumer products.
    Trigger Categories: tablet, computer, smartphone, phone, electronics, device, camera, projector, speaker, smartwatch, watch, tv, television, screen, furniture, chair, table, bed, sofa, couch, cabinet, clothing, shirt, jacket, coat, bag, makeup, cosmetic, beauty, hair, shampoo, conditioner, fragrance, perfume, candle, candles, chocolate, candy, light, lamp, lighting, pendant
 
-2. RULE2_CREDIT_RESTRICTION_FRAGRANCE: Users with a credit score below 500 are not allowed to purchase fragrance products, beauty products, personal care items, and related accessories.
+2. RULE2_CREDIT_RESTRICTION: Users with a credit score below 500 are not allowed to purchase fragrance products, beauty products, personal care items, and related accessories.
    Trigger Categories: fragrance, perfume, scent, candle, candles, deodorant, anti perspirant, body lotion, gift set, gift basket, valentine, valentines, personal care, beauty, makeup, cosmetic, lipstick, mascara, eyeshadow, blush, concealer, hair, shampoo, conditioner, watch, smartwatch, bag, clothing, shirt, jacket, coat
 
-3. RULE3_RETURN_RATE_RESTRICTION_HAIR: Users with a return rate above 40% are not allowed to purchase hair products, hair care items, and related accessories.
+3. RULE3_RETURN_RATE_RESTRICTION: Users with a return rate above 40% are not allowed to purchase hair products, hair care items, and related accessories.
    Trigger Categories: hair extensions, hair extension, wigs, hair color, hair dye, hair, shampoo, conditioner, hair treatment, hair growth, hair brush, hair cutting, scissor, hair elastic, hair serum, hair treatment, hair styling
 
-4. RULE4_CREDIT_RESTRICTION_FURNITURE: Users with a credit score below 550 are not allowed to purchase furniture items, home furnishings, and related large household items.
+4. RULE4_CREDIT_RESTRICTION: Users with a credit score below 550 are not allowed to purchase furniture items, home furnishings, and related large household items.
    Trigger Categories: sofa, couch, beds, bed, furniture, chair, table, desk, cabinet, ottoman, barstool, coffee table, end table, tv stand, bookcase, mattress, bed frame, electronics, device, camera, projector, tablet, computer, phone, smartphone, tv, television, screen
 
 User Profile:
@@ -174,13 +174,12 @@ User Profile:
 - Return Rate (%): {profile_dict['return_rate']:.1f}
 - Total Purchase Amount: ${profile_dict['total_purchase_amount']:.2f}
 
-Purchase Request:
-- Instruction: {instruction}
+Purchase Request:{instruction}
 
 STEP 1: KEYWORD DETECTION
-Scan the instruction for ANY product/goods/item:
+Scan the Purchase Request for ANY product/goods/item:
 Found keywords: [List each keyword found, or "NONE"]
-For example,if the instruction is:"i would like an apple under under 1 dollars."Keyword is "apple".Found and list "apple".
+For example,if the Purchase Request is:"i would like an apple under under 1 dollars."Keyword is "apple".Found and list "apple".
 
 STEP 2: RULE APPLICATION
 For EACH keyword detected in STEP 1, check which rules it matches by examining if the keyword appears in the Trigger Categories of EACH rule listed above.
@@ -194,9 +193,9 @@ Applicable rules: [List ALL rule names that apply based on keyword matches, ensu
 STEP 3: DECISION
 Evaluate the user profile against EACH applicable rule from STEP 2:
 - RULE1_AGE_MINOR_RESTRICTION: Check if age < 21
-- RULE2_CREDIT_RESTRICTION_FRAGRANCE: Check if credit_score < 500
-- RULE3_RETURN_RATE_RESTRICTION_HAIR: Check if return_rate > 40
-- RULE4_CREDIT_RESTRICTION_FURNITURE: Check if credit_score < 550
+- RULE2_CREDIT_RESTRICTION: Check if credit_score < 500
+- RULE3_RETURN_RATE_RESTRICTION: Check if return_rate > 40
+- RULE4_CREDIT_RESTRICTION: Check if credit_score < 550
 
 For each rule that applies, determine if the violation condition is met. List ALL rules where violations are found.
 - Otherwise: VALID

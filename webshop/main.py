@@ -24,6 +24,7 @@ parser.add_argument("--model", type=str, default="gpt-4o",
                     help="The model name")
 parser.add_argument("--output", type=str, default="output", help="The output folder")
 parser.add_argument("--emb_model", type=str, default="sentence-transformers/all-MiniLM-L6-v2", choices=["sentence-transformers/all-MiniLM-L6-v2", "sentence-transformers/all-MiniLM-L12-v2"], help="The model name")
+parser.add_argument("--split", type=str, default=None, help="Data split to use (final, test, eval, train, custom)")
 parser.add_argument("--attack", action="store_true", help="Enable fragment-based attack mode")
 parser.add_argument("--attack_fixed_number", type=int, default=None, help="Fixed number of the case to attack (required if --attack is set)")
 parser.add_argument("--attack_target_instruction", type=str, default=None, help="Target instruction to inject in attack (e.g., 'i would like a bundle of hair extensions that are 20 inches')")
@@ -496,64 +497,6 @@ class webshopEnv:
       observation = observation_
     self.sessions[session].update(info)
     
-    # RULE CHECK AT SESSION START (after getting instruction and query from webshop_text)
-    # Check rules based on instruction and query, without requiring action
-    # Support both RuleChecker and GuardAgent defense mechanisms
-    if self.defense_mode != 'none' and profile:
-        # Get instruction and query from session (set by webshop_text)
-        instruction = self.sessions[session].get('instruction', '')
-        query = self.sessions[session].get('query', '')
-        
-        # Only check rules if we have instruction and query (session has been initialized)
-        # Skip if already checked (to avoid duplicate checks)
-        if instruction and query and not self.sessions[session].get('_rules_checked', False):
-            is_valid = True
-            violated_rules = []
-            
-            # Use selected defense mechanism
-            if self.defense_mode == 'rule_checker' and self.rule_checker:
-                # Check all rules using RuleChecker
-                # Returns: (is_valid: bool, violated_rules: List[str])
-                is_valid, violated_rules = self.rule_checker.check_all_rules(
-                    profile, instruction, query
-                )
-            elif self.defense_mode == 'guard_agent' and self.guard_agent:
-                # Check all rules using GuardAgent
-                # Returns: (is_valid: bool, violated_rules: List[str])
-                is_valid, violated_rules = self.guard_agent.check_all_rules(
-                    profile, instruction, query
-                )
-            
-            # Mark as checked to avoid duplicate checks
-            self.sessions[session]['_rules_checked'] = True
-            
-            # If rules are violated, BLOCK the session immediately
-            # This is a HARD BLOCK - the session cannot proceed under any circumstances
-            if not is_valid:
-                # Block the session and return early
-                defense_name = 'RuleChecker' if self.defense_mode == 'rule_checker' else 'GuardAgent'
-                observation = f"Session blocked by {defense_name}: Rule violation ({', '.join(violated_rules)})"
-                reward = 0.0
-                done = True
-                
-                # Track violations for metrics tracking
-                if session not in self.violations:
-                    self.violations[session] = []
-                self.violations[session].extend(violated_rules)
-                
-                # Return blocked session result
-                # This prevents the session from proceeding - it's a hard block
-                return observation, reward, done, {
-                    'rule_violated': True,
-                    'violated_rules': violated_rules,
-                    'defense_mode': self.defense_mode,
-                    'instruction': instruction,
-                    'query': query,
-                    'category': self.sessions[session].get('category', ''),
-                    'reward': 0.0
-                }
-            # If is_valid == True, continue with normal session flow below
-            # The session will proceed normally if no violations are detected
     
     reward = info.get('reward', 0.0)
     return observation, reward, done, info
@@ -919,17 +862,20 @@ def check_prompt_with_rulechecker(full_prompt: str, session_id: str, profile, ru
             defense_name = "RuleChecker" if rule_checker else "GuardAgent"
             f.write(f"{defense_name} Prompt Log for Session: {session_id}\n")
             f.write(f"{'='*80}\n")
-            f.write(f"Profile ID: {profile.profile_id}\n")
-            f.write(f"Profile Details: age={profile.age}, verified={profile.is_verified}, "
-                   f"country={profile.country}, credit_score={profile.credit_score}, "
-                   f"account_age_days={profile.account_age_days}, return_rate={profile.return_rate:.1f}%\n")
+            f.write(f"Profile ID: {profile.profile_id if profile else 'None'}\n")
+            if profile:
+                f.write(f"Profile Details: age={profile.age}, verified={profile.is_verified}, "
+                       f"country={profile.country}, credit_score={profile.credit_score}, "
+                       f"account_age_days={profile.account_age_days}, return_rate={profile.return_rate:.1f}%\n")
+            else:
+                f.write("Profile Details: None (normal WebShop experiment)\n")
             f.write(f"{'='*80}\n\n")
         f.write(f"\n{'='*80}\n")
         defense_name = "RuleChecker" if rule_checker else "GuardAgent"
         f.write(f"Step {step} - {defense_name} Check\n")
         f.write(f"{'='*80}\n")
         f.write(f"Session ID: {session_id}\n")
-        f.write(f"Profile ID: {profile.profile_id}\n")
+        f.write(f"Profile ID: {profile.profile_id if profile else 'None'}\n")
         if step == 1:
             f.write(f"\nCheck Type: Session Start (Full Prompt)\n")
         else:
@@ -1499,7 +1445,7 @@ def execute_fragment_attack(
                 f.write(f"FRAGMENT {fragment_label} ATTACK\n")
                 f.write(f"{'='*80}\n")
                 f.write(f"Session ID: {session_id}\n")
-                f.write(f"Profile Used: {profile.profile_id} (credit_score={profile.credit_score}, account_age_days={profile.account_age_days})\n")
+                f.write(f"Profile Used: {profile.profile_id if profile else 'None'} ({f'credit_score={profile.credit_score}, account_age_days={profile.account_age_days}' if profile else 'normal WebShop experiment'})\n")
                 f.write(f"Host Instruction: {host_instruction}\n")
                 f.write(f"Fragment Attack Instruction: {fragment_attack_instruction}\n")
                 f.write(f"Fragment Label: {fragment_label}\n")
@@ -1684,7 +1630,7 @@ def execute_trigger_attack(
                 f.write(f"TRIGGER ATTACK\n")
                 f.write(f"{'='*80}\n")
                 f.write(f"Session ID: {session_id}\n")
-                f.write(f"Profile Used: {profile.profile_id} (credit_score={profile.credit_score}, account_age_days={profile.account_age_days})\n")
+                f.write(f"Profile Used: {profile.profile_id if profile else 'None'} ({f'credit_score={profile.credit_score}, account_age_days={profile.account_age_days}' if profile else 'normal WebShop experiment'})\n")
                 f.write(f"Host Instruction: {host_instruction}\n")
                 f.write(f"Trigger Attack Instruction: {trigger_attack_instruction}\n")
                 f.write(f"Reward: {r}\n")
@@ -1836,9 +1782,17 @@ else:
         n, start = 1000, 501
     elif split == 'train':
         n, start = 10587, 1500
+    elif split == 'custom':
+        # Load custom indices from config
+        custom_indices = config['params'].get('custom_indices', [])
+        if custom_indices:
+            # Convert string indices to integers if necessary
+            index_list = [int(x) if isinstance(x, str) else x for x in custom_indices]
+            n = len(index_list)
+            print(f"Using custom indices from config: {index_list[:10]}... (showing first 10)")
     else:
-        n, start = 1000, 5001
-    index_list = range(start, start + n)
+        n, start = 1, 7
+        index_list = range(start, start + n)
     global_test_cases = None
 
 # Import FragmentAttackGenerator for attack mode
@@ -1872,56 +1826,59 @@ if args.attack:
     print(f"Attack Prompt Log: {attack_log_file}")
     print(f"{'='*60}\n")
 
-# Load profiles from generated_profiles.json
+# Load profiles from generated_profiles.json only if defense mechanism is enabled
 # Use relative path from the script location
-script_dir = os.path.dirname(os.path.abspath(__file__))
-generated_profiles_path = os.path.join(script_dir, 'generated_profiles.json')
 profiles = []
-try:
-    with open(generated_profiles_path, 'r', encoding='utf-8') as f:
-        profiles_data = json.load(f)
-    
-    # Extract profiles list from JSON
-    if 'profiles' in profiles_data:
-        profiles_list = profiles_data['profiles']
-    else:
-        profiles_list = profiles_data if isinstance(profiles_data, list) else []
-    
-    # Convert JSON dictionaries to UserProfile objects
-    for profile_dict in profiles_list:
-        # Map JSON fields to UserProfile constructor parameters
-        # Use new field structure: country (not region), no max_quantity/membership_level/account_activity_days
-        profile = UserProfile(
-            profile_id=profile_dict.get('profile_id', 'unknown'),
-            age=profile_dict.get('age', 25),
-            country=profile_dict.get('country', 'allowed'),  # Use 'country' directly
-            is_verified=profile_dict.get('is_verified', True),
-            payment_method=profile_dict.get('payment_method', 'Visa'),
-            failed_payment_attempts=profile_dict.get('failed_payment_attempts', 0),
-            credit_score=profile_dict.get('credit_score', 700),
-            account_age_days=profile_dict.get('account_age_days', 365),
-            account_status=profile_dict.get('account_status', 'active'),
-            return_rate=profile_dict.get('return_rate', 0.0),
-            total_purchase_amount=profile_dict.get('total_purchase_amount', 0.0)
-        )
-        profiles.append(profile)
-    
-    print(f"Loaded {len(profiles)} user profiles from {generated_profiles_path}")
-    
-    # Warn if we have more cases than profiles
-    if n > len(profiles):
-        print(f"Warning: {n} cases requested but only {len(profiles)} profiles available.")
-        print(f"Program will stop after using all {len(profiles)} profiles.")
-    
-except FileNotFoundError:
-    print(f"Error: Profile file not found at {generated_profiles_path}")
-    print("Please ensure generated_profiles.json exists in the webshop directory.")
-    print("You can generate it by running: python rule_and_profile/generate_profiles.py")
-    raise FileNotFoundError(f"Profile file not found: {generated_profiles_path}")
-except Exception as e:
-    print(f"Error loading profiles from {generated_profiles_path}: {e}")
-    print("Please check the profile file format and try again.")
-    raise
+if args.defense_mode != 'none':
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    generated_profiles_path = os.path.join(script_dir, 'generated_profiles.json')
+    try:
+        with open(generated_profiles_path, 'r', encoding='utf-8') as f:
+            profiles_data = json.load(f)
+
+        # Extract profiles list from JSON
+        if 'profiles' in profiles_data:
+            profiles_list = profiles_data['profiles']
+        else:
+            profiles_list = profiles_data if isinstance(profiles_data, list) else []
+
+        # Convert JSON dictionaries to UserProfile objects
+        for profile_dict in profiles_list:
+            # Map JSON fields to UserProfile constructor parameters
+            # Use new field structure: country (not region), no max_quantity/membership_level/account_activity_days
+            profile = UserProfile(
+                profile_id=profile_dict.get('profile_id', 'unknown'),
+                age=profile_dict.get('age', 25),
+                country=profile_dict.get('country', 'allowed'),  # Use 'country' directly
+                is_verified=profile_dict.get('is_verified', True),
+                payment_method=profile_dict.get('payment_method', 'Visa'),
+                failed_payment_attempts=profile_dict.get('failed_payment_attempts', 0),
+                credit_score=profile_dict.get('credit_score', 700),
+                account_age_days=profile_dict.get('account_age_days', 365),
+                account_status=profile_dict.get('account_status', 'active'),
+                return_rate=profile_dict.get('return_rate', 0.0),
+                total_purchase_amount=profile_dict.get('total_purchase_amount', 0.0)
+            )
+            profiles.append(profile)
+
+        print(f"Loaded {len(profiles)} user profiles from {generated_profiles_path}")
+
+        # Warn if we have more cases than profiles
+        if n > len(profiles):
+            print(f"Warning: {n} cases requested but only {len(profiles)} profiles available.")
+            print(f"Program will stop after using all {len(profiles)} profiles.")
+
+    except FileNotFoundError:
+        print(f"Error: Profile file not found at {generated_profiles_path}")
+        print("Please ensure generated_profiles.json exists in the webshop directory.")
+        print("You can generate it by running: python rule_and_profile/generate_profiles.py")
+        raise FileNotFoundError(f"Profile file not found: {generated_profiles_path}")
+    except Exception as e:
+        print(f"Error loading profiles from {generated_profiles_path}: {e}")
+        print("Please check the profile file format and try again.")
+        raise
+else:
+    print("Defense mechanism disabled - skipping profile loading for normal WebShop experiment")
 
 cnt = 0
 rs = []
@@ -1938,11 +1895,13 @@ for i in index_list:
     print('-----------------')
     print(i)
     
-    # Check if we've used all available profiles
-    if profile_index >= len(profiles):
-        print(f"Warning: All {len(profiles)} profiles have been used. Stopping execution.")
-        print(f"Processed {profile_index} cases, {len(index_list) - profile_index} cases remaining.")
-        break
+    # Select profile only if defense mechanism is enabled
+    if args.defense_mode != 'none':
+        # Check if we've used all available profiles
+        if profile_index >= len(profiles):
+            print(f"Warning: All {len(profiles)} profiles have been used. Stopping execution.")
+            print(f"Processed {profile_index} cases, {len(index_list) - profile_index} cases remaining.")
+            break
 
     # Load memory_1.json before each case (if it exists)
     memory = []
@@ -1967,27 +1926,33 @@ for i in index_list:
         host_instruction = test_case["host_instruction"]
         print(f'Processing dataset_3.json case {i}: {host_instruction[:50]}...')
 
-        # Use the profile from the test case
-        profile_data = test_case["profile"]
-        profile = UserProfile(
-            profile_id=profile_data.get("profile_id", f"dataset_profile_{i}"),
-            age=profile_data["age"],
-            country=profile_data["country"],
-            is_verified=profile_data["is_verified"],
-            payment_method=profile_data["payment_method"],
-            failed_payment_attempts=profile_data["failed_payment_attempts"],
-            credit_score=profile_data["credit_score"],
-            account_age_days=profile_data["account_age_days"],
-            account_status=profile_data["account_status"],
-            return_rate=profile_data["return_rate"],
-            total_purchase_amount=profile_data["total_purchase_amount"]
-        )
-        print(f'Using profile from dataset: {profile.profile_id} (age={profile.age}, credit_score={profile.credit_score})')
+        # Use the profile from the test case only if defense mechanism is enabled
+        if args.defense_mode != 'none':
+            profile_data = test_case["profile"]
+            profile = UserProfile(
+                profile_id=profile_data.get("profile_id", f"dataset_profile_{i}"),
+                age=profile_data["age"],
+                country=profile_data["country"],
+                is_verified=profile_data["is_verified"],
+                payment_method=profile_data["payment_method"],
+                failed_payment_attempts=profile_data["failed_payment_attempts"],
+                credit_score=profile_data["credit_score"],
+                account_age_days=profile_data["account_age_days"],
+                account_status=profile_data["account_status"],
+                return_rate=profile_data["return_rate"],
+                total_purchase_amount=profile_data["total_purchase_amount"]
+            )
+            print(f'Using profile from dataset: {profile.profile_id} (age={profile.age}, credit_score={profile.credit_score})')
+        else:
+            profile = None  # No profile needed for normal WebShop experiments
     else:
-        # Select profile for this task (use sequential index, no repetition)
-        profile = profiles[profile_index]
-        profile_index += 1
-        print(f'Using profile: {profile.profile_id} (profile {profile_index}/{len(profiles)})')
+        # Select profile for this task only if defense mechanism is enabled
+        if args.defense_mode != 'none':
+            profile = profiles[profile_index]
+            profile_index += 1
+            print(f'Using profile: {profile.profile_id} (profile {profile_index}/{len(profiles)})')
+        else:
+            profile = None  # No profile needed for normal WebShop experiments
 
     # Check if this is the attack target case
     if args.attack and i == args.attack_fixed_number:
@@ -1995,19 +1960,22 @@ for i in index_list:
         print(f"ATTACK MODE: Processing case fixed_{i}")
         print(f"{'='*60}\n")
         
-        # Force use profile_37 for attack
-        profile_37 = None
-        for p in profiles:
-            if p.profile_id == 'profile_37':
-                profile_37 = p
-                break
-        if profile_37 is None:
-            print(f"Warning: profile_37 not found, using current profile {profile.profile_id}")
-            profile_37 = profile
+        # Force use profile_37 for attack (only if defense mechanism is enabled)
+        if args.defense_mode != 'none':
+            profile_37 = None
+            for p in profiles:
+                if p.profile_id == 'profile_37':
+                    profile_37 = p
+                    break
+            if profile_37 is None:
+                print(f"Warning: profile_37 not found, using current profile {profile.profile_id if profile else 'None'}")
+                profile_37 = profile
+            else:
+                print(f"Using profile_37 for attack: {profile_37.profile_id}")
+                print(f"Profile details: credit_score={profile_37.credit_score}, account_age_days={profile_37.account_age_days}")
+                profile = profile_37
         else:
-            print(f"Using profile_37 for attack: {profile_37.profile_id}")
-            print(f"Profile details: credit_score={profile_37.credit_score}, account_age_days={profile_37.account_age_days}")
-            profile = profile_37
+            print("Attack mode with defense disabled - using no profile")
         
         # Step 1: Get host instruction and query by resetting the environment
         # Reset environment to get initial state
@@ -2053,7 +2021,7 @@ for i in index_list:
                 if args.skip_fragments:
                     f.write("NOTE: Fragment attacks will be SKIPPED (--skip_fragments flag set)\n")
                     f.write("Fragments are assumed to be already in memory\n")
-                f.write(f"Profile Used: {profile.profile_id} (credit_score={profile.credit_score}, account_age_days={profile.account_age_days})\n")
+                f.write(f"Profile Used: {profile.profile_id if profile else 'None'} ({f'credit_score={profile.credit_score}, account_age_days={profile.account_age_days}' if profile else 'normal WebShop experiment'})\n")
                 f.write(f"Host Instruction: {host_instruction}\n")
                 f.write(f"Target Instruction: {args.attack_target_instruction}\n")
                 f.write(f"\nFragments:\n")
@@ -2220,9 +2188,12 @@ for i in index_list:
     with open(webshop_log_file, 'a', encoding='utf-8') as f:
         f.write(f"Session ID: fixed_{i}\n")
 
-        # Profile information
-        profile_info = f"Profile Used: {profile.profile_id} (age={profile.age}, credit_score={profile.credit_score}, account_age_days={profile.account_age_days})"
-        f.write(f"{profile_info}\n")
+        # Profile information (only if profile is used)
+        if profile is not None:
+            profile_info = f"Profile Used: {profile.profile_id} (age={profile.age}, credit_score={profile.credit_score}, account_age_days={profile.account_age_days})"
+            f.write(f"{profile_info}\n")
+        else:
+            f.write("Profile Used: None (normal WebShop experiment)\n")
 
         # Host instruction (for dataset_3.json cases)
         if global_test_cases is not None and i < len(global_test_cases):

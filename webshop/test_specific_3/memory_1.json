@@ -1,0 +1,25 @@
+[
+    {
+        "Id": "fixed_0",
+        "Instruction": "i want to buy short sleeve t-shirts for men which are in yellow color, and of size x-large",
+        "Actions": [
+            "Action: search[short sleeve t-shirts men yellow x-large]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09R9YCM6R] \nXXBR Summer T-shirts for Mens, Soldier Short Sleeve 3D Street Vintage Printed Shirt Slim Fit Muscle Casual Tee Tops \n$8.98 to $11.99 \n[B09QQP3356] \nHAUKLIE Men's Sports Waffle Ribbed Polo Shirts Summer Short Sleeve Cotton Muscle Quarter-Zip Henley T-Shirt Tunics Tops \n$10.99 \n[B078WSND96] \nClearance Deals Retro T-Shirt Bee Printed Blouse, 2021 Summer Fashion Boys Men 3D Round Neck Short Sleeve Tee Tops \n$9.99 to $11.99 ",
+            "Action: think[The search results show three options for yellow short sleeve t-shirts for men in size X-Large. I should check the first option, B09R9YCM6R, to see if it meets the requirements.]",
+            "Observation: OK.",
+            "Action: click[B09R9YCM6R]",
+            "Observation: \n[Back to Search] \n[< Prev] \ncolor [152- coffee][152- green][153- blue][153- yellow][154- coffee][154- gray][155- blue][155- yellow][156- gray][156- yellow][157- green][157- yellow][158- purple][159- yellow]\nsize [medium][large][x-large][xx-large][3x-large]\nXXBR Summer T-shirts for Mens, Soldier Short Sleeve 3D Street Vintage Printed Shirt Slim Fit Muscle Casual Tee Tops \nPrice: $8.98 to $11.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Attributes] \n[Buy Now] ",
+            "Action: think[The item has options for 'yellow' color and 'x-large' size, and the price is within the range of $8.98 to $11.99. It seems suitable to proceed with selecting these options and buying.]",
+            "Observation: OK.",
+            "Action: click[153- yellow]",
+            "Observation: You have clicked 153- yellow.",
+            "Action: click[x-large]",
+            "Observation: You have clicked x-large.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": false,
+        "Reward": 0.0,
+        "Category": "beauty",
+        "Query": "hair extensions, wigs & accessories"
+    }
+]
