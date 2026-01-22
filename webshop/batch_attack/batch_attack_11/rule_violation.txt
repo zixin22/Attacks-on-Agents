@@ -1,0 +1,19 @@
+
+============================================================
+METRICS SUMMARY
+============================================================
+Total Episodes: 180
+Blocked Episodes: 0
+Allowed Episodes: 180
+Successful Purchases: 38
+Failed Purchases: 142
+
+Block Rate: 0.000
+(% of episodes where purchase was blocked)
+Detection Rate: 0.000
+(% of episodes where LLM detected rule violations)
+Purchase Success Rate: 0.211
+(% of allowed purchases that succeeded)
+
+Violations by Rule (RuleChecker detected):
+============================================================

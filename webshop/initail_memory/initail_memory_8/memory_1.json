@@ -1,0 +1,176 @@
+[
+    {
+        "Id": "fixed_5065",
+        "Instruction": "i would like a high def monocular for bird watching, and price lower than 70.00 dollars",
+        "Actions": [
+            "Action: search[high def monocular bird watching]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B08YWKVNLT] \n20x50 High Power Binoculars for Adults with Low Light Night Vision, Compact Waterproof Binoculars for Bird Watching Hunting Travel Football Games Stargazing with Carrying Case and Strap \n$46.0 \n[B08YQKXLVG] \nStaoptics 15x60 UHD Binoculars,High Power Astronomy Binoculars for Stargazing and Long Distance Bird Watching Hunting-Fully Multi-Broadband Coated Lenses View Clear and Bright,Adapt to Tripod Black \n$159.99 \n[B09R1T2P6V] \nBling Charm Pendant Bracelet Band Compatible with Apple Watch Bands 38mm 40mm 42mm 44mm,Adjustable Stainless Steel Smartwatch Band with Bling Diamond Case for iwatch Series SE Series 7 6 5 4 3 2 1 \n$13.99 to $16.99 ",
+            "Action: think[B08YWKVNLT is a high def monocular for bird watching under $70. I should check this item first.]",
+            "Observation: OK.",
+            "Action: click[B08YWKVNLT]",
+            "Observation: \n[Back to Search] \n[< Prev] \n20x50 High Power Binoculars for Adults with Low Light Night Vision, Compact Waterproof Binoculars for Bird Watching Hunting Travel Football Games Stargazing with Carrying Case and Strap \nPrice: $46.0 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[The item B08YWKVNLT meets the criteria for a high def monocular for bird watching under $70. It seems suitable to proceed with the purchase.]",
+            "Observation: OK.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": false,
+        "Reward": 0.6666666666666666,
+        "Category": "electronics",
+        "Query": "binoculars & scopes",
+        "Retrievable": true
+    },
+    {
+        "Id": "fixed_601",
+        "Instruction": "i need 30ml travel bottles, and price lower than 40.00 dollars",
+        "Actions": [
+            "Action: search[30ml travel bottles]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09SHRV5JW] \nHerbal Hair Regrowth Spray, Hair-growth Essence Spray, Herbal Hair Growth Essence Spray, Hair Growth Treatement Germinal Oil, Hair Growth Maximizer Spray for Prevent Postpartum Hair Loss Men Women (10ml 4PC) \n$16.99 \n[B08532HWVM] \nBeaupretty 7Pcs Silicone Travel Bottles Set Empty Cosmetic Bottles Refillable Toiletry Containers Squeezable Travel Tube for Lotion Shampoo Toiletries \n$9.29 \n[B08J3WFRBT] \nLotFancy 70ml 2.4Oz Travel Bottles with Keychain,15pc Empty Plastic Carabiner Bottle, Clear Bottle, Squeeze Container for Hand Sanitizer, Lotion, Cosmetics, Leakproof, Refillable, 15 labels Included \n$11.96 ",
+            "Action: think[The second result, B08532HWVM, includes travel bottles and is priced at $9.29, which is under $40. I will check this item first.]",
+            "Observation: OK.",
+            "Action: click[B08532HWVM]",
+            "Observation: \n[Back to Search] \n[< Prev] \nBeaupretty 7Pcs Silicone Travel Bottles Set Empty Cosmetic Bottles Refillable Toiletry Containers Squeezable Travel Tube for Lotion Shampoo Toiletries \nPrice: $9.29 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: click[Buy Now]"
+        ],
+        "Success": false,
+        "Reward": 0.6666666666666666,
+        "Category": "beauty",
+        "Query": "refillable containers",
+        "Retrievable": true
+    },
+    {
+        "Id": "fixed_4969",
+        "Instruction": "i am looking for multi colored glass window film that is eco friendly. the installation process should be easy as well, and price lower than 120.00 dollars",
+        "Actions": [
+            "Action: search[multi colored glass window film eco friendly easy installation]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B095Z2SDB9] \n3D No Glue Window Privacy Film Static Window Clings Decorative Window Privacy Film Window Film Privacy Static Window Retro Tribal Folk Pattern W23.6 x H78.7 Inch \n$38.8 \n[B00KM40FHM] \nCottoncolors Brand Window Film 3D Ecology Non Toxic Static Decoration for UV Rejection Heat Control Energy Saving Privacy Glass Stickers,35.4x78.7 Inches \n$25.99 \n[B09MYFGDY5] \nOrthodontic Elastics, Safe Orthodontic Rubber Band Pet Grooming Eco Friendly for Men Women for Dental Hospital for Home for Dentist \n$24.35 ",
+            "Action: click[B095Z2SDB9]",
+            "Observation: \n[Back to Search] \n[< Prev] \nsize [l17.7\" x h 23.6\"][l23.6\" x h 35.4\"][l23.6\" x h 78.7\"][l35.4\" x h 78.7\"]\ncolor [multi-03136][multi-03137][multi-03138][multi-03139][multi-03140][multi-03141][multi-03142][multi-03143][multi-03144][multi-03145][multi-03146][multi-03147][multi-03148][multi-03149][multi-03150]\n3D No Glue Window Privacy Film Static Window Clings Decorative Window Privacy Film Window Film Privacy Static Window Retro Tribal Folk Pattern W23.6 x H78.7 Inch \nPrice: $38.8 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[The item B095Z2SDB9 matches the criteria of being multi-colored, eco-friendly, easy to install, and priced under $120. I can proceed to select the size and color options before purchasing.]",
+            "Observation: OK.",
+            "Action: click[l23.6\" x h 78.7\"]",
+            "Observation: You have clicked l23.6\" x h 78.7\".",
+            "Action: click[multi-03136]",
+            "Observation: You have clicked multi-03136.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": false,
+        "Reward": 0.5,
+        "Category": "garden",
+        "Query": "window coverings",
+        "Retrievable": true
+    },
+    {
+        "Id": "fixed_10980",
+        "Instruction": "i would like some elastic waistband pants that are black in a size 38w by 34l, and price lower than 70.00 dollars",
+        "Actions": [
+            "Action: search[elastic waistband pants black size 38w 34l under 70 dollars]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B08LKKSL8F] \nBOCOMAL FR Pants for Men Cargo Flame Resistant Pants(2112&CAT2) 100% C 7.5oz Utility Fire Resistant Pants \n$45.99 to $49.99 \n[B09QW2HQRK] \nCandyMan Lace Pajama and Lounge Pants for Men \n$31.0 to $69.0 \n[B09QCP4579] \nLWLW High Waist Yoga Shorts for Women,Tummy Control Biker Shorts Exercise Workout Butt Lifting Tights Women's Short Pants \n$13.99 ",
+            "Action: think[The first two options, B08LKKSL8F and B09QW2HQRK, are elastic waistband pants under $70. I will check B08LKKSL8F first as it seems to fit the criteria better.]",
+            "Observation: OK.",
+            "Action: click[B08LKKSL8F]",
+            "Observation: \n[Back to Search] \n[< Prev] \ncolor [navy][grey][bottle green]\nsize [30w x 30l][30w x 32l][32w x 30l][32w x 32l][34w x 30l][34w x 32l][34w x 34l][36w x 30l][36w x 32l][36w x 34l][38w x 30l][38w x 32l][38w x 34l][40w x 30l][40w x 32l][40w x 34l][42w x 30l][42w x 32l][42w x 34l][44w x 30l][44w x 32l][44w x 34l][46w x 30l][46w x 32l][48w x 30l][48w x 32l]\nBOCOMAL FR Pants for Men Cargo Flame Resistant Pants(2112&CAT2) 100% C 7.5oz Utility Fire Resistant Pants \nPrice: $45.99 to $49.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: click[38w x 34l]",
+            "Observation: You have clicked 38w x 34l.",
+            "Action: think[The color black is not available for this item. I should go back and check the next option, B09QW2HQRK, to see if it meets the criteria.]",
+            "Observation: OK.",
+            "Action: click[Back to Search]",
+            "Observation: \nWebShop \nInstruction:  \ni would like some elastic waistband pants that are black in a size 38w by 34l, and price lower than 70.00 dollars \n[Search] ",
+            "Action: search[elastic waistband pants black size 38w 34l under 70 dollars]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B08LKKSL8F] \nBOCOMAL FR Pants for Men Cargo Flame Resistant Pants(2112&CAT2) 100% C 7.5oz Utility Fire Resistant Pants \n$45.99 to $49.99 \n[B09QW2HQRK] \nCandyMan Lace Pajama and Lounge Pants for Men \n$31.0 to $69.0 \n[B09QCP4579] \nLWLW High Waist Yoga Shorts for Women,Tummy Control Biker Shorts Exercise Workout Butt Lifting Tights Women's Short Pants \n$13.99 ",
+            "Action: click[B09QW2HQRK]",
+            "Observation: \n[Back to Search] \n[< Prev] \nsize [small][small-medium][medium][large][large-x-large][x-large][1-2xl][2-3xl]\ncolor [black_style_99234][black_style_99497][black_style_99496][red_style_99234][black_style_99601][navy_style_99602][black_style_99445][navy_style_99603][navy_style_99609][black_style_99464][black_style_99496x][navy_style_99603x]\nCandyMan Lace Pajama and Lounge Pants for Men \nPrice: $31.0 to $69.0 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[The item B09QW2HQRK has multiple black color options and is within the price range. I need to select the correct size, 38w x 34l, and a black color option to proceed.]",
+            "Observation: OK.",
+            "Action: click[large-x-large]",
+            "Observation: You have clicked large-x-large.",
+            "Action: click[black_style_99234]",
+            "Observation: You have clicked black_style_99234.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": false,
+        "Reward": 0.5,
+        "Category": "fashion",
+        "Query": "women's pants",
+        "Retrievable": true
+    },
+    {
+        "Id": "fixed_4520",
+        "Instruction": "i am looking for winter warm ankle boots for women. my size is 7.5, and price lower than 60.00 dollars",
+        "Actions": [
+            "Action: search[winter warm ankle boots women size 7.5 under 60 dollars]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09HMCKZQW] \nCopercn Dress Ankle Booties For Women Ladies Fashion Casual Chunky Block High Heels Dress Pump Thermal Short Boots Winter Fall Dressy Short Boots For Business Work Wedding Party Dresses \n$17.99 to $23.99 \n[B07JZ5HVN6] \nWomen's Ladies Sneakers,Limsea Fashion Classic Boots Ankle Short Leather Shoes \n$6.63 to $8.37 \n[B09KP78G37] \nWomen Faux Fur Lined Jacket Coat Winter Warm Thick Fleece Outwear Trench Zipper Plus Size Long Sleeve Plush Overcoat \n$47.41 to $59.07 ",
+            "Action: click[B09HMCKZQW]",
+            "Observation: \n[Back to Search] \n[< Prev] \nsize [6.5][7.5][8][8.5][9][9.5]\nCopercn Dress Ankle Booties For Women Ladies Fashion Casual Chunky Block High Heels Dress Pump Thermal Short Boots Winter Fall Dressy Short Boots For Business Work Wedding Party Dresses \nPrice: $17.99 to $23.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: click[7.5]",
+            "Observation: You have clicked 7.5.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": false,
+        "Reward": 0.6666666666666666,
+        "Category": "fashion",
+        "Query": "women's flats",
+        "Retrievable": true
+    },
+    {
+        "Id": "fixed_10121",
+        "Instruction": "order for me cupcake toppers decorations for celebrating a baby shower, and price lower than 140.00 dollars",
+        "Actions": [
+            "Action: search[cupcake toppers decorations baby shower under 140 dollars]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B07TVMCK3F] \nErcadio 24 Pack Soccer Cupcake Toppers Black Glitter Football Cupcake Topper Sports Theme Soccer Party Baby Shower Cake Decoration \n$6.99 \n[B08PBDHVN8] \nAmosfun 27Pcs Glitter Heart Cupcake Toppers Love Cake Toppers Fruit Dessert Toothpick Cake Picks for New Year Weeding Birthday Valentines Day Cake Decoration Assorted Color \n$17.59 \n[B08W2WTW4Z] \njojofuny 27pcs Checkered Flag Race Flag Cupcake Topper Picks Toothpick Flag Dinner Flags Chequered Flag Race Car Themed Party Supplies for Car Lover Cake Decorations \n$9.49 ",
+            "Action: think[B07TVMCK3F is a suitable option for baby shower cupcake toppers under 140 dollars. I will check it first.]",
+            "Observation: OK.",
+            "Action: click[B07TVMCK3F]",
+            "Observation: \n[Back to Search] \n[< Prev] \nErcadio 24 Pack Soccer Cupcake Toppers Black Glitter Football Cupcake Topper Sports Theme Soccer Party Baby Shower Cake Decoration \nPrice: $6.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[The item 'Ercadio 24 Pack Soccer Cupcake Toppers' is suitable for a baby shower and is priced at $6.99, which is under $140. I can proceed to buy it.]",
+            "Observation: OK.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": true,
+        "Reward": 1.0,
+        "Category": "grocery",
+        "Query": "toothpicks",
+        "Retrievable": true
+    },
+    {
+        "Id": "fixed_7796",
+        "Instruction": "i am looking for a  multi 6 color super soft throws, and price lower than 50.00 dollars",
+        "Actions": [
+            "Action: search[multi 6 color super soft throws under 50 dollars]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09C1YWG8W] \nSoft Plush Electric Heated Blanket Throw with Foot Pocket | Navy Blue 50 x 62 | 3 Heat Settings with 2 Hour Auto Shut Off, UL Certified | Machine Washable \n$69.99 \n[B09KTB1VG6] \nFOHOG Collection Flannel Fleece Silky Soft Throw Shaggy Blanket Lightweight Comfy and Cozy Plush Microfiber Travel Silk 50\" X 60\" for Sofa Couch Bed (127 cm X 152 cm) (Buffalo Plaid) \n$11.99 \n[B0836D6CW4] \nSunbeam Heated Electric Fleece Throw Comforter Blanket with Controller, Auto Off Setting, Thermofine Wiring, and 3 Heat Settings, Red Plaid \n$45.99 ",
+            "Action: think[B09KTB1VG6 and B0836D6CW4 are multi-color throws under 50 dollars. I can check B09KTB1VG6 first as it is cheaper.]",
+            "Observation: OK.",
+            "Action: click[B09KTB1VG6]",
+            "Observation: \n[Back to Search] \n[< Prev] \nFOHOG Collection Flannel Fleece Silky Soft Throw Shaggy Blanket Lightweight Comfy and Cozy Plush Microfiber Travel Silk 50\" X 60\" for Sofa Couch Bed (127 cm X 152 cm) (Buffalo Plaid) \nPrice: $11.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[The item B09KTB1VG6 is a multi-color soft throw under $50 and matches the requirements. It seems good to proceed with the purchase.]",
+            "Observation: OK.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": false,
+        "Reward": 0.3333333333333333,
+        "Category": "garden",
+        "Query": "throw blankets",
+        "Retrievable": true
+    },
+    {
+        "Id": "fixed_6936",
+        "Instruction": "i am looking for a  loofahs for dead skin, and price lower than 40.00 dollars",
+        "Actions": [
+            "Action: search[loofahs for dead skin]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B08SKT2TCH] \nJYLRX natural loofah sponge,Very Suitable for Kitchen Household use and Personal Skin Care Products with Cleanser Pack of 4 (white) \n$12.98 \n[B09B9QLDKD] \nProfessional Pedicure Tools Kit, 20/23 in 1 Stainless Steel Foot Spa Care Set Foot Rasp Dead Skin Callus Remover Foot File Foot Scrubber for Women Men Salon or Home Use \n$100.0 \n[B099F89JTZ] \nHEALLILY 2pcs Shower Loofah Sponges Bathing Skin Poufs Exfoliating Shower Back Scrubber Women Men Skin Cleaning Bath Wrap Bathing Skin Massage Cleaner \n$11.89 ",
+            "Action: think[B08SKT2TCH and B099F89JTZ are loofahs for dead skin under 40 dollars. I can check B08SKT2TCH first.]",
+            "Observation: OK.",
+            "Action: click[B08SKT2TCH]",
+            "Observation: \n[Back to Search] \n[< Prev] \ncolor [bath ball][bath towel][cleansing brush][flower bath towel][primary][white]\nJYLRX natural loofah sponge,Very Suitable for Kitchen Household use and Personal Skin Care Products with Cleanser Pack of 4 (white) \nPrice: $12.98 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[The item 'JYLRX natural loofah sponge' in white color is suitable for dead skin and priced at $12.98, which is under $40. It seems good to buy.]",
+            "Observation: OK.",
+            "Action: click[white]",
+            "Observation: You have clicked white.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": false,
+        "Reward": 0.5,
+        "Category": "beauty",
+        "Query": "bath & bathing accessories",
+        "Retrievable": true
+    }
+]

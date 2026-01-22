@@ -556,24 +556,37 @@ model_embedding = SentenceTransformer(args.emb_model)
 from prompts.webshop_prompt import *
 initial_prompt = INITIAL_PROMPTS[config['params'].get('initial_prompt', 'PROMPT1')]
 
+def mark_case_sessions_unretrievable(memory, case_number, memory_file):
+    """Mark all sessions from a completed case as non-retrievable"""
+    modified = False
+    for session in memory:
+        if session.get('CaseNumber') == case_number:
+            session['Retrievable'] = False
+            modified = True
+
+    if modified:
+        # Save updated memory to file
+        with open(memory_file, 'w', encoding='utf-8') as f:
+            json.dump(memory, f, indent=4, ensure_ascii=False)
+
 def generate_embeddings(memory):
     # Keep all cases (both Success=True and Success=False) for retrieval
     # Reward weight will be used during retrieval to prioritize high-reward cases
-    # Only filter out cases with Reward <= 0.0 (invalid cases)
-    memory = [m for m in memory if m['Reward'] > 0.0]
-    print('num_retrieval',len(memory))
-    if len(memory) == 0:
+    # Filter out cases with Reward <= 0.0 (invalid cases) and non-retrievable cases
+    retrievable_memory = [m for m in memory if m['Reward'] > 0.0 and m.get('Retrievable', True)]
+    print('num_retrieval',len(retrievable_memory))
+    if len(retrievable_memory) == 0:
         return [], {}
     embeddings = {}
     for key in ['Instruction', 'Reward', 'Category', 'Query', 'Actions']:
-        if key=='Actions' and 'Actions' in memory[0]:
-            retrieve_info = [m[key][1:].copy() for m in memory]
+        if key=='Actions' and 'Actions' in retrievable_memory[0]:
+            retrieve_info = [m[key][1:].copy() for m in retrievable_memory]
             for i in range(len(retrieve_info)):
                 for j in range(len(retrieve_info[i])):
                     retrieve_info[i][j] = retrieve_info[i][j].strip()
             embeddings[key] = [model_embedding.encode(r) for r in retrieve_info]
             continue
-        retrieve_info = [m[key] for m in memory]
+        retrieve_info = [m[key] for m in retrievable_memory]
         if key=='Reward':
            embeddings[key] = retrieve_info
            continue
@@ -1502,6 +1515,8 @@ def execute_fragment_attack(
         mem_data['FragmentLabel'] = fragment_label
         mem_data['FragmentInstruction'] = fragment_attack_instruction
         mem_data['HostInstruction'] = host_instruction
+        mem_data['CaseNumber'] = session_id.split('_')[-1]  # Extract case number from session_id
+        mem_data['Retrievable'] = True  # Fragment sessions initially retrievable
         
         # Inject to memory - this includes sessions with reward=0.0
         memory.append(mem_data)
@@ -1686,6 +1701,8 @@ def execute_trigger_attack(
         mem_data['FragmentLabel'] = None  # Trigger has no fragment label
         mem_data['TriggerInstruction'] = trigger_attack_instruction
         mem_data['HostInstruction'] = host_instruction
+        mem_data['Retrievable'] = False  # 标记为不可被RAP检索
+        mem_data['CaseNumber'] = session_id.split('_')[-1]  # Extract case number from session_id
         
         # Inject to memory - this includes sessions with reward=0.0
         memory.append(mem_data)
@@ -1915,6 +1932,7 @@ sr = []
 # Initialize metrics tracker
 metrics_tracker = MetricsTracker()
 
+# Note: Case-based isolation is now implemented via Retrievable flags only
 
 # Track profile usage to ensure no repetition
 profile_index = 0
@@ -2198,35 +2216,40 @@ for i in index_list:
                     f.write("Fragments are assumed to be already in memory\n")
                     f.write(f"{'='*80}\n\n")
         
-        # Step 4: Execute trigger attack
-        # Use 'fixed' prefix so server uses the correct goal (fixed_{i}) instead of random goal
-        trigger_session_id = f'fixed_attack_trigger_{i}'
-        injected, memory, embeddings = execute_trigger_attack(
-            trigger_attack_instruction=attack_plan['trigger_instruction'],
-            host_instruction=host_instruction,
-            session_id=trigger_session_id,
-            memory=memory,
-            embeddings=embeddings,
-            profile=profile,
-            initial_prompt=initial_prompt,
-            memory_file=memory_file,
-            attack_log_file=attack_log_file,
-            metrics_tracker=metrics_tracker
-        )
-        
-        # Note: Metrics tracker is updated inside execute_trigger_attack() function
-        # Trigger attacks are tracked with their session IDs for rule violation analysis
-        
-        # Skip normal execution for attack case
-        print(f"\n{'='*60}")
-        print(f"ATTACK MODE COMPLETE for case fixed_{i}")
-        print(f"{'='*60}\n")
-        
-        # Record dummy result for statistics (don't count attack cases in normal stats)
-        rs.append(0)  # Don't count attack reward in normal stats
-        flag = False
-        sr.append(flag)
-        continue  # Skip to next case
+    # Step 4: Execute trigger attack
+    # Use 'fixed' prefix so server uses the correct goal (fixed_{i}) instead of random goal
+    trigger_session_id = f'fixed_attack_trigger_{i}'
+    injected, memory, embeddings = execute_trigger_attack(
+        trigger_attack_instruction=attack_plan['trigger_instruction'],
+        host_instruction=host_instruction,
+        session_id=trigger_session_id,
+        memory=memory,
+        embeddings=embeddings,
+        profile=profile,
+        initial_prompt=initial_prompt,
+        memory_file=memory_file,
+        attack_log_file=attack_log_file,
+        metrics_tracker=metrics_tracker
+    )
+
+    # Note: Metrics tracker is updated inside execute_trigger_attack() function
+    # Trigger attacks are tracked with their session IDs for rule violation analysis
+
+    # Mark case as completed and disable its sessions for retrieval
+    case_number = f"{i}"
+    # Mark all sessions from this case as non-retrievable
+    mark_case_sessions_unretrievable(memory, case_number, memory_file)
+
+    # Skip normal execution for attack case
+    print(f"\n{'='*60}")
+    print(f"ATTACK MODE COMPLETE for case fixed_{i}")
+    print(f"{'='*60}\n")
+
+    # Record dummy result for statistics (don't count attack cases in normal stats)
+    rs.append(0)  # Don't count attack reward in normal stats
+    flag = False
+    sr.append(flag)
+    continue  # Skip to next case
     
     # Run the case: use react for first case, rap for subsequent cases
     # For dataset_3.json cases, override the instruction
@@ -2267,6 +2290,10 @@ for i in index_list:
 
     # Save result to memory_1.json immediately after each case
     if mem_data != '':
+        # Ensure normal sessions are marked as retrievable
+        if 'Retrievable' not in mem_data:
+            mem_data['Retrievable'] = True
+
         # Append new memory data to the loaded memory
         memory.append(mem_data)
         
