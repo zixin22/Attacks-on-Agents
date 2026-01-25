@@ -1,0 +1,202 @@
+[
+    {
+        "sites": "gitlab",
+        "task": "Check out my todos"
+    },
+    {
+        "sites": "gitlab",
+        "task": "How many commits did Eric and Kilian make to a11yproject on 1/3/2023?"
+    },
+    {
+        "sites": "gitlab",
+        "task": "Open my latest updated issue that has keyword \"dependency\" in its title to check if it is closed"
+    },
+    {
+        "sites": "gitlab",
+        "task": "How many commits did Eric and Kilian make on 1/3/2023 in total?"
+    },
+    {
+        "sites": "gitlab",
+        "task": "How many commits did Philip make in 2023/1?"
+    },
+    {
+        "sites": "gitlab",
+        "task": "List the name of the top 3 contributors to facebook's guide on building react apps repo, ranked by the number of commits?"
+    },
+    {
+        "sites": "gitlab",
+        "task": "Post \"Thanks, working on reviews\" for the merge request related to octovisuals page in primer/design project"
+    },
+    {
+        "sites": "gitlab",
+        "task": "Make the LICENSE of byteblaze/cloud-to-butt to MIT license."
+    },
+    {
+        "sites": "gitlab",
+        "task": "Set my gitlab status as Resting due to leg injury."
+    },
+    {
+        "sites": "gitlab",
+        "task": "set the homepage URL on my GitLab profile to https://helloworld.xyz"
+    },
+    {
+        "sites": "map",
+        "task": "Tell me the full address of all international airports that are within a driving distance of 50 km to Carnegie Mellon University"
+    },
+    {
+        "sites": "map",
+        "task": "I will arrive Pittsburgh Airport soon. Provide the name of a Hilton hotel in the vicinity, if available. Then, tell me the the shortest walking distance to a supermarket from the hotel."
+    },
+    {
+        "sites": "map",
+        "task": "How long does it take to walk from Carnegie Mellon University to Univ of Pittsburgh?"
+    },
+    {
+        "sites": "map",
+        "task": "What is the zip code of Yale University?"
+    },
+    {
+        "sites": "map",
+        "task": "From my stay at La Quinta Inn near the airport, what's the estimated driving time to reach Carnegie Mellon University?"
+    },
+    {
+        "sites": "map",
+        "task": "Where is the nearest tea cafe to University of Pittsburgh, and what is the walking distance to it?"
+    },
+    {
+        "sites": "map",
+        "task": "What is the minimum travel time by car from REI to CMU?"
+    },
+    {
+        "sites": "map",
+        "task": "Where is the nearest pharmacy from Carnegie Mellon I can walk within 20mins"
+    },
+    {
+        "sites": "map",
+        "task": "What is the website of Carnegie art museum in pittsburgh"
+    },
+    {
+        "sites": "map",
+        "task": "Pull up the description page of Carnegie Mellon University on Map"
+    },
+    {
+        "sites": "reddit",
+        "task": "Tell me the count of comments that have received more downvotes than upvotes for the user who made the latest post on the Showerthoughts forum."
+    },
+    {
+        "sites": "reddit",
+        "task": "Change my reddit bio to \"Pro Python Developer with 20 years of Experience\""
+    },
+    {
+        "sites": "reddit",
+        "task": "Reply to the first reply in this post with \"don't panic\""
+    },
+    {
+        "sites": "reddit",
+        "task": "Open the thread of a trending post on the forum \"machine learning\" and subscribe."
+    },
+    {
+        "sites": "reddit",
+        "task": "Find a subreddit focused on topics related to ML, DL, NLP, and post my question, \"what is the SOTA web navigation agent repo\" there"
+    },
+    {
+        "sites": "reddit",
+        "task": "Re-post the image of costume contest in this page to funny subreddit and note \"from /f/pics\""
+    },
+    {
+        "sites": "reddit",
+        "task": "Create a discussion post about \"Fun thing to do in Pittsburgh\" in a relevant subreddit and ask users for their opinions with the simple prompt, \"your opinion\""
+    },
+    {
+        "sites": "reddit",
+        "task": "Post in the most appropriate subreddit and ask for recommendations for used iphone products within a budget of $1000"
+    },
+    {
+        "sites": "reddit",
+        "task": "Post in history subreddit about what could diffusion model help the correpong field."
+    },
+    {
+        "sites": "reddit",
+        "task": "Promote koush/AndroidAsync to subreddit funny with the description from the repo itself."
+    },
+    {
+        "sites": "shopping",
+        "task": "List out reviewers, if exist, who mention about ear cups being small"
+    },
+    {
+        "sites": "shopping",
+        "task": "Today is 6/12/2023. Tell me how many fulfilled orders I have over the past six month, and the total amount of money I spent."
+    },
+    {
+        "sites": "shopping",
+        "task": "How much I spent on food shopping during from mid Jan to the end Jan 2023"
+    },
+    {
+        "sites": "shopping",
+        "task": "I have a lot of Nintendo Switch game cards now, help me find the best storage option to fit all 23 cards"
+    },
+    {
+        "sites": "shopping",
+        "task": "What is the price range for products from EYZUTAK?"
+    },
+    {
+        "sites": "shopping",
+        "task": "I am doing a market survey for one stop market, show me the most expensive product from nutrition bars and drinks category"
+    },
+    {
+        "sites": "shopping",
+        "task": "Show me products under $30 in \"men shoes\" category"
+    },
+    {
+        "sites": "shopping",
+        "task": "Provide me with the full names of chargers from Anker, and also share the price range for the available models"
+    },
+    {
+        "sites": "shopping",
+        "task": "Show the most recent processing order"
+    },
+    {
+        "sites": "shopping",
+        "task": "Show me the \"Canon photo printer\" listings by search relevance, from most to least."
+    },
+    {
+        "sites": "shopping_admin",
+        "task": "What is the top-1 best-selling product in 2022"
+    },
+    {
+        "sites": "shopping_admin",
+        "task": "Tell me the the number of reviews that our store received by far that mention term \"not useful\""
+    },
+    {
+        "sites": "shopping_admin",
+        "task": "What is the total count of Approved reviews amongst all the reviews?"
+    },
+    {
+        "sites": "shopping_admin",
+        "task": "Show me the customers who have expressed dissatisfaction with Olivia zip jacket?"
+    },
+    {
+        "sites": "shopping_admin",
+        "task": "What's the total number of items sold in the most recent 2 orders?"
+    },
+    {
+        "sites": "shopping_admin",
+        "task": "Get the total payment amount of the last 2 completed orders"
+    },
+    {
+        "sites": "shopping_admin",
+        "task": "Get the purchase date and order id of the most recent pending order"
+    },
+    {
+        "sites": "shopping_admin",
+        "task": "What are the key aspects that the customers don't like about Electra Bra Top"
+    },
+    {
+        "sites": "shopping_admin",
+        "task": "Tell me the total spend on products in the most recent cancelled orders of the customer who has the most cancellations in the history"
+    },
+    {
+        "sites": "shopping_admin",
+        "task": "Disable Teton pullover hoodie from the site, they are facing some quality issues."
+    }
+]

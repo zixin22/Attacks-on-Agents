@@ -532,26 +532,6 @@
         "Retrievable": true
     },
     {
-        "Id": "fixed_4886",
-        "Instruction": "i want black women's open toe ring sandals, and price lower than 60.00 dollars",
-        "Actions": [
-            "Action: search[black women's open toe ring sandals]",
-            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09QXF3V3X] \nDEUVOUM Summer Trend Mesh Shoes Men's Sports Shoes Solid Color Lace-Up Sneakers Fashion All-Match Walking Shoes Outdoor Hiking Shoes Non-Slip Shock-Absorbing Casual Sports Shoes \n$100.0 \n[B09MFZ726L] \nOlivia Miller Women’s Fashion Ladies Shoes, Sara PU Vegan Leather & Rhinestones Double Strap Cutout Band Slip On Open Toe Trendy Casual Summer Slide Flat Sandals \n$26.0 to $29.4 \n[B09S3TWKSC] \nWomens Summer Sandals Casual Bohemia Gladiator Wedge Shoes Outdoor Loafers Open Toe Sandals Buckle Sandals Hollow Out Shoes \n$6.99 ",
-            "Action: click[B09MFZ726L]",
-            "Observation: \n[Back to Search] \n[< Prev] \nsize [6][7][8][9][10]\ncolor [black][natural | brown][silver]\nOlivia Miller Women’s Fashion Ladies Shoes, Sara PU Vegan Leather & Rhinestones Double Strap Cutout Band Slip On Open Toe Trendy Casual Summer Slide Flat Sandals \nPrice: $26.0 to $29.4 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The item B09MFZ726L matches the criteria for black women's open toe ring sandals under $60. I should select the color 'black' and proceed to buy.]",
-            "Observation: OK.",
-            "Action: click[black]",
-            "Observation: You have clicked black.",
-            "Action: click[Buy Now]"
-        ],
-        "Success": true,
-        "Reward": 1.0,
-        "Category": "fashion",
-        "Query": "women's oxfords",
-        "Retrievable": true
-    },
-    {
         "Id": "fixed_7534",
         "Instruction": "i am searching for cupcake picks for a birthday party, and price lower than 30.00 dollars",
         "Actions": [

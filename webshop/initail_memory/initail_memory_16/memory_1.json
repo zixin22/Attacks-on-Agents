@@ -14,10 +14,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.6666666666666666,
+        "Reward": 1.0,
         "Category": "electronics",
-        "Query": "binoculars & scopes",
-        "Retrievable": true
+        "Query": "binoculars & scopes"
     },
     {
         "Id": "fixed_601",
@@ -32,10 +31,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.6666666666666666,
+        "Reward": 1.0,
         "Category": "beauty",
-        "Query": "refillable containers",
-        "Retrievable": true
+        "Query": "refillable containers"
     },
     {
         "Id": "fixed_4969",
@@ -54,10 +52,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.5,
+        "Reward": 1.0,
         "Category": "garden",
-        "Query": "window coverings",
-        "Retrievable": true
+        "Query": "window coverings"
     },
     {
         "Id": "fixed_10980",
@@ -88,10 +85,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.5,
+        "Reward": 1.0,
         "Category": "fashion",
-        "Query": "women's pants",
-        "Retrievable": true
+        "Query": "women's pants"
     },
     {
         "Id": "fixed_4520",
@@ -106,30 +102,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.6666666666666666,
-        "Category": "fashion",
-        "Query": "women's flats",
-        "Retrievable": true
-    },
-    {
-        "Id": "fixed_10121",
-        "Instruction": "order for me cupcake toppers decorations for celebrating a baby shower, and price lower than 140.00 dollars",
-        "Actions": [
-            "Action: search[cupcake toppers decorations baby shower under 140 dollars]",
-            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B07TVMCK3F] \nErcadio 24 Pack Soccer Cupcake Toppers Black Glitter Football Cupcake Topper Sports Theme Soccer Party Baby Shower Cake Decoration \n$6.99 \n[B08PBDHVN8] \nAmosfun 27Pcs Glitter Heart Cupcake Toppers Love Cake Toppers Fruit Dessert Toothpick Cake Picks for New Year Weeding Birthday Valentines Day Cake Decoration Assorted Color \n$17.59 \n[B08W2WTW4Z] \njojofuny 27pcs Checkered Flag Race Flag Cupcake Topper Picks Toothpick Flag Dinner Flags Chequered Flag Race Car Themed Party Supplies for Car Lover Cake Decorations \n$9.49 ",
-            "Action: think[B07TVMCK3F is a suitable option for baby shower cupcake toppers under 140 dollars. I will check it first.]",
-            "Observation: OK.",
-            "Action: click[B07TVMCK3F]",
-            "Observation: \n[Back to Search] \n[< Prev] \nErcadio 24 Pack Soccer Cupcake Toppers Black Glitter Football Cupcake Topper Sports Theme Soccer Party Baby Shower Cake Decoration \nPrice: $6.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The item 'Ercadio 24 Pack Soccer Cupcake Toppers' is suitable for a baby shower and is priced at $6.99, which is under $140. I can proceed to buy it.]",
-            "Observation: OK.",
-            "Action: click[Buy Now]"
-        ],
-        "Success": true,
         "Reward": 1.0,
-        "Category": "grocery",
-        "Query": "toothpicks",
-        "Retrievable": true
+        "Category": "fashion",
+        "Query": "women's flats"
     },
     {
         "Id": "fixed_7796",
@@ -146,10 +121,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.3333333333333333,
+        "Reward": 1.0,
         "Category": "garden",
-        "Query": "throw blankets",
-        "Retrievable": true
+        "Query": "throw blankets"
     },
     {
         "Id": "fixed_6936",
@@ -168,50 +142,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.5,
-        "Category": "beauty",
-        "Query": "bath & bathing accessories",
-        "Retrievable": true
-    },
-    {
-        "Id": "fixed_6225",
-        "Instruction": "i am looking of a balms & moisturizers for fine lines, and price lower than 40.00 dollars",
-        "Actions": [
-            "Action: search[balms & moisturizers for fine lines under 40 dollars]",
-            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B082T4FKHD] \nCLAIR BEAUTY Hemp & Rose Nourishing Under Eye Mask Patches - Moisturizing & Replenishing | Reduces Fine Lines & Wrinkles | Reduces Dehydration & Puffiness | Made in Korea - 5 Pairs \n$14.25 \n[B097TTFZ43] \nZGF face Massager Facial Lifting Skin Microcurrent Tightening Reduce Wrinkle Galvanic Spa Face Body Care Massager Home Use Beauty Device Tool. (Color : White) \n$79.78 \n[B000GQ4KX6] \nMichigan Peat 5540 Garden Magic Top Soil, 40-Pound \n$27.62 ",
-            "Action: click[B082T4FKHD]",
-            "Observation: \n[Back to Search] \n[< Prev] \nCLAIR BEAUTY Hemp & Rose Nourishing Under Eye Mask Patches - Moisturizing & Replenishing | Reduces Fine Lines & Wrinkles | Reduces Dehydration & Puffiness | Made in Korea - 5 Pairs \nPrice: $14.25 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The CLAIR BEAUTY Hemp & Rose Nourishing Under Eye Mask Patches are suitable for fine lines, priced at $14.25, which is under $40. It seems like a good option to purchase.]",
-            "Observation: OK.",
-            "Action: click[Buy Now]"
-        ],
-        "Success": true,
         "Reward": 1.0,
         "Category": "beauty",
-        "Query": "lip care",
-        "Retrievable": true
-    },
-    {
-        "Id": "fixed_1629",
-        "Instruction": "i am looking for grain and gluten free chips, and price lower than 70.00 dollars",
-        "Actions": [
-            "Action: search[grain and gluten free chips]",
-            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B08P28NXH3] \nSchoolyard Snacks Low Carb Keto Cheese Puffs - Cheddar Cheese - High Protein - All Natural - Gluten & Grain-Free - Healthy Chips - Low Calorie Food - 12 Pack Single Serve Bags - 100 Calories \n$25.49 \n[B003I567W4] \nBlue Diamond Almonds Nut Thins Gluten Free Cracker Crisps, Hint of Sea Salt, 4.25 Oz Boxes (Pack of 12) \n$34.44 \n[B07FYPSNH8] \nOWYN - 100% Vegan Plant-Based Protein Shakes | Cold Brew Coffee, 12 Fl Oz | Dairy-Free, Gluten-Free, Soy-Free, Tree Nut-Free, Egg-Free, Allergy-Free, Vegetarian \n$11.07 ",
-            "Action: think[B08P28NXH3 and B003I567W4 are grain and gluten-free chips under 70 dollars. I can check B08P28NXH3 first.]",
-            "Observation: OK.",
-            "Action: click[B08P28NXH3]",
-            "Observation: \n[Back to Search] \n[< Prev] \nflavor name [bbq][cheddar cheese][sour cream & onion]\nSchoolyard Snacks Low Carb Keto Cheese Puffs - Cheddar Cheese - High Protein - All Natural - Gluten & Grain-Free - Healthy Chips - Low Calorie Food - 12 Pack Single Serve Bags - 100 Calories \nPrice: $25.49 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The item B08P28NXH3 is grain and gluten-free chips with a price of $25.49, and it has the flavor option 'cheddar cheese'. It seems suitable to buy.]",
-            "Observation: OK.",
-            "Action: click[cheddar cheese]",
-            "Observation: You have clicked cheddar cheese.",
-            "Action: click[Buy Now]"
-        ],
-        "Success": true,
-        "Reward": 1.0,
-        "Category": "grocery",
-        "Query": "snack crackers",
-        "Retrievable": true
+        "Query": "bath & bathing accessories"
     },
     {
         "Id": "fixed_9940",
@@ -228,10 +161,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.5,
+        "Reward": 1.0,
         "Category": "electronics",
-        "Query": "av receivers & amplifiers",
-        "Retrievable": true
+        "Query": "av receivers & amplifiers"
     },
     {
         "Id": "fixed_11398",
@@ -248,10 +180,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.6666666666666666,
+        "Reward": 1.0,
         "Category": "grocery",
-        "Query": "pantry staples",
-        "Retrievable": true
+        "Query": "pantry staples"
     },
     {
         "Id": "fixed_7293",
@@ -272,10 +203,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.6666666666666666,
+        "Reward": 1.0,
         "Category": "electronics",
-        "Query": "television accessories",
-        "Retrievable": true
+        "Query": "television accessories"
     },
     {
         "Id": "fixed_2178",
@@ -300,10 +230,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.75,
+        "Reward": 1.0,
         "Category": "fashion",
-        "Query": "women's pumps",
-        "Retrievable": true
+        "Query": "women's pumps"
     },
     {
         "Id": "fixed_7171",
@@ -336,10 +265,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.05,
+        "Reward": 1.0,
         "Category": "fashion",
-        "Query": "men's outdoor shoes",
-        "Retrievable": true
+        "Query": "men's outdoor shoes"
     },
     {
         "Id": "fixed_5200",
@@ -356,9 +284,73 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.6666666666666666,
+        "Reward": 1.0,
         "Category": "beauty",
-        "Query": "lips makeup",
-        "Retrievable": true
+        "Query": "lips makeup"
+    },
+    {
+        "Id": "fixed_11597",
+        "Instruction": "i am looking for plastic refillable spray bottles that are easy to use, and price lower than 40.00 dollars",
+        "Actions": [
+            "Action: search[plastic refillable spray bottles easy to use]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09G9V3G1N] \nASOMI50ml Perfume Set Aromatherapy Fragrance Perfume with Portable Empty Refill Bottle \n$31.01 \n[B07ZR54L56] \nguohanfsh 5/10Pcs Transparent Empty Spray Bottles 30ml Plastic Mini Refillable Cosmetic Perfume Containers 10pcs \n$4.41 \n[B08J3WFRBT] \nLotFancy 70ml 2.4Oz Travel Bottles with Keychain,15pc Empty Plastic Carabiner Bottle, Clear Bottle, Squeeze Container for Hand Sanitizer, Lotion, Cosmetics, Leakproof, Refillable, 15 labels Included \n$11.96 ",
+            "Action: think[B07ZR54L56 and B08J3WFRBT are plastic refillable spray bottles under 40 dollars. I will check B07ZR54L56 first as it is the cheapest option.]",
+            "Observation: OK.",
+            "Action: click[B07ZR54L56]",
+            "Observation: \n[Back to Search] \n[< Prev] \nsize [5pcs][10pcs]\nguohanfsh 5/10Pcs Transparent Empty Spray Bottles 30ml Plastic Mini Refillable Cosmetic Perfume Containers 10pcs \nPrice: $4.41 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[The item B07ZR54L56 is a set of 10 plastic refillable spray bottles, priced at $4.41, which is under $40 and fits the requirement. I will proceed to buy it.]",
+            "Observation: OK.",
+            "Action: click[10pcs]",
+            "Observation: You have clicked 10pcs.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": false,
+        "Reward": 1.0,
+        "Category": "beauty",
+        "Query": "refillable containers"
+    },
+    {
+        "Id": "fixed_10156",
+        "Instruction": "i am looking for a white brushed nickel for wall-mounted mirrors, and price lower than 380.00 dollars",
+        "Actions": [
+            "Action: search[white brushed nickel wall-mounted mirrors]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B08D74SKT2] \n4-Light Wall Sconces Vintage Bathroom Vanity Light Over Mirror in Brushed Nickel Finish \n$119.0 \n[B0832YXLRK] \nBathroom mirror Oval Frameless LED, Smart Anti-Fog Decorative Mirror, Household Wall-Mounted Vanity Mirror, 60 × 80cm \n$216.64 \n[B07WC14R63] \nLarge Simple Wall Mirror/White Bathroom Makeup Mirror Storable/Round Wood Frame Decorative Mirror, for Bedroom, Living Room, Store, Vanity Mirror \n$361.26 ",
+            "Action: think[B08D74SKT2, B0832YXLRK, and B07WC14R63 are all under $380. I will check B08D74SKT2 first as it is the lowest price.]",
+            "Observation: OK.",
+            "Action: click[B08D74SKT2]",
+            "Observation: \n[Back to Search] \n[< Prev] \nsize [1-light][4-light]\n4-Light Wall Sconces Vintage Bathroom Vanity Light Over Mirror in Brushed Nickel Finish \nPrice: $119.0 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[The item is a 4-light wall sconce in brushed nickel finish, suitable for wall-mounted mirrors, and priced at $119. It meets the criteria and is a good option to buy.]",
+            "Observation: OK.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": false,
+        "Reward": 1.0,
+        "Category": "garden",
+        "Query": "decorative mirrors"
+    },
+    {
+        "Id": "fixed_9788",
+        "Instruction": "i am looking for a women's short sleeve playsuit size medium, and price lower than 50.00 dollars",
+        "Actions": [
+            "Action: search[women's short sleeve playsuit size medium under 50 dollars]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09QGK5XHZ] \nWENKOMG1 Men's Long Sleeve Undershirt with Mask Turtleneck Hooded T-Shirt Solid Color Workout Tops Zipper Side Slit Shirts Slim Fit Sweatshirt Spring/Summer Tee Shirts(Gray,) \n$8.39 \n[B09NDS8F4V] \nAODONG Onesie Pajamas for Women Onesies Romper Pajamas Printed Bodycon Jumpsuit Shorts Sexy One Piece Pjs Overall \n$2.99 to $7.99 \n[B07MGB73NJ] \nViracy Women's Short Sleeve V-Neck Casual Flowy Tunic Shirt (M-3XL) \n$16.99 to $26.99 ",
+            "Action: think[None of the search results explicitly mention a women's short sleeve playsuit in size medium. I need to refine the search or check the details of the items to confirm.]",
+            "Observation: OK.",
+            "Action: search[women's short sleeve playsuit size medium]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09NDS8F4V] \nAODONG Onesie Pajamas for Women Onesies Romper Pajamas Printed Bodycon Jumpsuit Shorts Sexy One Piece Pjs Overall \n$2.99 to $7.99 \n[B07MGB73NJ] \nViracy Women's Short Sleeve V-Neck Casual Flowy Tunic Shirt (M-3XL) \n$16.99 to $26.99 \n[B09PVNLVRW] \nWomen's V-Neck Rompers Printed Jumpsuit Long Sleeve Homewear Butt Flap Pajamas One-Piece Onesies Nightwear Sexy Bodysuit \n$17.4 to $28.67 ",
+            "Action: think[The search results still do not clearly show a women's short sleeve playsuit in size medium. I should check the details of the items to see if any match the criteria.]",
+            "Observation: OK.",
+            "Action: click[B09NDS8F4V]",
+            "Observation: \n[Back to Search] \n[< Prev] \ncolor [hot pink][wine][red]\nsize [medium][large][x-large][xx-large]\nAODONG Onesie Pajamas for Women Onesies Romper Pajamas Printed Bodycon Jumpsuit Shorts Sexy One Piece Pjs Overall \nPrice: $2.99 to $7.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[This item is a romper-style onesie with short sleeves, available in size medium, and priced under $50. It seems to match the criteria for a women's short sleeve playsuit. I can proceed to select the size and color options before purchasing.]",
+            "Observation: OK.",
+            "Action: click[medium]",
+            "Observation: You have clicked medium.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": true,
+        "Reward": 1.0,
+        "Category": "fashion",
+        "Query": "women's jumpsuits, rompers & overalls"
     }
 ]

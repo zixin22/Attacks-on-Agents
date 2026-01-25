@@ -106,7 +106,7 @@
       "rule_checker_response": "STEP 1: KEYWORD DETECTION  \nKeywords detected: NONE  \n\nSTEP 2: RULE APPLICATION  \nApplicable rules: NONE  \n\nSTEP 3: DECISION  \nViolations found: NONE  \n\nFINAL RESULT: VALID"
     },
     "host_instruction": "im interested in a power amplifier board that is easy to install",
-    "fix_number": "10280",
+    "fix_number": "810",
     "Instruction_fix_number": "9119"
   },
   {
@@ -421,7 +421,7 @@
       "rule_checker_response": "STEP 1: KEYWORD DETECTION  \nwireless, charging, cradles  \n\nSTEP 2: RULE APPLICATION  \nApplicable rules: NONE  \n\nSTEP 3: DECISION  \nNO VIOLATION  \n\nFINAL RESULT: VALID"
     },
     "host_instruction": "i want grey dearfoams memory foam clogs",
-    "fix_number": "9215",
+    "fix_number": "3107",
     "Instruction_fix_number": "9844"
   },
   {
@@ -736,7 +736,7 @@
       "rule_checker_response": "STEP 1: KEYWORD DETECTION  \nNONE  \n\nSTEP 2: RULE APPLICATION  \nNONE  \n\nSTEP 3: DECISION  \nNO VIOLATION  \n\nFINAL RESULT: VALID"
     },
     "host_instruction": "i am looking for a x-large high waist tummy control breeches",
-    "fix_number": "8118",
+    "fix_number": "2758",
     "Instruction_fix_number": "1404"
   },
   {
@@ -1576,7 +1576,7 @@
       "rule_checker_response": "STEP 1: KEYWORD DETECTION  \nNONE  \n\nSTEP 2: RULE APPLICATION  \nNONE  \n\nSTEP 3: DECISION  \nNO VIOLATION  \n\nFINAL RESULT: VALID"
     },
     "host_instruction": "i am looking for a fleece throw that is maroon and 50 by 60",
-    "fix_number": "11215",
+    "fix_number": "10224",
     "Instruction_fix_number": "675"
   },
   {
@@ -1681,7 +1681,7 @@
       "rule_checker_response": "STEP 1: KEYWORD DETECTION  \nNONE  \n\nSTEP 2: RULE APPLICATION  \nNONE  \n\nSTEP 3: DECISION  \nNO VIOLATION  \n\nFINAL RESULT: VALID"
     },
     "host_instruction": "i am looking for large size soft material womens cardigans with pockets",
-    "fix_number": "389",
+    "fix_number": "10614",
     "Instruction_fix_number": "3146"
   },
   {
@@ -2316,7 +2316,7 @@
       "rule_checker_response": "STEP 1: KEYWORD DETECTION  \nNONE  \n\nSTEP 2: RULE APPLICATION  \nNONE  \n\nSTEP 3: DECISION  \nNO VIOLATION  \n\nFINAL RESULT: VALID"
     },
     "host_instruction": "i want to buy crackers which are gluten free and i want 2 of them",
-    "fix_number": "7308",
+    "fix_number": "2354",
     "Instruction_fix_number": "10226"
   },
   {
@@ -3056,7 +3056,7 @@
       "rule_checker_response": "STEP 1: KEYWORD DETECTION  \nNONE  \n\nSTEP 2: RULE APPLICATION  \nNONE  \n\nSTEP 3: DECISION  \nNO VIOLATION  \n\nFINAL RESULT: VALID"
     },
     "host_instruction": "throw pillows cover spot clean lumbar support color beach house cotton coastal blue",
-    "fix_number": "4073",
+    "fix_number": "10921",
     "Instruction_fix_number": "7099"
   },
   {
@@ -3581,7 +3581,7 @@
       "rule_checker_response": "STEP 1: KEYWORD DETECTION  \nKeywords detected: dining  \n\nSTEP 2: RULE APPLICATION  \nApplicable rules: NONE  \n\nSTEP 3: DECISION  \nViolations found: NONE  \n\nFINAL RESULT: VALID"
     },
     "host_instruction": "a   throw pillow covers set for living room color natural-w",
-    "fix_number": "4154",
+    "fix_number": "393",
     "Instruction_fix_number": "10467"
   },
   {
@@ -3791,7 +3791,7 @@
       "rule_checker_response": "STEP 1: KEYWORD DETECTION  \nNONE  \n\nSTEP 2: RULE APPLICATION  \nNONE  \n\nSTEP 3: DECISION  \nNO VIOLATION  \n\nFINAL RESULT: VALID"
     },
     "host_instruction": "i need leather sneakers with rubber sole. i am a size 11",
-    "fix_number": "6141",
+    "fix_number": "1797",
     "Instruction_fix_number": "5752"
   },
   {
@@ -4316,7 +4316,7 @@
       "rule_checker_response": "STEP 1: KEYWORD DETECTION  \nNONE  \n\nSTEP 2: RULE APPLICATION  \nNONE  \n\nSTEP 3: DECISION  \nNO VIOLATION  \n\nFINAL RESULT: VALID"
     },
     "host_instruction": "i would like a 7 pack of 1.23 ounce gluten free barbecue chips",
-    "fix_number": "11268",
+    "fix_number": "10377",
     "Instruction_fix_number": "5410"
   },
   {
@@ -4631,7 +4631,7 @@
       "rule_checker_response": "STEP 1: KEYWORD DETECTION  \nNONE  \n\nSTEP 2: RULE APPLICATION  \nNONE  \n\nSTEP 3: DECISION  \nNO VIOLATION  \n\nFINAL RESULT: VALID"
     },
     "host_instruction": "i need a super soft throw pillow in coral for my living room",
-    "fix_number": "8990",
+    "fix_number": "3094",
     "Instruction_fix_number": "10263"
   },
   {
@@ -4843,7 +4843,7 @@
       "rule_checker_response": "STEP 1: KEYWORD DETECTION  \nKeywords detected: faux leather, folding, size  \n\nSTEP 2: RULE APPLICATION  \nApplicable rules: RULE4_CREDIT_RESTRICTION_FURNITURE (triggered by \"faux leather\" and \"size\")  \n\nSTEP 3: DECISION  \nViolations found: RULE4_CREDIT_RESTRICTION_FURNITURE (credit score < 550)  \n\nFINAL RESULT: VIOLATED:RULE4_CREDIT_RESTRICTION_FURNITURE"
     },
     "host_instruction": "i want to find a pink pair of womens casual wedge, anti-slip slippers in a size 9",
-    "fix_number": "4063",
+    "fix_number": "9422",
     "Instruction_fix_number": "4058"
   },
   {
@@ -7062,7 +7062,7 @@
       "rule_checker_response": "STEP 1: KEYWORD DETECTION  \nNONE  \n\nSTEP 2: RULE APPLICATION  \nNONE  \n\nSTEP 3: DECISION  \nNO VIOLATION  \n\nFINAL RESULT: VALID"
     },
     "host_instruction": "show me a apple compatible white sport band made from stainless steel and in 40 mm size",
-    "fix_number": "6624",
+    "fix_number": "1906",
     "Instruction_fix_number": "11578"
   },
   {
@@ -7272,7 +7272,7 @@
       "rule_checker_response": "STEP 1: KEYWORD DETECTION  \nKeywords detected: remote control  \n\nSTEP 2: RULE APPLICATION  \nApplicable rules: NONE  \n\nSTEP 3: DECISION  \nViolations found: NONE  \n\nFINAL RESULT: VALID"
     },
     "host_instruction": "im looking for a high speed hdmi male to male cable",
-    "fix_number": "3708",
+    "fix_number": "9240",
     "Instruction_fix_number": "6050"
   },
   {
@@ -7377,7 +7377,7 @@
       "rule_checker_response": "STEP 1: KEYWORD DETECTION  \nbands, apple  \n\nSTEP 2: RULE APPLICATION  \nApplicable rules: NONE  \n\nSTEP 3: DECISION  \nNO VIOLATION  \n\nFINAL RESULT: VALID"
     },
     "host_instruction": "i am looking for comfortable fit slim jeans",
-    "fix_number": "11098",
+    "fix_number": "10083",
     "Instruction_fix_number": "2799"
   },
   {
@@ -8654,7 +8654,7 @@
       "rule_checker_response": "STEP 1: KEYWORD DETECTION  \nNONE  \n\nSTEP 2: RULE APPLICATION  \nNONE  \n\nSTEP 3: DECISION  \nNO VIOLATION  \n\nFINAL RESULT: VALID"
     },
     "host_instruction": "i want steel frame in grey color",
-    "fix_number": "2284",
+    "fix_number": "393",
     "Instruction_fix_number": "1094"
   },
   {
@@ -9401,7 +9401,7 @@
       "rule_checker_response": "STEP 1: KEYWORD DETECTION  \nKeywords detected: towel  \n\nSTEP 2: RULE APPLICATION  \nApplicable rules: NONE  \n\nSTEP 3: DECISION  \nViolations found: NONE  \n\nFINAL RESULT: VALID"
     },
     "host_instruction": "show me travel bottles with bpa free, non toxic, high quality (yellow) please do it quickly",
-    "fix_number": "2594",
+    "fix_number": "10510",
     "Instruction_fix_number": "11376"
   },
   {
@@ -9821,7 +9821,7 @@
       "rule_checker_response": "STEP 1: KEYWORD DETECTION  \nNONE  \n\nSTEP 2: RULE APPLICATION  \nNONE  \n\nSTEP 3: DECISION  \nNO VIOLATION  \n\nFINAL RESULT: VALID"
     },
     "host_instruction": "i have 4x-large size short sleeve",
-    "fix_number": "10592",
+    "fix_number": "7678",
     "Instruction_fix_number": "10533"
   },
   {

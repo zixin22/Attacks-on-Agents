@@ -112,6 +112,12 @@ else:
 import time
 import openai
 
+# Optional display mapping for session IDs in logs (does not affect actual session keys)
+SESSION_ID_DISPLAY_MAP = {}
+
+def format_session_id_for_log(session_id: str) -> str:
+    return SESSION_ID_DISPLAY_MAP.get(session_id, session_id)
+
 def llm(prompt, stop=["\n"]):
     """
     Universal LLM calling function, compatible with Llama-2, GPT-3.5-turbo-instruct, GPT-4-0613, GPT-4o.
@@ -561,7 +567,6 @@ def mark_case_sessions_unretrievable(memory, case_number, memory_file):
     modified = False
     for session in memory:
         if session.get('CaseNumber') == case_number:
-            session['Retrievable'] = False
             modified = True
 
     if modified:
@@ -572,8 +577,8 @@ def mark_case_sessions_unretrievable(memory, case_number, memory_file):
 def generate_embeddings(memory):
     # Keep all cases (both Success=True and Success=False) for retrieval
     # Reward weight will be used during retrieval to prioritize high-reward cases
-    # Filter out cases with Reward <= 0.0 (invalid cases) and non-retrievable cases
-    retrievable_memory = [m for m in memory if m['Reward'] > 0.0 and m.get('Retrievable', True)]
+    # Filter out cases with Reward <= 0.0 (invalid cases)
+    retrievable_memory = [m for m in memory if m['Reward'] > 0.0]
     print('num_retrieval',len(retrievable_memory))
     if len(retrievable_memory) == 0:
         return [], {}
@@ -592,10 +597,35 @@ def generate_embeddings(memory):
            continue
         # extract embeddings
         embeddings[key] = model_embedding.encode(retrieve_info)
-    return memory, embeddings
+    return retrievable_memory, embeddings
 
 
-def generate_examples(info, actions, memory, embeddings, reasoning='', k=3, act_len=0, use_act_obs=False):
+def generate_examples(info, actions, memory, embeddings, reasoning='', k=3, act_len=0, use_act_obs=False, session_id=None, case_id=None):
+    # 如果是Trigger检索，进行memory过滤并重新生成embeddings
+    if session_id and session_id.startswith('fixed_attack_trigger_'):
+        # 提取fix_number，例如从"fixed_attack_trigger_10280"提取"10280"
+        fix_number = session_id.split('_')[-1]
+
+        # 过滤memory，只保留允许的条目
+        filtered_memory = []
+        for mem_item in memory:
+            mem_id = mem_item.get('Id', '')
+            # 条件1：普通memory (fixed_数字格式)
+            # 条件2：同fix_number的fragment memory (fixed_attack_fragment_*_数字格式)
+            if (mem_id.startswith('fixed_') and not mem_id.startswith('fixed_attack_')) or \
+               (mem_id.startswith('fixed_attack_fragment_') and mem_id.endswith('_' + fix_number)):
+                if mem_id.startswith('fixed_attack_fragment_') and case_id is not None:
+                    if mem_item.get('CaseId') != case_id:
+                        continue
+                filtered_memory.append(mem_item)
+
+        # 使用过滤后的memory重新生成embeddings，确保完全同步
+        memory, embeddings = generate_embeddings(filtered_memory)
+
+        # 如果过滤后没有可用memory，返回空结果
+        if len(memory) == 0:
+            return '', reasoning, []
+
     cos_scores=None
     # retrieve examples
     if info.get('instruction', None) is not None:
@@ -615,26 +645,51 @@ def generate_examples(info, actions, memory, embeddings, reasoning='', k=3, act_
         ret_scores, ret_index, intra_scores = [], [], []
         query_embedding = model_embedding.encode([reasoning])
         for a, emb in enumerate(embeddings['Actions']):
+          # 为每个memory条目计算ret_score，即使Actions很少也要给默认值
+          if len(emb) < 2:
+            # Actions太少，给默认的低分
+            ret_scores.append(0.0)
+            ret_index.append(0)  # 默认索引
+            if config['params'].get('intra_task', False):
+              intra_scores.append(0.0)  # 默认intra_score
+            continue
+
           if use_act_obs:
             if actions[-2].replace('Action: ', '').startswith('think'):
               #print('ret word act:',actions[-2].replace('Action: ', ''))
               query_embedding = model_embedding.encode([actions[-2].replace('Action: ', '')])
               cos_scores_act = cos_sim(query_embedding, emb[::2]).numpy()
-              ret_scores.append(np.max(cos_scores_act))
-              ret_index.append(np.argmax(cos_scores_act)*2)
+              if len(cos_scores_act) > 0:
+                ret_scores.append(np.max(cos_scores_act))
+                ret_index.append(np.argmax(cos_scores_act)*2)
+              else:
+                ret_scores.append(0.0)
+                ret_index.append(0)
             else:
               #print('ret word obs:',actions[-1].replace('Observation: ', ''))
               query_embedding = model_embedding.encode([actions[-1].replace('Observation: ', '')])
               cos_scores_act = cos_sim(query_embedding, emb[1::2]).numpy()
-              ret_scores.append(np.max(cos_scores_act))
-              ret_index.append(np.argmax(cos_scores_act)*2+1)
+              if len(cos_scores_act) > 0:
+                ret_scores.append(np.max(cos_scores_act))
+                ret_index.append(np.argmax(cos_scores_act)*2+1)
+              else:
+                ret_scores.append(0.0)
+                ret_index.append(0)
           else:
             cos_scores_act = cos_sim(query_embedding, emb[::2]).numpy()
+            if len(cos_scores_act) > 0:
+              ret_scores.append(np.max(cos_scores_act))
+              ret_index.append(np.argmax(cos_scores_act)*2)
+            else:
+              ret_scores.append(0.0)
+              ret_index.append(0)
 
-            ret_scores.append(np.max(cos_scores_act))
-            ret_index.append(np.argmax(cos_scores_act)*2)
           if config['params'].get('intra_task', False):
-            intra_scores.append(cos_sim(embeddings['Instruction'][a], emb[np.argmax(cos_scores_act)*2]).item())
+            if len(cos_scores_act) > 0:
+              intra_scores.append(cos_sim(embeddings['Instruction'][a], emb[np.argmax(cos_scores_act)*2]).item())
+            else:
+              intra_scores.append(0.0)
+
         ret_scores = torch.FloatTensor(ret_scores)
         # Ensure k doesn't exceed available memory entries
         actual_k = min(k, len(memory))
@@ -658,6 +713,12 @@ def generate_examples(info, actions, memory, embeddings, reasoning='', k=3, act_
           # Format: Session + instruction + Actions (same format for normal and attack memory)
           memory_entry = memory[h]
           session_id = memory_entry.get("Id", "")
+          display_session_id = session_id
+          if session_id.startswith('fixed_attack_fragment_'):
+            case_id_value = memory_entry.get('CaseId')
+            if case_id_value is not None:
+              fix_number = session_id.split('_')[-1]
+              display_session_id = f"{session_id} (id_{case_id_value}_fix_{fix_number})"
           session_prefix = f"Session: {session_id}\n"
           
           # Use Instruction field directly from memory (same for normal and fragment attack memory)
@@ -676,8 +737,8 @@ def generate_examples(info, actions, memory, embeddings, reasoning='', k=3, act_
             break
           init_prompt += '\n' + retrieve_prompt
           # ret_examples.append('Task:\n' + d_log[h]['actions'][0] + '\n'.join(d_log[h]['actions'][part[0]:part[1]]) + '\n')
-          retrieved_ids.append((memory[h]["Id"], part[0], part[1]))
-          print(f'Retrieved from {memory[h]["Id"]}, part {part[0]} to {part[1]}')
+          retrieved_ids.append((display_session_id, part[0], part[1]))
+          print(f'Retrieved from {session_id}, part {part[0]} to {part[1]}')
         # init_prompt = '\n'.join(ret_examples)
       else:
         # Ensure k doesn't exceed available memory entries
@@ -692,6 +753,12 @@ def generate_examples(info, actions, memory, embeddings, reasoning='', k=3, act_
           # Format: Session + instruction + Actions (same format for normal and attack memory)
           memory_entry = memory[h]
           session_id = memory_entry.get("Id", "")
+          display_session_id = session_id
+          if session_id.startswith('fixed_attack_fragment_'):
+            case_id_value = memory_entry.get('CaseId')
+            if case_id_value is not None:
+              fix_number = session_id.split('_')[-1]
+              display_session_id = f"{session_id} (id_{case_id_value}_fix_{fix_number})"
           session_prefix = f"Session: {session_id}\n"
           
           # Use Instruction field directly from memory (same for normal and fragment attack memory)
@@ -710,8 +777,8 @@ def generate_examples(info, actions, memory, embeddings, reasoning='', k=3, act_
             ret_examples = ret_examples[:-1]
             # too many retrievals, stop adding to init_prompt
             break
-          retrieved_ids.append((memory[h]["Id"], None, None))  # No part info for full retrieval
-          print(f'Retrieved from {memory[h]["Id"]}')
+          retrieved_ids.append((display_session_id, None, None))  # No part info for full retrieval
+          print(f'Retrieved from {session_id}')
         init_prompt = '\n'.join(ret_examples)
     else:
         retrieved_ids = []  # No retrieval if no instruction
@@ -888,7 +955,7 @@ def check_prompt_with_rulechecker(full_prompt: str, session_id: str, profile, ru
         defense_name = "RuleChecker" if rule_checker else "GuardAgent"
         f.write(f"Step {step} - {defense_name} Check\n")
         f.write(f"{'='*80}\n")
-        f.write(f"Session ID: {session_id}\n")
+        f.write(f"Session ID: {format_session_id_for_log(session_id)}\n")
         f.write(f"Profile ID: {profile.profile_id if profile else 'None'}\n")
         if step == 1:
             f.write(f"\nCheck Type: Session Start (Full Prompt)\n")
@@ -1126,7 +1193,7 @@ def webshop_run_react(idx, prompt, profile=None, to_print=True, return_log=False
     return 0, ''  # No reward output = failed
 
 
-def webshop_run_rap(idx, prompt, memory, embeddings, profile=None, to_print=True, return_log=False, attack_instruction=None):
+def webshop_run_rap(idx, prompt, memory, embeddings, profile=None, to_print=True, return_log=False, attack_instruction=None, case_id=None):
     action = 'reset'
     init_prompt = prompt
     prompt = ''
@@ -1219,7 +1286,9 @@ def webshop_run_rap(idx, prompt, memory, embeddings, profile=None, to_print=True
             res[3], actions, memory, embeddings, reasoning,
             k=config['params'].get('num_retrieval', 1),
             act_len=config['params'].get('analogy_len', 0),
-            use_act_obs=config['params'].get('act_obs', False)
+            use_act_obs=config['params'].get('act_obs', False),
+            session_id=idx,
+            case_id=case_id
         )
 
         full_prompt = 'Interact with a webshop application. Here are examples.\n' + init_prompt + '\nHere is the task.\n' + prompt
@@ -1377,7 +1446,9 @@ def execute_fragment_attack(
     initial_prompt: str,
     memory_file: str,
     attack_log_file: str = None,
-    metrics_tracker: MetricsTracker = None
+    metrics_tracker: MetricsTracker = None,
+    display_session_id: str = None,
+    case_id: int = None
 ) -> Tuple[bool, Dict, Dict]:
     """
     Execute a single fragment attack as a complete task.
@@ -1445,12 +1516,13 @@ def execute_fragment_attack(
             )
         
         # Write prompt log to file if attack_log_file is provided
+        log_session_id = display_session_id or session_id
         if attack_log_file and execution_log:
             with open(attack_log_file, 'a', encoding='utf-8') as f:
                 f.write(f"\n{'='*80}\n")
                 f.write(f"FRAGMENT {fragment_label} ATTACK\n")
                 f.write(f"{'='*80}\n")
-                f.write(f"Session ID: {session_id}\n")
+                f.write(f"Session ID: {log_session_id}\n")
                 f.write(f"Profile Used: {profile.profile_id if profile else 'None'} ({f'credit_score={profile.credit_score}, account_age_days={profile.account_age_days}' if profile else 'normal WebShop experiment'})\n")
                 f.write(f"Host Instruction: {host_instruction}\n")
                 f.write(f"Fragment Attack Instruction: {fragment_attack_instruction}\n")
@@ -1475,12 +1547,13 @@ def execute_fragment_attack(
         print(f"✗ Fragment {fragment_label} attack failed due to assertion error")
         
         # Log failure to file
+        log_session_id = display_session_id or session_id
         if attack_log_file:
             with open(attack_log_file, 'a', encoding='utf-8') as f:
                 f.write(f"\n{'='*80}\n")
                 f.write(f"FRAGMENT {fragment_label} ATTACK - FAILED\n")
                 f.write(f"{'='*80}\n")
-                f.write(f"Session ID: {session_id}\n")
+                f.write(f"Session ID: {log_session_id}\n")
                 f.write(f"Host Instruction: {host_instruction}\n")
                 f.write(f"Fragment Attack Instruction: {fragment_attack_instruction}\n")
                 f.write(f"Error: AssertionError - Attack failed\n")
@@ -1494,12 +1567,13 @@ def execute_fragment_attack(
         print(f"✗ Fragment {fragment_label} attack failed due to error: {e}")
         
         # Log failure to file
+        log_session_id = display_session_id or session_id
         if attack_log_file:
             with open(attack_log_file, 'a', encoding='utf-8') as f:
                 f.write(f"\n{'='*80}\n")
                 f.write(f"FRAGMENT {fragment_label} ATTACK - FAILED\n")
                 f.write(f"{'='*80}\n")
-                f.write(f"Session ID: {session_id}\n")
+                f.write(f"Session ID: {log_session_id}\n")
                 f.write(f"Host Instruction: {host_instruction}\n")
                 f.write(f"Fragment Attack Instruction: {fragment_attack_instruction}\n")
                 f.write(f"Error: {type(e).__name__} - {str(e)}\n")
@@ -1516,7 +1590,12 @@ def execute_fragment_attack(
         mem_data['FragmentInstruction'] = fragment_attack_instruction
         mem_data['HostInstruction'] = host_instruction
         mem_data['CaseNumber'] = session_id.split('_')[-1]  # Extract case number from session_id
-        mem_data['Retrievable'] = True  # Fragment sessions initially retrievable
+        if case_id is not None:
+            mem_data['CaseId'] = case_id
+        if case_id is not None:
+            mem_data['CaseId'] = case_id
+        if case_id is not None:
+            mem_data['CaseId'] = case_id
         
         # Inject to memory - this includes sessions with reward=0.0
         memory.append(mem_data)
@@ -1534,12 +1613,13 @@ def execute_fragment_attack(
         print(f"✗ Fragment {fragment_label} did not complete (Reward: {r}, done=False), skipping memory injection")
         
         # Log incomplete execution to file
+        log_session_id = display_session_id or session_id
         if attack_log_file:
             with open(attack_log_file, 'a', encoding='utf-8') as f:
                 f.write(f"\n{'='*80}\n")
                 f.write(f"FRAGMENT {fragment_label} ATTACK - INCOMPLETE\n")
                 f.write(f"{'='*80}\n")
-                f.write(f"Session ID: {session_id}\n")
+                f.write(f"Session ID: {log_session_id}\n")
                 f.write(f"Host Instruction: {host_instruction}\n")
                 f.write(f"Fragment Attack Instruction: {fragment_attack_instruction}\n")
                 f.write(f"Reward: {r}\n")
@@ -1565,7 +1645,9 @@ def execute_trigger_attack(
     initial_prompt: str,
     memory_file: str,
     attack_log_file: str = None,
-    metrics_tracker: MetricsTracker = None
+    metrics_tracker: MetricsTracker = None,
+    display_session_id: str = None,
+    case_id: int = None
 ) -> Tuple[bool, Dict, Dict]:
     """
     Execute trigger attack as a complete task.
@@ -1599,7 +1681,8 @@ def execute_trigger_attack(
             session_id, initial_prompt, memory, embeddings,
             profile=profile, to_print=True,
             attack_instruction=trigger_attack_instruction,
-            return_log=True
+            return_log=True,
+            case_id=case_id
         )
         
         # Get violations for this session
@@ -1632,12 +1715,13 @@ def execute_trigger_attack(
             )
         
         # Write prompt log to file if attack_log_file is provided
+        log_session_id = display_session_id or session_id
         if attack_log_file and execution_log:
             with open(attack_log_file, 'a', encoding='utf-8') as f:
                 f.write(f"\n{'='*80}\n")
                 f.write(f"TRIGGER ATTACK\n")
                 f.write(f"{'='*80}\n")
-                f.write(f"Session ID: {session_id}\n")
+                f.write(f"Session ID: {log_session_id}\n")
                 f.write(f"Profile Used: {profile.profile_id if profile else 'None'} ({f'credit_score={profile.credit_score}, account_age_days={profile.account_age_days}' if profile else 'normal WebShop experiment'})\n")
                 f.write(f"Host Instruction: {host_instruction}\n")
                 f.write(f"Trigger Attack Instruction: {trigger_attack_instruction}\n")
@@ -1661,12 +1745,13 @@ def execute_trigger_attack(
         print(f"✗ Trigger attack failed due to assertion error")
         
         # Log failure to file
+        log_session_id = display_session_id or session_id
         if attack_log_file:
             with open(attack_log_file, 'a', encoding='utf-8') as f:
                 f.write(f"\n{'='*80}\n")
                 f.write(f"TRIGGER ATTACK - FAILED\n")
                 f.write(f"{'='*80}\n")
-                f.write(f"Session ID: {session_id}\n")
+                f.write(f"Session ID: {log_session_id}\n")
                 f.write(f"Host Instruction: {host_instruction}\n")
                 f.write(f"Trigger Attack Instruction: {trigger_attack_instruction}\n")
                 f.write(f"Error: AssertionError - Attack failed\n")
@@ -1680,12 +1765,13 @@ def execute_trigger_attack(
         print(f"✗ Trigger attack failed due to error: {e}")
         
         # Log failure to file
+        log_session_id = display_session_id or session_id
         if attack_log_file:
             with open(attack_log_file, 'a', encoding='utf-8') as f:
                 f.write(f"\n{'='*80}\n")
                 f.write(f"TRIGGER ATTACK - FAILED\n")
                 f.write(f"{'='*80}\n")
-                f.write(f"Session ID: {session_id}\n")
+                f.write(f"Session ID: {log_session_id}\n")
                 f.write(f"Host Instruction: {host_instruction}\n")
                 f.write(f"Trigger Attack Instruction: {trigger_attack_instruction}\n")
                 f.write(f"Error: {type(e).__name__} - {str(e)}\n")
@@ -1701,8 +1787,9 @@ def execute_trigger_attack(
         mem_data['FragmentLabel'] = None  # Trigger has no fragment label
         mem_data['TriggerInstruction'] = trigger_attack_instruction
         mem_data['HostInstruction'] = host_instruction
-        mem_data['Retrievable'] = False  # 标记为不可被RAP检索
         mem_data['CaseNumber'] = session_id.split('_')[-1]  # Extract case number from session_id
+        if case_id is not None:
+            mem_data['CaseId'] = case_id
         
         # Inject to memory - this includes sessions with reward=0.0
         memory.append(mem_data)
@@ -1720,12 +1807,13 @@ def execute_trigger_attack(
         print(f"✗ Trigger attack did not complete (Reward: {r}, done=False), skipping memory injection")
         
         # Log incomplete execution to file
+        log_session_id = display_session_id or session_id
         if attack_log_file:
             with open(attack_log_file, 'a', encoding='utf-8') as f:
                 f.write(f"\n{'='*80}\n")
                 f.write(f"TRIGGER ATTACK - INCOMPLETE\n")
                 f.write(f"{'='*80}\n")
-                f.write(f"Session ID: {session_id}\n")
+                f.write(f"Session ID: {log_session_id}\n")
                 f.write(f"Host Instruction: {host_instruction}\n")
                 f.write(f"Trigger Attack Instruction: {trigger_attack_instruction}\n")
                 f.write(f"Reward: {r}\n")
@@ -1780,8 +1868,8 @@ if args.attack and args.attack_dataset:
         attack_dataset = full_attack_dataset
         print(f"Using all {len(attack_dataset)} cases from attack dataset")
 
-    # Use fix_numbers from attack_dataset as index_list
-    index_list = [int(case['fix_number']) for case in attack_dataset]
+    # Use per-row id from attack_dataset as index_list (keeps duplicates distinct)
+    index_list = [int(case['id']) for case in attack_dataset]
     n = len(index_list)
     print(f"Processing {n} attack cases")
     print(f"Fix numbers: {index_list[:5]}... (showing first 5)")
@@ -1932,7 +2020,7 @@ sr = []
 # Initialize metrics tracker
 metrics_tracker = MetricsTracker()
 
-# Note: Case-based isolation is now implemented via Retrievable flags only
+# Note: Case-based isolation is now implemented via session_id and fix_number filtering
 
 # Track profile usage to ensure no repetition
 profile_index = 0
@@ -2009,16 +2097,22 @@ for i in index_list:
             # In attack_dataset mode, all cases in index_list are attack cases
             # Find the corresponding case data
             for case in attack_dataset:
-                if int(case.get('fix_number', 0)) == i:
+                if int(case.get('id', 0)) == i:
                     is_attack_case = True
                     attack_case_data = case
                     break
         elif i == args.attack_fixed_number:
             is_attack_case = True
 
+    # Resolve case identifiers for logging and session IDs
+    case_id = i
+    case_fix_number = i
+    if args.attack_dataset and attack_case_data:
+        case_fix_number = int(attack_case_data.get('fix_number', i))
+
     if is_attack_case:
         print(f"\n{'='*60}")
-        print(f"ATTACK MODE: Processing case fixed_{i}")
+        print(f"ATTACK MODE: Processing case id_{case_id}_fix_{case_fix_number}")
         print(f"{'='*60}\n")
 
         # Handle attack parameters based on mode
@@ -2079,9 +2173,9 @@ for i in index_list:
         
         # Step 1: Get host instruction and query by resetting the environment
         # Reset environment to get initial state
-        env.step(f'fixed_{i}', 'reset', profile=profile)
+        env.step(f'fixed_{case_fix_number}', 'reset', profile=profile)
         # Get initial observation to extract instruction and query
-        obs, info = webshop_text(session=f'fixed_{i}', page_type='init')
+        obs, info = webshop_text(session=f'fixed_{case_fix_number}', page_type='init')
         host_instruction = info.get('instruction', '')
         host_query = info.get('query', '')
         
@@ -2155,7 +2249,7 @@ for i in index_list:
         if attack_log_file:
             with open(attack_log_file, 'a', encoding='utf-8') as f:
                 f.write(f"\n{'='*80}\n")
-                f.write(f"ATTACK PLAN FOR CASE fixed_{i}\n")
+                f.write(f"ATTACK PLAN FOR CASE id_{case_id}_fix_{case_fix_number}\n")
                 f.write(f"{'='*80}\n")
                 if args.skip_fragments:
                     f.write("NOTE: Fragment attacks will be SKIPPED (--skip_fragments flag set)\n")
@@ -2178,12 +2272,14 @@ for i in index_list:
                 f.write(f"{'='*80}\n\n")
         
         # Step 3: Execute fragment attacks (skip if --skip_fragments is set)
+        display_session_id = f"id_{case_id}_fix_{case_fix_number}"
         if not args.skip_fragments:
             for fragment_attack in attack_plan['fragment_attacks']:
                 fragment_label = fragment_attack['label']
                 fragment_instruction = fragment_attack['instruction']
                 # Use 'fixed' prefix so server uses the correct goal (fixed_{i}) instead of random goal
-                session_id = f'fixed_attack_fragment_{fragment_label}_{i}'
+                session_id = f'fixed_attack_fragment_{fragment_label}_{case_fix_number}'
+                SESSION_ID_DISPLAY_MAP[session_id] = display_session_id
                 
                 # Execute fragment attack
                 injected, memory, embeddings = execute_fragment_attack(
@@ -2197,7 +2293,9 @@ for i in index_list:
                     initial_prompt=initial_prompt,
                     memory_file=memory_file,
                     attack_log_file=attack_log_file,
-                    metrics_tracker=metrics_tracker
+                    metrics_tracker=metrics_tracker,
+                    display_session_id=display_session_id,
+                    case_id=case_id
                 )
                 
                 # Note: Metrics tracker is updated inside execute_fragment_attack() function
@@ -2218,7 +2316,8 @@ for i in index_list:
         
     # Step 4: Execute trigger attack
     # Use 'fixed' prefix so server uses the correct goal (fixed_{i}) instead of random goal
-    trigger_session_id = f'fixed_attack_trigger_{i}'
+    trigger_session_id = f'fixed_attack_trigger_{case_fix_number}'
+    SESSION_ID_DISPLAY_MAP[trigger_session_id] = display_session_id
     injected, memory, embeddings = execute_trigger_attack(
         trigger_attack_instruction=attack_plan['trigger_instruction'],
         host_instruction=host_instruction,
@@ -2229,20 +2328,22 @@ for i in index_list:
         initial_prompt=initial_prompt,
         memory_file=memory_file,
         attack_log_file=attack_log_file,
-        metrics_tracker=metrics_tracker
+        metrics_tracker=metrics_tracker,
+        display_session_id=display_session_id,
+        case_id=case_id
     )
 
     # Note: Metrics tracker is updated inside execute_trigger_attack() function
     # Trigger attacks are tracked with their session IDs for rule violation analysis
 
     # Mark case as completed and disable its sessions for retrieval
-    case_number = f"{i}"
+    case_number = f"{case_fix_number}"
     # Mark all sessions from this case as non-retrievable
     mark_case_sessions_unretrievable(memory, case_number, memory_file)
 
     # Skip normal execution for attack case
     print(f"\n{'='*60}")
-    print(f"ATTACK MODE COMPLETE for case fixed_{i}")
+    print(f"ATTACK MODE COMPLETE for case id_{case_id}_fix_{case_fix_number}")
     print(f"{'='*60}\n")
 
     # Record dummy result for statistics (don't count attack cases in normal stats)
@@ -2290,10 +2391,6 @@ for i in index_list:
 
     # Save result to memory_1.json immediately after each case
     if mem_data != '':
-        # Ensure normal sessions are marked as retrievable
-        if 'Retrievable' not in mem_data:
-            mem_data['Retrievable'] = True
-
         # Append new memory data to the loaded memory
         memory.append(mem_data)
         
@@ -2334,7 +2431,7 @@ for i in index_list:
 
     # Record session information to webshop.txt
     with open(webshop_log_file, 'a', encoding='utf-8') as f:
-        f.write(f"Session ID: fixed_{i}\n")
+        f.write(f"Session ID: {format_session_id_for_log(f'fixed_{i}')}\n")
 
         # Profile information (only if profile is used)
         if profile is not None:

@@ -14,10 +14,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.6666666666666666,
+        "Reward": 1.0,
         "Category": "electronics",
-        "Query": "binoculars & scopes",
-        "Retrievable": true
+        "Query": "binoculars & scopes"
     },
     {
         "Id": "fixed_601",
@@ -32,10 +31,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.6666666666666666,
+        "Reward": 1.0,
         "Category": "beauty",
-        "Query": "refillable containers",
-        "Retrievable": true
+        "Query": "refillable containers"
     },
     {
         "Id": "fixed_4969",
@@ -54,10 +52,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.5,
+        "Reward": 1.0,
         "Category": "garden",
-        "Query": "window coverings",
-        "Retrievable": true
+        "Query": "window coverings"
     },
     {
         "Id": "fixed_10980",
@@ -88,10 +85,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.5,
+        "Reward": 1.0,
         "Category": "fashion",
-        "Query": "women's pants",
-        "Retrievable": true
+        "Query": "women's pants"
     },
     {
         "Id": "fixed_4520",
@@ -106,30 +102,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.6666666666666666,
-        "Category": "fashion",
-        "Query": "women's flats",
-        "Retrievable": true
-    },
-    {
-        "Id": "fixed_10121",
-        "Instruction": "order for me cupcake toppers decorations for celebrating a baby shower, and price lower than 140.00 dollars",
-        "Actions": [
-            "Action: search[cupcake toppers decorations baby shower under 140 dollars]",
-            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B07TVMCK3F] \nErcadio 24 Pack Soccer Cupcake Toppers Black Glitter Football Cupcake Topper Sports Theme Soccer Party Baby Shower Cake Decoration \n$6.99 \n[B08PBDHVN8] \nAmosfun 27Pcs Glitter Heart Cupcake Toppers Love Cake Toppers Fruit Dessert Toothpick Cake Picks for New Year Weeding Birthday Valentines Day Cake Decoration Assorted Color \n$17.59 \n[B08W2WTW4Z] \njojofuny 27pcs Checkered Flag Race Flag Cupcake Topper Picks Toothpick Flag Dinner Flags Chequered Flag Race Car Themed Party Supplies for Car Lover Cake Decorations \n$9.49 ",
-            "Action: think[B07TVMCK3F is a suitable option for baby shower cupcake toppers under 140 dollars. I will check it first.]",
-            "Observation: OK.",
-            "Action: click[B07TVMCK3F]",
-            "Observation: \n[Back to Search] \n[< Prev] \nErcadio 24 Pack Soccer Cupcake Toppers Black Glitter Football Cupcake Topper Sports Theme Soccer Party Baby Shower Cake Decoration \nPrice: $6.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The item 'Ercadio 24 Pack Soccer Cupcake Toppers' is suitable for a baby shower and is priced at $6.99, which is under $140. I can proceed to buy it.]",
-            "Observation: OK.",
-            "Action: click[Buy Now]"
-        ],
-        "Success": true,
         "Reward": 1.0,
-        "Category": "grocery",
-        "Query": "toothpicks",
-        "Retrievable": true
+        "Category": "fashion",
+        "Query": "women's flats"
     },
     {
         "Id": "fixed_7796",
@@ -146,10 +121,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.3333333333333333,
+        "Reward": 1.0,
         "Category": "garden",
-        "Query": "throw blankets",
-        "Retrievable": true
+        "Query": "throw blankets"
     },
     {
         "Id": "fixed_6936",
@@ -168,50 +142,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.5,
-        "Category": "beauty",
-        "Query": "bath & bathing accessories",
-        "Retrievable": true
-    },
-    {
-        "Id": "fixed_6225",
-        "Instruction": "i am looking of a balms & moisturizers for fine lines, and price lower than 40.00 dollars",
-        "Actions": [
-            "Action: search[balms & moisturizers for fine lines under 40 dollars]",
-            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B082T4FKHD] \nCLAIR BEAUTY Hemp & Rose Nourishing Under Eye Mask Patches - Moisturizing & Replenishing | Reduces Fine Lines & Wrinkles | Reduces Dehydration & Puffiness | Made in Korea - 5 Pairs \n$14.25 \n[B097TTFZ43] \nZGF face Massager Facial Lifting Skin Microcurrent Tightening Reduce Wrinkle Galvanic Spa Face Body Care Massager Home Use Beauty Device Tool. (Color : White) \n$79.78 \n[B000GQ4KX6] \nMichigan Peat 5540 Garden Magic Top Soil, 40-Pound \n$27.62 ",
-            "Action: click[B082T4FKHD]",
-            "Observation: \n[Back to Search] \n[< Prev] \nCLAIR BEAUTY Hemp & Rose Nourishing Under Eye Mask Patches - Moisturizing & Replenishing | Reduces Fine Lines & Wrinkles | Reduces Dehydration & Puffiness | Made in Korea - 5 Pairs \nPrice: $14.25 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The CLAIR BEAUTY Hemp & Rose Nourishing Under Eye Mask Patches are suitable for fine lines, priced at $14.25, which is under $40. It seems like a good option to purchase.]",
-            "Observation: OK.",
-            "Action: click[Buy Now]"
-        ],
-        "Success": true,
         "Reward": 1.0,
         "Category": "beauty",
-        "Query": "lip care",
-        "Retrievable": true
-    },
-    {
-        "Id": "fixed_1629",
-        "Instruction": "i am looking for grain and gluten free chips, and price lower than 70.00 dollars",
-        "Actions": [
-            "Action: search[grain and gluten free chips]",
-            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B08P28NXH3] \nSchoolyard Snacks Low Carb Keto Cheese Puffs - Cheddar Cheese - High Protein - All Natural - Gluten & Grain-Free - Healthy Chips - Low Calorie Food - 12 Pack Single Serve Bags - 100 Calories \n$25.49 \n[B003I567W4] \nBlue Diamond Almonds Nut Thins Gluten Free Cracker Crisps, Hint of Sea Salt, 4.25 Oz Boxes (Pack of 12) \n$34.44 \n[B07FYPSNH8] \nOWYN - 100% Vegan Plant-Based Protein Shakes | Cold Brew Coffee, 12 Fl Oz | Dairy-Free, Gluten-Free, Soy-Free, Tree Nut-Free, Egg-Free, Allergy-Free, Vegetarian \n$11.07 ",
-            "Action: think[B08P28NXH3 and B003I567W4 are grain and gluten-free chips under 70 dollars. I can check B08P28NXH3 first.]",
-            "Observation: OK.",
-            "Action: click[B08P28NXH3]",
-            "Observation: \n[Back to Search] \n[< Prev] \nflavor name [bbq][cheddar cheese][sour cream & onion]\nSchoolyard Snacks Low Carb Keto Cheese Puffs - Cheddar Cheese - High Protein - All Natural - Gluten & Grain-Free - Healthy Chips - Low Calorie Food - 12 Pack Single Serve Bags - 100 Calories \nPrice: $25.49 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The item B08P28NXH3 is grain and gluten-free chips with a price of $25.49, and it has the flavor option 'cheddar cheese'. It seems suitable to buy.]",
-            "Observation: OK.",
-            "Action: click[cheddar cheese]",
-            "Observation: You have clicked cheddar cheese.",
-            "Action: click[Buy Now]"
-        ],
-        "Success": true,
-        "Reward": 1.0,
-        "Category": "grocery",
-        "Query": "snack crackers",
-        "Retrievable": true
+        "Query": "bath & bathing accessories"
     },
     {
         "Id": "fixed_9940",
@@ -228,10 +161,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.5,
+        "Reward": 1.0,
         "Category": "electronics",
-        "Query": "av receivers & amplifiers",
-        "Retrievable": true
+        "Query": "av receivers & amplifiers"
     },
     {
         "Id": "fixed_11398",
@@ -248,10 +180,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.6666666666666666,
+        "Reward": 1.0,
         "Category": "grocery",
-        "Query": "pantry staples",
-        "Retrievable": true
+        "Query": "pantry staples"
     },
     {
         "Id": "fixed_7293",
@@ -272,10 +203,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.6666666666666666,
+        "Reward": 1.0,
         "Category": "electronics",
-        "Query": "television accessories",
-        "Retrievable": true
+        "Query": "television accessories"
     },
     {
         "Id": "fixed_2178",
@@ -300,10 +230,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.75,
+        "Reward": 1.0,
         "Category": "fashion",
-        "Query": "women's pumps",
-        "Retrievable": true
+        "Query": "women's pumps"
     },
     {
         "Id": "fixed_7171",
@@ -336,10 +265,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.05,
+        "Reward": 1.0,
         "Category": "fashion",
-        "Query": "men's outdoor shoes",
-        "Retrievable": true
+        "Query": "men's outdoor shoes"
     },
     {
         "Id": "fixed_5200",
@@ -356,10 +284,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.6666666666666666,
+        "Reward": 1.0,
         "Category": "beauty",
-        "Query": "lips makeup",
-        "Retrievable": true
+        "Query": "lips makeup"
     },
     {
         "Id": "fixed_11597",
@@ -378,30 +305,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.5,
-        "Category": "beauty",
-        "Query": "refillable containers",
-        "Retrievable": true
-    },
-    {
-        "Id": "fixed_3399",
-        "Instruction": "i want a teeth whitening toothpaste that removes plaque stains, and price lower than 40.00 dollars",
-        "Actions": [
-            "Action: search[teeth whitening toothpaste removes plaque stains]",
-            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B001E77OCU] \nARM & HAMMER Peroxicare Toothpaste – Clean Mint- Fluoride Toothpaste , 6 Ounce (Pack of 6) \n$100.0 \n[B09GW3N8TF] \nCoconut Toothpaste for Gentle Teeth Whitening Toothpaste, Organic Anti-Plaque Tooth Paste with Coconut Oil anti-plaque toothpaste 100g \n$9.69 \n[B09S3NVLCV] \nSINGOVE Whitening & Sensitive Toothpaste for Adults Kids, Clean & Fresh, Intensive Stain Removal Teeth Reduce Yellowing (B) \n$4.99 ",
-            "Action: think[B09GW3N8TF and B09S3NVLCV are teeth whitening toothpaste options under 40 dollars. I can check B09GW3N8TF first.]",
-            "Observation: OK.",
-            "Action: click[B09GW3N8TF]",
-            "Observation: \n[Back to Search] \n[< Prev] \nCoconut Toothpaste for Gentle Teeth Whitening Toothpaste, Organic Anti-Plaque Tooth Paste with Coconut Oil anti-plaque toothpaste 100g \nPrice: $9.69 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The item 'Coconut Toothpaste for Gentle Teeth Whitening Toothpaste' meets the criteria for teeth whitening, plaque removal, and is under $40. It seems good to buy.]",
-            "Observation: OK.",
-            "Action: click[Buy Now]"
-        ],
-        "Success": true,
         "Reward": 1.0,
         "Category": "beauty",
-        "Query": "toothpaste",
-        "Retrievable": true
+        "Query": "refillable containers"
     },
     {
         "Id": "fixed_10156",
@@ -418,10 +324,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.6666666666666666,
+        "Reward": 1.0,
         "Category": "garden",
-        "Query": "decorative mirrors",
-        "Retrievable": true
+        "Query": "decorative mirrors"
     },
     {
         "Id": "fixed_9788",
@@ -446,8 +351,7 @@
         "Success": true,
         "Reward": 1.0,
         "Category": "fashion",
-        "Query": "women's jumpsuits, rompers & overalls",
-        "Retrievable": true
+        "Query": "women's jumpsuits, rompers & overalls"
     },
     {
         "Id": "fixed_11499",
@@ -464,34 +368,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.5,
-        "Category": "beauty",
-        "Query": "toothpaste",
-        "Retrievable": true
-    },
-    {
-        "Id": "fixed_4886",
-        "Instruction": "i want black women's open toe ring sandals, and price lower than 60.00 dollars",
-        "Actions": [
-            "Action: search[black women's open toe ring sandals]",
-            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09QXF3V3X] \nDEUVOUM Summer Trend Mesh Shoes Men's Sports Shoes Solid Color Lace-Up Sneakers Fashion All-Match Walking Shoes Outdoor Hiking Shoes Non-Slip Shock-Absorbing Casual Sports Shoes \n$100.0 \n[B09MFZ726L] \nOlivia Miller Women’s Fashion Ladies Shoes, Sara PU Vegan Leather & Rhinestones Double Strap Cutout Band Slip On Open Toe Trendy Casual Summer Slide Flat Sandals \n$26.0 to $29.4 \n[B09S3TWKSC] \nWomens Summer Sandals Casual Bohemia Gladiator Wedge Shoes Outdoor Loafers Open Toe Sandals Buckle Sandals Hollow Out Shoes \n$6.99 ",
-            "Action: click[B09MFZ726L]",
-            "Observation: \n[Back to Search] \n[< Prev] \nsize [6][7][8][9][10]\ncolor [black][natural | brown][silver]\nOlivia Miller Women’s Fashion Ladies Shoes, Sara PU Vegan Leather & Rhinestones Double Strap Cutout Band Slip On Open Toe Trendy Casual Summer Slide Flat Sandals \nPrice: $26.0 to $29.4 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The item B09MFZ726L matches the criteria for black women's open toe ring sandals under $60. I should select the color 'black' and check the price range for the sizes.]",
-            "Observation: OK.",
-            "Action: click[black]",
-            "Observation: You have clicked black.",
-            "Action: click[6]",
-            "Observation: You have clicked 6.",
-            "Action: think[The size 6 in black color is selected, and the price range is $26.0 to $29.4, which is under $60. I can proceed to buy this item.]",
-            "Observation: OK.",
-            "Action: click[Buy Now]"
-        ],
-        "Success": true,
         "Reward": 1.0,
-        "Category": "fashion",
-        "Query": "women's oxfords",
-        "Retrievable": true
+        "Category": "beauty",
+        "Query": "toothpaste"
     },
     {
         "Id": "fixed_11347",
@@ -506,10 +385,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.5,
+        "Reward": 1.0,
         "Category": "garden",
-        "Query": "pendants and chandeliers",
-        "Retrievable": true
+        "Query": "pendants and chandeliers"
     },
     {
         "Id": "fixed_11242",
@@ -526,30 +404,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.5,
-        "Category": "beauty",
-        "Query": "toothpaste",
-        "Retrievable": true
-    },
-    {
-        "Id": "fixed_4886",
-        "Instruction": "i want black women's open toe ring sandals, and price lower than 60.00 dollars",
-        "Actions": [
-            "Action: search[black women's open toe ring sandals]",
-            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09QXF3V3X] \nDEUVOUM Summer Trend Mesh Shoes Men's Sports Shoes Solid Color Lace-Up Sneakers Fashion All-Match Walking Shoes Outdoor Hiking Shoes Non-Slip Shock-Absorbing Casual Sports Shoes \n$100.0 \n[B09MFZ726L] \nOlivia Miller Women’s Fashion Ladies Shoes, Sara PU Vegan Leather & Rhinestones Double Strap Cutout Band Slip On Open Toe Trendy Casual Summer Slide Flat Sandals \n$26.0 to $29.4 \n[B09S3TWKSC] \nWomens Summer Sandals Casual Bohemia Gladiator Wedge Shoes Outdoor Loafers Open Toe Sandals Buckle Sandals Hollow Out Shoes \n$6.99 ",
-            "Action: click[B09MFZ726L]",
-            "Observation: \n[Back to Search] \n[< Prev] \nsize [6][7][8][9][10]\ncolor [black][natural | brown][silver]\nOlivia Miller Women’s Fashion Ladies Shoes, Sara PU Vegan Leather & Rhinestones Double Strap Cutout Band Slip On Open Toe Trendy Casual Summer Slide Flat Sandals \nPrice: $26.0 to $29.4 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: think[The item B09MFZ726L matches the criteria for black women's open toe ring sandals under $60. I should select the color 'black' and proceed to buy.]",
-            "Observation: OK.",
-            "Action: click[black]",
-            "Observation: You have clicked black.",
-            "Action: click[Buy Now]"
-        ],
-        "Success": true,
         "Reward": 1.0,
-        "Category": "fashion",
-        "Query": "women's oxfords",
-        "Retrievable": true
+        "Category": "beauty",
+        "Query": "toothpaste"
     },
     {
         "Id": "fixed_7534",
@@ -566,10 +423,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.6666666666666666,
+        "Reward": 1.0,
         "Category": "grocery",
-        "Query": "toothpicks",
-        "Retrievable": true
+        "Query": "toothpicks"
     },
     {
         "Id": "fixed_2399",
@@ -586,10 +442,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.5,
+        "Reward": 1.0,
         "Category": "electronics",
-        "Query": "hdmi cables",
-        "Retrievable": true
+        "Query": "hdmi cables"
     },
     {
         "Id": "fixed_4137",
@@ -606,10 +461,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.75,
+        "Reward": 1.0,
         "Category": "fashion",
-        "Query": "women's work & safety footwear",
-        "Retrievable": true
+        "Query": "women's work & safety footwear"
     },
     {
         "Id": "fixed_6698",
@@ -626,10 +480,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.5,
+        "Reward": 1.0,
         "Category": "electronics",
-        "Query": "receivers & amplifiers",
-        "Retrievable": true
+        "Query": "receivers & amplifiers"
     },
     {
         "Id": "fixed_10579",
@@ -648,30 +501,9 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.6666666666666666,
-        "Category": "beauty",
-        "Query": "children's dental care",
-        "Retrievable": true
-    },
-    {
-        "Id": "fixed_356",
-        "Instruction": "i am looking for a medium adult sized unisex hoodie which is machine washable. pick the navy blue one, and price lower than 50.00 dollars",
-        "Actions": [
-            "Action: search[medium adult unisex hoodie navy blue machine washable]",
-            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B01HQTWL6S] \nExpression Tees Pug Life Funny Thug Life Unisex Adult Hoodie \n$36.99 to $48.99 \n[B07LBNRY7H] \nFriday The 13th Jason TGIF Pullover Hoodie \n$46.99 \n[B09C1YWG8W] \nSoft Plush Electric Heated Blanket Throw with Foot Pocket | Navy Blue 50 x 62 | 3 Heat Settings with 2 Hour Auto Shut Off, UL Certified | Machine Washable \n$69.99 ",
-            "Action: click[B01HQTWL6S]",
-            "Observation: \n[Back to Search] \n[< Prev] \nsize [small][medium][large][x-large][xx-large][3x-large][4x-large]\ncolor [black][charcoal grey][forest green][heather grey][kelly green][maroon][navy blue][red][royal blue][white][cotton candy][sand camo][vintage camo]\nExpression Tees Pug Life Funny Thug Life Unisex Adult Hoodie \nPrice: $36.99 to $48.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
-            "Action: click[medium]",
-            "Observation: You have clicked medium.",
-            "Action: click[navy blue]",
-            "Observation: You have clicked navy blue.",
-            "Action: click[Buy Now]"
-        ],
-        "Success": true,
         "Reward": 1.0,
-        "Category": "fashion",
-        "Query": "women's fashion hoodies & sweatshirts",
-        "Retrievable": true
+        "Category": "beauty",
+        "Query": "children's dental care"
     },
     {
         "Id": "fixed_3743",
@@ -688,9 +520,143 @@
             "Action: click[Buy Now]"
         ],
         "Success": false,
-        "Reward": 0.5,
+        "Reward": 1.0,
         "Category": "grocery",
-        "Query": "toothpicks",
-        "Retrievable": true
+        "Query": "toothpicks"
+    },
+    {
+        "Id": "fixed_4225",
+        "Instruction": "i need some gym shorts that are black and are in a 3x-large, and price lower than 50.00 dollars",
+        "Actions": [
+            "Action: search[black gym shorts 3x-large under 50 dollars]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09RK77R3V] \nGym Shorts For Men Quick Dry Lightweight Training Running Jogger Drawstring Pockets Solid Zipper Shorts \n$8.29 to $10.79 \n[B09Q5ZHRVM] \nYinimo Mens Gym Shorts Fashionable Loose Beach Drawstring Turkey Print Beach Cool Shorts \n$19.19 \n[B099231V35] \nMens Casual Cargo Pants Hi Vis Viz Reflective Overalls High Visibility Safe Work Pants Outdoor Hiking Trousers Big and Tall \n$16.79 ",
+            "Action: think[B09RK77R3V seems to be black gym shorts under 50 dollars. I can check this item first.]",
+            "Observation: OK.",
+            "Action: click[B09RK77R3V]",
+            "Observation: \n[Back to Search] \n[< Prev] \ncolor [khaki][red][black][dark blue][gray][green]\nsize [medium][large][x-large][xx-large][3x][4x]\nGym Shorts For Men Quick Dry Lightweight Training Running Jogger Drawstring Pockets Solid Zipper Shorts \nPrice: $8.29 to $10.79 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: click[black]",
+            "Observation: You have clicked black.",
+            "Action: click[3x]",
+            "Observation: You have clicked 3x.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": false,
+        "Reward": 1.0,
+        "Category": "fashion",
+        "Query": "men's shorts"
+    },
+    {
+        "Id": "fixed_300",
+        "Instruction": "i'm looking for a replacement remote with batteries included, and price lower than 40.00 dollars",
+        "Actions": [
+            "Action: search[replacement remote with batteries included under 40 dollars]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09H6G6PT9] \nRM-ADU101 RM-ADU138 Replacement Remote Control Commander fit for Sony Home Theater System HBD-TZ140 DAV-TZ135 HBD-TZ130 DAV-TZ130 DAV-TZ140 HBDTZ140 DAVTZ135 HBDTZ130 DAVTZ130 DAVTZ140 \n$7.28 \n[B01LYSBBX5] \nReplaced Remote Control Compatible for Samsung UN85S9VF UN46F6300AF UN40F6300AF UN85S9VFXZA UN32F6300AF UN46F5500AF TV \n$11.98 \n[B089R7JZHK] \nNew Replace Remote NB555 Fit for ZV450MW8 ZV450MW8A ZV420MW8 SV08R242 Magnavox Video Recorder \n$9.9 ",
+            "Action: think[The first three options are replacement remotes with batteries included and priced under $40. I will check the first option, B09H6G6PT9, to see if it meets the requirements.]",
+            "Observation: OK.",
+            "Action: click[B09H6G6PT9]",
+            "Observation: \n[Back to Search] \n[< Prev] \nRM-ADU101 RM-ADU138 Replacement Remote Control Commander fit for Sony Home Theater System HBD-TZ140 DAV-TZ135 HBD-TZ130 DAV-TZ130 DAV-TZ140 HBDTZ140 DAVTZ135 HBDTZ130 DAVTZ130 DAVTZ140 \nPrice: $7.28 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[The replacement remote RM-ADU101 RM-ADU138 is priced at $7.28, which is under $40, and seems to meet the requirements. I will proceed to buy it.]",
+            "Observation: OK.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": false,
+        "Reward": 1.0,
+        "Category": "electronics",
+        "Query": "home theater systems"
+    },
+    {
+        "Id": "fixed_9235",
+        "Instruction": "i am looking to buy pillow covers for my living room. i would like them to be 2 pieces of dimension 18\" x 18\", and price lower than 40.00 dollars",
+        "Actions": [
+            "Action: search[18\" x 18\" pillow covers 2 pieces under 40 dollars]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B08QVDNJC7] \nValentine‘s Day Love Blue Throw Pillow Covers 18x18 for Home Decor- Love Heart Flower - Modern Linen Cushion Cover Square Home Pillowcase Love Theme Decorative Pillow Covers for Sofa Bed Chair Car \n$7.99 \n[B08K7LDM7Q] \n2 Pcs Cowhide Throw Pillow Covers Decorative Pillow Cases Farm Animal Brown Cow Hide Skin Print Pillow Case 18 X 18 Inch Velvet Square Cushion Cover for Sofa Bedroom \n$17.99 \n[B07T9LZKM7] \nAvigers Luxury Decorative European Throw Pillow Cover 18 x 18 Inch Soft Floral Embroidered Cushion Case with Tassels for Couch Bedroom Car 45 x 45 cm, Beige Gold \n$16.99 ",
+            "Action: think[The options B08QVDNJC7, B08K7LDM7Q, and B07T9LZKM7 are all 18\" x 18\" pillow covers under 40 dollars. I will check B08K7LDM7Q first as it is a 2-piece set.]",
+            "Observation: OK.",
+            "Action: click[B08K7LDM7Q]",
+            "Observation: \n[Back to Search] \n[< Prev] \nsize [18 x 18-inch][20\"x20\"]\n2 Pcs Cowhide Throw Pillow Covers Decorative Pillow Cases Farm Animal Brown Cow Hide Skin Print Pillow Case 18 X 18 Inch Velvet Square Cushion Cover for Sofa Bedroom \nPrice: $17.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[The item B08K7LDM7Q matches the requirement of 2 pieces of 18\" x 18\" pillow covers under $40. It seems suitable to purchase.]",
+            "Observation: OK.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": false,
+        "Reward": 1.0,
+        "Category": "garden",
+        "Query": "decorative pillows"
+    },
+    {
+        "Id": "fixed_10224",
+        "Instruction": "i want some cake toppers for my party supplies, and price lower than 40.00 dollars",
+        "Actions": [
+            "Action: search[cake toppers party supplies under 40 dollars]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B08W2WTW4Z] \njojofuny 27pcs Checkered Flag Race Flag Cupcake Topper Picks Toothpick Flag Dinner Flags Chequered Flag Race Car Themed Party Supplies for Car Lover Cake Decorations \n$9.49 \n[B08PBDHVN8] \nAmosfun 27Pcs Glitter Heart Cupcake Toppers Love Cake Toppers Fruit Dessert Toothpick Cake Picks for New Year Weeding Birthday Valentines Day Cake Decoration Assorted Color \n$17.59 \n[B07TVMCK3F] \nErcadio 24 Pack Soccer Cupcake Toppers Black Glitter Football Cupcake Topper Sports Theme Soccer Party Baby Shower Cake Decoration \n$6.99 ",
+            "Action: click[B08W2WTW4Z]",
+            "Observation: \n[Back to Search] \n[< Prev] \njojofuny 27pcs Checkered Flag Race Flag Cupcake Topper Picks Toothpick Flag Dinner Flags Chequered Flag Race Car Themed Party Supplies for Car Lover Cake Decorations \nPrice: $9.49 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[The cake topper item B08W2WTW4Z is under $40 and matches the party supplies requirement. It seems suitable to purchase.]",
+            "Observation: OK.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": true,
+        "Reward": 1.0,
+        "Category": "grocery",
+        "Query": "toothpicks"
+    },
+    {
+        "Id": "fixed_9302",
+        "Instruction": "i need some multicolored window films that are easy to install, and price lower than 40.00 dollars",
+        "Actions": [
+            "Action: search[multicolored window films easy to install]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B095Z2SDB9] \n3D No Glue Window Privacy Film Static Window Clings Decorative Window Privacy Film Window Film Privacy Static Window Retro Tribal Folk Pattern W23.6 x H78.7 Inch \n$38.8 \n[B00JH23QMQ] \n(3 Pack) Supershieldz Designed for Samsung Galaxy Tab 4 7.0 inch Screen Protector, High Definition Clear Shield (PET) \n$6.99 \n[B09P71WY8C] \n$18.0 ",
+            "Action: click[B095Z2SDB9]",
+            "Observation: \n[Back to Search] \n[< Prev] \nsize [l17.7\" x h 23.6\"][l23.6\" x h 35.4\"][l23.6\" x h 78.7\"][l35.4\" x h 78.7\"]\ncolor [multi-03136][multi-03137][multi-03138][multi-03139][multi-03140][multi-03141][multi-03142][multi-03143][multi-03144][multi-03145][multi-03146][multi-03147][multi-03148][multi-03149][multi-03150]\n3D No Glue Window Privacy Film Static Window Clings Decorative Window Privacy Film Window Film Privacy Static Window Retro Tribal Folk Pattern W23.6 x H78.7 Inch \nPrice: $38.8 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[The item B095Z2SDB9 is a multicolored window film, easy to install, priced at $38.8, which is under $40. It seems suitable to buy.]",
+            "Observation: OK.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": false,
+        "Reward": 1.0,
+        "Category": "garden",
+        "Query": "window coverings"
+    },
+    {
+        "Id": "fixed_4048",
+        "Instruction": "i am looking for a 52x84inx2 panels for living room, and price lower than 110.00 dollars",
+        "Actions": [
+            "Action: search[52x84in panels for living room]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09BYX42DW] \nGrommet Blackout Curtains for Bedroom and Living Room - 2 Panels Set Thermal Insulated Room Darkening Curtains (52 x 84 Inch, Navy Blue, 2 Panels) \n$28.99 \n[B09LCM3NKN] \nSheer Window Curtain Panels Cute Snowman Red Scarf Winter Snowflake,Semi Sheer Window Covering Privacy Drapes 2 Panel Sets Farm Vintage Board Green Grid Window Treatment for Kitchen/Living Room \n$44.05 \n[B06ZYS6NW4] \nLALUZ Faux-Wood Pendant Lighting, Farmhouse Hanging Lamp with Water Glass Shade for Kitchen Island, Living Room, Foyer, A03182 \n$59.99 ",
+            "Action: think[B09BYX42DW is a 52x84in panel set for the living room, priced at $28.99, which is under $110. I should check this item first.]",
+            "Observation: OK.",
+            "Action: click[B09BYX42DW]",
+            "Observation: \n[Back to Search] \n[< Prev] \ncolor [beige][black][blush][christmas red][grey][navy blue][sliver][yellow]\nGrommet Blackout Curtains for Bedroom and Living Room - 2 Panels Set Thermal Insulated Room Darkening Curtains (52 x 84 Inch, Navy Blue, 2 Panels) \nPrice: $28.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[The item is a 52x84in panel set for the living room, priced at $28.99, and has multiple color options. I should select the desired color and proceed to buy.]",
+            "Observation: OK.",
+            "Action: click[navy blue]",
+            "Observation: You have clicked navy blue.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": false,
+        "Reward": 1.0,
+        "Category": "garden",
+        "Query": "window coverings"
+    },
+    {
+        "Id": "fixed_393",
+        "Instruction": "i am looking for a pair of women's size 6.5 to 7 open toe sandals, and price lower than 30.00 dollars",
+        "Actions": [
+            "Action: search[women's size 6.5 to 7 open toe sandals under 30 dollars]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09QXF3V3X] \nDEUVOUM Summer Trend Mesh Shoes Men's Sports Shoes Solid Color Lace-Up Sneakers Fashion All-Match Walking Shoes Outdoor Hiking Shoes Non-Slip Shock-Absorbing Casual Sports Shoes \n$100.0 \n[B09MFZ726L] \nOlivia Miller Women’s Fashion Ladies Shoes, Sara PU Vegan Leather & Rhinestones Double Strap Cutout Band Slip On Open Toe Trendy Casual Summer Slide Flat Sandals \n$26.0 to $29.4 \n[B09S3TWKSC] \nWomens Summer Sandals Casual Bohemia Gladiator Wedge Shoes Outdoor Loafers Open Toe Sandals Buckle Sandals Hollow Out Shoes \n$6.99 ",
+            "Action: think[B09MFZ726L and B09S3TWKSC are open toe sandals under 30 dollars. I can check B09MFZ726L first as it is closer to the price range.]",
+            "Observation: OK.",
+            "Action: click[B09MFZ726L]",
+            "Observation: \n[Back to Search] \n[< Prev] \nsize [6][7][8][9][10]\ncolor [black][natural | brown][silver]\nOlivia Miller Women’s Fashion Ladies Shoes, Sara PU Vegan Leather & Rhinestones Double Strap Cutout Band Slip On Open Toe Trendy Casual Summer Slide Flat Sandals \nPrice: $26.0 to $29.4 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Buy Now] ",
+            "Action: think[The item has size options 6 and 7, which fit the requirement, and the price is within the budget. I can proceed to select the size and buy.]",
+            "Observation: OK.",
+            "Action: click[6]",
+            "Observation: You have clicked 6.",
+            "Action: click[Buy Now]"
+        ],
+        "Success": true,
+        "Reward": 1.0,
+        "Category": "fashion",
+        "Query": "women's sandals"
     }
 ]

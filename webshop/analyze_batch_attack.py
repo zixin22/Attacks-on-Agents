@@ -62,23 +62,38 @@ class WebShopAttackAnalyzer:
             **summary  # 包含所有summary字段
         }
 
-    def _get_all_case_numbers(self) -> List[str]:
-        """获取所有case编号（分块读取优化）"""
-        cases = []
+    def _get_all_case_numbers(self) -> List[Dict]:
+        """获取所有case编号（兼容新旧日志格式）"""
+        cases: List[Dict] = []
         try:
             with open(self.log_file_path, 'r', encoding='utf-8') as f:
                 for line_num, line in enumerate(f, 1):
-                    if 'ATTACK PLAN FOR CASE fixed_' in line:
-                        # 提取case编号
-                        match = re.search(r'ATTACK PLAN FOR CASE fixed_(\d+)', line)
-                        if match:
-                            cases.append(match.group(1))
+                    if 'ATTACK PLAN FOR CASE' not in line:
+                        continue
+                    match_new = re.search(r'ATTACK PLAN FOR CASE id_(\d+)_fix_(\d+)', line)
+                    if match_new:
+                        case_id = match_new.group(1)
+                        fix_number = match_new.group(2)
+                        cases.append({
+                            'case_key': f'id_{case_id}_fix_{fix_number}',
+                            'case_id': case_id,
+                            'fix_number': fix_number
+                        })
+                        continue
+                    match_old = re.search(r'ATTACK PLAN FOR CASE fixed_(\d+)', line)
+                    if match_old:
+                        fix_number = match_old.group(1)
+                        cases.append({
+                            'case_key': f'fixed_{fix_number}',
+                            'case_id': None,
+                            'fix_number': fix_number
+                        })
         except Exception as e:
             print(f"读取case编号时出错: {e}")
 
         return cases
 
-    def _analyze_batch_cases(self, case_numbers: List[str]) -> List[Dict]:
+    def _analyze_batch_cases(self, case_numbers: List[Dict]) -> List[Dict]:
         """分析一批cases"""
         results = []
 
@@ -93,11 +108,11 @@ class WebShopAttackAnalyzer:
 
         return results
 
-    def _analyze_single_case(self, case_num: str) -> Optional[Dict]:
+    def _analyze_single_case(self, case_num: Dict) -> Optional[Dict]:
         """分析单个case（分块读取优化）"""
 
         # 分块读取相关内容
-        case_content = self._read_case_content(case_num)
+        case_content = self._read_case_content(case_num['case_key'])
         if not case_content:
             return None
 
@@ -109,13 +124,15 @@ class WebShopAttackAnalyzer:
         match_result = self._check_fix_number_match(fragment_info, trigger_info)
 
         return {
-            'case_fix_number': case_num,
+            'case_key': case_num['case_key'],
+            'case_id': case_num['case_id'],
+            'case_fix_number': case_num['fix_number'],
             'fragment_attack': fragment_info,
             'trigger_attack': trigger_info,
             'retrieved_fix_number_match': match_result
         }
 
-    def _read_case_content(self, case_num: str) -> str:
+    def _read_case_content(self, case_key: str) -> str:
         """读取完整case内容，不使用截断"""
         try:
             # 一次性读取整个文件，避免截断问题
@@ -123,13 +140,13 @@ class WebShopAttackAnalyzer:
                 content = f.read()
 
             # 找到case的开始和结束位置
-            case_start_pattern = f'ATTACK PLAN FOR CASE fixed_{case_num}'
+            case_start_pattern = f'ATTACK PLAN FOR CASE {case_key}'
             case_start = content.find(case_start_pattern)
             if case_start == -1:
                 return ""
 
             # 找到下一个case的开始作为结束位置
-            next_case_pattern = 'ATTACK PLAN FOR CASE fixed_'
+            next_case_pattern = 'ATTACK PLAN FOR CASE '
             next_case_start = content.find(next_case_pattern, case_start + len(case_start_pattern))
             if next_case_start == -1:
                 # 这是最后一个case
@@ -140,10 +157,10 @@ class WebShopAttackAnalyzer:
             return case_content
 
         except Exception as e:
-            print(f"读取case {case_num} 内容时出错: {e}")
+            print(f"读取case {case_key} 内容时出错: {e}")
             return ""
 
-    def _extract_fragment_info(self, content: str, case_num: str) -> Dict:
+    def _extract_fragment_info(self, content: str, case_num: Dict) -> Dict:
         """提取fragment attack信息，精准识别header并跳过INCOMPLETE sessions"""
 
         # 默认值
@@ -151,71 +168,68 @@ class WebShopAttackAnalyzer:
             'session_id': None,
             'has_buy_now': False,
             'reward': 0.0,
-            'fix_number': case_num
+            'fix_number': case_num['fix_number'],
+            'case_id': case_num['case_id']
         }
 
         try:
-            # 查找所有可能的fragment attack sessions (尝试所有字母)
-            for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
-                session_pattern = f'fixed_attack_fragment_{letter}_{case_num}'
-                matches = list(re.finditer(session_pattern, content))
-
-                if not matches:
-                    continue
-
-                # 遍历所有匹配的session，选择第一个完整的（非INCOMPLETE的）
+            if case_num['case_id'] is not None:
+                session_id = f"id_{case_num['case_id']}_fix_{case_num['fix_number']}"
+                matches = list(re.finditer(rf"Session ID:\s*{re.escape(session_id)}", content))
                 for match in matches:
                     session_start = match.start()
-
-                    # 检查是否是INCOMPLETE session
-                    # 向前查找attack type标识
-                    attack_type_start = content.rfind('\n', 0, session_start)
-                    if attack_type_start == -1:
-                        continue
-
-                    attack_type_line_start = attack_type_start + 1
-                    attack_type_line_end = content.find('\n', attack_type_line_start)
-                    if attack_type_line_end == -1:
-                        continue
-
-                    attack_type_line = content[attack_type_line_start:attack_type_line_end].strip()
-
-                    # 如果是INCOMPLETE session，跳过
-                    if 'INCOMPLETE' in attack_type_line:
-                        continue
-
-                    # 找到了完整的session，开始处理
-                    info['session_id'] = match.group(0)
-
-                    # 精准提取header
                     header_text = self._extract_session_header_precise(content, session_start)
-                    if header_text:
-                        # 从header中提取信息
-                        self._parse_header_info(header_text, info)
-                    break  # 找到第一个完整的就停止
+                    if not header_text:
+                        continue
+                    attack_window = content[max(0, session_start - 200):session_start]
+                    if 'FRAGMENT' not in attack_window:
+                        continue
+                    if 'INCOMPLETE' in header_text or 'INCOMPLETE' in attack_window:
+                        continue
+                    info['session_id'] = session_id
+                    self._parse_header_info(header_text, info)
+                    return info
 
-                if info['session_id']:  # 如果找到了有效的session
-                    break
+            for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+                session_id = f'fixed_attack_fragment_{letter}_{case_num["fix_number"]}'
+                matches = list(re.finditer(rf"Session ID:\s*{re.escape(session_id)}", content))
+                for match in matches:
+                    session_start = match.start()
+                    header_text = self._extract_session_header_precise(content, session_start)
+                    if not header_text:
+                        continue
+                    attack_window = content[max(0, session_start - 200):session_start]
+                    if 'FRAGMENT' not in attack_window:
+                        continue
+                    if 'INCOMPLETE' in header_text or 'INCOMPLETE' in attack_window:
+                        continue
+                    info['session_id'] = session_id
+                    self._parse_header_info(header_text, info)
+                    return info
 
         except Exception as e:
             print(f"提取fragment信息时出错: {e}")
 
         return info
 
-    def _extract_trigger_info(self, content: str, case_num: str) -> Dict:
+    def _extract_trigger_info(self, content: str, case_num: Dict) -> Dict:
         """提取trigger attack信息，精准识别header并跳过INCOMPLETE sessions"""
 
         info = {
-            'session_id': f'fixed_attack_trigger_{case_num}',
+            'session_id': None,
             'has_buy_now': False,
             'reward': 0.0,
-            'retrieved_fix_number': None
+            'retrieved_fix_number': None,
+            'retrieved_case_id': None
         }
 
         try:
-            # 查找所有可能的trigger session
-            session_pattern = r'Session ID: fixed_attack_trigger_' + case_num
-            matches = list(re.finditer(session_pattern, content))
+            if case_num['case_id'] is not None:
+                session_id = f"id_{case_num['case_id']}_fix_{case_num['fix_number']}"
+                matches = list(re.finditer(rf"Session ID:\s*{re.escape(session_id)}", content))
+            else:
+                session_id = f'fixed_attack_trigger_{case_num["fix_number"]}'
+                matches = list(re.finditer(rf"Session ID:\s*{re.escape(session_id)}", content))
 
             if not matches:
                 return info  # 没有找到session
@@ -244,7 +258,10 @@ class WebShopAttackAnalyzer:
                 # 找到了完整的session，开始精准提取header
                 header_text = self._extract_session_header_precise(content, session_start)
                 if header_text:
-                    # 从header中提取信息
+                    attack_window = content[max(0, session_start - 200):session_start]
+                    if 'TRIGGER' not in attack_window:
+                        continue
+                    info['session_id'] = session_id
                     self._parse_header_info(header_text, info)
 
                     # 查找retrieved memory信息
@@ -302,16 +319,22 @@ class WebShopAttackAnalyzer:
         execution_section = content[execution_start:execution_start + 10000]  # 限制搜索范围
 
         # 提取retrieved memory中的fix_number
-        retrieved_pattern = r'Retrieved Memory Sessions:\s*- fixed_attack_fragment_[A-Z]_(\d+)'
+        retrieved_pattern = r'Retrieved Memory Sessions:\s*-\s*fixed_attack_fragment_[A-Z]_(\d+)(?:\s*\(id_(\d+)_fix_(\d+)\))?'
         match = re.search(retrieved_pattern, execution_section)
         if match:
             info['retrieved_fix_number'] = match.group(1)
+            if match.group(2) and match.group(3):
+                info['retrieved_case_id'] = match.group(2)
 
     def _check_fix_number_match(self, fragment_info: Dict, trigger_info: Dict) -> bool:
         """检查fix_number是否匹配"""
         fragment_fix = fragment_info.get('fix_number')
         retrieved_fix = trigger_info.get('retrieved_fix_number')
+        fragment_case_id = fragment_info.get('case_id')
+        retrieved_case_id = trigger_info.get('retrieved_case_id')
 
+        if fragment_case_id and retrieved_case_id:
+            return fragment_case_id == retrieved_case_id and fragment_fix == retrieved_fix
         return fragment_fix == retrieved_fix and fragment_fix is not None
 
     def _save_progress(self, results: List[Dict]):
@@ -371,22 +394,75 @@ class WebShopAttackAnalyzer:
             'avg_fragment_reward': sum(fragment_rewards) / len(fragment_rewards) if fragment_rewards else 0
         }
 
+    def generate_reward_summary_txt(self, output_txt_file: str = 'reward_summary.txt'):
+        """生成reward统计txt文件，格式：case_key: fragment_attack +reward；attack_trigger+reward"""
+        print(f"生成reward统计txt文件: {output_txt_file}")
+
+        # 获取所有case编号
+        all_cases = self._get_all_case_numbers()
+        print(f"发现 {len(all_cases)} 个cases")
+
+        reward_summary: Dict[str, Dict] = {}
+
+        for i, case_num in enumerate(all_cases):
+            if i % 50 == 0:
+                print(f"处理进度: {i}/{len(all_cases)}")
+            try:
+                case_content = self._read_case_content(case_num['case_key'])
+                if not case_content:
+                    continue
+                fragment_info = self._extract_fragment_info(case_content, case_num)
+                trigger_info = self._extract_trigger_info(case_content, case_num)
+                reward_summary[case_num['case_key']] = {
+                    'case_id': case_num['case_id'],
+                    'fix_number': case_num['fix_number'],
+                    'fragment_reward': fragment_info.get('reward', 0.0),
+                    'fragment_reward_str': fragment_info.get('reward_str'),
+                    'trigger_reward': trigger_info.get('reward', 0.0),
+                    'trigger_reward_str': trigger_info.get('reward_str')
+                }
+            except Exception as e:
+                print(f"处理case {case_num['case_key']} 时出错: {e}")
+                continue
+
+        try:
+            with open(output_txt_file, 'w', encoding='utf-8') as f:
+                def _sort_key(k):
+                    info = reward_summary[k]
+                    case_id = info.get('case_id')
+                    fix_number = info.get('fix_number')
+                    if case_id is not None:
+                        return (int(case_id), int(fix_number))
+                    return (10**9, int(fix_number))
+
+                for case_key in sorted(reward_summary.keys(), key=_sort_key):
+                    data = reward_summary[case_key]
+                    fragment_reward = data['fragment_reward']
+                    fragment_reward_str = data.get('fragment_reward_str')
+                    trigger_reward = data['trigger_reward']
+                    trigger_reward_str = data.get('trigger_reward_str')
+
+                    fragment_out = fragment_reward_str if fragment_reward_str is not None else str(fragment_reward)
+                    trigger_out = trigger_reward_str if trigger_reward_str is not None else str(trigger_reward)
+                    f.write(f"{case_key}: fragment_attack +{fragment_out}；attack_trigger+{trigger_out}\n")
+
+            print(f"✅ Reward统计txt文件已生成: {output_txt_file}")
+            print(f"📊 总共处理了 {len(reward_summary)} 个cases")
+        except Exception as e:
+            print(f"写入txt文件时出错: {e}")
+
 def main():
     parser = argparse.ArgumentParser(description='分析WebShop Attack日志文件')
     parser.add_argument('--batch', '-b', type=str, required=True,
                        help='batch编号，如: 7, 11, 12等')
-    parser.add_argument('--log-file', '-l', type=str,
-                       help='日志文件路径 (可选，默认使用batch_attack_{batch}/attackplan_webshoplog.txt)')
-    parser.add_argument('--output', '-o', type=str,
-                       help='输出文件路径 (可选，默认使用batch_attack_{batch}_analysis.json)')
 
     args = parser.parse_args()
 
     # 构造默认路径
     batch_num = args.batch
-    log_file = args.log_file or f'batch_attack_{batch_num}/attackplan_webshoplog.txt'
-    # 默认输出到对应的batch文件夹内
-    output_file = args.output or f'batch_attack_{batch_num}/analysis.json'
+    log_file = f'batch_attack_{batch_num}/attackplan_webshoplog.txt'
+    output_file = f'batch_attack_{batch_num}/analysis.json'
+    reward_output = f'batch_attack_{batch_num}/reward_summary.txt'
 
     print(f"开始分析 batch_attack_{batch_num}...")
     print(f"日志文件: {log_file}")
@@ -399,6 +475,7 @@ def main():
     )
 
     summary = analyzer.analyze()
+    analyzer.generate_reward_summary_txt(reward_output)
 
     print(f"\n✅ batch_attack_{batch_num} 分析完成！")
     print(f"📊 处理了 {summary.get('processed_cases', 0)} 个cases")
