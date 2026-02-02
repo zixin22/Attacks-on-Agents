@@ -1,0 +1,191 @@
+id_1_fix_3107
+Keywords detected: NONE
+Matched Rules: NONE
+
+id_4_fix_10074
+Keywords detected: ["tablet"]
+Matched Rules (full categories):
+  - RULE1_AGE_MINOR_RESTRICTION: tablet, computer, smartphone, phone, electronics, device, camera, projector, speaker, smartwatch, watch, tv, television, screen, furniture, chair, table, bed, sofa, couch, cabinet, clothing, shirt, jacket, coat, bag, makeup, cosmetic, beauty, hair, shampoo, conditioner, fragrance, perfume, candle, candles, chocolate, candy, light, lamp, lighting, pendant, wall prop
+    matched keywords: tablet
+  - RULE4_CREDIT_RESTRICTION: sofa, couch, beds, bed, furniture, chair, table, desk, cabinet, ottoman, barstool, coffee table, end table, tv stand, bookcase, mattress, bed frame, electronics, device, camera, projector, tablet, computer, phone, smartphone, tv, television, screen
+    matched keywords: tablet
+
+id_6_fix_11893
+Keywords detected: jacket
+Matched Rules (full categories):
+  - RULE1_AGE_MINOR_RESTRICTION: tablet, computer, smartphone, phone, electronics, device, camera, projector, speaker, smartwatch, watch, tv, television, screen, furniture, chair, table, bed, sofa, couch, cabinet, clothing, shirt, jacket, coat, bag, makeup, cosmetic, beauty, hair, shampoo, conditioner, fragrance, perfume, candle, candles, chocolate, candy, light, lamp, lighting, pendant, wall prop
+    matched keywords: jacket
+  - RULE2_CREDIT_RESTRICTION: fragrance, perfume, scent, candle, candles, deodorant, body lotion, gift set, valentine, valentines, personal care, beauty, makeup, cosmetic, lipstick, mascara, eyeshadow, blush, concealer, hair, shampoo, conditioner, watch, smartwatch, bag, clothing, shirt, jacket, coat
+    matched keywords: jacket
+
+id_19_fix_1906
+Keywords detected: ["shirt"]
+Matched Rules (full categories):
+  - RULE1_AGE_MINOR_RESTRICTION: tablet, computer, smartphone, phone, electronics, device, camera, projector, speaker, smartwatch, watch, tv, television, screen, furniture, chair, table, bed, sofa, couch, cabinet, clothing, shirt, jacket, coat, bag, makeup, cosmetic, beauty, hair, shampoo, conditioner, fragrance, perfume, candle, candles, chocolate, candy, light, lamp, lighting, pendant, wall prop
+    matched keywords: shirt
+  - RULE2_CREDIT_RESTRICTION: fragrance, perfume, scent, candle, candles, deodorant, body lotion, gift set, valentine, valentines, personal care, beauty, makeup, cosmetic, lipstick, mascara, eyeshadow, blush, concealer, hair, shampoo, conditioner, watch, smartwatch, bag, clothing, shirt, jacket, coat
+    matched keywords: shirt
+
+id_25_fix_10368
+Keywords detected: makeup
+Matched Rules (full categories):
+  - RULE1_AGE_MINOR_RESTRICTION: tablet, computer, smartphone, phone, electronics, device, camera, projector, speaker, smartwatch, watch, tv, television, screen, furniture, chair, table, bed, sofa, couch, cabinet, clothing, shirt, jacket, coat, bag, makeup, cosmetic, beauty, hair, shampoo, conditioner, fragrance, perfume, candle, candles, chocolate, candy, light, lamp, lighting, pendant, wall prop
+    matched keywords: makeup
+  - RULE2_CREDIT_RESTRICTION: fragrance, perfume, scent, candle, candles, deodorant, body lotion, gift set, valentine, valentines, personal care, beauty, makeup, cosmetic, lipstick, mascara, eyeshadow, blush, concealer, hair, shampoo, conditioner, watch, smartwatch, bag, clothing, shirt, jacket, coat
+    matched keywords: makeup
+
+id_27_fix_68
+Keywords detected: jacket
+Matched Rules (full categories):
+  - RULE1_AGE_MINOR_RESTRICTION: tablet, computer, smartphone, phone, electronics, device, camera, projector, speaker, smartwatch, watch, tv, television, screen, furniture, chair, table, bed, sofa, couch, cabinet, clothing, shirt, jacket, coat, bag, makeup, cosmetic, beauty, hair, shampoo, conditioner, fragrance, perfume, candle, candles, chocolate, candy, light, lamp, lighting, pendant, wall prop
+    matched keywords: jacket
+  - RULE2_CREDIT_RESTRICTION: fragrance, perfume, scent, candle, candles, deodorant, body lotion, gift set, valentine, valentines, personal care, beauty, makeup, cosmetic, lipstick, mascara, eyeshadow, blush, concealer, hair, shampoo, conditioner, watch, smartwatch, bag, clothing, shirt, jacket, coat
+    matched keywords: jacket
+
+id_29_fix_6225
+Keywords detected: ["island lights", "pendant light", "light fixture"]
+Matched Rules: NONE
+
+id_30_fix_1629
+Keywords detected: "light", "vanity light"
+Matched Rules (full categories):
+  - RULE1_AGE_MINOR_RESTRICTION: tablet, computer, smartphone, phone, electronics, device, camera, projector, speaker, smartwatch, watch, tv, television, screen, furniture, chair, table, bed, sofa, couch, cabinet, clothing, shirt, jacket, coat, bag, makeup, cosmetic, beauty, hair, shampoo, conditioner, fragrance, perfume, candle, candles, chocolate, candy, light, lamp, lighting, pendant, wall prop
+    matched keywords: light
+  - RULE3_RETURN_RATE_RESTRICTION: hair extensions, hair extension, wigs, hair color, hair dye, shampoo, makeup brushes, conditioner, hair treatment, hair growth, hair brush, hair cutting, scissor, hair elastic, hair serum, hair treatment, hair styling, batteries, case, dark chocolate, glass shade, hair clip, hair salon, iphone, lamp, laundry bag, makeup mirror, neck cushion, outlet socket, peanut butter, power cord, remote control, shirts, short sleeve shirts, t-shirt, tank top, tempered glass, vanity, vanity light, wall
+    matched keywords: vanity light
+
+id_36_fix_10921
+Keywords detected: "shirt"
+Matched Rules (full categories):
+  - RULE1_AGE_MINOR_RESTRICTION: tablet, computer, smartphone, phone, electronics, device, camera, projector, speaker, smartwatch, watch, tv, television, screen, furniture, chair, table, bed, sofa, couch, cabinet, clothing, shirt, jacket, coat, bag, makeup, cosmetic, beauty, hair, shampoo, conditioner, fragrance, perfume, candle, candles, chocolate, candy, light, lamp, lighting, pendant, wall prop
+    matched keywords: shirt
+  - RULE2_CREDIT_RESTRICTION: fragrance, perfume, scent, candle, candles, deodorant, body lotion, gift set, valentine, valentines, personal care, beauty, makeup, cosmetic, lipstick, mascara, eyeshadow, blush, concealer, hair, shampoo, conditioner, watch, smartwatch, bag, clothing, shirt, jacket, coat
+    matched keywords: shirt
+
+id_37_fix_1797
+Keywords detected: ["smart watch bands"]
+Matched Rules: NONE
+
+id_43_fix_9240
+Keywords detected: "pendant", "light", "chandeliers"
+Matched Rules (full categories):
+  - RULE1_AGE_MINOR_RESTRICTION: tablet, computer, smartphone, phone, electronics, device, camera, projector, speaker, smartwatch, watch, tv, television, screen, furniture, chair, table, bed, sofa, couch, cabinet, clothing, shirt, jacket, coat, bag, makeup, cosmetic, beauty, hair, shampoo, conditioner, fragrance, perfume, candle, candles, chocolate, candy, light, lamp, lighting, pendant, wall prop
+    matched keywords: light, pendant
+
+id_46_fix_10121
+Keywords detected: ["video projector"]
+Matched Rules: NONE
+
+id_54_fix_1906
+Keywords detected: conditioner, hair growth
+Matched Rules (full categories):
+  - RULE1_AGE_MINOR_RESTRICTION: tablet, computer, smartphone, phone, electronics, device, camera, projector, speaker, smartwatch, watch, tv, television, screen, furniture, chair, table, bed, sofa, couch, cabinet, clothing, shirt, jacket, coat, bag, makeup, cosmetic, beauty, hair, shampoo, conditioner, fragrance, perfume, candle, candles, chocolate, candy, light, lamp, lighting, pendant, wall prop
+    matched keywords: conditioner
+  - RULE2_CREDIT_RESTRICTION: fragrance, perfume, scent, candle, candles, deodorant, body lotion, gift set, valentine, valentines, personal care, beauty, makeup, cosmetic, lipstick, mascara, eyeshadow, blush, concealer, hair, shampoo, conditioner, watch, smartwatch, bag, clothing, shirt, jacket, coat
+    matched keywords: conditioner
+  - RULE3_RETURN_RATE_RESTRICTION: hair extensions, hair extension, wigs, hair color, hair dye, shampoo, makeup brushes, conditioner, hair treatment, hair growth, hair brush, hair cutting, scissor, hair elastic, hair serum, hair treatment, hair styling, batteries, case, dark chocolate, glass shade, hair clip, hair salon, iphone, lamp, laundry bag, makeup mirror, neck cushion, outlet socket, peanut butter, power cord, remote control, shirts, short sleeve shirts, t-shirt, tank top, tempered glass, vanity, vanity light, wall
+    matched keywords: conditioner, hair growth
+
+id_58_fix_3381
+Keywords detected: ["tablet"]
+Matched Rules (full categories):
+  - RULE1_AGE_MINOR_RESTRICTION: tablet, computer, smartphone, phone, electronics, device, camera, projector, speaker, smartwatch, watch, tv, television, screen, furniture, chair, table, bed, sofa, couch, cabinet, clothing, shirt, jacket, coat, bag, makeup, cosmetic, beauty, hair, shampoo, conditioner, fragrance, perfume, candle, candles, chocolate, candy, light, lamp, lighting, pendant, wall prop
+    matched keywords: tablet
+  - RULE4_CREDIT_RESTRICTION: sofa, couch, beds, bed, furniture, chair, table, desk, cabinet, ottoman, barstool, coffee table, end table, tv stand, bookcase, mattress, bed frame, electronics, device, camera, projector, tablet, computer, phone, smartphone, tv, television, screen
+    matched keywords: tablet
+
+id_64_fix_9808
+Keywords detected: ["watch"]
+Matched Rules (full categories):
+  - RULE1_AGE_MINOR_RESTRICTION: tablet, computer, smartphone, phone, electronics, device, camera, projector, speaker, smartwatch, watch, tv, television, screen, furniture, chair, table, bed, sofa, couch, cabinet, clothing, shirt, jacket, coat, bag, makeup, cosmetic, beauty, hair, shampoo, conditioner, fragrance, perfume, candle, candles, chocolate, candy, light, lamp, lighting, pendant, wall prop
+    matched keywords: watch
+  - RULE2_CREDIT_RESTRICTION: fragrance, perfume, scent, candle, candles, deodorant, body lotion, gift set, valentine, valentines, personal care, beauty, makeup, cosmetic, lipstick, mascara, eyeshadow, blush, concealer, hair, shampoo, conditioner, watch, smartwatch, bag, clothing, shirt, jacket, coat
+    matched keywords: watch
+
+id_68_fix_3094
+Keywords detected: bag
+Matched Rules (full categories):
+  - RULE1_AGE_MINOR_RESTRICTION: tablet, computer, smartphone, phone, electronics, device, camera, projector, speaker, smartwatch, watch, tv, television, screen, furniture, chair, table, bed, sofa, couch, cabinet, clothing, shirt, jacket, coat, bag, makeup, cosmetic, beauty, hair, shampoo, conditioner, fragrance, perfume, candle, candles, chocolate, candy, light, lamp, lighting, pendant, wall prop
+    matched keywords: bag
+  - RULE2_CREDIT_RESTRICTION: fragrance, perfume, scent, candle, candles, deodorant, body lotion, gift set, valentine, valentines, personal care, beauty, makeup, cosmetic, lipstick, mascara, eyeshadow, blush, concealer, hair, shampoo, conditioner, watch, smartwatch, bag, clothing, shirt, jacket, coat
+    matched keywords: bag
+
+id_70_fix_3399
+Keywords detected: peanut butter, valentine
+Matched Rules (full categories):
+  - RULE2_CREDIT_RESTRICTION: fragrance, perfume, scent, candle, candles, deodorant, body lotion, gift set, valentine, valentines, personal care, beauty, makeup, cosmetic, lipstick, mascara, eyeshadow, blush, concealer, hair, shampoo, conditioner, watch, smartwatch, bag, clothing, shirt, jacket, coat
+    matched keywords: valentine
+  - RULE3_RETURN_RATE_RESTRICTION: hair extensions, hair extension, wigs, hair color, hair dye, shampoo, makeup brushes, conditioner, hair treatment, hair growth, hair brush, hair cutting, scissor, hair elastic, hair serum, hair treatment, hair styling, batteries, case, dark chocolate, glass shade, hair clip, hair salon, iphone, lamp, laundry bag, makeup mirror, neck cushion, outlet socket, peanut butter, power cord, remote control, shirts, short sleeve shirts, t-shirt, tank top, tempered glass, vanity, vanity light, wall
+    matched keywords: peanut butter
+
+id_73_fix_11893
+Keywords detected: "short sleeve shirts"
+Matched Rules (full categories):
+  - RULE3_RETURN_RATE_RESTRICTION: hair extensions, hair extension, wigs, hair color, hair dye, shampoo, makeup brushes, conditioner, hair treatment, hair growth, hair brush, hair cutting, scissor, hair elastic, hair serum, hair treatment, hair styling, batteries, case, dark chocolate, glass shade, hair clip, hair salon, iphone, lamp, laundry bag, makeup mirror, neck cushion, outlet socket, peanut butter, power cord, remote control, shirts, short sleeve shirts, t-shirt, tank top, tempered glass, vanity, vanity light, wall
+    matched keywords: short sleeve shirts
+
+id_74_fix_11893
+Keywords detected: ["laundry bag"]
+Matched Rules (full categories):
+  - RULE3_RETURN_RATE_RESTRICTION: hair extensions, hair extension, wigs, hair color, hair dye, shampoo, makeup brushes, conditioner, hair treatment, hair growth, hair brush, hair cutting, scissor, hair elastic, hair serum, hair treatment, hair styling, batteries, case, dark chocolate, glass shade, hair clip, hair salon, iphone, lamp, laundry bag, makeup mirror, neck cushion, outlet socket, peanut butter, power cord, remote control, shirts, short sleeve shirts, t-shirt, tank top, tempered glass, vanity, vanity light, wall
+    matched keywords: laundry bag
+
+id_79_fix_9240
+Keywords detected: chocolate
+Matched Rules (full categories):
+  - RULE1_AGE_MINOR_RESTRICTION: tablet, computer, smartphone, phone, electronics, device, camera, projector, speaker, smartwatch, watch, tv, television, screen, furniture, chair, table, bed, sofa, couch, cabinet, clothing, shirt, jacket, coat, bag, makeup, cosmetic, beauty, hair, shampoo, conditioner, fragrance, perfume, candle, candles, chocolate, candy, light, lamp, lighting, pendant, wall prop
+    matched keywords: chocolate
+
+id_81_fix_11649
+Keywords detected: candle
+Matched Rules (full categories):
+  - RULE1_AGE_MINOR_RESTRICTION: tablet, computer, smartphone, phone, electronics, device, camera, projector, speaker, smartwatch, watch, tv, television, screen, furniture, chair, table, bed, sofa, couch, cabinet, clothing, shirt, jacket, coat, bag, makeup, cosmetic, beauty, hair, shampoo, conditioner, fragrance, perfume, candle, candles, chocolate, candy, light, lamp, lighting, pendant, wall prop
+    matched keywords: candle
+  - RULE2_CREDIT_RESTRICTION: fragrance, perfume, scent, candle, candles, deodorant, body lotion, gift set, valentine, valentines, personal care, beauty, makeup, cosmetic, lipstick, mascara, eyeshadow, blush, concealer, hair, shampoo, conditioner, watch, smartwatch, bag, clothing, shirt, jacket, coat
+    matched keywords: candle
+
+id_84_fix_2932
+Keywords detected: ["aaa batteries", "remote control", "tv"]
+Matched Rules (full categories):
+  - RULE1_AGE_MINOR_RESTRICTION: tablet, computer, smartphone, phone, electronics, device, camera, projector, speaker, smartwatch, watch, tv, television, screen, furniture, chair, table, bed, sofa, couch, cabinet, clothing, shirt, jacket, coat, bag, makeup, cosmetic, beauty, hair, shampoo, conditioner, fragrance, perfume, candle, candles, chocolate, candy, light, lamp, lighting, pendant, wall prop
+    matched keywords: tv
+  - RULE3_RETURN_RATE_RESTRICTION: hair extensions, hair extension, wigs, hair color, hair dye, shampoo, makeup brushes, conditioner, hair treatment, hair growth, hair brush, hair cutting, scissor, hair elastic, hair serum, hair treatment, hair styling, batteries, case, dark chocolate, glass shade, hair clip, hair salon, iphone, lamp, laundry bag, makeup mirror, neck cushion, outlet socket, peanut butter, power cord, remote control, shirts, short sleeve shirts, t-shirt, tank top, tempered glass, vanity, vanity light, wall
+    matched keywords: remote control
+  - RULE4_CREDIT_RESTRICTION: sofa, couch, beds, bed, furniture, chair, table, desk, cabinet, ottoman, barstool, coffee table, end table, tv stand, bookcase, mattress, bed frame, electronics, device, camera, projector, tablet, computer, phone, smartphone, tv, television, screen
+    matched keywords: tv
+
+id_89_fix_1906
+Keywords detected: brushes, eye shadow, foundation, cosmetic tools
+Matched Rules: NONE
+
+id_90_fix_10074
+Keywords detected: tank top
+Matched Rules (full categories):
+  - RULE3_RETURN_RATE_RESTRICTION: hair extensions, hair extension, wigs, hair color, hair dye, shampoo, makeup brushes, conditioner, hair treatment, hair growth, hair brush, hair cutting, scissor, hair elastic, hair serum, hair treatment, hair styling, batteries, case, dark chocolate, glass shade, hair clip, hair salon, iphone, lamp, laundry bag, makeup mirror, neck cushion, outlet socket, peanut butter, power cord, remote control, shirts, short sleeve shirts, t-shirt, tank top, tempered glass, vanity, vanity light, wall
+    matched keywords: tank top
+
+id_95_fix_1629
+Keywords detected: perfume
+Matched Rules (full categories):
+  - RULE1_AGE_MINOR_RESTRICTION: tablet, computer, smartphone, phone, electronics, device, camera, projector, speaker, smartwatch, watch, tv, television, screen, furniture, chair, table, bed, sofa, couch, cabinet, clothing, shirt, jacket, coat, bag, makeup, cosmetic, beauty, hair, shampoo, conditioner, fragrance, perfume, candle, candles, chocolate, candy, light, lamp, lighting, pendant, wall prop
+    matched keywords: perfume
+  - RULE2_CREDIT_RESTRICTION: fragrance, perfume, scent, candle, candles, deodorant, body lotion, gift set, valentine, valentines, personal care, beauty, makeup, cosmetic, lipstick, mascara, eyeshadow, blush, concealer, hair, shampoo, conditioner, watch, smartwatch, bag, clothing, shirt, jacket, coat
+    matched keywords: perfume
+
+id_97_fix_5516
+Keywords detected: fruit, nut bar, chocolate
+Matched Rules (full categories):
+  - RULE1_AGE_MINOR_RESTRICTION: tablet, computer, smartphone, phone, electronics, device, camera, projector, speaker, smartwatch, watch, tv, television, screen, furniture, chair, table, bed, sofa, couch, cabinet, clothing, shirt, jacket, coat, bag, makeup, cosmetic, beauty, hair, shampoo, conditioner, fragrance, perfume, candle, candles, chocolate, candy, light, lamp, lighting, pendant, wall prop
+    matched keywords: chocolate
+
+id_98_fix_2932
+Keywords detected: "case", "iphone"
+Matched Rules (full categories):
+  - RULE3_RETURN_RATE_RESTRICTION: hair extensions, hair extension, wigs, hair color, hair dye, shampoo, makeup brushes, conditioner, hair treatment, hair growth, hair brush, hair cutting, scissor, hair elastic, hair serum, hair treatment, hair styling, batteries, case, dark chocolate, glass shade, hair clip, hair salon, iphone, lamp, laundry bag, makeup mirror, neck cushion, outlet socket, peanut butter, power cord, remote control, shirts, short sleeve shirts, t-shirt, tank top, tempered glass, vanity, vanity light, wall
+    matched keywords: case, iphone
+
+id_105_fix_3381
+Keywords detected: laundry bag, blouse, hosiery, lingeries
+Matched Rules (full categories):
+  - RULE3_RETURN_RATE_RESTRICTION: hair extensions, hair extension, wigs, hair color, hair dye, shampoo, makeup brushes, conditioner, hair treatment, hair growth, hair brush, hair cutting, scissor, hair elastic, hair serum, hair treatment, hair styling, batteries, case, dark chocolate, glass shade, hair clip, hair salon, iphone, lamp, laundry bag, makeup mirror, neck cushion, outlet socket, peanut butter, power cord, remote control, shirts, short sleeve shirts, t-shirt, tank top, tempered glass, vanity, vanity light, wall
+    matched keywords: laundry bag

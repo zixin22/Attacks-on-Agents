@@ -56,22 +56,22 @@ class PromptArmorDetector:
             openai.api_key = api_key
             openai.api_base = self.config.OPENAI_API_BASE
             
-            # Try to use new API if available, otherwise use old API
+            # Try to use new API (openai >= 1.0.0)
             try:
-                # Try new API (openai >= 1.0.0)
                 self.client = openai.OpenAI(
                     api_key=api_key,
                     base_url=self.config.OPENAI_API_BASE
                 )
                 self.use_new_api = True
-            except AttributeError:
-                # Fall back to old API (openai < 1.0.0)
-                self.client = None
-                self.use_new_api = False
+            except Exception as e:
+                # Do not fall back to old API when openai>=1.0.0 is installed.
+                # Fail fast so users can fix their environment.
+                raise RuntimeError(
+                    f"Failed to initialize OpenAI client with new API: {e}"
+                )
             
             if self.config.VERBOSE:
-                api_type = "new API" if self.use_new_api else "old API"
-                print(f"✓ OpenAI client initialized (model: {self.config.DETECTION_MODEL}, base: {self.config.OPENAI_API_BASE}, {api_type})")
+                print(f"✓ OpenAI client initialized (model: {self.config.DETECTION_MODEL}, base: {self.config.OPENAI_API_BASE}, new API)")
             
         except Exception as e:
             print(f"✗ Warning: Failed to initialize OpenAI client: {e}")
@@ -121,34 +121,10 @@ class PromptArmorDetector:
                         )
                         return completion.choices[0].message.content.strip()
                 else:
-                    # Use old API (openai < 1.0.0) - same as main.py
-                    if self.config.DETECTION_MODEL == 'gpt-3.5-turbo-instruct':
-                        full_prompt = f"{system_prompt}\n\n{user_prompt}"
-                        response = openai.Completion.create(
-                            model='gpt-3.5-turbo-instruct',
-                            prompt=full_prompt,
-                            temperature=self.config.DETECTION_TEMPERATURE,
-                            max_tokens=self.config.DETECTION_MAX_TOKENS,
-                            top_p=1,
-                            frequency_penalty=0.0,
-                            presence_penalty=0.0,
-                            stop=["\n\n"]
-                        )
-                        return response.choices[0].text.strip()
-                    else:
-                        completion = openai.ChatCompletion.create(
-                            model=self.config.DETECTION_MODEL,
-                            messages=[
-                                {"role": "system", "content": system_prompt},
-                                {"role": "user", "content": user_prompt}
-                            ],
-                            temperature=self.config.DETECTION_TEMPERATURE,
-                            max_tokens=self.config.DETECTION_MAX_TOKENS,
-                            top_p=1,
-                            frequency_penalty=0.0,
-                            presence_penalty=0.0
-                        )
-                        return completion.choices[0].message.content.strip()
+                    raise RuntimeError(
+                        "OpenAI client not initialized with new API. "
+                        "Please fix your environment to use openai>=1.0.0 with OpenAI()."
+                    )
                     
             except Exception as e:
                 # Handle rate limit errors (compatible with both old and new API)

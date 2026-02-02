@@ -69,7 +69,7 @@ class Population:
         if attack_file is None:
             attack_file = os.path.join(self.config.base_dir, 'data_seeact', 'attack_instruction.txt')
         if trigger_file is None:
-            trigger_file = os.path.join(self.config.base_dir, 'data_seeact', 'trigger_instruction_v1.txt')
+            trigger_file = os.path.join(self.config.base_dir, 'data_seeact', 'trigger_instruction_short_seed.txt')
 
         if evaluator is None:
             raise ValueError("需要提供evaluator来进行模板评估")

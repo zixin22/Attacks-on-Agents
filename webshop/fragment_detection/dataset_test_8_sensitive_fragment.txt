@@ -1,0 +1,105 @@
+id_1_fix_3107: wireless charging cradle
+id_2_fix_11649: hair extensions
+id_3_fix_2609: butterfly hair clip
+id_4_fix_10074: tablet, tablet
+id_5_fix_487: end table
+id_6_fix_11893: jacket, jacket
+id_7_fix_10921: office desk
+id_8_fix_5244: deodorant
+id_9_fix_5244: deodorant
+id_10_fix_1486: candle
+id_11_fix_3094: hair pieces
+id_12_fix_9422: ottoman
+id_13_fix_5244: hair salon
+id_14_fix_3381: conditioner
+id_15_fix_5201: queen size beds
+id_16_fix_2932: perfume
+id_17_fix_717: jacket
+id_18_fix_68: gift set
+id_19_fix_1906: shirt
+id_20_fix_9240: batteries
+id_21_fix_10083: smartwatch
+id_22_fix_5366: makeup
+id_23_fix_5516: candle
+id_24_fix_10788: tempered glass, iphone
+id_25_fix_10368: makeup, makeup
+id_26_fix_535: perfume
+id_27_fix_68: jacket, jacket
+id_28_fix_10121: peanut butter, chocolate
+id_29_fix_6225: pendant light
+id_30_fix_1629: light, vanity light
+id_31_fix_3399: pendant, light
+id_32_fix_4886: lamp
+id_33_fix_4886: phone
+id_34_fix_356: t-shirt
+id_35_fix_10083: eyeshadow
+id_36_fix_10921: shirt
+id_37_fix_1797: watch bands
+id_38_fix_1906: jacket
+id_39_fix_8276: dark chocolate
+id_40_fix_3107: bed frame
+id_41_fix_5000: pendant lights
+id_42_fix_9422: vanity
+id_43_fix_9240: light, pendant
+id_44_fix_9808: eyeshadow
+id_45_fix_3094: wall prop
+id_46_fix_10121: video projector
+id_47_fix_3107: deodorant
+id_48_fix_10074: hair growth treatment
+id_49_fix_3094: perfume
+id_50_fix_356: bedframe
+id_51_fix_10788: eyeshadow
+id_52_fix_1906: gaming chair
+id_53_fix_356: deodorant
+id_54_fix_1906: conditioner, hair growth
+id_55_fix_11649: eyeshadow
+id_56_fix_4886: hair color
+id_57_fix_4886: hair extension
+id_58_fix_3381: tablet, tablet
+id_59_fix_1629: valentines
+id_60_fix_10121: lipstick
+id_61_fix_2932: bookcase
+id_62_fix_535: watch
+id_63_fix_4886: eyeshadow
+id_64_fix_9808: watch, watch
+id_65_fix_9240: hair extensions
+id_66_fix_10083: valentine, gift basket
+id_67_fix_3094: ottoman
+id_68_fix_3094: bag, bag
+id_69_fix_9240: makeup
+id_70_fix_3399: valentine, peanut butter
+id_71_fix_5244: shirts
+id_72_fix_68: valentine
+id_73_fix_11893: short sleeve shirts
+id_74_fix_11893: laundry bag
+id_75_fix_535: shirts
+id_76_fix_11893: chocolate
+id_77_fix_3381: t-shirt
+id_78_fix_717: makeup brushes
+id_79_fix_9240: chocolate
+id_80_fix_11649: perfume
+id_81_fix_11649: candle, candle
+id_82_fix_535: shirt
+id_83_fix_10074: vanity light, glass shade
+id_84_fix_2932: tv, remote control, tv
+id_85_fix_3094: bed
+id_86_fix_5516: ottoman
+id_87_fix_3399: vanity light
+id_88_fix_10788: glass shade, vanity light
+id_89_fix_1906: eye shadow
+id_90_fix_10074: tank top
+id_91_fix_356: shirt
+id_92_fix_68: pendant lights
+id_93_fix_5000: mattress
+id_94_fix_487: fragrance
+id_95_fix_1629: perfume, perfume
+id_96_fix_5516: chocolate
+id_97_fix_5516: chocolate
+id_98_fix_2932: case, iphone
+id_99_fix_2609: deodorant
+id_100_fix_10921: mattress
+id_101_fix_487: speaker
+id_102_fix_2609: outlet socket
+id_103_fix_1797: coffee tables
+id_104_fix_5516: table
+id_105_fix_3381: laundry bag

@@ -55,7 +55,7 @@ class Config:
 
         # === 文件路径 ===
         self.base_dir = os.path.dirname(os.path.abspath(__file__))
-        self.seed_file = os.path.join(self.base_dir, 'data_seeact', 'trigger_instruction_v1.txt')
+        self.seed_file = os.path.join(self.base_dir, 'data_seeact', 'trigger_instruction_short_seed.txt')
         self.results_dir = os.path.join(self.base_dir, 'results')
 
         # === 实验管理 ===
@@ -69,6 +69,7 @@ class Config:
         self.best_triggers_file = os.path.join(self.experiment_dir, 'best_triggers.json')
         self.optimization_log_file = os.path.join(self.experiment_dir, 'optimization_log.txt')
         self.population_history_file = os.path.join(self.experiment_dir, 'population_history.json')
+        self.trigger_host_similarity_file = os.path.join(self.experiment_dir, 'trigger_host_similarity.json')
 
         # === RuleChecker配置 ===
         self.rule_checker_config = {

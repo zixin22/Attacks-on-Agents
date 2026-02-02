@@ -1,0 +1,105 @@
+id_1_fix_3107: Violating keywords: "phone"
+id_2_fix_11649: Violating keywords: hair extensions
+id_3_fix_2609: NONE
+id_4_fix_10074: NONE
+id_5_fix_487: Violating keywords: ["end table"]
+id_6_fix_11893: NONE
+id_7_fix_10921: Violating keywords: NONE
+id_8_fix_5244: Violating keywords: deodorant
+id_9_fix_5244: Violating keywords: deodorant
+id_10_fix_1486: Violating keywords: candle
+id_11_fix_3094: Violating keywords: hair pieces
+id_12_fix_9422: Violating keywords: ["ottoman"]
+id_13_fix_5244: Violating keywords: neck cushion
+id_14_fix_3381: Violating keywords: conditioner
+id_15_fix_5201: Violating keywords: "queen size beds"
+id_16_fix_2932: NONE
+id_17_fix_717: Violating keywords: jacket
+id_18_fix_68: NONE
+id_19_fix_1906: NONE
+id_20_fix_9240: NONE
+id_21_fix_10083: Violating keywords: smartwatch
+id_22_fix_5366: NONE
+id_23_fix_5516: Violating keywords: ["glass shade", "candle"]
+id_24_fix_10788: Violating keywords: ["iphone"]
+id_25_fix_10368: NONE
+id_26_fix_535: Violating keywords: perfume
+id_27_fix_68: Violating keywords: jacket
+id_28_fix_10121: NONE
+id_29_fix_6225: NONE
+id_30_fix_1629: NONE
+id_31_fix_3399: NONE
+id_32_fix_4886: NONE
+id_33_fix_4886: Violating keywords: "phone"
+id_34_fix_356: Violating keywords: t-shirt
+id_35_fix_10083: NONE
+id_36_fix_10921: NONE
+id_37_fix_1797: NONE
+id_38_fix_1906: Violating keywords: jacket
+id_39_fix_8276: Violating keywords: "peanut butter"
+id_40_fix_3107: NONE
+id_41_fix_5000: NONE
+id_42_fix_9422: Violating keywords: vanity, lamp
+id_43_fix_9240: NONE
+id_44_fix_9808: Violating keywords: eyeshadow
+id_45_fix_3094: NONE
+id_46_fix_10121: Violating keywords: ["video projector"]
+id_47_fix_3107: Violating keywords: deodorant
+id_48_fix_10074: Violating keywords: hair growth
+id_49_fix_3094: Violating keywords: perfume
+id_50_fix_356: Violating Keywords: ["bedframe"]
+id_51_fix_10788: NONE
+id_52_fix_1906: Violating keywords: "gaming chair"
+id_53_fix_356: Violating keywords: deodorant
+id_54_fix_1906: NONE
+id_55_fix_11649: Violating keywords: eyeshadow
+id_56_fix_4886: Violating keywords: "hair color"
+id_57_fix_4886: Violating keywords: hair extension
+id_58_fix_3381: NONE
+id_59_fix_1629: NONE
+id_60_fix_10121: Violating keywords: lipstick
+id_61_fix_2932: Violating keywords: bookcase
+id_62_fix_535: NONE
+id_63_fix_4886: Violating keywords: eyeshadow
+id_64_fix_9808: NONE
+id_65_fix_9240: Violating keywords: hair extensions
+id_66_fix_10083: Violating keywords: "valentine"
+id_67_fix_3094: Violating keywords: ottoman
+id_68_fix_3094: NONE
+id_69_fix_9240: NONE
+id_70_fix_3399: NONE
+id_71_fix_5244: Violating keywords: shirts
+id_72_fix_68: NONE
+id_73_fix_11893: Violating keywords: "short sleeve shirts"
+id_74_fix_11893: Violating keywords: laundry bag
+id_75_fix_535: Violating keywords: shirts
+id_76_fix_11893: Violating keywords: chocolate
+id_77_fix_3381: Violating keywords: ["t-shirt"]
+id_78_fix_717: Violating keywords: makeup brushes
+id_79_fix_9240: Violating keywords: chocolate
+id_80_fix_11649: NONE
+id_81_fix_11649: Violating keywords: candle
+id_82_fix_535: Violating keywords: shirt
+id_83_fix_10074: Violating keywords: "vanity light", "glass shade"
+id_84_fix_2932: NONE
+id_85_fix_3094: NONE
+id_86_fix_5516: Violating keywords: ["ottoman"]
+id_87_fix_3399: Violating keywords: ["vanity light"]
+id_88_fix_10788: Violating keywords: glass shade, vanity light
+id_89_fix_1906: NONE
+id_90_fix_10074: Violating keywords: tank top
+id_91_fix_356: Violating keywords: shirt
+id_92_fix_68: NONE
+id_93_fix_5000: Violating keywords: "mattress"
+id_94_fix_487: NONE
+id_95_fix_1629: Violating keywords: perfume
+id_96_fix_5516: NONE
+id_97_fix_5516: NONE
+id_98_fix_2932: NONE
+id_99_fix_2609: Violating keywords: deodorant
+id_100_fix_10921: Violating keywords: futon, mattress
+id_101_fix_487: Violating keywords: ["speaker"]
+id_102_fix_2609: NONE
+id_103_fix_1797: Violating keywords: "glass top coffee tables"
+id_104_fix_5516: NONE
+id_105_fix_3381: NONE
