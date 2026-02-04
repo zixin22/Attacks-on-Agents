@@ -118,20 +118,20 @@ class CoherenceEvaluator:
                 # 计算log概率
                 log_probs = torch.log_softmax(logits, dim=-1)
 
-                # 计算连贯性损失
-                total_loss = 0.0
+                # Compute average negative log likelihood (NLL):
+                # total_log_prob = sum_{i=1..T-1} log p(x_i | x_{<i})
+                total_log_prob = 0.0
                 seq_len = len(input_ids[0])
 
-                for i in range(1, seq_len):  # 从第2个token开始
-                    # 当前token的预测概率 (基于前面的tokens)
+                for i in range(1, seq_len):  # start from second token
                     current_token_id = input_ids[0, i]
-                    current_log_prob = log_probs[i-1, current_token_id].item()
-                    total_loss += current_log_prob
+                    current_log_prob = log_probs[i - 1, current_token_id].item()
+                    total_log_prob += current_log_prob
 
-                # 计算平均损失
-                coherence_loss = -total_loss / (seq_len - 1)
+                # NLL = - (1 / (T-1)) * total_log_prob  (>= 0)
+                nll = -total_log_prob / (seq_len - 1)
 
-                return coherence_loss
+                return nll
 
         except Exception as e:
             logger.error(f"GPT-2连贯性计算失败: {e}")
@@ -173,10 +173,13 @@ class CoherenceEvaluator:
 
             coherence_score = (length_score + repetition_penalty) / 2
 
-            # 转换为损失形式（负值，损失越小越好）
-            coherence_loss = -coherence_score
-
-            return coherence_loss
+            # Convert the heuristic coherence_score (0..1) into a pseudo-NLL:
+            # Avoid log(0) by clipping to a small positive value.
+            eps = 1e-12
+            coherence_score = max(coherence_score, eps)
+            # pseudo-NLL = -log(coherence_score)  (>= 0)
+            pseudo_nll = -math.log(coherence_score)
+            return pseudo_nll
 
         except Exception as e:
             logger.error(f"简化连贯性计算失败: {e}")
@@ -184,22 +187,28 @@ class CoherenceEvaluator:
 
     def compute_coherence_loss(self, sequence: str) -> float:
         """
-        计算序列的连贯性损失
-
-        Args:
-            sequence: 输入序列 q ⊕ x_t
-
-        Returns:
-            coherence_loss: 连贯性损失值 (L_coh)
+        严格按 L_coh 定义计算连贯性损失：
+        -log P(token_t | token_<t>)，按 token 平均。
+        使用 GPT-2 模型的内置 loss 机制（teacher forcing）
         """
         if self.use_simplified or not HAS_TRANSFORMERS:
             return self._compute_coherence_simplified(sequence)
-        else:
-            try:
-                return self._compute_coherence_gpt2(sequence)
-            except Exception as e:
-                logger.warning(f"GPT-2评估失败，使用简化评估: {e}")
-                return self._compute_coherence_simplified(sequence)
+
+        try:
+            # 编码输入文本
+            inputs = self.tokenizer(sequence, return_tensors="pt", truncation=True)
+            input_ids = inputs["input_ids"].to(self.device)
+
+            # 用 input_ids 作为 labels 实现 teacher forcing
+            with torch.no_grad():
+                outputs = self.model(input_ids=input_ids, labels=input_ids)
+                loss = outputs.loss  # 已是 token 级平均 cross-entropy loss (NLL)
+
+            return loss.item()
+
+        except Exception as e:
+            logger.warning(f"GPT-2 评估失败，使用简化评估: {e}")
+            return self._compute_coherence_simplified(sequence)
 
     def evaluate_batch(self, sequences: List[str]) -> List[float]:
         """

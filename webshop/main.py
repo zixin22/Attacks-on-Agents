@@ -20,7 +20,7 @@ parser = argparse.ArgumentParser()
 # Removed --num_trials parameter, only using memory_1.json for retrieval
 parser.add_argument("--num_steps", type=int, default=40, help="The number of steps")
 parser.add_argument("--model", type=str, default="gpt-4o",
-                    choices=["gpt-3.5-turbo-instruct", "gpt-4-0613", "gpt-4o", "meta-llama/Llama-2-13b-chat-hf"],
+                    choices=["gpt-3.5-turbo-instruct", "gpt-4-0613", "gpt-4o", "gpt-4.1", "gpt-5.1", "gemini-2.5-flash", "claude-3.5-sonnet", "claude-sonnet-4-5", "claude-sonnet-4-5-20250929", "meta-llama/Llama-2-13b-chat-hf"],
                     help="The model name")
 parser.add_argument("--output", type=str, default="output", help="The output folder")
 parser.add_argument("--emb_model", type=str, default="sentence-transformers/all-MiniLM-L6-v2", choices=["sentence-transformers/all-MiniLM-L6-v2", "sentence-transformers/all-MiniLM-L12-v2"], help="The model name")
@@ -31,10 +31,13 @@ parser.add_argument("--attack_target_instruction", type=str, default=None, help=
 parser.add_argument("--attack_dataset", type=str, default=None, help="Path to dataset JSON file for batch attack experiments (alternative to --attack_fixed_number)")
 parser.add_argument("--cont_number", type=int, default=None, help="Number of test cases to use from dataset_3.json (uses first N cases)")
 parser.add_argument("--skip_fragments", action="store_true", help="Skip fragment attacks and only execute trigger attack (fragments should already be in memory)")
+parser.add_argument("--skip_trigger", action="store_true", help="Skip trigger attack and only execute fragment attacks")
 parser.add_argument("--enable_rule_checker", action="store_true", help="Enable RuleChecker (default: disabled)")
 parser.add_argument("--defense_mode", type=str, default="rule_checker", 
                     choices=["rule_checker", "guard_agent", "none"],
                     help="Defense mechanism: 'rule_checker' (default), 'guard_agent', or 'none'")
+parser.add_argument("--rule_checker_model", type=str, default=None,
+                    help="Override model for RuleChecker (defaults to --model)")
 parser.add_argument("--guard_agent_shots", type=int, default=3, choices=[1, 2, 3],
                     help="Number of few-shot examples for GuardAgent (1, 2, or 3)")
 parser.add_argument("--guard_agent_seed", type=int, default=42,
@@ -70,8 +73,74 @@ if 'Llama-2' in args.model or any(map(args.model.__contains__, AutoModelForCausa
     #openai.api_key = os.environ["OPENAI_API_KEY"]
     #client = OpenAI()
 
-elif 'gpt' in args.model:
-    # Try multiple possible paths for API key file (same as rule_checker.py)
+elif 'gpt' in args.model or 'gemini' in args.model or 'claude' in args.model:
+    model_lower = args.model.lower()
+    is_gemini = 'gemini' in model_lower
+    is_claude = 'claude' in model_lower
+
+    if is_gemini:
+        # Gemini relay key (Google GenAI client)
+        gemini_key_paths = [
+            os.path.join(os.path.dirname(__file__), 'Gemini_api_key.txt'),
+            r"D:\rap-main\webshop\Gemini_api_key.txt",
+            'Gemini_api_key.txt'
+        ]
+        gemini_api_key = None
+        for path in gemini_key_paths:
+            if os.path.exists(path):
+                with open(path, "r") as f:
+                    gemini_api_key = f.read().strip()
+                break
+        if not gemini_api_key:
+            raise FileNotFoundError(f"Gemini API key file not found. Tried: {gemini_key_paths}")
+
+        try:
+            os.environ["GEMINI_API_KEY"] = gemini_api_key
+            from google import genai
+            global gemini_client
+            gemini_client = genai.Client(
+                http_options={
+                    "base_url": "http://148.113.224.153:3000"
+                }
+            )
+            client = None
+            use_new_api = False
+        except ImportError:
+            raise ImportError("google-genai library not available. Please install google-genai to use Gemini.")
+    elif is_claude:
+        # Claude relay key (custom base_url)
+        claude_key_paths = [
+            os.path.join(os.path.dirname(__file__), 'Claude_api_key.txt'),
+            r"D:\rap-main\webshop\Claude_api_key.txt",
+            'Claude_api_key.txt'
+        ]
+        claude_api_key = None
+        for path in claude_key_paths:
+            if os.path.exists(path):
+                with open(path, "r") as f:
+                    claude_api_key = f.read().strip()
+                break
+        if not claude_api_key:
+            raise FileNotFoundError(f"Claude API key file not found. Tried: {claude_key_paths}")
+
+        try:
+            from openai import OpenAI
+            import httpx
+            http_client = httpx.Client(timeout=60.0, base_url="http://148.113.224.153:3000/v1")
+            client = OpenAI(
+                api_key=claude_api_key,
+                base_url="http://148.113.224.153:3000/v1",
+                http_client=http_client
+            )
+            use_new_api = True
+        except ImportError:
+            import openai
+            openai.api_key = claude_api_key
+            openai.api_base = "http://148.113.224.153:3000/v1"
+            client = None
+            use_new_api = False
+    else:
+        # OpenAI/proxy key
     possible_paths = [
         os.path.join(os.path.dirname(__file__), '..', 'OpenAI_api_key.txt'),  # Relative to main.py (one level up)
         r"C:\Users\22749\Desktop\rap-main\webshop\OpenAI_api_key.txt",  # Absolute path (fallback)
@@ -112,13 +181,46 @@ else:
 import time
 import openai
 
+# Gemini client (initialized only when using gemini-* models)
+gemini_client = None
+
+
+def _ensure_gemini_client():
+    """Lazily initialize Gemini client if needed."""
+    global gemini_client
+    if gemini_client is not None:
+        return gemini_client
+
+    gemini_key_paths = [
+        os.path.join(os.path.dirname(__file__), 'Gemini_api_key.txt'),
+        r"D:\rap-main\webshop\Gemini_api_key.txt",
+        'Gemini_api_key.txt'
+    ]
+    gemini_api_key = None
+    for path in gemini_key_paths:
+        if os.path.exists(path):
+            with open(path, "r") as f:
+                gemini_api_key = f.read().strip()
+            break
+    if not gemini_api_key:
+        raise FileNotFoundError(f"Gemini API key file not found. Tried: {gemini_key_paths}")
+
+    os.environ["GEMINI_API_KEY"] = gemini_api_key
+    from google import genai
+    gemini_client = genai.Client(
+        http_options={
+            "base_url": "http://148.113.224.153:3000"
+        }
+    )
+    return gemini_client
+
 # Optional display mapping for session IDs in logs (does not affect actual session keys)
 SESSION_ID_DISPLAY_MAP = {}
 
 def format_session_id_for_log(session_id: str) -> str:
     return SESSION_ID_DISPLAY_MAP.get(session_id, session_id)
 
-def llm(prompt, stop=["\n"]):
+def llm(prompt):
     """
     Universal LLM calling function, compatible with Llama-2, GPT-3.5-turbo-instruct, GPT-4-0613, GPT-4o.
     Automatic retry with error handling.
@@ -149,7 +251,7 @@ def llm(prompt, stop=["\n"]):
                         top_p=1,
                         frequency_penalty=0.0,
                         presence_penalty=0.0,
-                        stop=stop
+                        
                     )
                     text = response.choices[0].text
                 else:
@@ -161,7 +263,7 @@ def llm(prompt, stop=["\n"]):
                         top_p=1,
                         frequency_penalty=0.0,
                         presence_penalty=0.0,
-                        stop=stop
+                        
                     )
                     text = response.choices[0].text
 
@@ -178,7 +280,7 @@ def llm(prompt, stop=["\n"]):
                         top_p=1,
                         frequency_penalty=0.0,
                         presence_penalty=0.0,
-                        stop=stop
+                        
                     )
                     text = completion.choices[0].message.content
                 else:
@@ -193,7 +295,7 @@ def llm(prompt, stop=["\n"]):
                         top_p=1,
                         frequency_penalty=0.0,
                         presence_penalty=0.0,
-                        stop=stop
+                        
                     )
                     text = completion.choices[0].message.content
 
@@ -210,7 +312,7 @@ def llm(prompt, stop=["\n"]):
                         top_p=1,
                         frequency_penalty=0.0,
                         presence_penalty=0.0,
-                        stop=stop
+                        
                     )
                     text = completion.choices[0].message.content
                 else:
@@ -225,7 +327,110 @@ def llm(prompt, stop=["\n"]):
                         top_p=1,
                         frequency_penalty=0.0,
                         presence_penalty=0.0,
-                        stop=stop
+                        
+                    )
+                    text = completion.choices[0].message.content
+
+            elif args.model == 'gpt-4.1':
+                if use_new_api:
+                    completion = client.chat.completions.create(
+                        model="gpt-4.1",
+                        messages=[
+                            {"role": "system", "content": "You are a helpful assistant for household task."},
+                            {"role": "user", "content": prompt},
+                        ],
+                        temperature=config['params'].get('temperature', 0.5),
+                        max_tokens=150,
+                        top_p=1,
+                        frequency_penalty=0.0,
+                        presence_penalty=0.0,
+                        
+                    )
+                    text = completion.choices[0].message.content
+                else:
+                    completion = openai.ChatCompletion.create(
+                        model="gpt-4.1",
+                        messages=[
+                            {"role": "system", "content": "You are a helpful assistant for household task."},
+                            {"role": "user", "content": prompt},
+                        ],
+                        temperature=config['params'].get('temperature', 0.5),
+                        max_tokens=150,
+                        top_p=1,
+                        frequency_penalty=0.0,
+                        presence_penalty=0.0,
+                        
+                    )
+                    text = completion.choices[0].message.content
+
+            elif args.model == 'gpt-5.1':
+                if use_new_api:
+                    completion = client.chat.completions.create(
+                        model="gpt-5.1",
+                        messages=[
+                            {"role": "system", "content": "You are a helpful assistant for household task."},
+                            {"role": "user", "content": prompt},
+                        ],
+                        temperature=config['params'].get('temperature', 0.5),
+                        max_tokens=150,
+                        top_p=1,
+                        frequency_penalty=0.0,
+                        presence_penalty=0.0,
+                        
+                    )
+                    text = completion.choices[0].message.content
+                else:
+                    completion = openai.ChatCompletion.create(
+                        model="gpt-5.1",
+                        messages=[
+                            {"role": "system", "content": "You are a helpful assistant for household task."},
+                            {"role": "user", "content": prompt},
+                        ],
+                        temperature=config['params'].get('temperature', 0.5),
+                        max_tokens=150,
+                        top_p=1,
+                        frequency_penalty=0.0,
+                        presence_penalty=0.0,
+                        
+                    )
+                    text = completion.choices[0].message.content
+
+            elif args.model == 'gemini-2.5-flash':
+                response = _ensure_gemini_client().models.generate_content(
+                    model="gemini-2.5-flash",
+                    contents=prompt
+                )
+                text = getattr(response, "text", None) or str(response)
+
+            elif 'claude' in args.model:
+                if use_new_api:
+                    completion = client.chat.completions.create(
+                        model=args.model,
+                        messages=[
+                            {"role": "system", "content": "You are a helpful assistant for household task."},
+                            {"role": "user", "content": prompt},
+                        ],
+                        temperature=config['params'].get('temperature', 0.5),
+                        max_tokens=150,
+                        # Do not send top_p with temperature for Claude Bedrock
+                        frequency_penalty=0.0,
+                        presence_penalty=0.0,
+                        
+                    )
+                    text = completion.choices[0].message.content
+                else:
+                    completion = openai.ChatCompletion.create(
+                        model=args.model,
+                        messages=[
+                            {"role": "system", "content": "You are a helpful assistant for household task."},
+                            {"role": "user", "content": prompt},
+                        ],
+                        temperature=config['params'].get('temperature', 0.5),
+                        max_tokens=150,
+                        # Do not send top_p with temperature for Claude Bedrock
+                        frequency_penalty=0.0,
+                        presence_penalty=0.0,
+                        
                     )
                     text = completion.choices[0].message.content
 
@@ -263,8 +468,6 @@ def llm(prompt, stop=["\n"]):
 
     
 
-    if stop:
-        text = text.split('\n')[0]
     if len(text) > 0 and text[0]=='>':
         text = text[1:]
     if len(text) > 0 and text[-1]=='.':
@@ -515,7 +718,8 @@ defense_mode = 'none'
 
 if args.defense_mode == 'rule_checker':
     if args.enable_rule_checker:
-        rule_checker = RuleChecker(verbose=True, model=args.model)
+        rc_model = args.rule_checker_model or args.model
+        rule_checker = RuleChecker(verbose=True, model=rc_model)
         defense_mode = 'rule_checker'
         print("[Info] Using RuleChecker defense mechanism")
     else:
@@ -575,10 +779,9 @@ def mark_case_sessions_unretrievable(memory, case_number, memory_file):
             json.dump(memory, f, indent=4, ensure_ascii=False)
 
 def generate_embeddings(memory):
-    # Keep all cases (both Success=True and Success=False) for retrieval
-    # Reward weight will be used during retrieval to prioritize high-reward cases
-    # Filter out cases with Reward <= 0.0 (invalid cases)
-    retrievable_memory = [m for m in memory if m['Reward'] > 0.0]
+    # Keep all cases (both Success=True and Success=False) for retrieval.
+    # Do not filter by Reward.
+    retrievable_memory = list(memory)
     print('num_retrieval',len(retrievable_memory))
     if len(retrievable_memory) == 0:
         return [], {}
@@ -635,8 +838,7 @@ def generate_examples(info, actions, memory, embeddings, reasoning='', k=3, act_
       cos_scores = cos_sim(instruction_embedding, embeddings['Instruction'])[0]
       if config['params'].get('query_category', False):
         cos_scores += cos_sim(instruction_embedding, embeddings['Query'])[0]
-      # Always use Reward weight for retrieval (prioritize high-reward cases)
-      cos_scores += (torch.tensor(embeddings['Reward']) * config['params'].get('reward_weight', 1))
+      # Reward is not used as a retrieval weight.
 
     if len(actions) > 2 and (actions[-2].replace('Action: ', '').startswith('think') or actions[-2].replace('Action: ', '').startswith('search')):
       reasoning = actions[-2].replace('Action: ', '')
@@ -1133,7 +1335,7 @@ def webshop_run_react(idx, prompt, profile=None, to_print=True, return_log=False
             f.write(f"{'='*60}\n")
             f.write(f"[Step {i}] LLM Generated Action: ")
 
-        action = llm(full_prompt_react, stop=['\n']).lstrip(' ')
+        action = llm(full_prompt_react).splitlines()[0].lstrip(' ')
 
         # Complete the response logging
         with open(webshop_log_file, 'a', encoding='utf-8') as f:
@@ -1365,7 +1567,7 @@ def webshop_run_rap(idx, prompt, memory, embeddings, profile=None, to_print=True
             f.write(f"{'='*60}\n")
             f.write(f"[Step {i}] LLM Generated Action: ")
 
-        action = llm(full_prompt, stop=['\n']).lstrip(' ')
+        action = llm(full_prompt).splitlines()[0].lstrip(' ')
 
         # Complete the response logging
         with open(webshop_log_file, 'a', encoding='utf-8') as f:
@@ -2215,6 +2417,7 @@ for i in index_list:
                 print(f'Using safe profile for mask detection: {mask_profile.profile_id if mask_profile else "None"}')
 
         # Generate attack plan - use dataset data if available, otherwise use full NER+mask pipeline
+        run_single_fragment = False
         if args.attack_dataset and attack_case_data:
             # Use pre-computed data from dataset (skip NER and mask detection)
             attack_plan = attack_generator.generate_attack_plan_from_dataset(
@@ -2229,6 +2432,7 @@ for i in index_list:
             carrier_instruction = attack_case_data.get('carrier_instruction_3', '')
             masked_instruction = attack_case_data.get('masked_instruction', '')
             if carrier_instruction:
+                run_single_fragment = True
                 fragment_attacks = attack_plan.get('fragment_attacks', [])
                 # If dataset lacks fragments, generate fragment attacks from sensitive_fragments
                 if not fragment_attacks and sensitive_fragments:
@@ -2300,7 +2504,10 @@ for i in index_list:
         # Step 3: Execute fragment attacks (skip if --skip_fragments is set)
         display_session_id = f"id_{case_id}_fix_{case_fix_number}"
         if not args.skip_fragments:
-            for fragment_attack in attack_plan['fragment_attacks']:
+            fragment_attacks = attack_plan['fragment_attacks']
+            if run_single_fragment and fragment_attacks:
+                fragment_attacks = fragment_attacks[:1]
+            for fragment_attack in fragment_attacks:
                 fragment_label = fragment_attack['label']
                 fragment_instruction = fragment_attack['instruction']
                 # Use 'fixed' prefix so server uses the correct goal (fixed_{i}) instead of random goal
@@ -2340,7 +2547,8 @@ for i in index_list:
                     f.write("Fragments are assumed to be already in memory\n")
                     f.write(f"{'='*80}\n\n")
         
-    # Step 4: Execute trigger attack
+        # Step 4: Execute trigger attack (skip if --skip_trigger is set)
+        if not args.skip_trigger:
     # Use 'fixed' prefix so server uses the correct goal (fixed_{i}) instead of random goal
     trigger_session_id = f'fixed_attack_trigger_{case_fix_number}'
     SESSION_ID_DISPLAY_MAP[trigger_session_id] = display_session_id
@@ -2358,6 +2566,10 @@ for i in index_list:
         display_session_id=display_session_id,
         case_id=case_id
     )
+        else:
+            print(f"\n{'='*60}")
+            print("SKIPPING TRIGGER ATTACK (--skip_trigger flag set)")
+            print(f"{'='*60}\n")
 
     # Note: Metrics tracker is updated inside execute_trigger_attack() function
     # Trigger attacks are tracked with their session IDs for rule violation analysis

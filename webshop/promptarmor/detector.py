@@ -58,14 +58,18 @@ class PromptArmorDetector:
             
             # Try to use new API (openai >= 1.0.0)
             try:
+                # Create an httpx client and pass it to the OpenAI client to avoid
+                # mismatched keyword args across different openai/httpx versions.
+                import httpx
+                http_client = httpx.Client(timeout=60.0, base_url=self.config.OPENAI_API_BASE)
                 self.client = openai.OpenAI(
                     api_key=api_key,
-                    base_url=self.config.OPENAI_API_BASE
+                    base_url=self.config.OPENAI_API_BASE,
+                    http_client=http_client
                 )
                 self.use_new_api = True
             except Exception as e:
-                # Do not fall back to old API when openai>=1.0.0 is installed.
-                # Fail fast so users can fix their environment.
+                # Provide a clearer error for environment mismatch
                 raise RuntimeError(
                     f"Failed to initialize OpenAI client with new API: {e}"
                 )

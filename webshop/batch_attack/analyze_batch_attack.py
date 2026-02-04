@@ -164,13 +164,13 @@ class WebShopAttackAnalyzer:
             return ""
 
     def _extract_fragment_info(self, content: str, case_num: Dict) -> Dict:
-        """提取fragment attack信息，精准识别header并跳过INCOMPLETE sessions"""
+        """提取fragment attack信息，处理所有sessions（包括INCOMPLETE）"""
 
-        # 默认值
+        # 默认值：reward 为 None 表示未完成
         info = {
             'session_id': None,
             'has_buy_now': False,
-            'reward': 0.0,
+            'reward': None,  # None 表示未完成
             'reward_str': None,
             'fix_number': case_num['fix_number'],
             'case_id': case_num['case_id']
@@ -189,8 +189,6 @@ class WebShopAttackAnalyzer:
                     attack_window = content[max(0, session_start - 200):session_start]
                     if 'FRAGMENT' not in attack_window:
                         continue
-                    if 'INCOMPLETE' in header_text or 'INCOMPLETE' in attack_window:
-                        continue
                     info['session_id'] = session_id
                     self._parse_header_info(header_text, info)
                     return info
@@ -207,8 +205,6 @@ class WebShopAttackAnalyzer:
                     attack_window = content[max(0, session_start - 200):session_start]
                     if 'FRAGMENT' not in attack_window:
                         continue
-                    if 'INCOMPLETE' in header_text or 'INCOMPLETE' in attack_window:
-                        continue
                     info['session_id'] = session_id
                     self._parse_header_info(header_text, info)
                     return info
@@ -219,12 +215,12 @@ class WebShopAttackAnalyzer:
         return info
 
     def _extract_trigger_info(self, content: str, case_num: Dict) -> Dict:
-        """提取trigger attack信息，精准识别header并跳过INCOMPLETE sessions"""
+        """提取trigger attack信息，处理所有sessions（包括INCOMPLETE）"""
 
         info = {
             'session_id': None,
             'has_buy_now': False,
-            'reward': 0.0,
+            'reward': None,  # None 表示未完成
             'reward_str': None,
             'retrieved_fix_number': None,
             'retrieved_case_id': None
@@ -243,28 +239,11 @@ class WebShopAttackAnalyzer:
             if not matches:
                 return info  # 没有找到session
 
-            # 遍历所有匹配的session，选择第一个完整的（非INCOMPLETE的）
+            # 遍历所有匹配的session，选择第一个
             for match in matches:
                 session_start = match.start()
 
-                # 检查是否是INCOMPLETE session
-                # 向前查找attack type标识
-                attack_type_start = content.rfind('\n', 0, session_start)
-                if attack_type_start == -1:
-                    continue
-
-                attack_type_line_start = attack_type_start + 1
-                attack_type_line_end = content.find('\n', attack_type_line_start)
-                if attack_type_line_end == -1:
-                    continue
-
-                attack_type_line = content[attack_type_line_start:attack_type_line_end].strip()
-
-                # 如果是INCOMPLETE session，跳过
-                if 'INCOMPLETE' in attack_type_line:
-                    continue
-
-                # 找到了完整的session，开始精准提取header
+                # 找到了session，开始精准提取header
                 header_text = self._extract_session_header_precise(content, session_start)
                 if header_text:
                     attack_window = content[max(0, session_start - 200):session_start]
@@ -276,7 +255,7 @@ class WebShopAttackAnalyzer:
 
                     # 查找retrieved memory信息
                     self._extract_retrieved_memory(content, session_start, info)
-                    break  # 找到第一个完整session就停止
+                    break  # 找到第一个session就停止
 
         except Exception as e:
             print(f"提取trigger信息时出错: {e}")
@@ -284,7 +263,17 @@ class WebShopAttackAnalyzer:
         return info
 
     def _extract_session_header_precise(self, content: str, session_start: int) -> str:
-        """精准提取session header"""
+        """
+        精准提取session header
+        正确的日志格式是：
+        ========...========
+        Session ID: ...
+        Host Instruction: ...
+        Fragment Attack Instruction: ...
+        Reward: ...
+        Status: ...
+        ========...========
+        """
         # 1. 找到header开始：向上查找第一个 "====" 行
         header_start_search = content.rfind("====", 0, session_start)
         if header_start_search != -1:
@@ -297,26 +286,56 @@ class WebShopAttackAnalyzer:
         else:
             header_start = session_start
 
-        # 2. 找到header结束：向下查找第一个 "----" 或 "===="
-        header_end = content.find("----", session_start)
-        if header_end == -1:
-            header_end = content.find("====", session_start)
+        # 2. 找到header结束：从 session_start 开始向下查找
+        # 正确的格式是 Reward/Status 行后面跟着 ========...========
+        # 先查找 Reward: 或 Status:
+        reward_pos = content.find("Reward:", session_start)
+        status_pos = content.find("Status:", session_start)
+        
+        # 找到最近的标记点
+        marker_pos = None
+        if reward_pos != -1 and (status_pos == -1 or reward_pos < status_pos):
+            marker_pos = reward_pos
+        elif status_pos != -1:
+            marker_pos = status_pos
+        
+        if marker_pos is not None:
+            # 找到标记行末尾
+            marker_line_end = content.find("\n", marker_pos)
+            if marker_line_end != -1:
+                # 查找下一个 ========...======== 分隔符
+                header_end = content.find("====", marker_line_end)
+                if header_end != -1:
+                    return content[header_start:header_end].strip()
 
-        if header_end != -1:
-            return content[header_start:header_end].strip()
+        # 备选方案：直接查找分隔符
+        dash_end = content.find("----", session_start)
+        eq_end = content.find("====", session_start)
+        
+        if dash_end != -1 and (eq_end == -1 or dash_end < eq_end):
+            return content[header_start:dash_end].strip()
+        elif eq_end != -1:
+            return content[header_start:eq_end].strip()
 
         return ""
 
     def _parse_header_info(self, header_text: str, info: Dict):
-        """从header文本中解析信息"""
-        # 提取Reward
+        """从header文本中解析信息，正确区分 Reward: 0（未完成）和 Reward: 0.0（完成但低分）"""
+        # 提取Reward - 使用更精确的正则表达式
         reward_match = re.search(r'Reward:\s*([0-9.]+)', header_text)
         if reward_match:
             reward_str = reward_match.group(1)
-            info['reward'] = float(reward_str)
-            info['reward_str'] = reward_str
-            # 根据Reward值判断has_buy_now：Reward: 0表示未执行buy_now，Reward: 0.0或其他值表示已执行
-            info['has_buy_now'] = reward_str != '0'
+            info['reward_str'] = reward_str  # 保持原始字符串格式
+
+            # 关键区分：Reward: 0 表示任务未完成，Reward: 0.0 或其他值（如 1.0, 0.0333）表示任务已完成
+            if reward_str == '0':
+                # 任务未完成 - 保持 reward 为 None
+                info['reward'] = None
+                info['has_buy_now'] = False
+            else:
+                # 任务已完成 - 转换为浮点数
+                info['reward'] = float(reward_str)
+                info['has_buy_now'] = True
 
     def _extract_retrieved_memory(self, content: str, session_start: int, info: Dict):
         """提取retrieved memory信息"""
@@ -381,7 +400,7 @@ class WebShopAttackAnalyzer:
             print(f"保存最终结果时出错: {e}")
 
     def _generate_summary(self, results: List[Dict]) -> Dict:
-        """生成统计摘要"""
+        """生成统计摘要，正确处理 None 值（表示任务未完成）"""
         total = len(results)
         if total == 0:
             return {'error': 'no results to analyze'}
@@ -392,14 +411,20 @@ class WebShopAttackAnalyzer:
 
         # 计算reward统计 - 只计算成功buy_now的cases (has_buy_now=true)
         trigger_rewards = [r['trigger_attack']['reward'] for r in results
-                          if r['trigger_attack']['has_buy_now']]
+                          if r['trigger_attack']['has_buy_now'] and r['trigger_attack']['reward'] is not None]
         fragment_rewards = [r['fragment_attack']['reward'] for r in results
-                           if r['fragment_attack']['has_buy_now']]
+                           if r['fragment_attack']['has_buy_now'] and r['fragment_attack']['reward'] is not None]
+
+        # 统计未完成的cases
+        fragment_incomplete_count = sum(1 for r in results if r['fragment_attack']['reward'] is None)
+        trigger_incomplete_count = sum(1 for r in results if r['trigger_attack']['reward'] is None)
 
         return {
             'total_cases_analyzed': total,
             'fragment_buy_now_count': fragment_buy_now_count,
+            'fragment_incomplete_count': fragment_incomplete_count,
             'trigger_buy_now_count': trigger_buy_now_count,
+            'trigger_incomplete_count': trigger_incomplete_count,
             'fix_number_matches': match_count,
             'avg_trigger_reward': sum(trigger_rewards) / len(trigger_rewards) if trigger_rewards else 0,
             'avg_fragment_reward': sum(fragment_rewards) / len(fragment_rewards) if fragment_rewards else 0
@@ -462,8 +487,23 @@ class WebShopAttackAnalyzer:
                     trigger_reward = data['trigger_reward']
                     trigger_reward_str = data.get('trigger_reward_str')
 
-                    fragment_out = fragment_reward_str if fragment_reward_str is not None else str(fragment_reward)
-                    trigger_out = trigger_reward_str if trigger_reward_str is not None else str(trigger_reward)
+                    # 正确区分 None（未完成）、0（未完成）、0.0（完成但低分）
+                    # 如果 reward_str 是 '0'，表示任务未完成
+                    # 如果 reward 是 None，也表示任务未完成
+                    if fragment_reward_str == '0' or fragment_reward is None:
+                        fragment_out = '0'  # 任务未完成
+                    elif fragment_reward_str is not None:
+                        fragment_out = fragment_reward_str  # 保持原始格式（0.0, 1.0等）
+                    else:
+                        fragment_out = str(fragment_reward)
+
+                    if trigger_reward_str == '0' or trigger_reward is None:
+                        trigger_out = '0'  # 任务未完成
+                    elif trigger_reward_str is not None:
+                        trigger_out = trigger_reward_str  # 保持原始格式
+                    else:
+                        trigger_out = str(trigger_reward)
+
                     f.write(f"{case_key}: fragment_attack +{fragment_out}；attack_trigger+{trigger_out}\n")
 
             print(f"✅ Reward统计txt文件已生成: {output_txt_file}")
