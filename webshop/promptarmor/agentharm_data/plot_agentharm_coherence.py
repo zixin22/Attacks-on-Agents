@@ -91,12 +91,17 @@ def plot_density(series, output_path: Path):
             gaussian_kde = None
 
     plt.figure(figsize=(8, 5))
-    colors = {
-        "task_input_core": "#1f77b4",
-        "injection_instruction": "#d62728",
+    # Display names mapping
+    display_names = {
+        "task_input_core": "attack",
+        "injection_instruction": "carrier",
+        "benign_prompt": "benign",
     }
-    # add benign color if present
-    colors.setdefault("benign_prompt", "#2ca02c")
+    colors = {
+        "task_input_core": "#d62728",
+        "injection_instruction": "#ff7f0e",
+        "benign_prompt": "#1f77b4",
+    }
 
     for name, values in series.items():
         values = [v for v in values if isinstance(v, (int, float)) and not math.isnan(v)]
@@ -110,25 +115,37 @@ def plot_density(series, output_path: Path):
             min_v -= 1e-3
             max_v += 1e-3
 
+        label = display_names.get(name, name)
+        color = colors.get(name)
+
         if use_seaborn:
-            sns.kdeplot(values, label=name, color=colors.get(name), fill=False)
+            sns.kdeplot(values, label=label, color=color, fill=False)
         elif use_scipy:
             kde = gaussian_kde(values)
             import numpy as _np
             xs = _np.linspace(min_v, max_v, 200)
             ys = kde(xs)
-            plt.plot(xs, ys, label=name, color=colors.get(name))
+            plt.plot(xs, ys, label=label, color=color, linewidth=16)
         else:
             import numpy as np
 
             hist, bin_edges = np.histogram(values, bins=50, range=(min_v, max_v), density=True)
             centers = (bin_edges[:-1] + bin_edges[1:]) / 2
-            plt.plot(centers, hist, label=name, color=colors.get(name))
+            plt.plot(centers, hist, label=label, color=color, linewidth=16)
 
-    plt.title("Coherence Loss Density")
-    plt.xlabel("coherence_loss (NLL)")
-    plt.ylabel("density")
-    plt.legend()
+    plt.xlabel("Perplexity", fontsize=28)
+    plt.ylabel("Density", fontsize=18)
+    plt.xticks(fontsize=28)
+    plt.yticks(fontsize=18)
+    # Explicitly create legend handles with correct colors in the desired order
+    handles = [
+        plt.Line2D([0], [0], color="#1f77b4", linewidth=3, label="benign"),
+        plt.Line2D([0], [0], color="#ff7f0e", linewidth=3, label="carrier"),
+        plt.Line2D([0], [0], color="#d62728", linewidth=3, label="attack"),
+    ]
+    plt.legend(handles=handles, fontsize=26)
+    plt.xlim(2, 8)
+    plt.ylim(0.0, 1.9)
     plt.tight_layout()
     plt.savefig(output_path, dpi=200)
 

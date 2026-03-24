@@ -1,0 +1,3305 @@
+{
+  "e5": {
+    "method": "e5",
+    "total": 136,
+    "matches": 136,
+    "match_rate": 1.0,
+    "details": [
+      {
+        "task_id": "1-1",
+        "source": "attack",
+        "similarity": 0.9779307246208191,
+        "is_match": true
+      },
+      {
+        "task_id": "1-2",
+        "source": "attack",
+        "similarity": 0.9825693964958191,
+        "is_match": true
+      },
+      {
+        "task_id": "1-3",
+        "source": "attack",
+        "similarity": 0.979546070098877,
+        "is_match": true
+      },
+      {
+        "task_id": "1-4",
+        "source": "attack",
+        "similarity": 0.9681392908096313,
+        "is_match": true
+      },
+      {
+        "task_id": "10-3",
+        "source": "attack",
+        "similarity": 0.9763347804546356,
+        "is_match": true
+      },
+      {
+        "task_id": "10-4",
+        "source": "attack",
+        "similarity": 0.9670854806900024,
+        "is_match": true
+      },
+      {
+        "task_id": "11-1",
+        "source": "attack",
+        "similarity": 0.969798743724823,
+        "is_match": true
+      },
+      {
+        "task_id": "11-2",
+        "source": "attack",
+        "similarity": 0.9813506007194519,
+        "is_match": true
+      },
+      {
+        "task_id": "11-3",
+        "source": "attack",
+        "similarity": 0.9843414723873138,
+        "is_match": true
+      },
+      {
+        "task_id": "11-4",
+        "source": "attack",
+        "similarity": 0.9733203649520874,
+        "is_match": true
+      },
+      {
+        "task_id": "13-1",
+        "source": "attack",
+        "similarity": 0.9808394610881805,
+        "is_match": true
+      },
+      {
+        "task_id": "13-2",
+        "source": "attack",
+        "similarity": 0.9774281978607178,
+        "is_match": true
+      },
+      {
+        "task_id": "13-3",
+        "source": "attack",
+        "similarity": 0.9885618090629578,
+        "is_match": true
+      },
+      {
+        "task_id": "13-4",
+        "source": "attack",
+        "similarity": 0.9868156909942627,
+        "is_match": true
+      },
+      {
+        "task_id": "14-1",
+        "source": "attack",
+        "similarity": 0.9844469428062439,
+        "is_match": true
+      },
+      {
+        "task_id": "14-2",
+        "source": "attack",
+        "similarity": 0.9827389121055603,
+        "is_match": true
+      },
+      {
+        "task_id": "14-3",
+        "source": "attack",
+        "similarity": 0.9782387018203735,
+        "is_match": true
+      },
+      {
+        "task_id": "14-4",
+        "source": "attack",
+        "similarity": 0.9831759035587311,
+        "is_match": true
+      },
+      {
+        "task_id": "17-1",
+        "source": "attack",
+        "similarity": 0.9646364450454712,
+        "is_match": true
+      },
+      {
+        "task_id": "17-2",
+        "source": "attack",
+        "similarity": 0.9627735912799835,
+        "is_match": true
+      },
+      {
+        "task_id": "17-3",
+        "source": "attack",
+        "similarity": 0.9829075634479523,
+        "is_match": true
+      },
+      {
+        "task_id": "17-4",
+        "source": "attack",
+        "similarity": 0.9726051092147827,
+        "is_match": true
+      },
+      {
+        "task_id": "19-1",
+        "source": "attack",
+        "similarity": 0.9742429554462433,
+        "is_match": true
+      },
+      {
+        "task_id": "19-2",
+        "source": "attack",
+        "similarity": 0.9764711260795593,
+        "is_match": true
+      },
+      {
+        "task_id": "19-4",
+        "source": "attack",
+        "similarity": 0.9854829907417297,
+        "is_match": true
+      },
+      {
+        "task_id": "2-2",
+        "source": "attack",
+        "similarity": 0.97307950258255,
+        "is_match": true
+      },
+      {
+        "task_id": "2-3",
+        "source": "attack",
+        "similarity": 0.9769473075866699,
+        "is_match": true
+      },
+      {
+        "task_id": "2-4",
+        "source": "attack",
+        "similarity": 0.9778116345405579,
+        "is_match": true
+      },
+      {
+        "task_id": "20-1",
+        "source": "attack",
+        "similarity": 0.9733930230140686,
+        "is_match": true
+      },
+      {
+        "task_id": "20-2",
+        "source": "attack",
+        "similarity": 0.9821823835372925,
+        "is_match": true
+      },
+      {
+        "task_id": "20-3",
+        "source": "attack",
+        "similarity": 0.9593790769577026,
+        "is_match": true
+      },
+      {
+        "task_id": "20-4",
+        "source": "attack",
+        "similarity": 0.9798718690872192,
+        "is_match": true
+      },
+      {
+        "task_id": "21-1",
+        "source": "attack",
+        "similarity": 0.9708134829998016,
+        "is_match": true
+      },
+      {
+        "task_id": "21-2",
+        "source": "attack",
+        "similarity": 0.9766350984573364,
+        "is_match": true
+      },
+      {
+        "task_id": "21-3",
+        "source": "attack",
+        "similarity": 0.9690562188625336,
+        "is_match": true
+      },
+      {
+        "task_id": "21-4",
+        "source": "attack",
+        "similarity": 0.983642578125,
+        "is_match": true
+      },
+      {
+        "task_id": "23-1",
+        "source": "attack",
+        "similarity": 0.9634037613868713,
+        "is_match": true
+      },
+      {
+        "task_id": "23-2",
+        "source": "attack",
+        "similarity": 0.9755831658840179,
+        "is_match": true
+      },
+      {
+        "task_id": "23-3",
+        "source": "attack",
+        "similarity": 0.9802162647247314,
+        "is_match": true
+      },
+      {
+        "task_id": "23-4",
+        "source": "attack",
+        "similarity": 0.9821891188621521,
+        "is_match": true
+      },
+      {
+        "task_id": "24-1",
+        "source": "attack",
+        "similarity": 0.9752495586872101,
+        "is_match": true
+      },
+      {
+        "task_id": "24-2",
+        "source": "attack",
+        "similarity": 0.9613134860992432,
+        "is_match": true
+      },
+      {
+        "task_id": "24-3",
+        "source": "attack",
+        "similarity": 0.9788757562637329,
+        "is_match": true
+      },
+      {
+        "task_id": "24-4",
+        "source": "attack",
+        "similarity": 0.9838143587112427,
+        "is_match": true
+      },
+      {
+        "task_id": "25-2",
+        "source": "attack",
+        "similarity": 0.9751082062721252,
+        "is_match": true
+      },
+      {
+        "task_id": "25-3",
+        "source": "attack",
+        "similarity": 0.9710546135902405,
+        "is_match": true
+      },
+      {
+        "task_id": "26-1",
+        "source": "attack",
+        "similarity": 0.9727443158626556,
+        "is_match": true
+      },
+      {
+        "task_id": "26-2",
+        "source": "attack",
+        "similarity": 0.9740068316459656,
+        "is_match": true
+      },
+      {
+        "task_id": "26-3",
+        "source": "attack",
+        "similarity": 0.9896711111068726,
+        "is_match": true
+      },
+      {
+        "task_id": "26-4",
+        "source": "attack",
+        "similarity": 0.9811985790729523,
+        "is_match": true
+      },
+      {
+        "task_id": "27-1",
+        "source": "attack",
+        "similarity": 0.9630942344665527,
+        "is_match": true
+      },
+      {
+        "task_id": "27-2",
+        "source": "attack",
+        "similarity": 0.9783840179443359,
+        "is_match": true
+      },
+      {
+        "task_id": "28-2",
+        "source": "attack",
+        "similarity": 0.9765245318412781,
+        "is_match": true
+      },
+      {
+        "task_id": "28-3",
+        "source": "attack",
+        "similarity": 0.9814480841159821,
+        "is_match": true
+      },
+      {
+        "task_id": "28-4",
+        "source": "attack",
+        "similarity": 0.9773457050323486,
+        "is_match": true
+      },
+      {
+        "task_id": "29-1",
+        "source": "attack",
+        "similarity": 0.9785963296890259,
+        "is_match": true
+      },
+      {
+        "task_id": "29-4",
+        "source": "attack",
+        "similarity": 0.9864314198493958,
+        "is_match": true
+      },
+      {
+        "task_id": "30-1",
+        "source": "attack",
+        "similarity": 0.9738795757293701,
+        "is_match": true
+      },
+      {
+        "task_id": "30-2",
+        "source": "attack",
+        "similarity": 0.9720677137374878,
+        "is_match": true
+      },
+      {
+        "task_id": "30-3",
+        "source": "attack",
+        "similarity": 0.9784895181655884,
+        "is_match": true
+      },
+      {
+        "task_id": "30-4",
+        "source": "attack",
+        "similarity": 0.9882310032844543,
+        "is_match": true
+      },
+      {
+        "task_id": "33-1",
+        "source": "attack",
+        "similarity": 0.9799067378044128,
+        "is_match": true
+      },
+      {
+        "task_id": "33-3",
+        "source": "attack",
+        "similarity": 0.973639190196991,
+        "is_match": true
+      },
+      {
+        "task_id": "35-1",
+        "source": "attack",
+        "similarity": 0.9727530181407928,
+        "is_match": true
+      },
+      {
+        "task_id": "36-1",
+        "source": "attack",
+        "similarity": 0.9559651911258698,
+        "is_match": true
+      },
+      {
+        "task_id": "36-2",
+        "source": "attack",
+        "similarity": 0.9857586920261383,
+        "is_match": true
+      },
+      {
+        "task_id": "36-3",
+        "source": "attack",
+        "similarity": 0.9819274246692657,
+        "is_match": true
+      },
+      {
+        "task_id": "36-4",
+        "source": "attack",
+        "similarity": 0.9890252351760864,
+        "is_match": true
+      },
+      {
+        "task_id": "37-1",
+        "source": "attack",
+        "similarity": 0.9715520143508911,
+        "is_match": true
+      },
+      {
+        "task_id": "37-3",
+        "source": "attack",
+        "similarity": 0.963956207036972,
+        "is_match": true
+      },
+      {
+        "task_id": "37-4",
+        "source": "attack",
+        "similarity": 0.9794277548789978,
+        "is_match": true
+      },
+      {
+        "task_id": "38-1",
+        "source": "attack",
+        "similarity": 0.978709489107132,
+        "is_match": true
+      },
+      {
+        "task_id": "38-2",
+        "source": "attack",
+        "similarity": 0.9798879027366638,
+        "is_match": true
+      },
+      {
+        "task_id": "38-3",
+        "source": "attack",
+        "similarity": 0.9568327963352203,
+        "is_match": true
+      },
+      {
+        "task_id": "38-4",
+        "source": "attack",
+        "similarity": 0.9870529472827911,
+        "is_match": true
+      },
+      {
+        "task_id": "39-1",
+        "source": "attack",
+        "similarity": 0.9789808690547943,
+        "is_match": true
+      },
+      {
+        "task_id": "39-2",
+        "source": "attack",
+        "similarity": 0.9710968434810638,
+        "is_match": true
+      },
+      {
+        "task_id": "39-3",
+        "source": "attack",
+        "similarity": 0.9742805659770966,
+        "is_match": true
+      },
+      {
+        "task_id": "39-4",
+        "source": "attack",
+        "similarity": 0.9817653298377991,
+        "is_match": true
+      },
+      {
+        "task_id": "40-1",
+        "source": "attack",
+        "similarity": 0.9834610223770142,
+        "is_match": true
+      },
+      {
+        "task_id": "42-2",
+        "source": "attack",
+        "similarity": 0.9649868607521057,
+        "is_match": true
+      },
+      {
+        "task_id": "42-3",
+        "source": "attack",
+        "similarity": 0.9753561019897461,
+        "is_match": true
+      },
+      {
+        "task_id": "42-4",
+        "source": "attack",
+        "similarity": 0.9815317392349243,
+        "is_match": true
+      },
+      {
+        "task_id": "43-2",
+        "source": "attack",
+        "similarity": 0.9703009724617004,
+        "is_match": true
+      },
+      {
+        "task_id": "43-3",
+        "source": "attack",
+        "similarity": 0.9618416428565979,
+        "is_match": true
+      },
+      {
+        "task_id": "43-4",
+        "source": "attack",
+        "similarity": 0.9753772616386414,
+        "is_match": true
+      },
+      {
+        "task_id": "44-1",
+        "source": "attack",
+        "similarity": 0.9785774350166321,
+        "is_match": true
+      },
+      {
+        "task_id": "44-2",
+        "source": "attack",
+        "similarity": 0.9817390441894531,
+        "is_match": true
+      },
+      {
+        "task_id": "44-4",
+        "source": "attack",
+        "similarity": 0.9806400835514069,
+        "is_match": true
+      },
+      {
+        "task_id": "45-1",
+        "source": "attack",
+        "similarity": 0.9623647034168243,
+        "is_match": true
+      },
+      {
+        "task_id": "45-3",
+        "source": "attack",
+        "similarity": 0.9759886264801025,
+        "is_match": true
+      },
+      {
+        "task_id": "45-4",
+        "source": "attack",
+        "similarity": 0.9804706573486328,
+        "is_match": true
+      },
+      {
+        "task_id": "46-1",
+        "source": "attack",
+        "similarity": 0.984274297952652,
+        "is_match": true
+      },
+      {
+        "task_id": "46-2",
+        "source": "attack",
+        "similarity": 0.9727027416229248,
+        "is_match": true
+      },
+      {
+        "task_id": "46-3",
+        "source": "attack",
+        "similarity": 0.9788601696491241,
+        "is_match": true
+      },
+      {
+        "task_id": "46-4",
+        "source": "attack",
+        "similarity": 0.965999037027359,
+        "is_match": true
+      },
+      {
+        "task_id": "49-2",
+        "source": "attack",
+        "similarity": 0.9799190163612366,
+        "is_match": true
+      },
+      {
+        "task_id": "49-3",
+        "source": "attack",
+        "similarity": 0.9788989424705505,
+        "is_match": true
+      },
+      {
+        "task_id": "49-4",
+        "source": "attack",
+        "similarity": 0.9787093997001648,
+        "is_match": true
+      },
+      {
+        "task_id": "50-1",
+        "source": "attack",
+        "similarity": 0.9693728089332581,
+        "is_match": true
+      },
+      {
+        "task_id": "50-2",
+        "source": "attack",
+        "similarity": 0.9764296412467957,
+        "is_match": true
+      },
+      {
+        "task_id": "50-3",
+        "source": "attack",
+        "similarity": 0.9602411985397339,
+        "is_match": true
+      },
+      {
+        "task_id": "50-4",
+        "source": "attack",
+        "similarity": 0.9690702855587006,
+        "is_match": true
+      },
+      {
+        "task_id": "52-1",
+        "source": "attack",
+        "similarity": 0.9755640625953674,
+        "is_match": true
+      },
+      {
+        "task_id": "52-3",
+        "source": "attack",
+        "similarity": 0.9824087023735046,
+        "is_match": true
+      },
+      {
+        "task_id": "52-4",
+        "source": "attack",
+        "similarity": 0.9687522053718567,
+        "is_match": true
+      },
+      {
+        "task_id": "53-1",
+        "source": "attack",
+        "similarity": 0.96941277384758,
+        "is_match": true
+      },
+      {
+        "task_id": "53-3",
+        "source": "attack",
+        "similarity": 0.9865522682666779,
+        "is_match": true
+      },
+      {
+        "task_id": "53-4",
+        "source": "attack",
+        "similarity": 0.9556041955947876,
+        "is_match": true
+      },
+      {
+        "task_id": "54-1",
+        "source": "attack",
+        "similarity": 0.9719390571117401,
+        "is_match": true
+      },
+      {
+        "task_id": "54-2",
+        "source": "attack",
+        "similarity": 0.980807363986969,
+        "is_match": true
+      },
+      {
+        "task_id": "54-3",
+        "source": "attack",
+        "similarity": 0.9839783310890198,
+        "is_match": true
+      },
+      {
+        "task_id": "54-4",
+        "source": "attack",
+        "similarity": 0.9824115335941315,
+        "is_match": true
+      },
+      {
+        "task_id": "58-1",
+        "source": "attack",
+        "similarity": 0.9820467531681061,
+        "is_match": true
+      },
+      {
+        "task_id": "58-3",
+        "source": "attack",
+        "similarity": 0.9648407697677612,
+        "is_match": true
+      },
+      {
+        "task_id": "58-4",
+        "source": "attack",
+        "similarity": 0.9804129898548126,
+        "is_match": true
+      },
+      {
+        "task_id": "61-1",
+        "source": "attack",
+        "similarity": 0.9693408608436584,
+        "is_match": true
+      },
+      {
+        "task_id": "61-2",
+        "source": "attack",
+        "similarity": 0.9612970352172852,
+        "is_match": true
+      },
+      {
+        "task_id": "62-1",
+        "source": "attack",
+        "similarity": 0.966672956943512,
+        "is_match": true
+      },
+      {
+        "task_id": "62-3",
+        "source": "attack",
+        "similarity": 0.9808810949325562,
+        "is_match": true
+      },
+      {
+        "task_id": "62-4",
+        "source": "attack",
+        "similarity": 0.975049763917923,
+        "is_match": true
+      },
+      {
+        "task_id": "63-1",
+        "source": "attack",
+        "similarity": 0.9762575328350067,
+        "is_match": true
+      },
+      {
+        "task_id": "63-3",
+        "source": "attack",
+        "similarity": 0.9699387550354004,
+        "is_match": true
+      },
+      {
+        "task_id": "63-4",
+        "source": "attack",
+        "similarity": 0.9668766856193542,
+        "is_match": true
+      },
+      {
+        "task_id": "64-1",
+        "source": "attack",
+        "similarity": 0.956515908241272,
+        "is_match": true
+      },
+      {
+        "task_id": "64-3",
+        "source": "attack",
+        "similarity": 0.9712955951690674,
+        "is_match": true
+      },
+      {
+        "task_id": "64-4",
+        "source": "attack",
+        "similarity": 0.9784133732318878,
+        "is_match": true
+      },
+      {
+        "task_id": "66-1",
+        "source": "attack",
+        "similarity": 0.9733378291130066,
+        "is_match": true
+      },
+      {
+        "task_id": "66-2",
+        "source": "attack",
+        "similarity": 0.9638331830501556,
+        "is_match": true
+      },
+      {
+        "task_id": "66-3",
+        "source": "attack",
+        "similarity": 0.9728362560272217,
+        "is_match": true
+      },
+      {
+        "task_id": "66-4",
+        "source": "attack",
+        "similarity": 0.9807441234588623,
+        "is_match": true
+      },
+      {
+        "task_id": "7-2",
+        "source": "attack",
+        "similarity": 0.9774467945098877,
+        "is_match": true
+      },
+      {
+        "task_id": "7-4",
+        "source": "attack",
+        "similarity": 0.9806128144264221,
+        "is_match": true
+      },
+      {
+        "task_id": "9-1",
+        "source": "attack",
+        "similarity": 0.9679487347602844,
+        "is_match": true
+      },
+      {
+        "task_id": "9-2",
+        "source": "attack",
+        "similarity": 0.9712250828742981,
+        "is_match": true
+      },
+      {
+        "task_id": "9-3",
+        "source": "attack",
+        "similarity": 0.981523871421814,
+        "is_match": true
+      }
+    ]
+  },
+  "all_minilm": {
+    "method": "all_minilm",
+    "error": "页面文件太小，无法完成操作。 (os error 1455)",
+    "total": 136,
+    "matches": 0,
+    "match_rate": 0.0
+  },
+  "levenshtein": {
+    "method": "levenshtein",
+    "total": 136,
+    "matches": 136,
+    "match_rate": 1.0,
+    "details": [
+      {
+        "task_id": "1-1",
+        "source": "attack",
+        "similarity": 0.5879541108986616,
+        "is_match": true
+      },
+      {
+        "task_id": "1-2",
+        "source": "attack",
+        "similarity": 0.7235387045813586,
+        "is_match": true
+      },
+      {
+        "task_id": "1-3",
+        "source": "attack",
+        "similarity": 0.522911051212938,
+        "is_match": true
+      },
+      {
+        "task_id": "1-4",
+        "source": "attack",
+        "similarity": 0.4906716417910447,
+        "is_match": true
+      },
+      {
+        "task_id": "10-3",
+        "source": "attack",
+        "similarity": 0.5608628659476117,
+        "is_match": true
+      },
+      {
+        "task_id": "10-4",
+        "source": "attack",
+        "similarity": 0.5758835758835759,
+        "is_match": true
+      },
+      {
+        "task_id": "11-1",
+        "source": "attack",
+        "similarity": 0.4897959183673469,
+        "is_match": true
+      },
+      {
+        "task_id": "11-2",
+        "source": "attack",
+        "similarity": 0.6858789625360231,
+        "is_match": true
+      },
+      {
+        "task_id": "11-3",
+        "source": "attack",
+        "similarity": 0.628476084538376,
+        "is_match": true
+      },
+      {
+        "task_id": "11-4",
+        "source": "attack",
+        "similarity": 0.5208333333333333,
+        "is_match": true
+      },
+      {
+        "task_id": "13-1",
+        "source": "attack",
+        "similarity": 0.5597560975609757,
+        "is_match": true
+      },
+      {
+        "task_id": "13-2",
+        "source": "attack",
+        "similarity": 0.584251968503937,
+        "is_match": true
+      },
+      {
+        "task_id": "13-3",
+        "source": "attack",
+        "similarity": 0.6379310344827587,
+        "is_match": true
+      },
+      {
+        "task_id": "13-4",
+        "source": "attack",
+        "similarity": 0.6691042047531992,
+        "is_match": true
+      },
+      {
+        "task_id": "14-1",
+        "source": "attack",
+        "similarity": 0.6106304079110012,
+        "is_match": true
+      },
+      {
+        "task_id": "14-2",
+        "source": "attack",
+        "similarity": 0.6900662251655629,
+        "is_match": true
+      },
+      {
+        "task_id": "14-3",
+        "source": "attack",
+        "similarity": 0.6118326118326118,
+        "is_match": true
+      },
+      {
+        "task_id": "14-4",
+        "source": "attack",
+        "similarity": 0.6335282651072125,
+        "is_match": true
+      },
+      {
+        "task_id": "17-1",
+        "source": "attack",
+        "similarity": 0.4292742927429274,
+        "is_match": true
+      },
+      {
+        "task_id": "17-2",
+        "source": "attack",
+        "similarity": 0.4536376604850214,
+        "is_match": true
+      },
+      {
+        "task_id": "17-3",
+        "source": "attack",
+        "similarity": 0.7076612903225806,
+        "is_match": true
+      },
+      {
+        "task_id": "17-4",
+        "source": "attack",
+        "similarity": 0.6844512195121951,
+        "is_match": true
+      },
+      {
+        "task_id": "19-1",
+        "source": "attack",
+        "similarity": 0.4974811083123426,
+        "is_match": true
+      },
+      {
+        "task_id": "19-2",
+        "source": "attack",
+        "similarity": 0.5762942779291553,
+        "is_match": true
+      },
+      {
+        "task_id": "19-4",
+        "source": "attack",
+        "similarity": 0.7008196721311475,
+        "is_match": true
+      },
+      {
+        "task_id": "2-2",
+        "source": "attack",
+        "similarity": 0.5631868131868132,
+        "is_match": true
+      },
+      {
+        "task_id": "2-3",
+        "source": "attack",
+        "similarity": 0.5813586097946288,
+        "is_match": true
+      },
+      {
+        "task_id": "2-4",
+        "source": "attack",
+        "similarity": 0.662962962962963,
+        "is_match": true
+      },
+      {
+        "task_id": "20-1",
+        "source": "attack",
+        "similarity": 0.5181932245922208,
+        "is_match": true
+      },
+      {
+        "task_id": "20-2",
+        "source": "attack",
+        "similarity": 0.596537949400799,
+        "is_match": true
+      },
+      {
+        "task_id": "20-3",
+        "source": "attack",
+        "similarity": 0.5374251497005988,
+        "is_match": true
+      },
+      {
+        "task_id": "20-4",
+        "source": "attack",
+        "similarity": 0.5753424657534247,
+        "is_match": true
+      },
+      {
+        "task_id": "21-1",
+        "source": "attack",
+        "similarity": 0.48290598290598286,
+        "is_match": true
+      },
+      {
+        "task_id": "21-2",
+        "source": "attack",
+        "similarity": 0.5521739130434782,
+        "is_match": true
+      },
+      {
+        "task_id": "21-3",
+        "source": "attack",
+        "similarity": 0.5210084033613445,
+        "is_match": true
+      },
+      {
+        "task_id": "21-4",
+        "source": "attack",
+        "similarity": 0.6992230854605994,
+        "is_match": true
+      },
+      {
+        "task_id": "23-1",
+        "source": "attack",
+        "similarity": 0.525,
+        "is_match": true
+      },
+      {
+        "task_id": "23-2",
+        "source": "attack",
+        "similarity": 0.7029914529914529,
+        "is_match": true
+      },
+      {
+        "task_id": "23-3",
+        "source": "attack",
+        "similarity": 0.7412523020257826,
+        "is_match": true
+      },
+      {
+        "task_id": "23-4",
+        "source": "attack",
+        "similarity": 0.7251308900523561,
+        "is_match": true
+      },
+      {
+        "task_id": "24-1",
+        "source": "attack",
+        "similarity": 0.511204481792717,
+        "is_match": true
+      },
+      {
+        "task_id": "24-2",
+        "source": "attack",
+        "similarity": 0.4937388193202147,
+        "is_match": true
+      },
+      {
+        "task_id": "24-3",
+        "source": "attack",
+        "similarity": 0.5417298937784523,
+        "is_match": true
+      },
+      {
+        "task_id": "24-4",
+        "source": "attack",
+        "similarity": 0.640650406504065,
+        "is_match": true
+      },
+      {
+        "task_id": "25-2",
+        "source": "attack",
+        "similarity": 0.5627425614489003,
+        "is_match": true
+      },
+      {
+        "task_id": "25-3",
+        "source": "attack",
+        "similarity": 0.5021770682148041,
+        "is_match": true
+      },
+      {
+        "task_id": "26-1",
+        "source": "attack",
+        "similarity": 0.546908315565032,
+        "is_match": true
+      },
+      {
+        "task_id": "26-2",
+        "source": "attack",
+        "similarity": 0.6106014271151886,
+        "is_match": true
+      },
+      {
+        "task_id": "26-3",
+        "source": "attack",
+        "similarity": 0.7524671052631579,
+        "is_match": true
+      },
+      {
+        "task_id": "26-4",
+        "source": "attack",
+        "similarity": 0.7196601941747574,
+        "is_match": true
+      },
+      {
+        "task_id": "27-1",
+        "source": "attack",
+        "similarity": 0.4687022900763359,
+        "is_match": true
+      },
+      {
+        "task_id": "27-2",
+        "source": "attack",
+        "similarity": 0.5846394984326019,
+        "is_match": true
+      },
+      {
+        "task_id": "28-2",
+        "source": "attack",
+        "similarity": 0.67302192564347,
+        "is_match": true
+      },
+      {
+        "task_id": "28-3",
+        "source": "attack",
+        "similarity": 0.6138211382113821,
+        "is_match": true
+      },
+      {
+        "task_id": "28-4",
+        "source": "attack",
+        "similarity": 0.6650641025641026,
+        "is_match": true
+      },
+      {
+        "task_id": "29-1",
+        "source": "attack",
+        "similarity": 0.5507649513212796,
+        "is_match": true
+      },
+      {
+        "task_id": "29-4",
+        "source": "attack",
+        "similarity": 0.6826446280991736,
+        "is_match": true
+      },
+      {
+        "task_id": "30-1",
+        "source": "attack",
+        "similarity": 0.551762114537445,
+        "is_match": true
+      },
+      {
+        "task_id": "30-2",
+        "source": "attack",
+        "similarity": 0.5619718309859154,
+        "is_match": true
+      },
+      {
+        "task_id": "30-3",
+        "source": "attack",
+        "similarity": 0.5969084423305588,
+        "is_match": true
+      },
+      {
+        "task_id": "30-4",
+        "source": "attack",
+        "similarity": 0.7801094890510949,
+        "is_match": true
+      },
+      {
+        "task_id": "33-1",
+        "source": "attack",
+        "similarity": 0.5522935779816514,
+        "is_match": true
+      },
+      {
+        "task_id": "33-3",
+        "source": "attack",
+        "similarity": 0.6046783625730994,
+        "is_match": true
+      },
+      {
+        "task_id": "35-1",
+        "source": "attack",
+        "similarity": 0.5670419651995906,
+        "is_match": true
+      },
+      {
+        "task_id": "36-1",
+        "source": "attack",
+        "similarity": 0.4302721088435374,
+        "is_match": true
+      },
+      {
+        "task_id": "36-2",
+        "source": "attack",
+        "similarity": 0.6253687315634218,
+        "is_match": true
+      },
+      {
+        "task_id": "36-3",
+        "source": "attack",
+        "similarity": 0.6149870801033592,
+        "is_match": true
+      },
+      {
+        "task_id": "36-4",
+        "source": "attack",
+        "similarity": 0.7851485148514852,
+        "is_match": true
+      },
+      {
+        "task_id": "37-1",
+        "source": "attack",
+        "similarity": 0.5393858477970628,
+        "is_match": true
+      },
+      {
+        "task_id": "37-3",
+        "source": "attack",
+        "similarity": 0.4035087719298246,
+        "is_match": true
+      },
+      {
+        "task_id": "37-4",
+        "source": "attack",
+        "similarity": 0.7605042016806722,
+        "is_match": true
+      },
+      {
+        "task_id": "38-1",
+        "source": "attack",
+        "similarity": 0.5286624203821656,
+        "is_match": true
+      },
+      {
+        "task_id": "38-2",
+        "source": "attack",
+        "similarity": 0.6255033557046981,
+        "is_match": true
+      },
+      {
+        "task_id": "38-3",
+        "source": "attack",
+        "similarity": 0.4377682403433476,
+        "is_match": true
+      },
+      {
+        "task_id": "38-4",
+        "source": "attack",
+        "similarity": 0.6505791505791505,
+        "is_match": true
+      },
+      {
+        "task_id": "39-1",
+        "source": "attack",
+        "similarity": 0.6145251396648045,
+        "is_match": true
+      },
+      {
+        "task_id": "39-2",
+        "source": "attack",
+        "similarity": 0.611336032388664,
+        "is_match": true
+      },
+      {
+        "task_id": "39-3",
+        "source": "attack",
+        "similarity": 0.5265957446808511,
+        "is_match": true
+      },
+      {
+        "task_id": "39-4",
+        "source": "attack",
+        "similarity": 0.6121297602256699,
+        "is_match": true
+      },
+      {
+        "task_id": "40-1",
+        "source": "attack",
+        "similarity": 0.6980633802816901,
+        "is_match": true
+      },
+      {
+        "task_id": "42-2",
+        "source": "attack",
+        "similarity": 0.442962962962963,
+        "is_match": true
+      },
+      {
+        "task_id": "42-3",
+        "source": "attack",
+        "similarity": 0.6291793313069909,
+        "is_match": true
+      },
+      {
+        "task_id": "42-4",
+        "source": "attack",
+        "similarity": 0.7823529411764706,
+        "is_match": true
+      },
+      {
+        "task_id": "43-2",
+        "source": "attack",
+        "similarity": 0.5152603231597845,
+        "is_match": true
+      },
+      {
+        "task_id": "43-3",
+        "source": "attack",
+        "similarity": 0.44805194805194803,
+        "is_match": true
+      },
+      {
+        "task_id": "43-4",
+        "source": "attack",
+        "similarity": 0.6470588235294117,
+        "is_match": true
+      },
+      {
+        "task_id": "44-1",
+        "source": "attack",
+        "similarity": 0.5556962025316456,
+        "is_match": true
+      },
+      {
+        "task_id": "44-2",
+        "source": "attack",
+        "similarity": 0.6633416458852868,
+        "is_match": true
+      },
+      {
+        "task_id": "44-4",
+        "source": "attack",
+        "similarity": 0.6146245059288538,
+        "is_match": true
+      },
+      {
+        "task_id": "45-1",
+        "source": "attack",
+        "similarity": 0.4837261503928171,
+        "is_match": true
+      },
+      {
+        "task_id": "45-3",
+        "source": "attack",
+        "similarity": 0.49514563106796117,
+        "is_match": true
+      },
+      {
+        "task_id": "45-4",
+        "source": "attack",
+        "similarity": 0.7054455445544554,
+        "is_match": true
+      },
+      {
+        "task_id": "46-1",
+        "source": "attack",
+        "similarity": 0.5982996811902231,
+        "is_match": true
+      },
+      {
+        "task_id": "46-2",
+        "source": "attack",
+        "similarity": 0.5991902834008097,
+        "is_match": true
+      },
+      {
+        "task_id": "46-3",
+        "source": "attack",
+        "similarity": 0.6033810143042913,
+        "is_match": true
+      },
+      {
+        "task_id": "46-4",
+        "source": "attack",
+        "similarity": 0.5650485436893204,
+        "is_match": true
+      },
+      {
+        "task_id": "49-2",
+        "source": "attack",
+        "similarity": 0.6115485564304461,
+        "is_match": true
+      },
+      {
+        "task_id": "49-3",
+        "source": "attack",
+        "similarity": 0.6462882096069869,
+        "is_match": true
+      },
+      {
+        "task_id": "49-4",
+        "source": "attack",
+        "similarity": 0.6840052015604681,
+        "is_match": true
+      },
+      {
+        "task_id": "50-1",
+        "source": "attack",
+        "similarity": 0.527872582480091,
+        "is_match": true
+      },
+      {
+        "task_id": "50-2",
+        "source": "attack",
+        "similarity": 0.610981308411215,
+        "is_match": true
+      },
+      {
+        "task_id": "50-3",
+        "source": "attack",
+        "similarity": 0.5018796992481203,
+        "is_match": true
+      },
+      {
+        "task_id": "50-4",
+        "source": "attack",
+        "similarity": 0.5306122448979591,
+        "is_match": true
+      },
+      {
+        "task_id": "52-1",
+        "source": "attack",
+        "similarity": 0.6033333333333333,
+        "is_match": true
+      },
+      {
+        "task_id": "52-3",
+        "source": "attack",
+        "similarity": 0.5555555555555556,
+        "is_match": true
+      },
+      {
+        "task_id": "52-4",
+        "source": "attack",
+        "similarity": 0.5868725868725868,
+        "is_match": true
+      },
+      {
+        "task_id": "53-1",
+        "source": "attack",
+        "similarity": 0.6215139442231076,
+        "is_match": true
+      },
+      {
+        "task_id": "53-3",
+        "source": "attack",
+        "similarity": 0.7530224525043178,
+        "is_match": true
+      },
+      {
+        "task_id": "53-4",
+        "source": "attack",
+        "similarity": 0.6034816247582204,
+        "is_match": true
+      },
+      {
+        "task_id": "54-1",
+        "source": "attack",
+        "similarity": 0.4444444444444444,
+        "is_match": true
+      },
+      {
+        "task_id": "54-2",
+        "source": "attack",
+        "similarity": 0.5424657534246575,
+        "is_match": true
+      },
+      {
+        "task_id": "54-3",
+        "source": "attack",
+        "similarity": 0.6109693877551021,
+        "is_match": true
+      },
+      {
+        "task_id": "54-4",
+        "source": "attack",
+        "similarity": 0.6104347826086957,
+        "is_match": true
+      },
+      {
+        "task_id": "58-1",
+        "source": "attack",
+        "similarity": 0.5664596273291925,
+        "is_match": true
+      },
+      {
+        "task_id": "58-3",
+        "source": "attack",
+        "similarity": 0.4402730375426621,
+        "is_match": true
+      },
+      {
+        "task_id": "58-4",
+        "source": "attack",
+        "similarity": 0.734966592427617,
+        "is_match": true
+      },
+      {
+        "task_id": "61-1",
+        "source": "attack",
+        "similarity": 0.47959183673469385,
+        "is_match": true
+      },
+      {
+        "task_id": "61-2",
+        "source": "attack",
+        "similarity": 0.45418326693227096,
+        "is_match": true
+      },
+      {
+        "task_id": "62-1",
+        "source": "attack",
+        "similarity": 0.5163265306122449,
+        "is_match": true
+      },
+      {
+        "task_id": "62-3",
+        "source": "attack",
+        "similarity": 0.6258992805755396,
+        "is_match": true
+      },
+      {
+        "task_id": "62-4",
+        "source": "attack",
+        "similarity": 0.6458635703918723,
+        "is_match": true
+      },
+      {
+        "task_id": "63-1",
+        "source": "attack",
+        "similarity": 0.5191972076788831,
+        "is_match": true
+      },
+      {
+        "task_id": "63-3",
+        "source": "attack",
+        "similarity": 0.5481012658227848,
+        "is_match": true
+      },
+      {
+        "task_id": "63-4",
+        "source": "attack",
+        "similarity": 0.554119547657512,
+        "is_match": true
+      },
+      {
+        "task_id": "64-1",
+        "source": "attack",
+        "similarity": 0.43092522179974646,
+        "is_match": true
+      },
+      {
+        "task_id": "64-3",
+        "source": "attack",
+        "similarity": 0.5260545905707197,
+        "is_match": true
+      },
+      {
+        "task_id": "64-4",
+        "source": "attack",
+        "similarity": 0.6425992779783394,
+        "is_match": true
+      },
+      {
+        "task_id": "66-1",
+        "source": "attack",
+        "similarity": 0.5466237942122186,
+        "is_match": true
+      },
+      {
+        "task_id": "66-2",
+        "source": "attack",
+        "similarity": 0.5578703703703703,
+        "is_match": true
+      },
+      {
+        "task_id": "66-3",
+        "source": "attack",
+        "similarity": 0.5942275042444822,
+        "is_match": true
+      },
+      {
+        "task_id": "66-4",
+        "source": "attack",
+        "similarity": 0.6791044776119404,
+        "is_match": true
+      },
+      {
+        "task_id": "7-2",
+        "source": "attack",
+        "similarity": 0.5743801652892562,
+        "is_match": true
+      },
+      {
+        "task_id": "7-4",
+        "source": "attack",
+        "similarity": 0.5579937304075235,
+        "is_match": true
+      },
+      {
+        "task_id": "9-1",
+        "source": "attack",
+        "similarity": 0.5078947368421053,
+        "is_match": true
+      },
+      {
+        "task_id": "9-2",
+        "source": "attack",
+        "similarity": 0.5652818991097923,
+        "is_match": true
+      },
+      {
+        "task_id": "9-3",
+        "source": "attack",
+        "similarity": 0.6464088397790055,
+        "is_match": true
+      }
+    ]
+  },
+  "string_matching": {
+    "method": "string_matching",
+    "total": 136,
+    "matches": 136,
+    "match_rate": 1.0,
+    "details": [
+      {
+        "task_id": "1-1",
+        "source": "attack",
+        "similarity": 0.689922480620155,
+        "is_match": true
+      },
+      {
+        "task_id": "1-2",
+        "source": "attack",
+        "similarity": 0.7352941176470589,
+        "is_match": true
+      },
+      {
+        "task_id": "1-3",
+        "source": "attack",
+        "similarity": 0.6210526315789474,
+        "is_match": true
+      },
+      {
+        "task_id": "1-4",
+        "source": "attack",
+        "similarity": 0.5487804878048781,
+        "is_match": true
+      },
+      {
+        "task_id": "10-3",
+        "source": "attack",
+        "similarity": 0.6,
+        "is_match": true
+      },
+      {
+        "task_id": "10-4",
+        "source": "attack",
+        "similarity": 0.5714285714285714,
+        "is_match": true
+      },
+      {
+        "task_id": "11-1",
+        "source": "attack",
+        "similarity": 0.5454545454545454,
+        "is_match": true
+      },
+      {
+        "task_id": "11-2",
+        "source": "attack",
+        "similarity": 0.7,
+        "is_match": true
+      },
+      {
+        "task_id": "11-3",
+        "source": "attack",
+        "similarity": 0.6902654867256637,
+        "is_match": true
+      },
+      {
+        "task_id": "11-4",
+        "source": "attack",
+        "similarity": 0.5375,
+        "is_match": true
+      },
+      {
+        "task_id": "13-1",
+        "source": "attack",
+        "similarity": 0.6285714285714286,
+        "is_match": true
+      },
+      {
+        "task_id": "13-2",
+        "source": "attack",
+        "similarity": 0.6170212765957447,
+        "is_match": true
+      },
+      {
+        "task_id": "13-3",
+        "source": "attack",
+        "similarity": 0.6951219512195121,
+        "is_match": true
+      },
+      {
+        "task_id": "13-4",
+        "source": "attack",
+        "similarity": 0.68,
+        "is_match": true
+      },
+      {
+        "task_id": "14-1",
+        "source": "attack",
+        "similarity": 0.6952380952380952,
+        "is_match": true
+      },
+      {
+        "task_id": "14-2",
+        "source": "attack",
+        "similarity": 0.7040816326530612,
+        "is_match": true
+      },
+      {
+        "task_id": "14-3",
+        "source": "attack",
+        "similarity": 0.651685393258427,
+        "is_match": true
+      },
+      {
+        "task_id": "14-4",
+        "source": "attack",
+        "similarity": 0.6060606060606061,
+        "is_match": true
+      },
+      {
+        "task_id": "17-1",
+        "source": "attack",
+        "similarity": 0.45454545454545453,
+        "is_match": true
+      },
+      {
+        "task_id": "17-2",
+        "source": "attack",
+        "similarity": 0.48484848484848486,
+        "is_match": true
+      },
+      {
+        "task_id": "17-3",
+        "source": "attack",
+        "similarity": 0.7522935779816514,
+        "is_match": true
+      },
+      {
+        "task_id": "17-4",
+        "source": "attack",
+        "similarity": 0.7176470588235294,
+        "is_match": true
+      },
+      {
+        "task_id": "19-1",
+        "source": "attack",
+        "similarity": 0.5714285714285714,
+        "is_match": true
+      },
+      {
+        "task_id": "19-2",
+        "source": "attack",
+        "similarity": 0.6213592233009708,
+        "is_match": true
+      },
+      {
+        "task_id": "19-4",
+        "source": "attack",
+        "similarity": 0.6901408450704225,
+        "is_match": true
+      },
+      {
+        "task_id": "2-2",
+        "source": "attack",
+        "similarity": 0.5631067961165048,
+        "is_match": true
+      },
+      {
+        "task_id": "2-3",
+        "source": "attack",
+        "similarity": 0.6233766233766234,
+        "is_match": true
+      },
+      {
+        "task_id": "2-4",
+        "source": "attack",
+        "similarity": 0.6933333333333334,
+        "is_match": true
+      },
+      {
+        "task_id": "20-1",
+        "source": "attack",
+        "similarity": 0.594059405940594,
+        "is_match": true
+      },
+      {
+        "task_id": "20-2",
+        "source": "attack",
+        "similarity": 0.6481481481481481,
+        "is_match": true
+      },
+      {
+        "task_id": "20-3",
+        "source": "attack",
+        "similarity": 0.5833333333333334,
+        "is_match": true
+      },
+      {
+        "task_id": "20-4",
+        "source": "attack",
+        "similarity": 0.6444444444444445,
+        "is_match": true
+      },
+      {
+        "task_id": "21-1",
+        "source": "attack",
+        "similarity": 0.5333333333333333,
+        "is_match": true
+      },
+      {
+        "task_id": "21-2",
+        "source": "attack",
+        "similarity": 0.603448275862069,
+        "is_match": true
+      },
+      {
+        "task_id": "21-3",
+        "source": "attack",
+        "similarity": 0.5052631578947369,
+        "is_match": true
+      },
+      {
+        "task_id": "21-4",
+        "source": "attack",
+        "similarity": 0.6666666666666666,
+        "is_match": true
+      },
+      {
+        "task_id": "23-1",
+        "source": "attack",
+        "similarity": 0.5826086956521739,
+        "is_match": true
+      },
+      {
+        "task_id": "23-2",
+        "source": "attack",
+        "similarity": 0.7165354330708661,
+        "is_match": true
+      },
+      {
+        "task_id": "23-3",
+        "source": "attack",
+        "similarity": 0.7073170731707317,
+        "is_match": true
+      },
+      {
+        "task_id": "23-4",
+        "source": "attack",
+        "similarity": 0.7184466019417476,
+        "is_match": true
+      },
+      {
+        "task_id": "24-1",
+        "source": "attack",
+        "similarity": 0.5684210526315789,
+        "is_match": true
+      },
+      {
+        "task_id": "24-2",
+        "source": "attack",
+        "similarity": 0.5121951219512195,
+        "is_match": true
+      },
+      {
+        "task_id": "24-3",
+        "source": "attack",
+        "similarity": 0.6125,
+        "is_match": true
+      },
+      {
+        "task_id": "24-4",
+        "source": "attack",
+        "similarity": 0.6172839506172839,
+        "is_match": true
+      },
+      {
+        "task_id": "25-2",
+        "source": "attack",
+        "similarity": 0.5740740740740741,
+        "is_match": true
+      },
+      {
+        "task_id": "25-3",
+        "source": "attack",
+        "similarity": 0.5196078431372549,
+        "is_match": true
+      },
+      {
+        "task_id": "26-1",
+        "source": "attack",
+        "similarity": 0.5606060606060606,
+        "is_match": true
+      },
+      {
+        "task_id": "26-2",
+        "source": "attack",
+        "similarity": 0.59375,
+        "is_match": true
+      },
+      {
+        "task_id": "26-3",
+        "source": "attack",
+        "similarity": 0.7565217391304347,
+        "is_match": true
+      },
+      {
+        "task_id": "26-4",
+        "source": "attack",
+        "similarity": 0.6915887850467289,
+        "is_match": true
+      },
+      {
+        "task_id": "27-1",
+        "source": "attack",
+        "similarity": 0.494949494949495,
+        "is_match": true
+      },
+      {
+        "task_id": "27-2",
+        "source": "attack",
+        "similarity": 0.625,
+        "is_match": true
+      },
+      {
+        "task_id": "28-2",
+        "source": "attack",
+        "similarity": 0.6713286713286714,
+        "is_match": true
+      },
+      {
+        "task_id": "28-3",
+        "source": "attack",
+        "similarity": 0.6818181818181818,
+        "is_match": true
+      },
+      {
+        "task_id": "28-4",
+        "source": "attack",
+        "similarity": 0.6626506024096386,
+        "is_match": true
+      },
+      {
+        "task_id": "29-1",
+        "source": "attack",
+        "similarity": 0.611764705882353,
+        "is_match": true
+      },
+      {
+        "task_id": "29-4",
+        "source": "attack",
+        "similarity": 0.6785714285714286,
+        "is_match": true
+      },
+      {
+        "task_id": "30-1",
+        "source": "attack",
+        "similarity": 0.6408450704225352,
+        "is_match": true
+      },
+      {
+        "task_id": "30-2",
+        "source": "attack",
+        "similarity": 0.6379310344827587,
+        "is_match": true
+      },
+      {
+        "task_id": "30-3",
+        "source": "attack",
+        "similarity": 0.7083333333333334,
+        "is_match": true
+      },
+      {
+        "task_id": "30-4",
+        "source": "attack",
+        "similarity": 0.7761194029850746,
+        "is_match": true
+      },
+      {
+        "task_id": "33-1",
+        "source": "attack",
+        "similarity": 0.6299212598425197,
+        "is_match": true
+      },
+      {
+        "task_id": "33-3",
+        "source": "attack",
+        "similarity": 0.7142857142857143,
+        "is_match": true
+      },
+      {
+        "task_id": "35-1",
+        "source": "attack",
+        "similarity": 0.676923076923077,
+        "is_match": true
+      },
+      {
+        "task_id": "36-1",
+        "source": "attack",
+        "similarity": 0.4235294117647059,
+        "is_match": true
+      },
+      {
+        "task_id": "36-2",
+        "source": "attack",
+        "similarity": 0.6530612244897959,
+        "is_match": true
+      },
+      {
+        "task_id": "36-3",
+        "source": "attack",
+        "similarity": 0.6551724137931034,
+        "is_match": true
+      },
+      {
+        "task_id": "36-4",
+        "source": "attack",
+        "similarity": 0.7333333333333333,
+        "is_match": true
+      },
+      {
+        "task_id": "37-1",
+        "source": "attack",
+        "similarity": 0.5833333333333334,
+        "is_match": true
+      },
+      {
+        "task_id": "37-3",
+        "source": "attack",
+        "similarity": 0.44,
+        "is_match": true
+      },
+      {
+        "task_id": "37-4",
+        "source": "attack",
+        "similarity": 0.7815126050420168,
+        "is_match": true
+      },
+      {
+        "task_id": "38-1",
+        "source": "attack",
+        "similarity": 0.5894736842105263,
+        "is_match": true
+      },
+      {
+        "task_id": "38-2",
+        "source": "attack",
+        "similarity": 0.6428571428571429,
+        "is_match": true
+      },
+      {
+        "task_id": "38-3",
+        "source": "attack",
+        "similarity": 0.36065573770491804,
+        "is_match": true
+      },
+      {
+        "task_id": "38-4",
+        "source": "attack",
+        "similarity": 0.609375,
+        "is_match": true
+      },
+      {
+        "task_id": "39-1",
+        "source": "attack",
+        "similarity": 0.6837606837606838,
+        "is_match": true
+      },
+      {
+        "task_id": "39-2",
+        "source": "attack",
+        "similarity": 0.6161616161616161,
+        "is_match": true
+      },
+      {
+        "task_id": "39-3",
+        "source": "attack",
+        "similarity": 0.5142857142857142,
+        "is_match": true
+      },
+      {
+        "task_id": "39-4",
+        "source": "attack",
+        "similarity": 0.6336633663366337,
+        "is_match": true
+      },
+      {
+        "task_id": "40-1",
+        "source": "attack",
+        "similarity": 0.7293233082706767,
+        "is_match": true
+      },
+      {
+        "task_id": "42-2",
+        "source": "attack",
+        "similarity": 0.45348837209302323,
+        "is_match": true
+      },
+      {
+        "task_id": "42-3",
+        "source": "attack",
+        "similarity": 0.6333333333333333,
+        "is_match": true
+      },
+      {
+        "task_id": "42-4",
+        "source": "attack",
+        "similarity": 0.7864077669902912,
+        "is_match": true
+      },
+      {
+        "task_id": "43-2",
+        "source": "attack",
+        "similarity": 0.5714285714285714,
+        "is_match": true
+      },
+      {
+        "task_id": "43-3",
+        "source": "attack",
+        "similarity": 0.42857142857142855,
+        "is_match": true
+      },
+      {
+        "task_id": "43-4",
+        "source": "attack",
+        "similarity": 0.6567164179104478,
+        "is_match": true
+      },
+      {
+        "task_id": "44-1",
+        "source": "attack",
+        "similarity": 0.6407766990291263,
+        "is_match": true
+      },
+      {
+        "task_id": "44-2",
+        "source": "attack",
+        "similarity": 0.6929824561403509,
+        "is_match": true
+      },
+      {
+        "task_id": "44-4",
+        "source": "attack",
+        "similarity": 0.6455696202531646,
+        "is_match": true
+      },
+      {
+        "task_id": "45-1",
+        "source": "attack",
+        "similarity": 0.5121951219512195,
+        "is_match": true
+      },
+      {
+        "task_id": "45-3",
+        "source": "attack",
+        "similarity": 0.5217391304347826,
+        "is_match": true
+      },
+      {
+        "task_id": "45-4",
+        "source": "attack",
+        "similarity": 0.75,
+        "is_match": true
+      },
+      {
+        "task_id": "46-1",
+        "source": "attack",
+        "similarity": 0.6910569105691057,
+        "is_match": true
+      },
+      {
+        "task_id": "46-2",
+        "source": "attack",
+        "similarity": 0.6504854368932039,
+        "is_match": true
+      },
+      {
+        "task_id": "46-3",
+        "source": "attack",
+        "similarity": 0.6320754716981132,
+        "is_match": true
+      },
+      {
+        "task_id": "46-4",
+        "source": "attack",
+        "similarity": 0.6075949367088608,
+        "is_match": true
+      },
+      {
+        "task_id": "49-2",
+        "source": "attack",
+        "similarity": 0.6637168141592921,
+        "is_match": true
+      },
+      {
+        "task_id": "49-3",
+        "source": "attack",
+        "similarity": 0.7235772357723578,
+        "is_match": true
+      },
+      {
+        "task_id": "49-4",
+        "source": "attack",
+        "similarity": 0.7117117117117117,
+        "is_match": true
+      },
+      {
+        "task_id": "50-1",
+        "source": "attack",
+        "similarity": 0.5897435897435898,
+        "is_match": true
+      },
+      {
+        "task_id": "50-2",
+        "source": "attack",
+        "similarity": 0.6074766355140186,
+        "is_match": true
+      },
+      {
+        "task_id": "50-3",
+        "source": "attack",
+        "similarity": 0.5375,
+        "is_match": true
+      },
+      {
+        "task_id": "50-4",
+        "source": "attack",
+        "similarity": 0.5797101449275363,
+        "is_match": true
+      },
+      {
+        "task_id": "52-1",
+        "source": "attack",
+        "similarity": 0.65625,
+        "is_match": true
+      },
+      {
+        "task_id": "52-3",
+        "source": "attack",
+        "similarity": 0.6506024096385542,
+        "is_match": true
+      },
+      {
+        "task_id": "52-4",
+        "source": "attack",
+        "similarity": 0.6075949367088608,
+        "is_match": true
+      },
+      {
+        "task_id": "53-1",
+        "source": "attack",
+        "similarity": 0.6481481481481481,
+        "is_match": true
+      },
+      {
+        "task_id": "53-3",
+        "source": "attack",
+        "similarity": 0.775,
+        "is_match": true
+      },
+      {
+        "task_id": "53-4",
+        "source": "attack",
+        "similarity": 0.6153846153846154,
+        "is_match": true
+      },
+      {
+        "task_id": "54-1",
+        "source": "attack",
+        "similarity": 0.4631578947368421,
+        "is_match": true
+      },
+      {
+        "task_id": "54-2",
+        "source": "attack",
+        "similarity": 0.5421686746987951,
+        "is_match": true
+      },
+      {
+        "task_id": "54-3",
+        "source": "attack",
+        "similarity": 0.6049382716049383,
+        "is_match": true
+      },
+      {
+        "task_id": "54-4",
+        "source": "attack",
+        "similarity": 0.6133333333333333,
+        "is_match": true
+      },
+      {
+        "task_id": "58-1",
+        "source": "attack",
+        "similarity": 0.6464646464646465,
+        "is_match": true
+      },
+      {
+        "task_id": "58-3",
+        "source": "attack",
+        "similarity": 0.4625,
+        "is_match": true
+      },
+      {
+        "task_id": "58-4",
+        "source": "attack",
+        "similarity": 0.7452830188679245,
+        "is_match": true
+      },
+      {
+        "task_id": "61-1",
+        "source": "attack",
+        "similarity": 0.5154639175257731,
+        "is_match": true
+      },
+      {
+        "task_id": "61-2",
+        "source": "attack",
+        "similarity": 0.4666666666666667,
+        "is_match": true
+      },
+      {
+        "task_id": "62-1",
+        "source": "attack",
+        "similarity": 0.5652173913043478,
+        "is_match": true
+      },
+      {
+        "task_id": "62-3",
+        "source": "attack",
+        "similarity": 0.6306306306306306,
+        "is_match": true
+      },
+      {
+        "task_id": "62-4",
+        "source": "attack",
+        "similarity": 0.67,
+        "is_match": true
+      },
+      {
+        "task_id": "63-1",
+        "source": "attack",
+        "similarity": 0.5748502994011976,
+        "is_match": true
+      },
+      {
+        "task_id": "63-3",
+        "source": "attack",
+        "similarity": 0.5726495726495726,
+        "is_match": true
+      },
+      {
+        "task_id": "63-4",
+        "source": "attack",
+        "similarity": 0.5612244897959183,
+        "is_match": true
+      },
+      {
+        "task_id": "64-1",
+        "source": "attack",
+        "similarity": 0.4745762711864407,
+        "is_match": true
+      },
+      {
+        "task_id": "64-3",
+        "source": "attack",
+        "similarity": 0.5892857142857143,
+        "is_match": true
+      },
+      {
+        "task_id": "64-4",
+        "source": "attack",
+        "similarity": 0.7083333333333334,
+        "is_match": true
+      },
+      {
+        "task_id": "66-1",
+        "source": "attack",
+        "similarity": 0.6470588235294118,
+        "is_match": true
+      },
+      {
+        "task_id": "66-2",
+        "source": "attack",
+        "similarity": 0.6049382716049383,
+        "is_match": true
+      },
+      {
+        "task_id": "66-3",
+        "source": "attack",
+        "similarity": 0.5934065934065934,
+        "is_match": true
+      },
+      {
+        "task_id": "66-4",
+        "source": "attack",
+        "similarity": 0.675,
+        "is_match": true
+      },
+      {
+        "task_id": "7-2",
+        "source": "attack",
+        "similarity": 0.6153846153846154,
+        "is_match": true
+      },
+      {
+        "task_id": "7-4",
+        "source": "attack",
+        "similarity": 0.5714285714285714,
+        "is_match": true
+      },
+      {
+        "task_id": "9-1",
+        "source": "attack",
+        "similarity": 0.5656565656565656,
+        "is_match": true
+      },
+      {
+        "task_id": "9-2",
+        "source": "attack",
+        "similarity": 0.5656565656565656,
+        "is_match": true
+      },
+      {
+        "task_id": "9-3",
+        "source": "attack",
+        "similarity": 0.6944444444444444,
+        "is_match": true
+      }
+    ]
+  },
+  "bm25": {
+    "method": "bm25",
+    "total": 136,
+    "matches": 136,
+    "match_rate": 1.0,
+    "details": [
+      {
+        "task_id": "1-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "1-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "1-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "1-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "10-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "10-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "11-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "11-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "11-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "11-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "13-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "13-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "13-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "13-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "14-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "14-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "14-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "14-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "17-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "17-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "17-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "17-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "19-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "19-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "19-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "2-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "2-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "2-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "20-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "20-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "20-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "20-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "21-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "21-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "21-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "21-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "23-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "23-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "23-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "23-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "24-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "24-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "24-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "24-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "25-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "25-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "26-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "26-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "26-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "26-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "27-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "27-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "28-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "28-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "28-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "29-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "29-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "30-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "30-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "30-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "30-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "33-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "33-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "35-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "36-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "36-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "36-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "36-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "37-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "37-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "37-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "38-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "38-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "38-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "38-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "39-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "39-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "39-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "39-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "40-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "42-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "42-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "42-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "43-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "43-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "43-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "44-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "44-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "44-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "45-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "45-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "45-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "46-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "46-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "46-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "46-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "49-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "49-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "49-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "50-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "50-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "50-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "50-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "52-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "52-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "52-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "53-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "53-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "53-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "54-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "54-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "54-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "54-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "58-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "58-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "58-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "61-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "61-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "62-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "62-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "62-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "63-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "63-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "63-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "64-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "64-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "64-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "66-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "66-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "66-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "66-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "7-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "7-4",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "9-1",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "9-2",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      },
+      {
+        "task_id": "9-3",
+        "source": "attack",
+        "similarity": 1.0,
+        "is_match": true
+      }
+    ]
+  }
+}

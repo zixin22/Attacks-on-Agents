@@ -58,28 +58,51 @@ def plot_density(series, output_path):
         "attack_query": "#d62728",
     }
 
+    # Label mapping for legend
+    label_map = {
+        "benign_full": "benign",
+        "carrier_query": "carrier",
+        "attack_query": "attack",
+    }
+
     for name, values in series.items():
         values = [v for v in values if isinstance(v, (int, float)) and not math.isnan(v)]
         if not values:
             continue
+        min_v = min(values)
+        max_v = max(values)
+        if min_v == max_v:
+            min_v -= 1e-3
+            max_v += 1e-3
+        display_name = label_map.get(name, name)
         if use_seaborn:
-            sns.kdeplot(values, label=name, color=colors.get(name))
+            sns.kdeplot(values, label=display_name, color=colors.get(name))
         elif use_scipy:
             kde = gaussian_kde(values)
-            xs = [i / 100 for i in range(0, 101)]
+            import numpy as _np
+            xs = _np.linspace(min_v, max_v, 200)
             ys = kde(xs)
-            plt.plot(xs, ys, label=name, color=colors.get(name))
+            plt.plot(xs, ys, label=display_name, color=colors.get(name), linewidth=12)
         else:
             import numpy as np
 
             hist, bin_edges = np.histogram(values, bins=20, range=(0, 1), density=True)
             centers = (bin_edges[:-1] + bin_edges[1:]) / 2
-            plt.plot(centers, hist, label=name, color=colors.get(name))
+            plt.plot(centers, hist, label=label_map.get(name, name), color=colors.get(name), linewidth=12)
 
-    plt.title("Coherence Loss Density")
-    plt.xlabel("coherence_loss")
-    plt.ylabel("density")
-    plt.legend()
+    # Explicitly create legend handles with correct colors and linewidth
+    handles = [
+        plt.Line2D([0], [0], color="#1f77b4", linewidth=4, label="benign"),
+        plt.Line2D([0], [0], color="#ff7f0e", linewidth=4, label="carrier"),
+        plt.Line2D([0], [0], color="#d62728", linewidth=4, label="attack"),
+    ]
+    plt.legend(handles=handles, fontsize=34)
+    plt.xlabel("Perplexity", fontsize=33)
+    plt.ylabel("Density", fontsize=18)
+    plt.xticks(fontsize=28)
+    plt.yticks(fontsize=18)
+    plt.xlim(2, 9)
+    plt.ylim(0.0, 1.9)
     plt.tight_layout()
     plt.savefig(output_path, dpi=200)
 
@@ -96,7 +119,7 @@ def main():
     parser.add_argument(
         "--output",
         type=str,
-        default="promptarmor/osagent/osagent_coherence_density_all.png",
+        default=str(Path(__file__).resolve().parent / "osagent_coherence_density_all.png"),
         help="Output image path."
     )
     parser.add_argument("--no_gpt2", action="store_true", help="disable GPT-2 (use simplified mode). Default: GPT-2 enabled")
@@ -139,6 +162,10 @@ def main():
                 ppl = None
             entries.append({"loss": l, "perplexity": ppl})
         results[name] = entries
+
+    # Create output directories first
+    json_output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
 
     try:
         with open(json_output_path, "w", encoding="utf-8") as f:

@@ -114,17 +114,29 @@ def plot_density(series: Dict[str, List[float]], output_path: Path):
             import numpy as _np
             xs = _np.linspace(min_v, max_v, 200)
             ys = kde(xs)
-            plt.plot(xs, ys, label=name, color=colors.get(name))
+            plt.plot(xs, ys, label=name, color=colors.get(name), linewidth=3)
         else:
             import numpy as np
             hist, bin_edges = np.histogram(values, bins=50, range=(min_v, max_v), density=True)
             centers = (bin_edges[:-1] + bin_edges[1:]) / 2
-            plt.plot(centers, hist, label=name, color=colors.get(name))
+            plt.plot(centers, hist, label=name, color=colors.get(name), linewidth=3)
 
-    plt.title("Webshop Coherence Loss Density")
-    plt.xlabel("coherence_loss (NLL)")
-    plt.ylabel("density")
-    plt.legend()
+    # Explicitly create legend handles with correct colors in the desired order
+    handles = [
+        plt.Line2D([0], [0], color="#1f77b4", linewidth=3, label="benign"),
+        plt.Line2D([0], [0], color="#ff7f0e", linewidth=3, label="carrier"),
+        plt.Line2D([0], [0], color="#d62728", linewidth=3, label="attack"),
+    ]
+    plt.legend(handles=handles, fontsize=26)
+    plt.xticks(fontsize=28)
+    plt.yticks(fontsize=18)
+    plt.xlabel("Perplexity", fontsize=28)
+    plt.ylabel("Density", fontsize=18)
+    plt.xlim(2, 9)
+    plt.ylim(0.0, 1.2)
+    # Remove title to avoid "WebShop Coherence Loss Density" or similar text
+    if plt.gca().get_title():
+        plt.title("")
     plt.tight_layout()
     output_path.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(output_path, dpi=200)

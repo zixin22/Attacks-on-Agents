@@ -1,0 +1,708 @@
+{
+  "method": "bm25",
+  "total": 100,
+  "matches": 100,
+  "match_rate": 1.0,
+  "details": [
+    {
+      "task_id": "case_1",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2716876250241206,
+      "is_match": true
+    },
+    {
+      "task_id": "case_2",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.30109718982775235,
+      "is_match": true
+    },
+    {
+      "task_id": "case_3",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.295369054289562,
+      "is_match": true
+    },
+    {
+      "task_id": "case_4",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.6133177553009784,
+      "is_match": true
+    },
+    {
+      "task_id": "case_5",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.26974750573455775,
+      "is_match": true
+    },
+    {
+      "task_id": "case_6",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.29055341991933853,
+      "is_match": true
+    },
+    {
+      "task_id": "case_7",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.27502139177231877,
+      "is_match": true
+    },
+    {
+      "task_id": "case_8",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2912187873463291,
+      "is_match": true
+    },
+    {
+      "task_id": "case_9",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.3582990786555761,
+      "is_match": true
+    },
+    {
+      "task_id": "case_10",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2588126816673676,
+      "is_match": true
+    },
+    {
+      "task_id": "case_11",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.29645827755477716,
+      "is_match": true
+    },
+    {
+      "task_id": "case_12",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.25658572239664557,
+      "is_match": true
+    },
+    {
+      "task_id": "case_13",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2470479589875365,
+      "is_match": true
+    },
+    {
+      "task_id": "case_14",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2724180800265642,
+      "is_match": true
+    },
+    {
+      "task_id": "case_15",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2589142888497662,
+      "is_match": true
+    },
+    {
+      "task_id": "case_16",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2682899594938271,
+      "is_match": true
+    },
+    {
+      "task_id": "case_17",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.263342318859222,
+      "is_match": true
+    },
+    {
+      "task_id": "case_18",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.28126355634025924,
+      "is_match": true
+    },
+    {
+      "task_id": "case_19",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2801419120775534,
+      "is_match": true
+    },
+    {
+      "task_id": "case_20",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.3390618018341555,
+      "is_match": true
+    },
+    {
+      "task_id": "case_21",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2766808062452461,
+      "is_match": true
+    },
+    {
+      "task_id": "case_22",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2622485553302236,
+      "is_match": true
+    },
+    {
+      "task_id": "case_23",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2797218222321768,
+      "is_match": true
+    },
+    {
+      "task_id": "case_24",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.28193529184560645,
+      "is_match": true
+    },
+    {
+      "task_id": "case_25",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.26850429101705525,
+      "is_match": true
+    },
+    {
+      "task_id": "case_26",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2975641241921653,
+      "is_match": true
+    },
+    {
+      "task_id": "case_27",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.26723980402013164,
+      "is_match": true
+    },
+    {
+      "task_id": "case_28",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2798800578101905,
+      "is_match": true
+    },
+    {
+      "task_id": "case_29",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.25800034780608117,
+      "is_match": true
+    },
+    {
+      "task_id": "case_30",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2904653693873423,
+      "is_match": true
+    },
+    {
+      "task_id": "case_31",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.29399919958784554,
+      "is_match": true
+    },
+    {
+      "task_id": "case_32",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.29479053329639315,
+      "is_match": true
+    },
+    {
+      "task_id": "case_33",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.5093934613096855,
+      "is_match": true
+    },
+    {
+      "task_id": "case_34",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.27754512464861536,
+      "is_match": true
+    },
+    {
+      "task_id": "case_35",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2470479589875365,
+      "is_match": true
+    },
+    {
+      "task_id": "case_36",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.3136711257749271,
+      "is_match": true
+    },
+    {
+      "task_id": "case_37",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.3264429032553986,
+      "is_match": true
+    },
+    {
+      "task_id": "case_38",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2745155556106049,
+      "is_match": true
+    },
+    {
+      "task_id": "case_39",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2874892595260151,
+      "is_match": true
+    },
+    {
+      "task_id": "case_40",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.3390618018341555,
+      "is_match": true
+    },
+    {
+      "task_id": "case_41",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.25097929482409015,
+      "is_match": true
+    },
+    {
+      "task_id": "case_42",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.263743005062465,
+      "is_match": true
+    },
+    {
+      "task_id": "case_43",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.4682220631932684,
+      "is_match": true
+    },
+    {
+      "task_id": "case_44",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.31311494443224624,
+      "is_match": true
+    },
+    {
+      "task_id": "case_45",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2914759114390386,
+      "is_match": true
+    },
+    {
+      "task_id": "case_46",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2472343286450968,
+      "is_match": true
+    },
+    {
+      "task_id": "case_47",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.27532471724456214,
+      "is_match": true
+    },
+    {
+      "task_id": "case_48",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2560315256229307,
+      "is_match": true
+    },
+    {
+      "task_id": "case_49",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2773879449893665,
+      "is_match": true
+    },
+    {
+      "task_id": "case_50",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.25191936891980365,
+      "is_match": true
+    },
+    {
+      "task_id": "case_51",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2527420702671501,
+      "is_match": true
+    },
+    {
+      "task_id": "case_52",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.3172376656893874,
+      "is_match": true
+    },
+    {
+      "task_id": "case_53",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.615730315696795,
+      "is_match": true
+    },
+    {
+      "task_id": "case_54",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2597852529596055,
+      "is_match": true
+    },
+    {
+      "task_id": "case_55",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.35855296129255054,
+      "is_match": true
+    },
+    {
+      "task_id": "case_56",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.3003097721459853,
+      "is_match": true
+    },
+    {
+      "task_id": "case_57",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2703478891579827,
+      "is_match": true
+    },
+    {
+      "task_id": "case_58",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2722880750616996,
+      "is_match": true
+    },
+    {
+      "task_id": "case_59",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.29011812123848085,
+      "is_match": true
+    },
+    {
+      "task_id": "case_60",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2738330467532304,
+      "is_match": true
+    },
+    {
+      "task_id": "case_61",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.26990705068993903,
+      "is_match": true
+    },
+    {
+      "task_id": "case_62",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.299991577723556,
+      "is_match": true
+    },
+    {
+      "task_id": "case_63",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.5623589055599277,
+      "is_match": true
+    },
+    {
+      "task_id": "case_64",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.307114693788315,
+      "is_match": true
+    },
+    {
+      "task_id": "case_65",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.4207045517133528,
+      "is_match": true
+    },
+    {
+      "task_id": "case_66",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2593148244693392,
+      "is_match": true
+    },
+    {
+      "task_id": "case_67",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2800065518992429,
+      "is_match": true
+    },
+    {
+      "task_id": "case_68",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.26238361825514767,
+      "is_match": true
+    },
+    {
+      "task_id": "case_69",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2615608582698964,
+      "is_match": true
+    },
+    {
+      "task_id": "case_70",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.3193732360978866,
+      "is_match": true
+    },
+    {
+      "task_id": "case_71",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.26662365999493737,
+      "is_match": true
+    },
+    {
+      "task_id": "case_72",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2791568615662143,
+      "is_match": true
+    },
+    {
+      "task_id": "case_73",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.24361091753795605,
+      "is_match": true
+    },
+    {
+      "task_id": "case_74",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2415250935893879,
+      "is_match": true
+    },
+    {
+      "task_id": "case_75",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.3028157900409686,
+      "is_match": true
+    },
+    {
+      "task_id": "case_76",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.3014673505881175,
+      "is_match": true
+    },
+    {
+      "task_id": "case_77",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.25191936891980365,
+      "is_match": true
+    },
+    {
+      "task_id": "case_78",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2754967906775944,
+      "is_match": true
+    },
+    {
+      "task_id": "case_79",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.28183813101977867,
+      "is_match": true
+    },
+    {
+      "task_id": "case_80",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2839887134996242,
+      "is_match": true
+    },
+    {
+      "task_id": "case_81",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.44358096640609646,
+      "is_match": true
+    },
+    {
+      "task_id": "case_82",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.5833959193990509,
+      "is_match": true
+    },
+    {
+      "task_id": "case_83",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.5018133299146158,
+      "is_match": true
+    },
+    {
+      "task_id": "case_84",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.33966647923299265,
+      "is_match": true
+    },
+    {
+      "task_id": "case_85",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.26882301038873,
+      "is_match": true
+    },
+    {
+      "task_id": "case_86",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.29468873173137616,
+      "is_match": true
+    },
+    {
+      "task_id": "case_87",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.5517942579634364,
+      "is_match": true
+    },
+    {
+      "task_id": "case_88",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2763480919004822,
+      "is_match": true
+    },
+    {
+      "task_id": "case_89",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2657356172701816,
+      "is_match": true
+    },
+    {
+      "task_id": "case_90",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.35855296129255054,
+      "is_match": true
+    },
+    {
+      "task_id": "case_91",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.5017581617334688,
+      "is_match": true
+    },
+    {
+      "task_id": "case_92",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.26587742338139053,
+      "is_match": true
+    },
+    {
+      "task_id": "case_93",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2804472664081256,
+      "is_match": true
+    },
+    {
+      "task_id": "case_94",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.25191936891980365,
+      "is_match": true
+    },
+    {
+      "task_id": "case_95",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2573157926451026,
+      "is_match": true
+    },
+    {
+      "task_id": "case_96",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2607240645030183,
+      "is_match": true
+    },
+    {
+      "task_id": "case_97",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2588126816673676,
+      "is_match": true
+    },
+    {
+      "task_id": "case_98",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2922221867073869,
+      "is_match": true
+    },
+    {
+      "task_id": "case_99",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.28331082706837485,
+      "is_match": true
+    },
+    {
+      "task_id": "case_100",
+      "source": "attack",
+      "attack_score": 1.0,
+      "memory_max": 0.2567376312871541,
+      "is_match": true
+    }
+  ]
+}
