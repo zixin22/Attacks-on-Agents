@@ -18,8 +18,11 @@ from typing import List, Dict, Any
 # Add current directory to path for imports
 sys.path.append(os.path.dirname(__file__))
 
+_WEBSHOP_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, _WEBSHOP_ROOT)
+
 from attack.attack import FragmentAttackGenerator
-from attack.mask_check import MaskChecker
+from ner_mask.mask_check import MaskChecker
 from rule_and_profile.rule_checker import RuleChecker
 from rule_and_profile.user_profile import UserProfile
 

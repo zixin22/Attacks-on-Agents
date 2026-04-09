@@ -1,0 +1,19 @@
+
+============================================================
+METRICS SUMMARY
+============================================================
+Total Episodes: 5
+Blocked Episodes: 0
+Allowed Episodes: 5
+Successful Purchases: 2
+Failed Purchases: 3
+
+Block Rate: 0.000
+(% of episodes where purchase was blocked)
+Detection Rate: 0.000
+(% of episodes where Defense detected rule violations)
+Purchase Success Rate: 0.400
+(% of allowed purchases that succeeded)
+
+Violations by Rule (Defense detected):
+============================================================

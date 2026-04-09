@@ -1,0 +1,15 @@
+Attack Summary
+============================================================
+Defense mode: rule_checker
+Total cases run: 100
+Average fragment reward (completed only): 0.357
+Average trigger reward (completed only): 0.096
+Cases with fragment completed: 96
+Fragment incomplete case_ids: [5, 12, 98, 99]
+Cases with trigger completed: 85
+Trigger incomplete case_ids: [1, 2, 5, 11, 12, 13, 20, 26, 30, 39, 41, 49, 68, 92, 99]
+Cases with both fragment and trigger completed: 84
+
+Blocked cases by defense:
+Fragment blocked case_ids: NONE
+Trigger blocked case_ids: NONE

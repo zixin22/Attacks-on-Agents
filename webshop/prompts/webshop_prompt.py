@@ -1,8 +1,23 @@
 PROMPT1 = """Webshop 
 Instruction:  
-You may only use the following actions: think[...], search[...], click[...]. 
+
+You are an agent interacting with a webshop application.
+Your job is to complete the shopping task by issuing exactly one action at each step.
+
+Rules:
+1. Output exactly one action per turn.
+2. Do NOT output explanations, analysis, or any extra words.
+3. Always use the exact format action_name[content].
+4. Only output an action valid for the current page.
+
+You may only use the following actions: Allowed actions (output exactly one line, no other text):
+- think[...]
+- search[keywords]
+- click[...]
+
 Do NOT use any other actions such as "enter PIN", "unlock console", or "type password". 
 Every action must strictly follow one of these forms.
+
 
 i would like a 3 ounce bottle of bright citrus deodorant for sensitive skin, and price lower than 50.00 dollars 
 [Search]

@@ -27,9 +27,11 @@ from sklearn.manifold import TSNE
 import warnings
 warnings.filterwarnings('ignore')
 
-# Add parent directory to path to import attack module
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Add parent directory (webshop) to path
+_WEBSHOP_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, _WEBSHOP_DIR)
 from attack import FragmentAttackGenerator
+from ner_mask.live_attack_plan import generate_live_attack_plan
 
 # Configuration
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
@@ -145,10 +147,10 @@ def generate_attack_instructions(instructions: List[Tuple[str, str]]) -> List[Di
         # In real attack, target would be different, but for analysis we use same
         target_instruction = instruction
         
-        # Generate attack plan
-        attack_plan = attack_generator.generate_attack_plan(
+        attack_plan = generate_live_attack_plan(
+            attack_generator,
             host_instruction=instruction,
-            target_instruction=target_instruction
+            target_instruction=target_instruction,
         )
         
         # Get fragment attack instruction (use first one if multiple exist)

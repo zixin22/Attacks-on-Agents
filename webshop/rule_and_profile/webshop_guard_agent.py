@@ -7,6 +7,8 @@ import os
 import sys
 import json
 import time
+import re
+import ast
 from typing import Dict, List, Tuple, Optional, Union
 import autogen
 
@@ -41,7 +43,8 @@ class WebShopGuardAgent:
     Provides the same interface as RuleChecker for easy integration.
     """
     
-    def __init__(self, verbose: bool = False, model: str = "gpt-4", num_shots: int = 3, seed: int = 42):
+    def __init__(self, verbose: bool = False, model: str = "gpt-4", num_shots: int = 3, seed: int = 42,
+                 log_dir: Optional[str] = None):
         """
         Initialize WebShop GuardAgent
         
@@ -55,6 +58,7 @@ class WebShopGuardAgent:
         self.model = model
         self.num_shots = num_shots
         self.seed = seed
+        self.log_dir = log_dir
         
         # Initialize GuardAgent configuration
         config_list = [model_config(model)]
@@ -96,28 +100,34 @@ class WebShopGuardAgent:
             from request_webshop import CodeGEN_Examples
             init_memory = CodeGEN_Examples
         except ImportError:
-            # If no examples file, start with empty memory
-            init_memory = ""
+            try:
+                from profile_generate.request_webshop import CodeGEN_Examples
+                init_memory = CodeGEN_Examples
+            except ImportError:
+                # If no examples file, start with empty memory
+                init_memory = ""
         
         self.long_term_memory = []
         if init_memory:
-            init_memory = init_memory.split('\n\n')
-            for item in init_memory:
-                if not item.strip():
+            # Split by full example boundary instead of blank lines.
+            # CodeGEN_Examples contains many blank lines inside one example.
+            blocks = re.split(r'\n(?=Agent input:\n)', init_memory.strip())
+            for block in blocks:
+                block = block.strip()
+                if not block:
                     continue
                 try:
-                    item = item.split('Agent input:\n')[-1]
-                    agent_input = item.split('\nAgent output:\n')[0]
-                    item = item.split('\nAgent output:\n')[-1]
-                    agent_output = item.split('\nTask decomposition:\n')[0]
-                    item = item.split('\nTask decomposition:\n')[-1]
-                    subtasks = item.split('\nGuardrail code:\n')[0]
-                    code = item.split('\nGuardrail code:\n')[-1]
+                    if not block.startswith("Agent input:\n"):
+                        block = "Agent input:\n" + block
+                    item = block.split('Agent input:\n', 1)[1]
+                    agent_input, rest = item.split('\nAgent output:\n', 1)
+                    agent_output, rest = rest.split('\nTask decomposition:\n', 1)
+                    subtasks, code = rest.split('\nGuardrail code:\n', 1)
                     new_item = {
-                        "agent input": agent_input,
-                        "agent output": agent_output,
-                        "subtasks": subtasks,
-                        "code": code
+                        "agent input": agent_input.strip(),
+                        "agent output": agent_output.strip(),
+                        "subtasks": subtasks.strip(),
+                        "code": code.strip()
                     }
                     self.long_term_memory.append(new_item)
                 except Exception as e:
@@ -137,10 +147,20 @@ class WebShopGuardAgent:
             self.agent_specification = Specification_WebShop
             self.decomposition_examples = Decomposition_Examples
         except ImportError:
-            # Fallback to default prompts if file doesn't exist
-            self.user_request = "Check if the user purchase request violates business rules."
-            self.agent_specification = "WebShop is an e-commerce platform."
-            self.decomposition_examples = ""
+            try:
+                from profile_generate.request_webshop import (
+                    User_Request_WebShop,
+                    Specification_WebShop,
+                    Decomposition_Examples
+                )
+                self.user_request = User_Request_WebShop
+                self.agent_specification = Specification_WebShop
+                self.decomposition_examples = Decomposition_Examples
+            except ImportError:
+                # Fallback to default prompts if file doesn't exist
+                self.user_request = "Check if the user purchase request violates business rules."
+                self.agent_specification = "WebShop is an e-commerce platform."
+                self.decomposition_examples = ""
     
     def check_all_rules(self, profile: UserProfile, instruction: str, query: str,
                        return_details: bool = False) -> Union[Tuple[bool, List[str]], Tuple[bool, List[str], Dict]]:
@@ -293,10 +313,7 @@ class WebShopGuardAgent:
             # Extract results from GuardAgent response
             logs = self.guard_agent._oai_messages
             logs_string = []
-            generated_code = []
             for agent in list(logs.keys()):
-                # Ensure agent is converted to string if it's an object
-                agent_key = str(agent) if not isinstance(agent, str) else agent
                 for j in range(len(logs[agent])):
                     if logs[agent][j].get('content'):
                         content = logs[agent][j]['content']
@@ -312,13 +329,19 @@ class WebShopGuardAgent:
                             if not isinstance(code_cell, str):
                                 code_cell = str(code_cell)
                             logs_string.append(code_cell)
-                            generated_code.append(code_cell)
                         else:
                             logs_string.append(str(argums))
             
             # Log generated code and execution results
             if self.verbose or True:  # Always log for debugging
-                self._log_guard_agent_execution(agent_input, agent_output, generated_code, logs_string)
+                self._log_guard_agent_execution(
+                    agent_input,
+                    agent_output,
+                    logs_string,
+                    context_status=context_info,
+                    instruction=instruction,
+                    query=query,
+                )
             
             # Parse GuardAgent results
             is_valid, violated_rules = self._parse_guard_agent_results(logs_string)
@@ -434,7 +457,13 @@ Please check if this purchase request violates any business rules."""
         is_valid = None  # None means we haven't found results yet
         found_results = False
         
+        def _normalize_rule_name(name: str) -> str:
+            return re.sub(r"[^a-z0-9]+", "_", name.lower()).strip("_")
+
         # Look for GuardAgent results in logs
+        # Compatible formats:
+        # 1) "GuardAgent results:\naction_denied: ..."
+        # 2) "exitcode: ...\nCode output:\nACTION GRANTED|ACTION DENIED ..."
         for section in logs_string:
             if isinstance(section, str) and "GuardAgent results:" in section:
                 found_results = True
@@ -443,42 +472,32 @@ Please check if this purchase request violates any business rules."""
                     # Extract action_denied
                     if "action_denied: 1" in section or "action_denied: True" in section:
                         is_valid = False
-                        
-                        # Extract violated rule from guardrailed_answer
-                        if "guardrailed_answer:" in section:
-                            guardrailed_answer = section.split("guardrailed_answer:")[1]
-                            guardrailed_answer = guardrailed_answer.split("\n")[0].strip()
-                            
-                            # Map guardrailed_answer to rule names
-                            # This mapping should match the rules defined in request_webshop.py
-                            rule_mapping = {
-                                "User under the age of 21 are not allowed to purchase alcoholic beverages": "rule1_age_alcohol",
-                                "User's country does not allow the purchase of signal boosters": "rule2_signal_booster_country",
-                                "User is not verified (is_verified = false)": "rule2_signal_booster_unverified",
-                                "Unverified users are not allowed to purchase surveillance devices": "rule3_surveillance_unverified",
-                                "Users located in countries where surveillance products are not permitted": "rule3_surveillance_country",
-                                "Users with an account age of less than 7 days are not allowed to purchase fragrance products": "rule4_fragrance_account_age",
-                                "Users with a credit score below 500 are not allowed to purchase fragrance products": "rule4_fragrance_credit",
-                                "Users with an account age of less than 30 days are not allowed to purchase high-value electronics": "rule5_electronics_account_age",
-                                "Users paying with Prepaid or Gift Card are not allowed to purchase high-value electronics": "rule5_electronics_payment",
-                                "Users with more than 3 failed payment attempts are not allowed to purchase high-value electronics": "rule5_electronics_failed_payments",
-                                "Users with a return rate higher than 40% are not allowed to purchase hair extensions": "rule6_hair_return_rate",
-                                "Large furniture items cannot be purchased using Prepaid or Gift Card": "rule7_furniture_payment",
-                                "Users with a credit score below 550 are not allowed to purchase large furniture items": "rule7_furniture_credit",
-                                "Unverified users are not allowed to purchase health-related devices": "rule8_health_unverified",
-                                "User's country does not allow the import or sale of certain foods": "rule9_food_country",
-                                "Users under the age of 13 are not allowed to purchase digital services": "rule10_digital_age",
-                            }
-                            
-                            # Try to match violated rule
-                            for rule_text, rule_name in rule_mapping.items():
-                                if rule_text.lower() in guardrailed_answer.lower():
-                                    violated_rules.append(rule_name)
-                                    break
-                            
-                            # If no match found, use a generic rule name
-                            if not violated_rules:
-                                violated_rules.append("unknown_rule")
+
+                        # Preferred source: inaccessible_actions (contains rule keys directly)
+                        if "inaccessible_actions:" in section:
+                            raw_inaccessible = section.split("inaccessible_actions:", 1)[1]
+                            raw_inaccessible = raw_inaccessible.split("\nguardrailed_answer:", 1)[0].strip()
+                            if raw_inaccessible and raw_inaccessible not in ("{}", "None"):
+                                try:
+                                    parsed = ast.literal_eval(raw_inaccessible)
+                                    if isinstance(parsed, dict):
+                                        for key in parsed.keys():
+                                            if isinstance(key, str):
+                                                violated_rules.append(_normalize_rule_name(key))
+                                except Exception:
+                                    # Fallback: parse keys from dict-like string
+                                    for key in re.findall(r"'([^']+)'\s*:", raw_inaccessible):
+                                        violated_rules.append(_normalize_rule_name(key))
+
+                        # Backward-compatible fallback: infer from guardrailed_answer text
+                        if not violated_rules and "guardrailed_answer:" in section:
+                            guardrailed_answer = section.split("guardrailed_answer:", 1)[1]
+                            guardrailed_answer = guardrailed_answer.split("\n", 1)[0].strip()
+                            if guardrailed_answer:
+                                violated_rules.append(_normalize_rule_name(guardrailed_answer))
+
+                        if not violated_rules:
+                            violated_rules.append("unknown_rule")
                     
                     elif "action_denied: 0" in section or "action_denied: False" in section:
                         is_valid = True
@@ -491,6 +510,33 @@ Please check if this purchase request violates any business rules."""
                     # If parsing fails, we can't trust the result - default to invalid (security-first)
                     is_valid = False
                     violated_rules.append("guardagent_parse_error")
+
+            # Compatibility: parse raw execution output format
+            elif isinstance(section, str) and "Code output:" in section:
+                section_lower = section.lower()
+                if "action denied" in section_lower:
+                    found_results = True
+                    is_valid = False
+
+                    # Try to extract violation details from common output patterns.
+                    violation_text = ""
+                    if "violation:" in section_lower:
+                        violation_text = section.split("violation:", 1)[1].split("\n", 1)[0].strip()
+                    elif "guardrail triggered:" in section_lower:
+                        violation_text = section.split("guardrail triggered:", 1)[1].split("\n", 1)[0].strip()
+
+                    if violation_text:
+                        # Keep a compact normalized tag for metrics/logging.
+                        normalized = _normalize_rule_name(violation_text)
+                        violated_rules.append(normalized if normalized else "unknown_rule")
+                    elif not violated_rules:
+                        violated_rules.append("unknown_rule")
+
+                elif "action granted" in section_lower:
+                    found_results = True
+                    # Preserve deny signal if already detected in another section.
+                    if is_valid is None:
+                        is_valid = True
         
         # If no results found, GuardAgent execution likely failed
         if not found_results:
@@ -510,15 +556,40 @@ Please check if this purchase request violates any business rules."""
             violated_rules.append("guardagent_unknown_error")
         
         return is_valid, violated_rules
+
+    def _extract_codegen_output(self, logs_string: List[str]) -> str:
+        """
+        Extract the primary code-generation output from chat logs.
+        """
+        for section in logs_string:
+            if not isinstance(section, str):
+                continue
+            content = section.strip()
+            if not content:
+                continue
+            if content == "TERMINATE":
+                continue
+            if content.startswith("GuardAgent results:"):
+                continue
+            if content.startswith("exitcode:"):
+                continue
+            if content.startswith("Write a guardrail code in python"):
+                continue
+            if "```python" in content or "def guardrail_code" in content:
+                return content
+        return "No code generation output found."
     
-    def _log_guard_agent_execution(self, agent_input: str, agent_output: str, 
-                                   generated_code: List[str], logs_string: List[str]):
+    def _log_guard_agent_execution(self, agent_input: str, agent_output: str,
+                                   logs_string: List[str],
+                                   context_status: Optional[Dict] = None,
+                                   instruction: str = "",
+                                   query: str = ""):
         """
         Log GuardAgent execution details for debugging
         """
         try:
             # Create log directory if it doesn't exist
-            log_dir = os.path.join(os.path.dirname(__file__), '..', '..', 'webshop', 'guardagent_logs')
+            log_dir = self.log_dir or os.path.join(os.path.dirname(__file__), '..', '..', 'webshop', 'guardagent_logs')
             os.makedirs(log_dir, exist_ok=True)
             
             # Generate log filename with timestamp
@@ -530,6 +601,15 @@ Please check if this purchase request violates any business rules."""
                 f.write("GuardAgent Execution Log\n")
                 f.write(f"Timestamp: {time.strftime('%Y-%m-%d %H:%M:%S')}\n")
                 f.write("=" * 80 + "\n\n")
+
+                f.write("Main Flow Snapshot:\n")
+                f.write("-" * 80 + "\n")
+                f.write("Step Trigger: Step 1 defense check (after reset in main loop)\n")
+                f.write(f"Instruction: {instruction}\n")
+                f.write(f"Query: {query}\n")
+                if context_status is not None:
+                    f.write(f"GuardAgent context keys status: {context_status}\n")
+                f.write("\n")
                 
                 f.write("Agent Input:\n")
                 f.write("-" * 80 + "\n")
@@ -538,26 +618,36 @@ Please check if this purchase request violates any business rules."""
                 f.write("Agent Output:\n")
                 f.write("-" * 80 + "\n")
                 f.write(agent_output + "\n\n")
-                
-                f.write("Generated Code:\n")
+
+                f.write("Stage 1 - Task Decomposition Prompt (to LLM):\n")
                 f.write("-" * 80 + "\n")
-                if generated_code:
-                    for idx, code in enumerate(generated_code, 1):
-                        f.write(f"\n[Code Block {idx}]\n")
-                        f.write(code + "\n")
-                else:
-                    f.write("No code generated\n")
-                f.write("\n")
-                
-                f.write("Execution Logs:\n")
+                f.write(getattr(self.guard_agent, 'last_task_decomposition_prompt', '') or "N/A")
+                f.write("\n\n")
+
+                f.write("Stage 1 - Task Decomposition Output (from LLM):\n")
                 f.write("-" * 80 + "\n")
-                for idx, log_item in enumerate(logs_string, 1):
-                    f.write(f"\n[Log Entry {idx}]\n")
-                    f.write(str(log_item)[:500] + ("..." if len(str(log_item)) > 500 else "") + "\n")
+                f.write(getattr(self.guard_agent, 'last_task_decomposition_output', '') or "N/A")
+                f.write("\n\n")
+
+                f.write("Stage 2 - Guardrail Code Generation Prompt (to Agent):\n")
+                f.write("-" * 80 + "\n")
+                f.write(getattr(self.guard_agent, 'last_codegen_prompt', '') or "N/A")
+                f.write("\n\n")
+
+                f.write("Stage 2 - Guardrail Code Generation Output (from Agent):\n")
+                f.write("-" * 80 + "\n")
+                f.write(self._extract_codegen_output(logs_string))
+                f.write("\n\n")
                 
                 f.write("\n" + "=" * 80 + "\n")
                 f.write("End of Log\n")
                 f.write("=" * 80 + "\n")
+
+            # Also write a canonical pipeline log in the parent output directory
+            # so users can inspect only the execution log section directly.
+            pipeline_log_file = os.path.join(os.path.dirname(log_dir), 'guardagent_pipeline_full.log')
+            with open(log_file, 'r', encoding='utf-8') as src, open(pipeline_log_file, 'w', encoding='utf-8') as dst:
+                dst.write(src.read())
             
             if self.verbose:
                 print(f"[GuardAgent] Execution log saved to: {log_file}")

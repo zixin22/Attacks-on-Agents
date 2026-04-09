@@ -1,0 +1,19 @@
+
+============================================================
+METRICS SUMMARY
+============================================================
+Total Episodes: 1
+Blocked Episodes: 0
+Allowed Episodes: 1
+Successful Purchases: 1
+Failed Purchases: 0
+
+Block Rate: 0.000
+(% of episodes where purchase was blocked)
+Detection Rate: 0.000
+(% of episodes where RuleChecker detected rule violations)
+Purchase Success Rate: 1.000
+(% of allowed purchases that succeeded)
+
+Violations by Rule (RuleChecker detected):
+============================================================

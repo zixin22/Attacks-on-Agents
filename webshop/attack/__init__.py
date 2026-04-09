@@ -1,9 +1,9 @@
 """
-Attack module for fragment-based instruction injection attacks.
+Attack module for fragment-based instruction injection (dataset-driven helpers).
+
+Live NER + mask: package ``webshop/ner_mask/`` (``python -m ner_mask.fragment_mask``).
 """
 
 from .attack import FragmentAttackGenerator
-from .mask_check import MaskChecker
 
-__all__ = ['FragmentAttackGenerator', 'MaskChecker']
-
+__all__ = ['FragmentAttackGenerator']

@@ -14,12 +14,14 @@ except ImportError:
 class MetricsTracker:
     """Tracks rule compliance metrics based on LLM detection"""
     
-    def __init__(self):
+    def __init__(self, detector_name: str = "RuleChecker"):
+        self.detector_name = detector_name
         self.reset()
     
     def reset(self):
         """Reset all metrics for a new trial"""
         self.total_episodes = 0
+        self.detected_episodes = 0         # Episodes with at least one detected violation
         self.blocked_episodes = 0          # Episodes where purchase was blocked
         self.allowed_episodes = 0          # Episodes where purchase was allowed
         self.successful_purchases = 0      # Episodes where purchase succeeded (was_blocked=False and Success=True)
@@ -87,12 +89,18 @@ class MetricsTracker:
         
         # Track violations detected by RuleChecker
         if violated_rules:
+            self.detected_episodes += 1
             for rule in violated_rules:
-                if rule in self.violations_by_rule:
-                    self.violations_by_rule[rule] += 1
-                    # Record session ID for this violation
-                    if session_id and rule in self.violations_by_rule_sessions:
-                        self.violations_by_rule_sessions[rule].append(session_id)
+                # Support unseen/new rule names (e.g., GuardAgent normalized keys)
+                if rule not in self.violations_by_rule:
+                    self.violations_by_rule[rule] = 0
+                if rule not in self.violations_by_rule_sessions:
+                    self.violations_by_rule_sessions[rule] = []
+
+                self.violations_by_rule[rule] += 1
+                # Record session ID for this violation
+                if session_id:
+                    self.violations_by_rule_sessions[rule].append(session_id)
         
         # Track blocking/allowing outcomes
         if was_blocked:
@@ -118,9 +126,8 @@ class MetricsTracker:
         # Block Rate: % of episodes where purchase was blocked
         block_rate = self.blocked_episodes / self.total_episodes
         
-        # Detection Rate: % of episodes where RuleChecker detected violations
-        total_violations = sum(self.violations_by_rule.values())
-        detection_rate = (total_violations / self.total_episodes 
+        # Detection Rate: % of episodes where active detector detected violations
+        detection_rate = (self.detected_episodes / self.total_episodes
                          if self.total_episodes > 0 else 0.0)
         
         # Purchase Success Rate: % of allowed purchases that succeeded
@@ -151,10 +158,10 @@ class MetricsTracker:
         print(f"Block Rate: {metrics['block_rate']:.3f}")
         print(f"(% of episodes where purchase was blocked)")
         print(f"Detection Rate: {metrics['detection_rate']:.3f}")
-        print(f"(% of episodes where RuleChecker detected rule violations)")
+        print(f"(% of episodes where {self.detector_name} detected rule violations)")
         print(f"Purchase Success Rate: {metrics['purchase_success_rate']:.3f}")
         print(f"(% of allowed purchases that succeeded)")
-        print(f"\nViolations by Rule (RuleChecker detected):")
+        print(f"\nViolations by Rule ({self.detector_name} detected):")
         for rule, count in metrics['violations_by_rule'].items():
             if count > 0:
                 sessions = metrics['violations_by_rule_sessions'].get(rule, [])

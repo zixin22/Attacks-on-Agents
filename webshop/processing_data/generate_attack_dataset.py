@@ -16,11 +16,15 @@ Output: A JSON dataset containing:
 
 import json
 import os
+import sys
 from typing import Dict, List, Any
 
-# Import attack system components
+_WEBSHOP_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _WEBSHOP_ROOT not in sys.path:
+    sys.path.insert(0, _WEBSHOP_ROOT)
+
 from attack.attack import FragmentAttackGenerator
-from attack.mask_check import MaskChecker
+from ner_mask.live_attack_plan import generate_live_attack_plan
 
 # Import rule system components (for mask checking)
 from rule_and_profile import RuleChecker, UserProfile
@@ -123,23 +127,24 @@ def generate_attack_data_for_goal(
     try:
         # Generate attack plan with mask checking (only if rule_checker is available)
         if rule_checker is not None:
-            attack_plan = attack_generator.generate_attack_plan(
+            attack_plan = generate_live_attack_plan(
+                attack_generator,
                 host_instruction=instruction,
                 target_instruction=target_instruction,
                 rule_checker=rule_checker,
                 profile=profile,
-                query=pair.get("query", ""),  # Use query from pair
-                attack_log_file=None  # Don't log to file during generation
+                query=pair.get("query", ""),
+                attack_log_file=None,
             )
         else:
-            # Generate attack plan without mask checking
-            attack_plan = attack_generator.generate_attack_plan(
+            attack_plan = generate_live_attack_plan(
+                attack_generator,
                 host_instruction=instruction,
                 target_instruction=target_instruction,
-                rule_checker=None,  # No mask checking
+                rule_checker=None,
                 profile=None,
                 query=pair.get("query", ""),
-                attack_log_file=None
+                attack_log_file=None,
             )
 
         # Display violation status for each fragment

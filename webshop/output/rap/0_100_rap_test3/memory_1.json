@@ -1,0 +1,62 @@
+[
+    {
+        "Id": "fixed_101",
+        "Instruction": "i want mivofun 11pcs cute dinosaur cake toppers for a baby shower, and price lower than 40.00 dollars",
+        "Actions": [
+            "Action: search[mivofun 11pcs cute dinosaur cake toppers baby shower]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09PYFGHJH] \nMivofun 11PCS Cute Dinosaur Cake Toppers, Cute Zoo Birthday Cake Inserts Decoration for Kids Baby Children Boys Girls Birthday Party Supplies \n$6.99 \n[B08YYTVN1G] \n11pcs Dinosaur Cupcake Toppers Picks, Dinosaurs Family Cake Toppers Decorations for Kids Baby Shower Party Decorations Supplies \n$6.99 \n[B09QHLZVXG] \n48PCs Dinosaur Cake Topper Picks for Birthday Party Supplies,Cute Dinosaur Cupcake Topper Decorations for Kids Baby Shower \n$8.99 ",
+            "Action: click[B09PYFGHJH]",
+            "Observation: \n[Back to Search] \n[< Prev] \nMivofun 11PCS Cute Dinosaur Cake Toppers, Cute Zoo Birthday Cake Inserts Decoration for Kids Baby Children Boys Girls Birthday Party Supplies \nPrice: $6.99 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Attributes] \n[Buy Now] ",
+            "Action: click[Buy Now]"
+        ],
+        "Success": true,
+        "Reward": 1.0,
+        "Category": "grocery",
+        "Query": "toothpicks"
+    },
+    {
+        "Id": "fixed_102",
+        "Instruction": "i am in need of elastic waist winter active running joggers pants of small size and dark grey color, and price lower than 60.00 dollars",
+        "Actions": [
+            "Action: search[elastic waist winter active running joggers pants small size dark grey]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B0814CYMDX] \nFlygo Men's Warm Velvet Fleece Jogger Pants Sherpa Lined Active Running Sweatpants \n$36.99 to $38.66 \n[B07Y9KM7YV] \nFlygo Women's Warm Fleece Joggers Pants Winter Sherpa Lined Active Sweatpants \n$22.99 to $29.88 \n[B09S114YZW] \nMen's Shorts Casual Classic Fit Drawstring Summer Beach Gym Running Shorts with Elastic Waist and Zipper Pockets \n$11.73 ",
+            "Action: click[B07Y9KM7YV]",
+            "Observation: \n[Back to Search] \n[< Prev] \nsize [x-small][small][medium][large][x-large]\ncolor [#02 dark grey][#02 navy][#02 pink][#02 black][dark grey][pink][navy][black]\nFlygo Women's Warm Fleece Joggers Pants Winter Sherpa Lined Active Sweatpants \nPrice: $22.99 to $29.88 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Attributes] \n[Buy Now] ",
+            "Action: click[Buy Now]"
+        ],
+        "Success": false,
+        "Reward": 0.5,
+        "Category": "fashion",
+        "Query": "men's pants"
+    },
+    {
+        "Id": "fixed_103",
+        "Instruction": "i am looking for a 32gb 1tb ssd pcle nvme m.2 size intel core minis",
+        "Actions": [
+            "Action: search[32gb 1tb ssd pcle nvme m.2 size intel core minis]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B09H3ND94G] \nMTG OptiPlex 3080 Micro MFF, Intel Core i7-10700K Win 10 Pro Business PC, MTG Webcam, Intel Wi-Fi (i7-10700K 3.8 GHz, 16GB 512GB SSD PCle NVMe M.2) \n$1287.89 \n[B09GX8GTQK] \nHP 800 G3 Mini High Performance Desktop Intel i7-6700 UP to 4.00GHz 32GB DDR4 New 512GB NVMe M.2 SSD + New 1TB SSD WiFi BT Dual Monitor Support Wirless Keyboard & Mouse Win10 Pro (Renewed) \n$699.0 \n[B09JR2KSKZ] \nDell OptiPlex 5080 Micro Desktop Computer – Intel Core i5-10400 Upto 4.3GHz - 16GB RAM, 256GB M.2 NVME SSD, AC Wi-Fi, Bluetooth, DisplayPort, HDMI, USB Type-C - Windows 10 Pro \n$849.99 ",
+            "Action: click[B09GX8GTQK]",
+            "Observation: \n[Back to Search] \n[< Prev] \nsize [i5-6500 3.20ghz][i5-7500 3.40ghz][i7-6700 3.40ghz][i7-7700 3.60ghz]\nstyle [16gb | 256gb nvme m.2 ssd + 500gb hdd][16gb | new 1tb nvme m.2 ssd][16gb | new 512gb nvme m.2 ssd][32gb | new 1tb nvme m.2 ssd][32gb | new 2tb nvme m.2 ssd][32gb | new 512gb nvme m.2 ssd][32gb | new 512gb nvme m.2 ssd + new 1tb ssd]\nHP 800 G3 Mini High Performance Desktop Intel i7-6700 UP to 4.00GHz 32GB DDR4 New 512GB NVMe M.2 SSD + New 1TB SSD WiFi BT Dual Monitor Support Wirless Keyboard & Mouse Win10 Pro (Renewed) \nPrice: $699.0 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Attributes] \n[Buy Now] ",
+            "Action: click[Buy Now]"
+        ],
+        "Success": false,
+        "Reward": 0.6666666666666666,
+        "Category": "electronics",
+        "Query": "pc"
+    },
+    {
+        "Id": "fixed_104",
+        "Instruction": "looking for an easy to deliver vintage barbecue sauce needle sleeve white women's halloween t-shirt by tomorrow? forgot to machine wash, and price lower than 40.00 dollars",
+        "Actions": [
+            "Action: search[vintage barbecue sauce needle sleeve white women's halloween t-shirt easy to deliver price lower than 40.00 dollars]",
+            "Observation: \n[Back to Search] \nPage 1 (Total results: 50) \n[Next >] \n[B08CJ2BW1G] \nVintage Barbecue BBQ Sauce Costume Funny Halloween Gifts T-Shirt \n$19.9 \n[B09GW175P1] \nLong Sleeve Shirts for Women,Womens Tops Dressy Casual Vintage Graphic Crewneck Pullover Sweaters Sweatshirts \n$3.15 to $25.99 \n[B09MWGJKJZ] \nMen's Elegant Floral Printed Dress Shirt Long Sleeve Slim fit Casual Vintage Beach Hawaiian Button Down Shirts Top \n$8.74 to $13.99 ",
+            "Action: click[B08CJ2BW1G]",
+            "Observation: \n[Back to Search] \n[< Prev] \nfit type [men][women][youth]\ncolor [black][navy][white][silver][dark heather][heather grey][heather blue][pink]\nsize [small][medium][large][x-large][xx-large][3x-large][2t][3t][4t][x-small]\nVintage Barbecue BBQ Sauce Costume Funny Halloween Gifts T-Shirt \nPrice: $19.9 \nRating: N.A. \n[Description] \n[Features] \n[Reviews] \n[Attributes] \n[Buy Now] ",
+            "Action: click[Buy Now]"
+        ],
+        "Success": false,
+        "Reward": 0.6,
+        "Category": "fashion",
+        "Query": "men's dress shirts"
+    }
+]
