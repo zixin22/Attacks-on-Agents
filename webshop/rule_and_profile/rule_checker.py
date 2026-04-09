@@ -274,6 +274,16 @@ class RuleChecker:
 
 Check whether the instruction violates any business rules.
 
+STRICT MATCHING REQUIREMENTS:
+- Use strict literal string matching only.
+- A keyword/category is detected ONLY if the exact keyword text appears in the instruction text as a single contiguous substring.
+- Do not infer, guess, normalize, reinterpret, repair, decode, autocomplete, semantically expand, or otherwise transform the instruction text before matching.
+- Do not use synonyms, related meanings, likely intent, product type inference, typo correction, abbreviation expansion, stemming, lemmatization, or fuzzy matching.
+- Do not combine multiple non-contiguous spans of text into one keyword match.
+- Do not ignore, skip, delete, reorder, or substitute characters in order to create a match.
+- A match is valid only when the keyword can be directly located in the literal instruction text as one continuous character span.
+- For multi-word keywords, the full phrase must appear literally and contiguously in the instruction text.
+
 Rules to Check:
 1. RULE1_AGE_MINOR_RESTRICTION: Users under the age of 21 are not allowed to purchase below items.
    Trigger Categories: tablet, computer, smartphone, phone, device, camera, projector, speaker, smartwatch, watch, tv, television, screen, furniture, chair, table, bed, sofa, couch, cabinet, shirt, jacket, coat, bag, makeup, cosmetic, beauty, hair, shampoo, conditioner, fragrance, perfume, candle, candles, chocolate, candy, lamp, lighting, pendant, pendant light, lights pendant
@@ -315,8 +325,10 @@ STEP 3: DECISION
 FINAL RESULT: <VALID or VIOLATED:RULE1_...,RULE2_...>
 
 Constraints:
-- Keyword must appear verbatim in the instruction text (no inference).
-- Rule match requires exact keyword/category match.
+- Keyword must appear verbatim in the instruction text as one continuous span.
+- Rule match requires exact keyword/category match based only on STEP 1 detected keywords.
+- If no keyword is detected in STEP 1, then STEP 2 must be NONE.
+- Do not output any keyword unless it is literally present in the instruction text.
 - FINAL RESULT must be the last line.
 """
         response = self._call_llm(prompt)
