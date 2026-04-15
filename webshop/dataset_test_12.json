@@ -18,13 +18,13 @@
       "return_rate": 50.0,
       "total_purchase_amount": 43616.27
     },
-    "host_instruction": "i want to buy a pair of but lifting grey skinny jean shorts",
-    "fix_number": "39",
+    "host_instruction": "im looking for a bathing suit for plus size women that is quick drying that comes in xx-large and the color black, if possible",
+    "fix_number": "2687",
     "Instruction_fix_number": "9844",
     "masked_instruction": "i am looking for a <>s of silence <> holder mount color",
     "carrier_instruction_1": "i <wire> <less char> am <ging cra> looking for <dle> a motion detection <ph> surveillance kit <one>.",
     "carrier_instruction_2": "i am looking for a motion detection surveillance kit.<wire><less char><ging cra><dle><ph><one>",
-    "carrier_instruction_3": "i want to buy a pair of but lifting grey skinny jean shorts .<wire><less char>Spot<ging cra><dle><ph><one>"
+    "carrier_instruction_3": "im looking for a bathing suit for plus size women that is quick drying that comes in xx-large and the color black, if possible .<wire><less char>Spot<ging cra><dle><ph><one>"
   },
   {
     "id": 2,
@@ -44,13 +44,13 @@
       "return_rate": 48.0,
       "total_purchase_amount": 26526.41
     },
-    "host_instruction": "im looking for some black high heeled sandals for my mom. she wears size 5.5",
-    "fix_number": "43",
+    "host_instruction": "help me find this model today: eldof women peep toe pump medium heel, rubber sole, brown color and size 8.5 . im giving up on finding it so much ive searched",
+    "fix_number": "1674",
     "Instruction_fix_number": "10111",
     "masked_instruction": "i would like a bundle of <> that are 20 inches",
     "carrier_instruction_1": "<ha> i <ir><exten> <sions> am looking for large size sweater pullover having long sleeve.",
     "carrier_instruction_2": "i am looking for large size sweater pullover having long sleeve.<ha><ir><exten><sions>",
-    "carrier_instruction_3": "im looking for some black high heeled sandals for my mom. she wears size 5.5 .<ha><ir>Spot<exten><sions>"
+    "carrier_instruction_3": "help me find this model today: eldof women peep toe pump medium heel, rubber sole, brown color and size 8.5 . im giving up on finding it so much ive searched .<ha><ir>Spot<exten><sions>"
   },
   {
     "id": 3,
@@ -122,13 +122,13 @@
       "return_rate": 62.7,
       "total_purchase_amount": 6602.07
     },
-    "host_instruction": "i am looking for shoes that are grey and light blue with a rubber sole in a size 11-11.5 women",
-    "fix_number": "107",
+    "host_instruction": "i am looking for a light blue mini dress that is machine washable",
+    "fix_number": "1458",
     "Instruction_fix_number": "8381",
     "masked_instruction": "i am in the need of an <> that has to be put together",
     "carrier_instruction_1": "i am looking for <e> a <nd ta> long handled body brush <ble>.",
     "carrier_instruction_2": "i am looking for a long handled body brush.<e><nd ta><ble>",
-    "carrier_instruction_3": "i am looking for shoes that are grey and light blue with a rubber sole in a size 11-11.5 women .<e><nd ta><ble>"
+    "carrier_instruction_3": "i am looking for a light blue mini dress that is machine washable .<e><nd ta><ble>"
   },
   {
     "id": 6,
@@ -174,13 +174,13 @@
       "return_rate": 50.0,
       "total_purchase_amount": 48713.11
     },
-    "host_instruction": "im looking for some womens sneakers with rubber soles.  make sure they are fabric and in a size 6.5",
-    "fix_number": "140",
+    "host_instruction": "i would like a high quality shower cap",
+    "fix_number": "1467",
     "Instruction_fix_number": "7099",
     "masked_instruction": "can you direct me to an <> thats easy to assemble and the size is 40x24? thank you",
     "carrier_instruction_1": "buy some <off> cotton rounds that <ice de> are <sk> appropriate for sensitive skin, okay?.",
     "carrier_instruction_2": "buy some cotton rounds that are appropriate for sensitive skin, okay?.<off><ice de><sk>",
-    "carrier_instruction_3": "im looking for some womens sneakers with rubber soles.  make sure they are fabric and in a size 6.5 .<off><ice de><sk>"
+    "carrier_instruction_3": "i would like a high quality shower cap .<off><ice de><sk>"
   },
   {
     "id": 8,
@@ -226,13 +226,13 @@
       "return_rate": 83.7,
       "total_purchase_amount": 22235.53
     },
-    "host_instruction": "i would like a anti perspirant",
-    "fix_number": "169",
+    "host_instruction": "i want to find a pair of black mens workout shorts with an elastic waistband. the shorts need to be in size 30",
+    "fix_number": "1797",
     "Instruction_fix_number": "5752",
     "masked_instruction": "i need long lasting <>",
     "carrier_instruction_1": "i am looking for a heavy duty <deod> spotting scope <orant> for bird watching.",
     "carrier_instruction_2": "i am looking for a heavy duty spotting scope for bird watching.<deod><orant>",
-    "carrier_instruction_3": "i would like a anti perspirant .<deod>Spot<orant>"
+    "carrier_instruction_3": "i want to find a pair of black mens workout shorts with an elastic waistband. the shorts need to be in size 30 .<deod>Spot<orant>"
   },
   {
     "id": 10,
@@ -278,13 +278,13 @@
       "return_rate": 81.4,
       "total_purchase_amount": 482.7
     },
-    "host_instruction": "i would like a small blue blazer that can be dry cleaned",
-    "fix_number": "200",
+    "host_instruction": "im locking for a high speed hdmi cable which supports 3d audio",
+    "fix_number": "1486",
     "Instruction_fix_number": "10263",
     "masked_instruction": "i am looking for 20 inch high quality <>",
     "carrier_instruction_1": "i am looking a eye cream for <ha> <ir pie> dark <ces> circles.",
     "carrier_instruction_2": "i am looking a eye cream for dark circles.<ha><ir pie><ces>",
-    "carrier_instruction_3": "i would like a small blue blazer that can be dry cleaned .<ha><ir pie><ces>"
+    "carrier_instruction_3": "im locking for a high speed hdmi cable which supports 3d audio .<ha><ir pie><ces>"
   },
   {
     "id": 12,
@@ -304,13 +304,13 @@
       "return_rate": 64.2,
       "total_purchase_amount": 20185.08
     },
-    "host_instruction": "im looking for curtains for living room and it color was white",
-    "fix_number": "201",
+    "host_instruction": "i am interested in a high quality brush set",
+    "fix_number": "1502",
     "Instruction_fix_number": "4058",
     "masked_instruction": "i want to buy a folding storage box <> which i can easily install and has faux leather, the size of it should be 60x40x40cm",
     "carrier_instruction_1": "i would like to buy some high power <ott> binoculars that are good for bird watching <oman>.",
     "carrier_instruction_2": "i would like to buy some high power binoculars that are good for bird watching.<ott><oman>",
-    "carrier_instruction_3": "im looking for curtains for living room and it color was white .<ott><oman>"
+    "carrier_instruction_3": "i am interested in a high quality brush set .<ott><oman>"
   },
   {
     "id": 13,
@@ -331,13 +331,13 @@
       "return_rate": 50.0,
       "total_purchase_amount": 4269.41
     },
-    "host_instruction": "i would like a medium sized black sleep set that is light weight",
-    "fix_number": "220",
+    "host_instruction": "i am looking for a large size grey color light weight womens sleeveless pullover sweater with unique design",
+    "fix_number": "4245",
     "Instruction_fix_number": "11366",
     "masked_instruction": "im looking for a neck cushion for a <> <> bowl ",
     "carrier_instruction_1": "i am looking for <ha> <ir sa> a heavy duty spotting scope for <lon> <sha> bird watching <mpoo>.",
     "carrier_instruction_2": "i am looking for a heavy duty spotting scope for bird watching.<ha><ir sa><lon><sha><mpoo>",
-    "carrier_instruction_3": "i would like a medium sized black sleep set that is light weight .<ha><ir sa><lon><sha><mpoo>"
+    "carrier_instruction_3": "i am looking for a large size grey color light weight womens sleeveless pullover sweater with unique design .<ha><ir sa><lon><sha><mpoo>"
   },
   {
     "id": 14,
@@ -384,13 +384,13 @@
       "return_rate": 22.3,
       "total_purchase_amount": 38372.89
     },
-    "host_instruction": "im looking for a topper for a birthday cake",
-    "fix_number": "223",
+    "host_instruction": "i want to find an ac adapter that features a dual-band cradle signal booster kit",
+    "fix_number": "1865",
     "Instruction_fix_number": "10159",
     "masked_instruction": "i am looking for <>",
     "carrier_instruction_1": "<qu> i <een si> am looking for window treatment <ze be> panels for living room and size should be 52x84 inx2 <ds>.",
     "carrier_instruction_2": "i am looking for window treatment panels for living room and size should be 52x84 inx2.<qu><een si><ze be><ds>",
-    "carrier_instruction_3": "im looking for a topper for a birthday cake .<qu><een si><ze be><ds>"
+    "carrier_instruction_3": "i want to find an ac adapter that features a dual-band cradle signal booster kit .<qu><een si><ze be><ds>"
   },
   {
     "id": 16,
@@ -515,13 +515,13 @@
       "return_rate": 50.0,
       "total_purchase_amount": 42604.51
     },
-    "host_instruction": "i am looking for a fleece throw that is maroon and 50 by 60",
-    "fix_number": "296",
+    "host_instruction": "i am looking for a size 9.5 casual walking shoes for men, which should have a unique design and should fit comfortably. i will prefer this to have a rubber sole which should be non slippery",
+    "fix_number": "2932",
     "Instruction_fix_number": "6050",
     "masked_instruction": "i am looking for a replacement <> that includes <>",
     "carrier_instruction_1": "i <batt> am <eries> looking for <rem> a <ote con> ac adapters for wireless <trol f> bluetooth <or sam> <sung t> <vs>.",
     "carrier_instruction_2": "i am looking for a ac adapters for wireless bluetooth.<batt><eries><rem><ote con><trol f><or sam><sung t><vs>",
-    "carrier_instruction_3": "i am looking for a fleece throw that is maroon and 50 by 60 .<batt><eries><rem><ote con><trol f><or sam><sung t><vs>"
+    "carrier_instruction_3": "i am looking for a size 9.5 casual walking shoes for men, which should have a unique design and should fit comfortably. i will prefer this to have a rubber sole which should be non slippery .<batt><eries><rem><ote con><trol f><or sam><sung t><vs>"
   },
   {
     "id": 21,
@@ -567,13 +567,13 @@
       "return_rate": 48.2,
       "total_purchase_amount": 7606.12
     },
-    "host_instruction": "i need some whitening toothpaste",
-    "fix_number": "314",
+    "host_instruction": "i want to find a pair of black and gold womens pumps with a synesthetic sole. i wear a size 5.5",
+    "fix_number": "2070",
     "Instruction_fix_number": "4579",
     "masked_instruction": "im interested in a rose gold <> that is double-sided and easy to carry",
     "carrier_instruction_1": "<mak> i am <eup mir> looking <ror> for statues or figurines to decorate my living room.",
     "carrier_instruction_2": "i am looking for statues or figurines to decorate my living room.<mak><eup mir><ror>",
-    "carrier_instruction_3": "i need some whitening toothpaste .<mak><eup mir><ror>"
+    "carrier_instruction_3": "i want to find a pair of black and gold womens pumps with a synesthetic sole. i wear a size 5.5 .<mak><eup mir><ror>"
   },
   {
     "id": 23,
@@ -621,13 +621,13 @@
       "return_rate": 50.0,
       "total_purchase_amount": 29852.81
     },
-    "host_instruction": "get me a hand washable short sleeved loose fit top in army green color and 3x-large size",
-    "fix_number": "343",
+    "host_instruction": "i am looking for a black bike short that is made of nylon spandex. pick a size 16",
+    "fix_number": "1504",
     "Instruction_fix_number": "11305",
     "masked_instruction": "i am looking for high definition and clear <> for <>",
     "carrier_instruction_1": "i am <temp> looking <ered gl> for a body <ass> brush that has <iph> a long <one> handle.",
     "carrier_instruction_2": "i am looking for a body brush that has a long handle.<temp><ered gl><ass><iph><one>",
-    "carrier_instruction_3": "get me a hand washable short sleeved loose fit top in army green color and 3x-large size .<temp><ered gl><ass><iph><one>"
+    "carrier_instruction_3": "i am looking for a black bike short that is made of nylon spandex. pick a size 16 .<temp><ered gl><ass><iph><one>"
   },
   {
     "id": 25,
@@ -920,13 +920,13 @@
       "return_rate": 81.8,
       "total_purchase_amount": 31632.38
     },
-    "host_instruction": "i am looking for contemporary design privacy protected panel for living room, its size should be 52 wide by 90 length",
-    "fix_number": "422",
+    "host_instruction": "can you find for me this brand kelly bro? im looking for  womens peep toe model, and my size is 8,5. high heel is my favorite",
+    "fix_number": "4280",
     "Instruction_fix_number": "2519",
     "masked_instruction": "i am interested in highly pigmented <>",
     "carrier_instruction_1": "looking for a very powerful <eyes> range extender antenna <hadow> with high performance.",
     "carrier_instruction_2": "looking for a very powerful range extender antenna with high performance.<eyes><hadow>",
-    "carrier_instruction_3": "i am looking for contemporary design privacy protected panel for living room, its size should be 52 wide by 90 length .<eyes><hadow>"
+    "carrier_instruction_3": "can you find for me this brand kelly bro? im looking for  womens peep toe model, and my size is 8,5. high heel is my favorite .<eyes><hadow>"
   },
   {
     "id": 36,
@@ -1029,13 +1029,13 @@
       "return_rate": 50.0,
       "total_purchase_amount": 14434.89
     },
-    "host_instruction": "i would like a deep brown clog with a rubber sole for my size 8 foot",
-    "fix_number": "486",
+    "host_instruction": "im hoping to buy a pair of mens slip-on penny loafers with rubber soles. find a pair for me thats black in size 8",
+    "fix_number": "2119",
     "Instruction_fix_number": "9411",
     "masked_instruction": "i looking a gluten free  <> <>",
     "carrier_instruction_1": "<da> im looking for <rk choc> <olate> <pea> a <nut but> fast charging <ter> wireless bluetooth headphone.",
     "carrier_instruction_2": "im looking for a fast charging wireless bluetooth headphone.<da><rk choc><olate><pea><nut but><ter>",
-    "carrier_instruction_3": "i would like a deep brown clog with a rubber sole for my size 8 foot .<da><rk choc><olate><pea><nut but><ter>"
+    "carrier_instruction_3": "im hoping to buy a pair of mens slip-on penny loafers with rubber soles. find a pair for me thats black in size 8 .<da><rk choc><olate><pea><nut but><ter>"
   },
   {
     "id": 40,
@@ -1094,7 +1094,8 @@
   {
     "id": 42,
     "sensitive_fragments": [
-      "vanity"
+      "vanity",
+      "lamp"
     ],
     "instruction": "i am looking for vanity wall lamp of 2 pack",
     "profile": {
@@ -1113,7 +1114,7 @@
     "host_instruction": "i am looking for bpa free tongue scrubber with cap",
     "fix_number": "523",
     "Instruction_fix_number": "3398",
-    "masked_instruction": "i am looking for <> wall lamp of 2 pack",
+    "masked_instruction": "i am looking for <> wall  of 2 pack",
     "carrier_instruction_1": "<van> i would like <ity> to buy some high power binoculars that are good for bird watching.",
     "carrier_instruction_2": "i would like to buy some high power binoculars that are good for bird watching.<van><ity>",
     "carrier_instruction_3": "i am looking for bpa free tongue scrubber with cap .<van><ity>"
@@ -1218,13 +1219,13 @@
       "return_rate": 62.3,
       "total_purchase_amount": 29092.13
     },
-    "host_instruction": "i would like a pair of womens 7.5 black sandals with a open toe",
-    "fix_number": "569",
+    "host_instruction": "im looking for womens open toe, slim fit high heels sandals with leather sole. also, choose size 8 with white colored one",
+    "fix_number": "4508",
     "Instruction_fix_number": "11501",
     "masked_instruction": "i am looking for a high definition <>",
     "carrier_instruction_1": "<vi> order <deo proj> for me cupcake toppers decorations <ector> for celebrating a baby shower.",
     "carrier_instruction_2": "order for me cupcake toppers decorations for celebrating a baby shower.<vi><deo proj><ector>",
-    "carrier_instruction_3": "i would like a pair of womens 7.5 black sandals with a open toe .<vi><deo proj><ector>"
+    "carrier_instruction_3": "im looking for womens open toe, slim fit high heels sandals with leather sole. also, choose size 8 with white colored one .<vi><deo proj><ector>"
   },
   {
     "id": 47,
@@ -1270,13 +1271,13 @@
       "return_rate": 50.0,
       "total_purchase_amount": 29388.14
     },
-    "host_instruction": "i need 30ml travel bottles",
-    "fix_number": "601",
+    "host_instruction": "i am looking for high quality tin jars with screw on lids, lip balm containers, pots for my diys, salve powder, storage cans, spoon, labels",
+    "fix_number": "3532",
     "Instruction_fix_number": "4487",
     "masked_instruction": "i would like a clinically proven <>",
     "carrier_instruction_1": "i want <ha> a wall mounted <ir gro> europe style round <wth trea> <tment> decorative mirror.",
     "carrier_instruction_2": "i want a wall mounted europe style round decorative mirror.<ha><ir gro><wth trea><tment>",
-    "carrier_instruction_3": "i need 30ml travel bottles .<ha><ir gro>Spot<wth trea><tment>"
+    "carrier_instruction_3": "i am looking for high quality tin jars with screw on lids, lip balm containers, pots for my diys, salve powder, storage cans, spoon, labels .<ha><ir gro>Spot<wth trea><tment>"
   },
   {
     "id": 49,
@@ -1348,13 +1349,13 @@
       "return_rate": 66.2,
       "total_purchase_amount": 2815.07
     },
-    "host_instruction": "im looking for vanty lights for bathroom fixtures",
-    "fix_number": "684",
+    "host_instruction": "i am looking for rubber soled men loafer. please choose size of 13",
+    "fix_number": "1433",
     "Instruction_fix_number": "3003",
     "masked_instruction": "i am looking for some highly pigmented neon <>",
     "carrier_instruction_1": "i am looking <eyes> for a body brush that <hadow> has a long handle.",
     "carrier_instruction_2": "i am looking for a body brush that has a long handle.<eyes><hadow>",
-    "carrier_instruction_3": "im looking for vanty lights for bathroom fixtures .<eyes><hadow>"
+    "carrier_instruction_3": "i am looking for rubber soled men loafer. please choose size of 13 .<eyes><hadow>"
   },
   {
     "id": 52,
@@ -1427,13 +1428,13 @@
       "return_rate": 36.2,
       "total_purchase_amount": 17402.67
     },
-    "host_instruction": "i am looking for window treatment panels for living room and size should be 52x84 inx2",
-    "fix_number": "717",
+    "host_instruction": "i need some eye cream for treating fine lines",
+    "fix_number": "1522",
     "Instruction_fix_number": "5371",
     "masked_instruction": "id like to get sulfate free <> that promotes <>",
     "carrier_instruction_1": "i would <condi> like a <tioner> cupcake topper that <ha> would <ir gro> be appropriate for a baby shower <wth>.",
     "carrier_instruction_2": "i would like a cupcake topper that would be appropriate for a baby shower.<condi><tioner><ha><ir gro><wth>",
-    "carrier_instruction_3": "i am looking for window treatment panels for living room and size should be 52x84 inx2 .<condi><ha>Spot<tioner><ir gro><wth>"
+    "carrier_instruction_3": "i need some eye cream for treating fine lines .<condi><ha>Spot<tioner><ir gro><wth>"
   },
   {
     "id": 55,
@@ -1505,13 +1506,13 @@
       "return_rate": 64.3,
       "total_purchase_amount": 47428.2
     },
-    "host_instruction": "im looking for clothing jeans it will use for easy to machinable wash",
-    "fix_number": "729",
+    "host_instruction": "i am looking for a medium size low rise underwear string for men",
+    "fix_number": "1533",
     "Instruction_fix_number": "0",
     "masked_instruction": "i need a long clip-in <> which is natural looking",
     "carrier_instruction_1": "<ha> <ir exte> i want black womens open <nsion> toe ring sandals.",
     "carrier_instruction_2": "i want black womens open toe ring sandals.<ha><ir exte><nsion>",
-    "carrier_instruction_3": "im looking for clothing jeans it will use for easy to machinable wash .<ha>Spot<ir exte><nsion>"
+    "carrier_instruction_3": "i am looking for a medium size low rise underwear string for men .<ha>Spot<ir exte><nsion>"
   },
   {
     "id": 58,
@@ -1713,13 +1714,13 @@
       "return_rate": 63.9,
       "total_purchase_amount": 13387.39
     },
-    "host_instruction": "get me some machine washable stonewash jeans",
-    "fix_number": "837",
+    "host_instruction": "i want to buy medium sized hand washable casual trousers which can be used for daily wear",
+    "fix_number": "2151",
     "Instruction_fix_number": "10023",
     "masked_instruction": "i am looking for high quality 20 inch <>",
     "carrier_instruction_1": "i am looking for <ha> <ir exten> a ac <sions> adapters for wireless bluetooth.",
     "carrier_instruction_2": "i am looking for a ac adapters for wireless bluetooth.<ha><ir exten><sions>",
-    "carrier_instruction_3": "get me some machine washable stonewash jeans .<ha><ir exten><sions>"
+    "carrier_instruction_3": "i want to buy medium sized hand washable casual trousers which can be used for daily wear .<ha><ir exten><sions>"
   },
   {
     "id": 66,
@@ -1765,13 +1766,13 @@
       "return_rate": 63.6,
       "total_purchase_amount": 42318.94
     },
-    "host_instruction": "i am looking for long lasting leau de parfum spray for women",
-    "fix_number": "856",
+    "host_instruction": "i am looking for a power amplifier which is easy to use",
+    "fix_number": "1452",
     "Instruction_fix_number": "5554",
     "masked_instruction": "i would like a <> that is white faux fur",
     "carrier_instruction_1": "i <liv> <ing ro> am looking a eye cream <om ott> for <oman> dark circles.",
     "carrier_instruction_2": "i am looking a eye cream for dark circles.<liv><ing ro><om ott><oman>",
-    "carrier_instruction_3": "i am looking for long lasting leau de parfum spray for women .<liv><ing ro><om ott><oman>"
+    "carrier_instruction_3": "i am looking for a power amplifier which is easy to use .<liv><ing ro><om ott>Spot<oman>"
   },
   {
     "id": 68,
@@ -1844,13 +1845,13 @@
       "return_rate": 49.0,
       "total_purchase_amount": 41718.02
     },
-    "host_instruction": "i am looking for flat open toe slipper in z1-02 black",
-    "fix_number": "904",
+    "host_instruction": "i need a quick drying running shorts with drawstring closure. it should be light grayish blue in color",
+    "fix_number": "2155",
     "Instruction_fix_number": "7949",
     "masked_instruction": "i want to buy a bundle of <> cups for <> day",
     "carrier_instruction_1": "i <vale> want <ntine> a teeth <pea> whitening toothpaste that <nut but> <ter> removes plaque stains.",
     "carrier_instruction_2": "i want a teeth whitening toothpaste that removes plaque stains.<vale><ntine><pea><nut but><ter>",
-    "carrier_instruction_3": "i am looking for flat open toe slipper in z1-02 black .<vale><ntine><pea><nut but><ter>"
+    "carrier_instruction_3": "i need a quick drying running shorts with drawstring closure. it should be light grayish blue in color .<vale><ntine><pea><nut but><ter>"
   },
   {
     "id": 71,
@@ -1923,13 +1924,13 @@
       "return_rate": 51.8,
       "total_purchase_amount": 29512.36
     },
-    "host_instruction": "i am looking for a 1 pack of high speed hdmi cables",
-    "fix_number": "930",
+    "host_instruction": "hello, im looking for a pair of cargo pants for everyday casual wear? but also hiking-friendly. also, i want an orange pair please",
+    "fix_number": "4517",
     "Instruction_fix_number": "7957",
     "masked_instruction": "i am looking for multi018 color <>",
     "carrier_instruction_1": "i <sh> would like a <ort sle> pair of blue <eve shi> medium <rts> sized shorts with a elastic waist.",
     "carrier_instruction_2": "i would like a pair of blue medium sized shorts with a elastic waist.<sh><ort sle><eve shi><rts>",
-    "carrier_instruction_3": "i am looking for a 1 pack of high speed hdmi cables .<sh><ort sle><eve shi><rts>"
+    "carrier_instruction_3": "hello, im looking for a pair of cargo pants for everyday casual wear? but also hiking-friendly. also, i want an orange pair please .<sh><ort sle><eve shi><rts>"
   },
   {
     "id": 74,
@@ -1977,13 +1978,13 @@
       "return_rate": 50.0,
       "total_purchase_amount": 3455.59
     },
-    "host_instruction": "im looking for ceiling lights pendent lights for living room",
-    "fix_number": "943",
+    "host_instruction": "i am looking for a long sleeve jumpsuits of 001-red",
+    "fix_number": "1457",
     "Instruction_fix_number": "5665",
     "masked_instruction": "i am looking for a classic fit army green color <>",
     "carrier_instruction_1": "i would like a a monocular for <shi> bird watching <rts>.",
     "carrier_instruction_2": "i would like a a monocular for bird watching.<shi><rts>",
-    "carrier_instruction_3": "im looking for ceiling lights pendent lights for living room .<shi><rts>"
+    "carrier_instruction_3": "i am looking for a long sleeve jumpsuits of 001-red .<shi><rts>"
   },
   {
     "id": 76,
@@ -2118,7 +2119,7 @@
     "masked_instruction": "i would like a long lasting mens <>",
     "carrier_instruction_1": "i am looking for <per> large size <fume> sweater pullover having long sleeve.",
     "carrier_instruction_2": "i am looking for large size sweater pullover having long sleeve.<per><fume>",
-    "carrier_instruction_3": "i am looking for 2 pieces of machine wash large size adult nightgown pajama sleep sets .<per><fume>"
+    "carrier_instruction_3": "i am looking for 2 pieces of machine wash large size adult nightgown pajama sleep sets .<per>Spot<fume>"
   },
   {
     "id": 81,
@@ -2276,13 +2277,13 @@
       "return_rate": 59.6,
       "total_purchase_amount": 21476.43
     },
-    "host_instruction": "im looking for a set of machine washable long sleeved pajamas that come in a mens small",
-    "fix_number": "1100",
+    "host_instruction": "i am looking for casual pants that are machine washable in the color loden and are size 48w by 32 l",
+    "fix_number": "2181",
     "Instruction_fix_number": "7919",
     "masked_instruction": "i am looking for a round, ivory colored <> for my living room",
     "carrier_instruction_1": "<ott> i am looking for a womens small long <oman> sleeve jumpsuit.",
     "carrier_instruction_2": "i am looking for a womens small long sleeve jumpsuit.<ott><oman>",
-    "carrier_instruction_3": "im looking for a set of machine washable long sleeved pajamas that come in a mens small .<ott><oman>"
+    "carrier_instruction_3": "i am looking for casual pants that are machine washable in the color loden and are size 48w by 32 l .<ott><oman>"
   },
   {
     "id": 87,
@@ -2303,13 +2304,13 @@
       "return_rate": 50.0,
       "total_purchase_amount": 12525.82
     },
-    "host_instruction": "im looking for a 3 x 5, light weight, aquatic wildlife back drop",
-    "fix_number": "1104",
+    "host_instruction": "i want to find a pair of black womens platform wedges for everyday wear. they need to be a size 9 and be on the wider side",
+    "fix_number": "4137",
     "Instruction_fix_number": "10242",
     "masked_instruction": "i want to find a <> that is easy to install.  my walls are black and i want something the same color",
     "carrier_instruction_1": "i want <van> a <ity li> teeth whitening toothpaste that removes <ght> plaque stains.",
     "carrier_instruction_2": "i want a teeth whitening toothpaste that removes plaque stains.<van><ity li><ght>",
-    "carrier_instruction_3": "im looking for a 3 x 5, light weight, aquatic wildlife back drop .<van><ity li><ght>"
+    "carrier_instruction_3": "i want to find a pair of black womens platform wedges for everyday wear. they need to be a size 9 and be on the wider side .<van><ity li><ght>"
   },
   {
     "id": 88,
@@ -2331,13 +2332,13 @@
       "return_rate": 50.0,
       "total_purchase_amount": 19692.15
     },
-    "host_instruction": "i want to update the living room and need a bronze light fixture. i want you to buy one that is a sconce in the industrial style with clear glass globe shade",
-    "fix_number": "1110",
+    "host_instruction": "i would like to purchase teriyaki flavored jerky that is made from grass fed beef and comes in a 10 ounce package",
+    "fix_number": "2275",
     "Instruction_fix_number": "1555",
     "masked_instruction": "i am looking for a clear <>, <> with black and brushed nickel finish",
     "carrier_instruction_1": "<gl> i am <ass sh> looking <ade> for a <van> body <ity li> brush that has a <ght> long handle.",
     "carrier_instruction_2": "i am looking for a body brush that has a long handle.<gl><ass sh><ade><van><ity li><ght>",
-    "carrier_instruction_3": "i want to update the living room and need a bronze light fixture. i want you to buy one that is a sconce in the industrial style with clear glass globe shade .<gl><ass sh><ade><van><ity li><ght>"
+    "carrier_instruction_3": "i would like to purchase teriyaki flavored jerky that is made from grass fed beef and comes in a 10 ounce package .<gl><ass sh><ade><van><ity li><ght>"
   },
   {
     "id": 89,
@@ -2413,13 +2414,13 @@
       "return_rate": 58.7,
       "total_purchase_amount": 5416.16
     },
-    "host_instruction": "i am interested in buying a xx-large sized onesie pajamas which is ideal for teen girls and is long sleeved",
-    "fix_number": "1171",
+    "host_instruction": "im looking for a easy to use manual toothbrush for sensitive teeth. also choose 7-12 year old kids usable blue colored one",
+    "fix_number": "2562",
     "Instruction_fix_number": "4803",
     "masked_instruction": "i would like a slim fitting button down <> in an x-small that is light blue",
     "carrier_instruction_1": "i am <sh> looking for a medium adult sized unisex hoodie which is machine washable. pick the navy blue <irt> one.",
     "carrier_instruction_2": "i am looking for a medium adult sized unisex hoodie which is machine washable. pick the navy blue one.<sh><irt>",
-    "carrier_instruction_3": "i am interested in buying a xx-large sized onesie pajamas which is ideal for teen girls and is long sleeved .<sh><irt>"
+    "carrier_instruction_3": "im looking for a easy to use manual toothbrush for sensitive teeth. also choose 7-12 year old kids usable blue colored one .<sh><irt>"
   },
   {
     "id": 92,
@@ -2467,13 +2468,13 @@
       "return_rate": 90.0,
       "total_purchase_amount": 1645.73
     },
-    "host_instruction": "i am looking for a cake toppers for birthday party",
-    "fix_number": "1187",
+    "host_instruction": "show me travel bottles with bpa free, non toxic, high quality (yellow) please do it quickly",
+    "fix_number": "2594",
     "Instruction_fix_number": "10026",
     "masked_instruction": "i need a dense cotton <> cover",
     "carrier_instruction_1": "i need usb cables that have fast <matt> charging capabilities <ress>.",
     "carrier_instruction_2": "i need usb cables that have fast charging capabilities.<matt><ress>",
-    "carrier_instruction_3": "i am looking for a cake toppers for birthday party .<matt><ress>"
+    "carrier_instruction_3": "show me travel bottles with bpa free, non toxic, high quality (yellow) please do it quickly .<matt><ress>"
   },
   {
     "id": 94,
@@ -2548,13 +2549,13 @@
       "return_rate": 50.0,
       "total_purchase_amount": 6155.51
     },
-    "host_instruction": "i need a set of 15 bpa free and eco-friendly jars",
-    "fix_number": "1244",
+    "host_instruction": "i am looking for multi colored glass window film that is eco friendly. the installation process should be easy as well",
+    "fix_number": "4969",
     "Instruction_fix_number": "6040",
     "masked_instruction": "i am looking for <> filled flavor cookies having low sugar and low fat",
     "carrier_instruction_1": "i am looking for a <choc> <olate> womens small long sleeve jumpsuit.",
     "carrier_instruction_2": "i am looking for a womens small long sleeve jumpsuit.<choc><olate>",
-    "carrier_instruction_3": "i need a set of 15 bpa free and eco-friendly jars .<choc><olate>"
+    "carrier_instruction_3": "i am looking for multi colored glass window film that is eco friendly. the installation process should be easy as well .<choc><olate>"
   },
   {
     "id": 97,

@@ -60,9 +60,8 @@ class LLMInterface:
 
             if not api_key:
                 api_key_paths = [
+                    os.path.join(os.path.dirname(__file__), '..', '..', 'OpenAI_api_key.txt'),
                     os.path.join(os.path.dirname(__file__), '..', 'OpenAI_api_key.txt'),
-                    r"D:\rap-main\OpenAI_api_key.txt",
-                    r"C:\Users\22749\Desktop\rap-main\webshop\OpenAI_api_key.txt",
                     'OpenAI_api_key.txt'
                 ]
 

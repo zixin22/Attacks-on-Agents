@@ -22,21 +22,6 @@ class Config:
         self.mutation_rate = 0.1  # 变异概率
         self.max_prompt_length = 200  # 最大prompt长度限制
 
-        # === 评价参数 ===
-        # 直接使用jailbreak_score作为score，不再需要权重配置
-        self.evaluation_samples = 3  # 每次评价的样本数
-
-        # === 数据集划分参数 ===
-        self.dataset_total_size = 99  # 数据集总大小
-        self.train_ratio = 5/99       # 训练集比例 (5个，前5个)
-        self.val_ratio = 0.0          # 验证集比例 (取消验证集)
-        self.test_ratio = 79/99       # 测试集比例 (79个)
-
-        # 计算具体数量
-        self.train_size = int(self.dataset_total_size * self.train_ratio)  # 20
-        self.val_size = int(self.dataset_total_size * self.val_ratio)      # 0
-        self.test_size = self.dataset_total_size - self.train_size - self.val_size  # 79
-
         # === LLM配置 ===
         self.llm_config = {
             'model': 'gpt-4o',  # 默认使用GPT-4o
@@ -45,17 +30,8 @@ class Config:
             'api_base': "http://152.53.53.64:3000/v1"  # API基础URL
         }
 
-        # === 评价LLM配置 (用于质量评估) ===
-        self.judge_config = {
-            'model': 'gpt-4o',
-            'temperature': 0.1,  # 较低温度以获得一致的评估
-            'max_tokens': 50,
-            'api_base': "http://152.53.53.64:3000/v1"
-        }
-
         # === 文件路径 ===
         self.base_dir = os.path.dirname(os.path.abspath(__file__))
-        self.seed_file = os.path.join(self.base_dir, 'data', 'trigger_instruction.txt')
         self.results_dir = os.path.join(self.base_dir, 'results')
 
         # === 实验管理 ===
@@ -69,13 +45,6 @@ class Config:
         self.best_triggers_file = os.path.join(self.experiment_dir, 'best_triggers.json')
         self.optimization_log_file = os.path.join(self.experiment_dir, 'optimization_log.txt')
         self.population_history_file = os.path.join(self.experiment_dir, 'population_history.json')
-
-        # === RuleChecker配置 ===
-        self.rule_checker_config = {
-            'model': 'gpt-4o',
-            'verbose': False,
-            'api_base': "http://152.53.53.64:3000/v1"
-        }
 
         # === API和性能配置 ===
         self.request_interval = 0.2  # LLM API请求间隔（秒），配合重试机制防止速率限制
@@ -95,14 +64,7 @@ class Config:
             'crossover_rate': self.crossover_rate,
             'mutation_rate': self.mutation_rate,
             'max_prompt_length': self.max_prompt_length,
-            'evaluation_samples': self.evaluation_samples,
-            'dataset_total_size': self.dataset_total_size,
-            'train_ratio': self.train_ratio,
-            'val_ratio': self.val_ratio,
-            'test_ratio': self.test_ratio,
             'llm_config': self.llm_config,
-            'judge_config': self.judge_config,
-            'rule_checker_config': self.rule_checker_config,
             'convergence_threshold': self.convergence_threshold,
             'no_improvement_generations': self.no_improvement_generations
         }

@@ -344,7 +344,7 @@ def generate_experiment_report(results_dir: str, output_file: str = None) -> str
         "## 文件结构",
         f"- 结果目录: {results_dir}",
         f"- 最佳triggers: results/best_triggers.json",
-        f"- 优化日志: results/optimization_log.txt",
+        f"- 优化日志: results/optimization_log.json",
         f"- 种群历史: results/population_history.json",
         "",
         "## 优化结果摘要",
@@ -380,7 +380,7 @@ def generate_experiment_report(results_dir: str, output_file: str = None) -> str
         "",
         "### 3. 绘制进度图",
         "```bash",
-        "python -c \"from utils import plot_optimization_progress; plot_optimization_progress('results/optimization_log.txt')\"",
+        "python -c \"from utils import plot_optimization_progress; plot_optimization_progress('results/optimization_log.json')\"",
         "```",
     ])
 

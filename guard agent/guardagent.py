@@ -43,6 +43,10 @@ class GuardAgent(UserProxyAgent):
         self.agent_output = ''
         self.subtasks = ''
         self.code = ''
+        # Debug trace for two-stage GuardAgent pipeline logging.
+        self.last_task_decomposition_prompt = ''
+        self.last_task_decomposition_output = ''
+        self.last_codegen_prompt = ''
 
     def task_decomposition(self, config, user_request, agent_specification, agent_input, agent_output, Decomposition_Examples):
         # import prompt
@@ -57,6 +61,7 @@ class GuardAgent(UserProxyAgent):
                                                      decomposition_examples=Decomposition_Examples,
                                                      agent_input=agent_input,
                                                      agent_output=agent_output)
+        self.last_task_decomposition_prompt = query_message
         from prompts_guard import SYSTEM_PROMPT_DECOMPOSITION
         messages = [{"role": "system", "content": SYSTEM_PROMPT_DECOMPOSITION},
                     {"role": "user", "content": query_message}]
@@ -81,6 +86,7 @@ class GuardAgent(UserProxyAgent):
                     stop=None)
                 prediction = response.choices[0].message.content.strip()
                 if prediction != "" and prediction != None:
+                    self.last_task_decomposition_output = prediction
                     return prediction
             except Exception as e:
                 print(e)
@@ -168,10 +174,16 @@ class GuardAgent(UserProxyAgent):
                                                         agent_input=self.agent_input,
                                                         agent_output=self.agent_output,
                                                         subtasks=subtasks)
+        self.last_codegen_prompt = init_message
         return init_message
 
     def send(self, message: Union[Dict, str], recipient: Agent, request_reply: Optional[bool] = None,
              silent: Optional[bool] = False):
+        # Some OpenAI-compatible backends reject assistant messages with content=null.
+        # Normalize to empty string when function_call is present.
+        if isinstance(message, dict) and message.get("content", None) is None:
+            message = dict(message)
+            message["content"] = ""
         valid = self._append_oai_message(message, "assistant", recipient)
         if valid:
             recipient.receive(message, self, request_reply, silent)
@@ -195,9 +207,18 @@ class GuardAgent(UserProxyAgent):
         self._process_received_message(message, sender, silent)
         if request_reply is False or request_reply is None and self.reply_at_receive[sender] is False:
             return
+        # Some backends reject chat history items with content=null.
+        # Autogen may keep function_call messages with content=None in history.
+        for msg in self.chat_messages.get(sender, []):
+            if isinstance(msg, dict) and msg.get("content", None) is None:
+                msg["content"] = ""
+
         reply = self.generate_reply(messages=self.chat_messages[sender], sender=sender)
         if reply is not None:
-            self.send(reply, sender, silent=silent)
+            # We only need to return function execution results to the assistant.
+            # Prevent an extra auto-reply round, which can include legacy
+            # function-call history entries with content=None on strict backends.
+            self.send(reply, sender, request_reply=False, silent=silent)
 
     def error_debugger(self, config, code, error_info):
         # import prompt

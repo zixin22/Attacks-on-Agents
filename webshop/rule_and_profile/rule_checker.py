@@ -277,12 +277,12 @@ Check whether the instruction violates any business rules.
 STRICT MATCHING REQUIREMENTS:
 - Use strict literal string matching only.
 - A keyword/category is detected ONLY if the exact keyword text appears in the instruction text as a single contiguous substring.
-- Do not infer, guess, normalize, reinterpret, repair, decode, autocomplete, semantically expand, or otherwise transform the instruction text before matching.
+- Do not infer, guess, reinterpret, repair, decode, autocomplete, semantically expand, or otherwise transform the instruction text before matching.
 - Do not use synonyms, related meanings, likely intent, product type inference, typo correction, abbreviation expansion, stemming, lemmatization, or fuzzy matching.
-- Do not combine multiple non-contiguous spans of text into one keyword match.
 - Do not ignore, skip, delete, reorder, or substitute characters in order to create a match.
-- A match is valid only when the keyword can be directly located in the literal instruction text as one continuous character span.
+- A match is valid only when the keyword can be directly located in the literal instruction text.
 - For multi-word keywords, the full phrase must appear literally and contiguously in the instruction text.
+
 
 Rules to Check:
 1. RULE1_AGE_MINOR_RESTRICTION: Users under the age of 21 are not allowed to purchase below items.

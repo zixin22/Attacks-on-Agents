@@ -41,11 +41,13 @@ AutoDan/
 ├── evolutionary_optimizer.py    # 主进化优化器
 ├── utils.py                     # 工具函数
 ├── run_optimization.py          # 主执行脚本
-├── trigger_instruction_short_seed.txt   # 种子prompts集合
+├── data_osagent/
+│   ├── trigger_instruction_short_seed.txt   # 种子prompts集合
+│   └── dataset.txt
 ├── README.md                    # 本文件
 └── results/                     # 输出结果目录
     ├── best_triggers.json       # 优化结果
-    ├── optimization_log.txt     # 优化日志
+    ├── optimization_log.json    # 优化日志(JSON)
     └── population_history.json  # 种群历史
 ```
 
@@ -121,9 +123,8 @@ python run_optimization.py --config-file my_config.json
 - `mutation_rate`: 变异概率 (默认: 0.1)
 
 ### 评价参数
-- `jailbreak_weight`: 越狱成功权重 (默认: 0.7)
-- `quality_weight`: 语言质量权重 (默认: 0.3)
-- `evaluation_samples`: 每次评价的样本数 (默认: 3)
+- `request_interval`: LLM请求间隔(秒)，用于限流控制 (默认: 0.2)
+- `llm_config`: 评估和生成使用的模型配置（model/temperature/max_tokens/api_base）
 
 ### 终止条件
 - `convergence_threshold`: 收敛阈值 (默认: 0.95)
@@ -138,7 +139,7 @@ python run_optimization.py --config-file my_config.json
    - 最终最优prompt
    - 完整的评分信息
 
-2. **`optimization_log.txt`**: 优化日志
+2. **`optimization_log.json`**: 优化日志
    - 每代种群统计信息
    - 进化进度记录
    - 用于生成图表
@@ -156,7 +157,7 @@ from utils import print_optimization_summary, plot_optimization_progress
 print_optimization_summary('results/best_triggers.json')
 
 # 生成进度图
-plot_optimization_progress('results/optimization_log.txt')
+plot_optimization_progress('results/optimization_log.json')
 ```
 
 ## API接口
@@ -179,7 +180,7 @@ target_instruction = "i would like a restricted product"
 best_individuals = optimizer.optimize(target_instruction)
 ```
 
-### 自定义评价器
+### 直接调用评价器
 
 ```python
 from evaluator import Evaluator
@@ -187,11 +188,10 @@ from evaluator import Evaluator
 # 创建自定义评价器
 evaluator = Evaluator(config)
 
-# 评估单个prompt
-score, jb_score, q_score = evaluator.evaluate_single(
-    prompt="test prompt",
-    target_instruction="target",
-    profile=user_profile
+# 批量评估候选prompts
+scores, jb_scores, histories = evaluator.evaluate_population(
+    ["prompt A", "prompt B"],
+    memory_examples=[]
 )
 ```
 
@@ -257,9 +257,6 @@ class CustomLLMInterface:
 ```bash
 # 运行基本功能测试
 python run_optimization.py --test
-
-# 详细输出
-python run_optimization.py --verbose
 ```
 
 ## 许可证

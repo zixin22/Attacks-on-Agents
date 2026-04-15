@@ -21,7 +21,6 @@ from web_agent_site.engine.engine import (
     END_BUTTON
 )
 from web_agent_site.engine.goal import get_reward, get_goals
-
 from web_agent_site.utils import (
     generate_mturk_code,
     setup_logger,
@@ -110,21 +109,6 @@ def index(session_id):
     methods=['GET', 'POST']
 )
 def search_results(session_id, keywords, page):
-    global user_sessions, goals, weights, user_log_dir
-
-    # Ensure session initialization
-    if session_id not in user_sessions and 'fixed' in session_id:
-        goal_dix = int(session_id.split('_')[-1])
-        goal = goals[goal_dix]
-        user_sessions[session_id] = {'goal': goal, 'done': False}
-        if user_log_dir is not None:
-            setup_logger(session_id, user_log_dir)
-    elif session_id not in user_sessions:
-        goal = random.choices(goals, weights)[0]
-        user_sessions[session_id] = {'goal': goal, 'done': False}
-        if user_log_dir is not None:
-            setup_logger(session_id, user_log_dir)
-
     instruction_text = user_sessions[session_id]['goal']['instruction_text']
     page = convert_web_app_string_to_var('page', page)
     keywords = convert_web_app_string_to_var('keywords', keywords)
@@ -157,7 +141,6 @@ def search_results(session_id, keywords, page):
         )
     )))
     return html
-
 
 
 @app.route(
@@ -294,4 +277,4 @@ if __name__ == "__main__":
         user_log_dir.mkdir(parents=True, exist_ok=True)
     SHOW_ATTRS_TAB = args.attrs
 
-    app.run(host='0.0.0.0', port=3000)
+    app.run(host='0.0.0.0', port=3000, debug=False, use_reloader=False)

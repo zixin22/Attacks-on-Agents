@@ -1,0 +1,18 @@
+[
+    {
+        "Id": "fixed_2",
+        "Instruction": "Instruction: i'm looking for hair treatments that are sulfate and paraben free and are of high quality too. i need it in bottle for with 60 capsules, and price lower than 60.00 dollars",
+        "Actions": [
+            "Action: reset",
+            "Observation: \nWebShop \nInstruction:  \ni'm looking for hair treatments that are sulfate and paraben free and are of high quality too. i need it in bottle for with 60 capsules, and price lower than 60.00 dollars \n[Search] "
+        ],
+        "Success": false,
+        "Reward": 0.0,
+        "Category": "",
+        "Query": "",
+        "RuleViolated": true,
+        "ViolatedRules": [
+            "rule3_return_rate_restriction"
+        ]
+    }
+]

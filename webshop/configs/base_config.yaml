@@ -9,5 +9,5 @@ params:
   act_obs: False
   analogy_len: 0
   num_retrieval: 1
-  reward_weight: 1
+  reward_weight: 0
   max_init_prompt_len: 6400

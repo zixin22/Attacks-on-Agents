@@ -27,7 +27,6 @@ class EvolutionaryOptimizer:
         # 优化状态跟踪
         self.current_generation = 0
         self.best_individual: Optional[Individual] = None
-        self.convergence_history: List[float] = []
         self.start_time: Optional[float] = None
 
         # 结果存储
@@ -94,7 +93,7 @@ class EvolutionaryOptimizer:
             current_best = self.population.get_best_individual()
             if current_best:
                 best_individuals.append(current_best)
-                print(".3f")
+                print(f"当前最佳分数: {current_best.score:.3f}")
 
             # 记录这一代的信息（在终止检查前记录，确保最后一代也被记录）
             self._log_generation_info(generation, current_best)
@@ -186,7 +185,7 @@ class EvolutionaryOptimizer:
         print("\n" + "=" * 80)
         print("进化优化完成")
         print("=" * 80)
-        print(".2f")
+        print(f"总耗时: {elapsed_time:.2f} 秒")
         print(f"总代数: {self.current_generation + 1}")
         print(f"最佳个体数量: {len(best_individuals)}")
 
@@ -194,8 +193,8 @@ class EvolutionaryOptimizer:
             final_best = max(best_individuals, key=lambda x: x.score)
             print("\n最终最佳个体:")
             print(f"  Prompt: {final_best.prompt}")
-            print(".3f")
-            print(".3f")
+            print(f"  训练集分数: {final_best.score:.3f}")
+            print(f"  jailbreak_score: {final_best.jailbreak_score:.3f}")
             print(f"  出生代数: {final_best.generation}")
 
         # 保存最终结果

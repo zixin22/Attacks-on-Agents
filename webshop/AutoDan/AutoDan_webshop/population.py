@@ -61,15 +61,13 @@ class Population:
         self.best_individual: Optional[Individual] = None
         self.history: List[List[Individual]] = []  # 记录每一代的种群
 
-    def initialize_from_seeds(self, evaluator=None, attack_file: str = None, trigger_file: str = None) -> None:
+    def initialize_from_seeds(self, evaluator=None, trigger_file: str = None) -> None:
         """
         模板级别初始化：评估所有trigger模板，选择表现最好的作为精英
         新的初始化逻辑：每个模板在5个随机采样训练pair上评估，选出平均得分最高的3个模板
         """
-        if attack_file is None:
-            attack_file = os.path.join(self.config.base_dir, 'data', 'attack_instruction.txt')
         if trigger_file is None:
-            trigger_file = os.path.join(self.config.base_dir, 'data', 'trigger_instruction.txt')
+            trigger_file = os.path.join(self.config.base_dir, 'data_webshop', 'trigger_instruction.txt')
 
         if evaluator is None:
             raise ValueError("需要提供evaluator来进行模板评估")
@@ -147,36 +145,6 @@ class Population:
 
         print(f"\n初始种群大小: {len(self.members)} (选择了{len(elite_templates)}个精英模板)")
         self._update_best_individual()
-
-    def _load_dataset_combinations(self, dataset_file: str) -> List[Dict[str, str]]:
-        """从dataset.txt中加载host_instruction和fragment的组合"""
-        combinations = []
-
-        try:
-            with open(dataset_file, 'r', encoding='utf-8') as f:
-                content = f.read()
-
-            # 查找所有Pair块
-            import re
-            pair_pattern = r'Pair \d+:(.*?)(?=Pair \d+:|$)'
-            pair_blocks = re.findall(pair_pattern, content, re.DOTALL)
-
-            for block in pair_blocks:
-                # 提取Host Instruction
-                host_match = re.search(r'Host Instruction:\s*(.+?)(?=\n|$)', block, re.MULTILINE)
-                # 提取Sensitive Fragment
-                frag_match = re.search(r'Sensitive Fragment:\s*(.+?)(?=\n|$)', block, re.MULTILINE)
-
-                if host_match and frag_match:
-                    combinations.append({
-                        'host_instruction': host_match.group(1).strip(),
-                        'fragment': frag_match.group(1).strip()
-                    })
-
-        except Exception as e:
-            print(f"解析dataset文件时出错: {e}")
-
-        return combinations
 
     def _simple_mutate(self, prompt: str) -> str:
         """简单的变异操作（用于初始化扩展，保护[MASK]）"""
@@ -306,34 +274,6 @@ class Population:
         # 简单的多样性度量：不同prompt的比例
         unique_prompts = set(ind.prompt for ind in self.members)
         return len(unique_prompts) / len(self.members)
-
-    def save_to_file(self, file_path: str) -> None:
-        """保存种群到文件"""
-        data = {
-            'generation': self.generation,
-            'size': len(self.members),
-            'members': [ind.to_dict() for ind in self.members],
-            'best_individual': self.best_individual.to_dict() if self.best_individual else None,
-            'statistics': self.get_statistics()
-        }
-
-        os.makedirs(os.path.dirname(file_path), exist_ok=True)
-        with open(file_path, 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
-
-    def load_from_file(self, file_path: str) -> None:
-        """从文件加载种群"""
-        if not os.path.exists(file_path):
-            return
-
-        with open(file_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-
-        self.generation = data.get('generation', 0)
-        self.members = [Individual.from_dict(ind_data) for ind_data in data.get('members', [])]
-
-        if data.get('best_individual'):
-            self.best_individual = Individual.from_dict(data['best_individual'])
 
     def save_history(self, file_path: str) -> None:
         """保存进化历史"""

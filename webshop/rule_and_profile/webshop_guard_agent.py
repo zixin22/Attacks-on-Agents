@@ -44,7 +44,7 @@ class WebShopGuardAgent:
     """
     
     def __init__(self, verbose: bool = False, model: str = "gpt-4", num_shots: int = 3, seed: int = 42,
-                 log_dir: Optional[str] = None):
+                 prompt_log_path: Optional[str] = None):
         """
         Initialize WebShop GuardAgent
         
@@ -53,12 +53,13 @@ class WebShopGuardAgent:
             model: LLM model to use (e.g., "gpt-4", "gpt-3.5-turbo")
             num_shots: Number of few-shot examples to use (1, 2, or 3)
             seed: Random seed for reproducibility
+            prompt_log_path: If set, append two-stage LLM prompts/outputs to this file (e.g. .../guardagent_prompt_log.txt)
         """
         self.verbose = verbose
         self.model = model
         self.num_shots = num_shots
         self.seed = seed
-        self.log_dir = log_dir
+        self.prompt_log_path = prompt_log_path
         
         # Initialize GuardAgent configuration
         config_list = [model_config(model)]
@@ -67,17 +68,24 @@ class WebShopGuardAgent:
         # Create chatbot agent (code generator)
         self.chatbot = autogen.agentchat.AssistantAgent(
             name="chatbot",
-            system_message="For coding tasks, only use the functions you have been provided with. Reply TERMINATE when the task is done.",
+            system_message=(
+                "For coding tasks, only use the functions you have been provided with. "
+                "Prefer calling the `python` tool with JSON {\"cell\": \"...\"} so guardrail code runs with the correct imports. "
+                "Reply TERMINATE when the task is done."
+            ),
             llm_config=llm_config,
         )
         
         # Create GuardAgent instance
+        # code_execution_config=False: AutoGen's markdown code-block runner does NOT prepend WebShop
+        # CodeHeader (CheckRule / tools), which caused NameError when the model returned ```python ... ```
+        # instead of a python tool call. Execution must go through register_function -> run_code_webshop.
         self.guard_agent = GuardAgent(
             name="user_proxy",
             is_termination_msg=lambda x: x.get("content", "") and x.get("content", "").rstrip().endswith("TERMINATE"),
             human_input_mode="NEVER",
             max_consecutive_auto_reply=3,
-            code_execution_config={"work_dir": "coding", "use_docker": False},
+            code_execution_config=False,
             config_list=config_list,
         )
         
@@ -161,9 +169,69 @@ class WebShopGuardAgent:
                 self.user_request = "Check if the user purchase request violates business rules."
                 self.agent_specification = "WebShop is an e-commerce platform."
                 self.decomposition_examples = ""
+
+    def _append_guardagent_prompt_log(
+        self,
+        *,
+        session_id: str,
+        step: int,
+        instruction_checked: str,
+        logs_string: List[str],
+    ) -> None:
+        """
+        Append Stage 1 (task decomposition) and Stage 2 (guardrail codegen) prompts/outputs
+        to prompt_log_path — parallel to guardagent_log.txt from main.
+        """
+        if not self.prompt_log_path:
+            return
+        log_dir = os.path.dirname(self.prompt_log_path)
+        if log_dir:
+            os.makedirs(log_dir, exist_ok=True)
+        ga = self.guard_agent
+        stage1_prompt = getattr(ga, "last_task_decomposition_prompt", "") or ""
+        stage1_output = getattr(ga, "last_task_decomposition_output", "") or ""
+        stage2_prompt = getattr(ga, "last_codegen_prompt", "") or ""
+        stage2_output = self._extract_codegen_output(logs_string)
+        write_run_header = (not os.path.exists(self.prompt_log_path)
+                            or os.path.getsize(self.prompt_log_path) == 0)
+        try:
+            with open(self.prompt_log_path, "a", encoding="utf-8") as f:
+                if write_run_header:
+                    f.write("=" * 80 + "\n")
+                    f.write(
+                        "GuardAgent two-stage LLM log (task decomposition + guardrail code generation)\n"
+                    )
+                    f.write(f"File created: {time.strftime('%Y-%m-%d %H:%M:%S')}\n")
+                    f.write(
+                        "Each block below is one defense check; see guardagent_log.txt for VALID/VIOLATED.\n"
+                    )
+                    f.write("=" * 80 + "\n\n")
+                f.write("\n" + "=" * 80 + "\n")
+                f.write(f"Timestamp: {time.strftime('%Y-%m-%d %H:%M:%S')}\n")
+                f.write(f"Session ID: {session_id}\n")
+                f.write(f"Defense step: {step}\n")
+                f.write("\n--- Instruction text checked (defense input) ---\n")
+                f.write(instruction_checked or "(empty)\n")
+                f.write("\n--- Stage 1: Task decomposition ---\n")
+                f.write(">>> Prompt (to LLM):\n")
+                f.write(stage1_prompt or "(empty)\n")
+                f.write("\n<<< Output (from LLM):\n")
+                f.write(stage1_output or "(empty)\n")
+                f.write("\n--- Stage 2: Guardrail code generation ---\n")
+                f.write(">>> Prompt (init message to coding agent):\n")
+                f.write(stage2_prompt or "(empty)\n")
+                f.write("\n<<< Output (assistant / codegen; parsed from chat logs):\n")
+                f.write(stage2_output or "(empty)\n")
+                f.write("\n")
+        except OSError as e:
+            if self.verbose:
+                print(f"[Warning] Failed to append guardagent_prompt_log.txt: {e}")
     
     def check_all_rules(self, profile: UserProfile, instruction: str, query: str,
-                       return_details: bool = False) -> Union[Tuple[bool, List[str]], Tuple[bool, List[str], Dict]]:
+                       return_details: bool = False,
+                       *,
+                       prompt_log_session_id: Optional[str] = None,
+                       prompt_log_step: int = 1) -> Union[Tuple[bool, List[str]], Tuple[bool, List[str], Dict]]:
         """
         Check all rules against the purchase request.
         This method provides the same interface as RuleChecker.check_all_rules()
@@ -173,6 +241,8 @@ class WebShopGuardAgent:
             instruction: The instruction text describing what the user wants to buy
             query: The query/category text (e.g., "fresh meal kits", "headphones")
             return_details: If True, return additional details (prompt and response)
+            prompt_log_session_id: If prompt_log_path is set, label this check in guardagent_prompt_log.txt
+            prompt_log_step: Defense loop step index for the prompt log
         
         Returns:
             If return_details=False: Tuple of (is_valid, list_of_violated_rules)
@@ -310,42 +380,21 @@ class WebShopGuardAgent:
                     error_msg = f"{error_type}: GuardAgent initiate_chat failed (failed to extract details: {parse_error})"
                 raise Exception(f"GuardAgent initiate_chat error: {error_msg}") from chat_error
             
-            # Extract results from GuardAgent response
-            logs = self.guard_agent._oai_messages
-            logs_string = []
-            for agent in list(logs.keys()):
-                for j in range(len(logs[agent])):
-                    if logs[agent][j].get('content'):
-                        content = logs[agent][j]['content']
-                        # Ensure content is a string
-                        if not isinstance(content, str):
-                            content = str(content)
-                        logs_string.append(content)
-                    elif logs[agent][j].get('function_call'):
-                        argums = logs[agent][j]['function_call'].get('arguments', '')
-                        if isinstance(argums, dict) and 'cell' in argums:
-                            code_cell = argums['cell']
-                            # Ensure code_cell is a string
-                            if not isinstance(code_cell, str):
-                                code_cell = str(code_cell)
-                            logs_string.append(code_cell)
-                        else:
-                            logs_string.append(str(argums))
-            
-            # Log generated code and execution results
-            if self.verbose or True:  # Always log for debugging
-                self._log_guard_agent_execution(
-                    agent_input,
-                    agent_output,
-                    logs_string,
-                    context_status=context_info,
-                    instruction=instruction,
-                    query=query,
+            # Extract results from GuardAgent response (both agents; see _collect_guardagent_log_chunks)
+            logs_string = self._collect_guardagent_log_chunks()
+            logs_string = self._maybe_salvage_markdown_python(logs_string)
+
+            if self.prompt_log_path and prompt_log_session_id is not None:
+                self._append_guardagent_prompt_log(
+                    session_id=prompt_log_session_id,
+                    step=prompt_log_step,
+                    instruction_checked=instruction,
+                    logs_string=logs_string,
                 )
             
             # Parse GuardAgent results
             is_valid, violated_rules = self._parse_guard_agent_results(logs_string)
-            
+
             # Update memory if check was successful
             if is_valid:
                 self._update_memory(agent_input, agent_output, logs_string)
@@ -433,17 +482,156 @@ class WebShopGuardAgent:
 - Total Purchase Amount: ${profile_dict['total_purchase_amount']:.2f}
 
 Purchase Request:
-- Instruction: {instruction}
-- Query: {query}"""
+- Instruction: {instruction}"""
     
     def _format_agent_output(self, instruction: str, query: str) -> str:
-        """Format agent output for GuardAgent"""
+        """Format agent output for GuardAgent (query kept in signature for callers; not shown to the model)."""
         return f"""User wants to purchase a product based on:
 - Instruction: {instruction}
-- Query: {query}
 
 Please check if this purchase request violates any business rules."""
-    
+
+    @staticmethod
+    def _message_content_to_strings(content) -> List[str]:
+        """Normalize message content to plain strings (OpenAI string, list of parts, etc.)."""
+        if content is None:
+            return []
+        if isinstance(content, str):
+            return [content]
+        if isinstance(content, list):
+            parts: List[str] = []
+            for item in content:
+                if isinstance(item, str):
+                    parts.append(item)
+                elif isinstance(item, dict):
+                    if item.get("type") == "text" and item.get("text") is not None:
+                        parts.append(str(item["text"]))
+                    elif "text" in item and item["text"] is not None:
+                        parts.append(str(item["text"]))
+            return parts
+        return [str(content)]
+
+    @staticmethod
+    def _parse_function_arguments(argums) -> Optional[dict]:
+        if isinstance(argums, dict):
+            return argums
+        if isinstance(argums, str):
+            try:
+                parsed = json.loads(argums)
+                return parsed if isinstance(parsed, dict) else None
+            except Exception:
+                return None
+        return None
+
+    @staticmethod
+    def _append_code_cell_from_arguments(chunks: List[str], arguments) -> None:
+        parsed = WebShopGuardAgent._parse_function_arguments(arguments)
+        if isinstance(parsed, dict) and "cell" in parsed:
+            cell = parsed["cell"]
+            chunks.append(cell if isinstance(cell, str) else str(cell))
+        else:
+            chunks.append(str(arguments))
+
+    @staticmethod
+    def _chunks_from_message_list(messages: Optional[List]) -> List[str]:
+        """
+        Extract text/code from an AutoGen / OpenAI-style message list.
+        Covers: plain content, multimodal content list, function_call, tool_calls, tool role replies.
+        """
+        if not messages:
+            return []
+        chunks: List[str] = []
+        for msg in messages:
+            if not isinstance(msg, dict):
+                continue
+            for text in WebShopGuardAgent._message_content_to_strings(msg.get("content")):
+                chunks.append(text)
+
+            fc = msg.get("function_call")
+            if isinstance(fc, dict):
+                WebShopGuardAgent._append_code_cell_from_arguments(
+                    chunks, fc.get("arguments", "")
+                )
+
+            tcalls = msg.get("tool_calls")
+            if isinstance(tcalls, list):
+                for tc in tcalls:
+                    if not isinstance(tc, dict):
+                        continue
+                    fn = tc.get("function")
+                    if isinstance(fn, dict):
+                        WebShopGuardAgent._append_code_cell_from_arguments(
+                            chunks, fn.get("arguments", "")
+                        )
+
+        return chunks
+
+    @staticmethod
+    def _chunks_from_oai_messages(agent) -> List[str]:
+        """Turn one agent's _oai_messages into ordered text chunks (content + code cells)."""
+        logs = getattr(agent, "_oai_messages", None) or {}
+        chunks: List[str] = []
+        for peer in list(logs.keys()):
+            chunks.extend(WebShopGuardAgent._chunks_from_message_list(logs[peer]))
+        return chunks
+
+    def _collect_guardagent_log_chunks(self) -> List[str]:
+        """
+        Merge chat transcripts from both GuardAgent and chatbot.
+        Tool/function returns sometimes appear only in chat_messages, or only on one side of
+        the AutoGen _oai_messages map — include both.
+        """
+        ordered: List[str] = []
+        seen: set = set()
+        ga, cb = self.guard_agent, self.chatbot
+
+        def _add(lst: List[str]) -> None:
+            for chunk in lst:
+                if chunk in seen:
+                    continue
+                seen.add(chunk)
+                ordered.append(chunk)
+
+        _add(self._chunks_from_oai_messages(ga))
+        _add(self._chunks_from_oai_messages(cb))
+        cm_ga = getattr(ga, "chat_messages", None) or {}
+        cm_cb = getattr(cb, "chat_messages", None) or {}
+        _add(self._chunks_from_message_list(cm_ga.get(cb)))
+        _add(self._chunks_from_message_list(cm_cb.get(ga)))
+        return ordered
+
+    _MARKDOWN_FENCE = re.compile(r"```(?:python)?\s*\n(.*?)```", re.DOTALL | re.IGNORECASE)
+
+    def _maybe_salvage_markdown_python(self, logs_string: List[str]) -> List[str]:
+        """
+        If chat logs contain ```python ... ``` but no GuardAgent tool return, run the cell through
+        run_code_webshop (adds CodeHeader so CheckRule exists). Covers models that emit markdown
+        instead of calling the python function after code_execution_config was disabled on UserProxy.
+        """
+        if any(isinstance(s, str) and "GuardAgent results:" in s for s in logs_string):
+            return logs_string
+        for section in reversed(logs_string):
+            if not isinstance(section, str):
+                continue
+            matches = list(self._MARKDOWN_FENCE.finditer(section))
+            for m in reversed(matches):
+                cell = m.group(1).strip()
+                if len(cell) < 25:
+                    continue
+                if "CheckRule" not in cell and "check_rule" not in cell:
+                    continue
+                try:
+                    out = run_code_webshop(cell)
+                    if isinstance(out, str) and out:
+                        if self.verbose:
+                            print("[GuardAgent] Salvaged markdown ```python``` via run_code_webshop")
+                        return logs_string + [out]
+                except Exception as e:
+                    if self.verbose:
+                        print(f"[GuardAgent] Markdown salvage failed: {e}")
+                    return logs_string + [f"Salvage execution error: {e}"]
+        return logs_string
+
     def _parse_guard_agent_results(self, logs_string: List[str]) -> Tuple[bool, List[str]]:
         """
         Parse GuardAgent results from logs
@@ -561,6 +749,21 @@ Please check if this purchase request violates any business rules."""
         """
         Extract the primary code-generation output from chat logs.
         """
+        skip_prefixes = (
+            "GuardAgent results:",
+            "exitcode:",
+            "Write a guardrail code in python",
+            "Agent specification:",
+            "Task decomposition:",
+        )
+
+        def _looks_like_guardrail_code(text: str) -> bool:
+            if re.search(r"\b(CheckRule|CheckAccess|check_rule|check_access)\s*\(", text):
+                return True
+            if "action_denied" in text and "violation" in text:
+                return True
+            return False
+
         for section in logs_string:
             if not isinstance(section, str):
                 continue
@@ -569,92 +772,19 @@ Please check if this purchase request violates any business rules."""
                 continue
             if content == "TERMINATE":
                 continue
-            if content.startswith("GuardAgent results:"):
-                continue
-            if content.startswith("exitcode:"):
-                continue
-            if content.startswith("Write a guardrail code in python"):
+            if any(content.startswith(p) for p in skip_prefixes):
                 continue
             if "```python" in content or "def guardrail_code" in content:
                 return content
+            # Generic fenced block (models often omit the language tag)
+            if "```" in content:
+                m = re.search(r"```(?:\w*\n)?(.*?)```", content, re.DOTALL)
+                if m and m.group(1).strip():
+                    return content
+            if _looks_like_guardrail_code(content) and len(content) >= 40:
+                return content
         return "No code generation output found."
-    
-    def _log_guard_agent_execution(self, agent_input: str, agent_output: str,
-                                   logs_string: List[str],
-                                   context_status: Optional[Dict] = None,
-                                   instruction: str = "",
-                                   query: str = ""):
-        """
-        Log GuardAgent execution details for debugging
-        """
-        try:
-            # Create log directory if it doesn't exist
-            log_dir = self.log_dir or os.path.join(os.path.dirname(__file__), '..', '..', 'webshop', 'guardagent_logs')
-            os.makedirs(log_dir, exist_ok=True)
-            
-            # Generate log filename with timestamp
-            timestamp = time.strftime("%Y%m%d_%H%M%S")
-            log_file = os.path.join(log_dir, f'guardagent_execution_{timestamp}.log')
-            
-            with open(log_file, 'w', encoding='utf-8') as f:
-                f.write("=" * 80 + "\n")
-                f.write("GuardAgent Execution Log\n")
-                f.write(f"Timestamp: {time.strftime('%Y-%m-%d %H:%M:%S')}\n")
-                f.write("=" * 80 + "\n\n")
 
-                f.write("Main Flow Snapshot:\n")
-                f.write("-" * 80 + "\n")
-                f.write("Step Trigger: Step 1 defense check (after reset in main loop)\n")
-                f.write(f"Instruction: {instruction}\n")
-                f.write(f"Query: {query}\n")
-                if context_status is not None:
-                    f.write(f"GuardAgent context keys status: {context_status}\n")
-                f.write("\n")
-                
-                f.write("Agent Input:\n")
-                f.write("-" * 80 + "\n")
-                f.write(agent_input + "\n\n")
-                
-                f.write("Agent Output:\n")
-                f.write("-" * 80 + "\n")
-                f.write(agent_output + "\n\n")
-
-                f.write("Stage 1 - Task Decomposition Prompt (to LLM):\n")
-                f.write("-" * 80 + "\n")
-                f.write(getattr(self.guard_agent, 'last_task_decomposition_prompt', '') or "N/A")
-                f.write("\n\n")
-
-                f.write("Stage 1 - Task Decomposition Output (from LLM):\n")
-                f.write("-" * 80 + "\n")
-                f.write(getattr(self.guard_agent, 'last_task_decomposition_output', '') or "N/A")
-                f.write("\n\n")
-
-                f.write("Stage 2 - Guardrail Code Generation Prompt (to Agent):\n")
-                f.write("-" * 80 + "\n")
-                f.write(getattr(self.guard_agent, 'last_codegen_prompt', '') or "N/A")
-                f.write("\n\n")
-
-                f.write("Stage 2 - Guardrail Code Generation Output (from Agent):\n")
-                f.write("-" * 80 + "\n")
-                f.write(self._extract_codegen_output(logs_string))
-                f.write("\n\n")
-                
-                f.write("\n" + "=" * 80 + "\n")
-                f.write("End of Log\n")
-                f.write("=" * 80 + "\n")
-
-            # Also write a canonical pipeline log in the parent output directory
-            # so users can inspect only the execution log section directly.
-            pipeline_log_file = os.path.join(os.path.dirname(log_dir), 'guardagent_pipeline_full.log')
-            with open(log_file, 'r', encoding='utf-8') as src, open(pipeline_log_file, 'w', encoding='utf-8') as dst:
-                dst.write(src.read())
-            
-            if self.verbose:
-                print(f"[GuardAgent] Execution log saved to: {log_file}")
-        except Exception as e:
-            if self.verbose:
-                print(f"[Warning] Failed to save GuardAgent execution log: {e}")
-    
     def _update_memory(self, agent_input: str, agent_output: str, logs_string: List[str]):
         """Update long-term memory with successful check"""
         try:

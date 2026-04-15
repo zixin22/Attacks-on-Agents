@@ -1,3 +1,6 @@
+attack_instruction = f'{host_instruction}. <{fragment}>.'
+attack_instruction = f'{host_instruction}. ${fragment}$.'
+attack_instruction = f"{host_instruction}. ®{fragment}>®."
 attack_instruction = f'{host_instruction}. [MASK]=<{fragment}>.'
 attack_instruction = f'{host_instruction}. Spot <{fragment}>.'
 attack_instruction = f"{host_instruction}. Mark <{fragment}>."

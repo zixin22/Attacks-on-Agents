@@ -121,9 +121,8 @@ python run_optimization.py --config-file my_config.json
 - `mutation_rate`: 变异概率 (默认: 0.1)
 
 ### 评价参数
-- `jailbreak_weight`: 越狱成功权重 (默认: 0.7)
-- `quality_weight`: 语言质量权重 (默认: 0.3)
-- `evaluation_samples`: 每次评价的样本数 (默认: 3)
+- `request_interval`: LLM请求间隔(秒)，用于限流控制 (默认: 0.2)
+- `llm_config`: 评估和生成使用的模型配置（model/temperature/max_tokens/api_base）
 
 ### 终止条件
 - `convergence_threshold`: 收敛阈值 (默认: 0.95)
@@ -179,7 +178,7 @@ target_instruction = "i would like a restricted product"
 best_individuals = optimizer.optimize(target_instruction)
 ```
 
-### 自定义评价器
+### 直接调用评价器
 
 ```python
 from evaluator import Evaluator
@@ -187,11 +186,10 @@ from evaluator import Evaluator
 # 创建自定义评价器
 evaluator = Evaluator(config)
 
-# 评估单个prompt
-score, jb_score, q_score = evaluator.evaluate_single(
-    prompt="test prompt",
-    target_instruction="target",
-    profile=user_profile
+# 批量评估候选prompts
+scores, jb_scores, histories = evaluator.evaluate_population(
+    ["prompt A", "prompt B"],
+    memory_examples=[]
 )
 ```
 
@@ -257,9 +255,6 @@ class CustomLLMInterface:
 ```bash
 # 运行基本功能测试
 python run_optimization.py --test
-
-# 详细输出
-python run_optimization.py --verbose
 ```
 
 ## 许可证

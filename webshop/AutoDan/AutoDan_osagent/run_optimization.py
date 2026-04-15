@@ -7,7 +7,6 @@ AutoDan Evolutionary Optimization Runner
 import os
 import sys
 import argparse
-from typing import Optional
 
 # 添加当前目录到Python路径
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -35,8 +34,6 @@ def main():
                        help='自定义配置文件路径')
     parser.add_argument('--no-plots', action='store_true',
                        help='不生成图表')
-    parser.add_argument('--verbose', '-v', action='store_true',
-                       help='详细输出')
 
     args = parser.parse_args()
 
@@ -73,7 +70,7 @@ def main():
 
         # 更新所有文件路径到results_dir
         config.best_triggers_file = os.path.join(config.results_dir, 'best_triggers.json')
-        config.optimization_log_file = os.path.join(config.results_dir, 'optimization_log.txt')
+        config.optimization_log_file = os.path.join(config.results_dir, 'optimization_log.json')
         config.population_history_file = os.path.join(config.results_dir, 'population_history.json')
 
         # 确保结果目录存在
@@ -175,8 +172,10 @@ def test_basic_functionality():
 
         # 测试种群初始化
         from population import Population
+        from evaluator import Evaluator
         population = Population(config)
-        population.initialize_from_seeds()
+        evaluator = Evaluator(config)
+        population.initialize_from_seeds(evaluator=evaluator)
         print(f"✓ 种群初始化成功: {population}")
 
         # 测试提案生成器
@@ -186,11 +185,9 @@ def test_basic_functionality():
         print(f"✓ 提案生成成功: 生成 {len(candidates)} 个候选")
 
         # 测试评价器
-        from evaluator import Evaluator
-        evaluator = Evaluator(config)
         if candidates:
             scores, jb_scores, interaction_histories = evaluator.evaluate_population(
-                candidates[:3], "test instruction", profile=None
+                candidates[:3], memory_examples=[]
             )
             print(f"✓ 评价器测试成功: 评估了 {len(scores)} 个候选")
 
@@ -223,7 +220,6 @@ AutoDan 进化优化系统使用指南
     --resume-from, -r: 从检查点文件恢复优化
     --config-file, -c: 自定义配置文件
     --no-plots: 不生成图表
-    --verbose, -v: 详细输出
 
 示例:
     # 基本优化
@@ -253,7 +249,7 @@ AutoDan 进化优化系统使用指南
     ├── trigger_instruction_short_seed.txt # 种子prompts
     └── results/                # 输出结果目录
         ├── best_triggers.json
-        ├── optimization_log.txt
+        ├── optimization_log.json
         └── population_history.json
 """
     print(help_text)

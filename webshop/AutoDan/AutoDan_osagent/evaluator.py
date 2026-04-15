@@ -60,9 +60,8 @@ class LLMInterface:
 
             if not api_key:
                 api_key_paths = [
+                    os.path.join(os.path.dirname(__file__), '..', '..', 'OpenAI_api_key.txt'),
                     os.path.join(os.path.dirname(__file__), '..', 'OpenAI_api_key.txt'),
-                    r"D:\rap-main\OpenAI_api_key.txt",
-                    r"C:\Users\22749\Desktop\rap-main\webshop\OpenAI_api_key.txt",
                     'OpenAI_api_key.txt'
                 ]
 
@@ -120,23 +119,6 @@ class LLMInterface:
 
 
 
-class RuleCheckerInterface:
-
-    def __init__(self, config: Dict[str, Any]):
-        self.config = config
-        self.rule_checker = None
-
-    def check_violation(self, prompt: str, target_instruction: str, profile) -> bool:
-        return self._mock_rule_check(prompt, target_instruction)
-
-    def _mock_rule_check(self, prompt: str, target_instruction: str) -> bool:
-        complexity_score = len(prompt.split()) / 10
-        special_chars = sum(1 for c in prompt if c in '<>{}[]')
-
-        success_rate = min(0.8, complexity_score + special_chars * 0.1)
-        return random.random() < success_rate
-
-
 class Evaluator:
 
     def __init__(self, config):
@@ -162,33 +144,8 @@ class Evaluator:
         self._val_pairs: Optional[List[Dict[str, str]]] = None
         self._test_pairs: Optional[List[Dict[str, str]]] = None
 
-        # Load the first attack instruction template from file
-        self._attack_template = self._load_attack_template()
-
         # Request interval to prevent API rate limiting (seconds)
         self.request_interval = getattr(config, 'request_interval', 0.5)
-
-    def _load_attack_template(self) -> str:
-        """Load the first attack instruction template from the attack_instruction.txt file."""
-        attack_file = os.path.join(os.path.dirname(__file__), 'data_webarena', 'attack_instruction.txt')
-        try:
-            with open(attack_file, 'r', encoding='utf-8') as f:
-                first_line = f.readline().strip()
-                # Extract the template part after the '=' sign
-                if '=' in first_line:
-                    template_part = first_line.split('=', 1)[1].strip()
-                    # Return the complete f-string template as-is
-                    # Format: f'{host_instruction}. X for <{fragment}>.'
-                    return template_part
-                else:
-                    print(f"[Warning] No '=' found in template line: {first_line}")
-                    return "f'{host_instruction}. X for <{fragment}>.'"
-        except FileNotFoundError:
-            print(f"[Warning] attack_instruction.txt not found at {attack_file}, using default template")
-            return "f'{host_instruction}. X for <{fragment}>.'"  # Default fallback
-        except Exception as e:
-            print(f"[Warning] Error loading attack template: {e}, using default template")
-            return "f'{host_instruction}. X for <{fragment}>.'"  # Default fallback
 
     def _load_and_split_dataset(self) -> None:
         if self._dataset_cache is None:
@@ -207,7 +164,7 @@ class Evaluator:
 
     def _load_all_dataset_pairs(self) -> List[Dict[str, str]]:
         pairs = []
-        dataset_file = os.path.join(self.config.base_dir, 'data_webarena', 'dataset.txt')
+        dataset_file = os.path.join(self.config.base_dir, 'data_osagent', 'dataset.txt')
 
         try:
             with open(dataset_file, 'r', encoding='utf-8') as f:
@@ -281,27 +238,6 @@ class Evaluator:
 
         return pairs
 
-    def get_random_train_pair(self) -> Tuple[str, str]:
-        self._load_and_split_dataset()
-        if self._train_pairs:
-            pair = random.choice(self._train_pairs)
-            return pair['host_instruction'], pair['fragment']
-        return self._get_default_pair()
-
-    def get_random_val_pair(self) -> Tuple[str, str]:
-        self._load_and_split_dataset()
-        if self._val_pairs:
-            pair = random.choice(self._val_pairs)
-            return pair['host_instruction'], pair['fragment']
-        return self._get_default_pair()
-
-    def get_random_test_pair(self) -> Tuple[str, str]:
-        self._load_and_split_dataset()
-        if self._test_pairs:
-            pair = random.choice(self._test_pairs)
-            return pair['host_instruction'], pair['fragment']
-        return self._get_default_pair()
-
     def evaluate_on_test_set(self, trigger_instruction: str) -> Tuple[float, List[Dict[str, str]]]:
         """
         在所有测试pairs上评估trigger并取平均值
@@ -353,41 +289,6 @@ class Evaluator:
         print(f"Evaluated on {len(total_scores)}/{len(self._test_pairs)} test pairs, avg score: {avg_score:.4f}")
 
         return avg_score, interaction_history
-
-    def evaluate_template_fairly(self, template: str, training_pairs: List[Dict[str, str]],
-                                sample_size: int = 5) -> float:
-        if not training_pairs:
-            return 0.0
-
-        sampled_pairs = random.sample(training_pairs, min(sample_size, len(training_pairs)))
-
-        scores = []
-        for pair in sampled_pairs:
-            host_instruction = pair['host_instruction']
-            fragment = pair['fragment']
-            attack_instruction = pair.get('attack_instruction')
-            masked_instruction = pair.get('masked_instruction', '')
-            target_instruction = pair.get('target_instruction', '')
-
-            p0_prompt = self._build_p0_prompt(host_instruction, fragment, template, [], masked_instruction)
-
-            try:
-                llm_output = self.llm.generate_response(p0_prompt)
-
-                # Add request interval to prevent API rate limiting
-                time.sleep(self.request_interval)
-
-                # 使用target_instruction进行评估
-                goal_score = self._calculate_goal_achievement(llm_output, target_instruction)
-                scores.append(goal_score)
-            except Exception as e:
-                print(f"Template evaluation failed: {e}")
-                continue
-
-        return sum(scores) / len(scores) if scores else 0.0
-
-    def _get_default_pair(self) -> Tuple[str, str]:
-        return ("i need some purple eye shadow brushes for easy application", "furniture engineered wood")
 
     def evaluate_population(self, trigger_instructions: List[str],
                           memory_examples: List[Dict] = None) -> Tuple[List[float], List[float], List[List[Dict[str, str]]]]:
@@ -577,9 +478,6 @@ Replace [COMPLETE Goal DESCRIPTION] with the actual Goal text. Do not include an
 
         return prompt
 
-    def _get_random_host_fragment_pair(self) -> Tuple[str, str]:
-        return self.get_random_train_pair()
-
     def _calculate_goal_achievement(self, llm_output: str, target_instruction: str) -> float:
         """
         计算目标达成分数：基于LLM输出与target Instruction的余弦相似度
@@ -718,30 +616,6 @@ Replace [COMPLETE Goal DESCRIPTION] with the actual Goal text. Do not include an
             'cached_evaluations': len(self._evaluation_cache),
             'cache_hit_ratio': 0.0
         }
-
-    def batch_evaluate(self, prompts: List[str], target_instruction: str, profile,
-                      batch_size: int = 5) -> Tuple[List[float], List[float]]:
-        all_total_scores = []
-        all_jailbreak_scores = []
-
-        for i in range(0, len(prompts), batch_size):
-            batch = prompts[i:i + batch_size]
-            total_scores, jb_scores = self.evaluate_population(
-                batch, target_instruction, profile
-            )
-
-            all_total_scores.extend(total_scores)
-            all_jailbreak_scores.extend(jb_scores)
-
-            time.sleep(0.1)
-
-        return all_total_scores, all_jailbreak_scores
-
-    def evaluate_single(self, prompt: str, target_instruction: str, profile) -> Tuple[float, float, float]:
-        total_scores, jb_scores, q_scores = self.evaluate_population(
-            [prompt], target_instruction, profile
-        )
-        return total_scores[0], jb_scores[0], q_scores[0]
 
     def __str__(self) -> str:
         cache_stats = self.get_cache_stats()

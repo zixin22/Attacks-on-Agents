@@ -526,7 +526,8 @@
   {
     "id": 21,
     "sensitive_fragments": [
-      "smartwatch"
+      "smartwatch",
+      "bands"
     ],
     "instruction": "i need some cute heart-shaped glittery cupcake picks as a gift to bring to a baby shower",
     "profile": {
@@ -544,10 +545,10 @@
     "host_instruction": "looking for a very powerful range extender antenna with high performance",
     "fix_number": "309",
     "Instruction_fix_number": "2799",
-    "masked_instruction": "i am looking for  42 | 44 | 45mm(s | m) <> bands, compatible with apple",
+    "masked_instruction": "i am looking for  42 | 44 | 45mm(s | m) <> <>, compatible with apple",
     "carrier_instruction_1": "looking for <smart> a very powerful range <watch> extender antenna with high performance.",
     "carrier_instruction_2": "looking for a very powerful range extender antenna with high performance.<sma><rtwatch>",
-    "carrier_instruction_3": "i need some cute heart-shaped glittery cupcake picks as a gift to bring to a baby shower .<sma>Spot<rtwatch>"
+    "carrier_instruction_3": "i need some cute heart-shaped glittery cupcake picks as a gift to bring to a baby shower .<sma>Spot<rtwatch><ba>Spot<nds>"
   },
   {
     "id": 22,

@@ -10,30 +10,13 @@ def model_config(model):
     """
     import os
     
-    # Try multiple possible paths for API key file
-    possible_paths = [
-        os.path.join(os.path.dirname(__file__), '..', 'webshop', 'OpenAI_api_key.txt'),  # Relative to config.py
-        os.path.join(os.path.dirname(__file__), '..', '..', 'webshop', 'OpenAI_api_key.txt'),  # Alternative relative path
-        r"C:\Users\22749\Desktop\rap-main\webshop\OpenAI_api_key.txt",  # Absolute path (fallback)
-        'OpenAI_api_key.txt'  # Current directory
-    ]
-    
-    api_key_path = None
-    for path in possible_paths:
-        if os.path.exists(path):
-            api_key_path = path
-            break
-    
-    if api_key_path:
-        try:
-            with open(api_key_path, "r") as f:
-                api_key = f.read().strip()
-        except Exception as e:
-            print(f"[Warning] Failed to read API key from {api_key_path}: {e}")
-            api_key = "<YOUR_API_KEY>"  # Fallback to placeholder
-    else:
-        print(f"[Warning] OpenAI API key file not found. Tried: {possible_paths}")
-        api_key = "<YOUR_API_KEY>"  # Fallback to placeholder
+    api_key_path = os.path.join(os.path.dirname(__file__), '..', 'webshop', 'OpenAI_api_key.txt')
+
+    if not os.path.exists(api_key_path):
+        raise FileNotFoundError(f"OpenAI API key file not found: {api_key_path}")
+
+    with open(api_key_path, "r") as f:
+        api_key = f.read().strip()
     
     # Determine model name (handle variations like 'gpt-4o')
     if 'gpt-3.5-turbo' in model.lower():
