@@ -19,17 +19,12 @@ from utils import print_optimization_summary, plot_optimization_progress, genera
 def main():
     """主函数"""
     parser = argparse.ArgumentParser(description='AutoDan Evolutionary Optimization')
-    parser.add_argument('--target-instruction', '-t', type=str,
-                       default="i would like a bundle of hair extensions that are 20 inches",
-                       help='目标指令（需要绕过的指令）')
     parser.add_argument('--max-generations', '-g', type=int, default=None,
                        help='最大进化代数（覆盖配置文件）')
     parser.add_argument('--population-size', '-p', type=int, default=None,
                        help='种群大小（覆盖配置文件）')
     parser.add_argument('--experiment-name', '-n', type=str, default='default_experiment',
                        help='实验名称')
-    parser.add_argument('--resume-from', '-r', type=str, default=None,
-                       help='从检查点文件恢复优化')
     parser.add_argument('--config-file', '-c', type=str, default=None,
                        help='自定义配置文件路径')
     parser.add_argument('--no-plots', action='store_true',
@@ -40,7 +35,6 @@ def main():
     print("=" * 80)
     print("AutoDan 进化优化系统")
     print("=" * 80)
-    print(f"目标指令: {args.target_instruction}")
     print(f"实验名称: {args.experiment_name}")
     print()
 
@@ -71,6 +65,7 @@ def main():
         # 更新所有文件路径到results_dir
         config.best_triggers_file = os.path.join(config.results_dir, 'best_triggers.json')
         config.optimization_log_file = os.path.join(config.results_dir, 'optimization_log.txt')
+        config.optimization_log_full_file = os.path.join(config.results_dir, 'optimization_log_full.txt')
         config.population_history_file = os.path.join(config.results_dir, 'population_history.json')
 
         # 确保结果目录存在
@@ -81,7 +76,6 @@ def main():
         print(f"  最大代数: {config.num_generations}")
         print(f"  精英大小: {config.elite_size}")
         print(f"  评分机制: score = jailbreak_score (直接使用越狱成功率)")
-        print(f"  收敛阈值: {config.convergence_threshold}")
         print(f"  结果目录: {config.results_dir}")
         print()
 
@@ -89,13 +83,7 @@ def main():
         optimizer = EvolutionaryOptimizer(config)
 
         # 3. 执行优化
-        if args.resume_from:
-            # 从检查点恢复
-            print(f"从检查点恢复优化: {args.resume_from}")
-            best_individuals = optimizer.resume_optimization(args.resume_from, args.target_instruction)
-        else:
-            # 开始新的优化
-            best_individuals = optimizer.optimize(args.target_instruction)
+        best_individuals = optimizer.optimize()
 
         # 4. 输出结果摘要
         if best_individuals:
@@ -120,14 +108,6 @@ def main():
 
     except KeyboardInterrupt:
         print("\n\n用户中断优化过程")
-        # 保存检查点
-        try:
-            checkpoint_file = os.path.join(config.results_dir, 'checkpoint_interrupt.json')
-            optimizer.save_checkpoint(checkpoint_file)
-            print(f"检查点已保存到: {checkpoint_file}")
-            print("可以使用 --resume-from 参数恢复优化")
-        except Exception as e:
-            print(f"保存检查点失败: {e}")
 
     except Exception as e:
         print(f"\n优化过程中发生错误: {e}")
@@ -210,14 +190,12 @@ AutoDan 进化优化系统使用指南
     python run_optimization.py
 
 高级用法:
-    python run_optimization.py --target-instruction "your target instruction" --max-generations 100
+    python run_optimization.py --max-generations 100 -n my_experiment
 
 参数说明:
-    --target-instruction, -t: 目标指令（需要绕过的指令）
     --max-generations, -g: 最大进化代数
     --population-size, -p: 种群大小
     --experiment-name, -n: 实验名称（用于组织结果）
-    --resume-from, -r: 从检查点文件恢复优化
     --config-file, -c: 自定义配置文件
     --no-plots: 不生成图表
 
@@ -225,14 +203,8 @@ AutoDan 进化优化系统使用指南
     # 基本优化
     python run_optimization.py
 
-    # 自定义目标指令
-    python run_optimization.py -t "i would like a restricted product"
-
     # 大规模优化
     python run_optimization.py -g 200 -p 50 -n "large_scale_test"
-
-    # 从检查点恢复
-    python run_optimization.py -r results/checkpoint.json
 
     # 测试基本功能
     python run_optimization.py --test

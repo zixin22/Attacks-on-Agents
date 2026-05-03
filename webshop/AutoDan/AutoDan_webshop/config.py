@@ -18,6 +18,7 @@ class Config:
 
         # === 提案生成参数 ===
         self.llm_rewrite_variants = 5  # 每个prompt的LLM改写变体数
+        self.symbol_proposer_variants_per_template = 3  # Symbol proposer: LLM delimiter pairs per attack template
         self.crossover_rate = 0.3  # 交叉概率
         self.mutation_rate = 0.1  # 变异概率
         self.max_prompt_length = 200  # 最大prompt长度限制
@@ -44,13 +45,13 @@ class Config:
         # 实验内文件路径
         self.best_triggers_file = os.path.join(self.experiment_dir, 'best_triggers.json')
         self.optimization_log_file = os.path.join(self.experiment_dir, 'optimization_log.txt')
+        self.optimization_log_full_file = os.path.join(self.experiment_dir, 'optimization_log_full.txt')
         self.population_history_file = os.path.join(self.experiment_dir, 'population_history.json')
 
         # === API和性能配置 ===
         self.request_interval = 0.2  # LLM API请求间隔（秒），配合重试机制防止速率限制
 
         # === 终止条件 ===
-        self.convergence_threshold = 0.95  # 收敛阈值（当最佳分数超过此值时停止）
         self.no_improvement_generations = 10  # 无改进代数上限
 
     def to_dict(self) -> Dict[str, Any]:
@@ -61,11 +62,11 @@ class Config:
             'num_generations': self.num_generations,
             'elite_size': self.elite_size,
             'llm_rewrite_variants': self.llm_rewrite_variants,
+            'symbol_proposer_variants_per_template': self.symbol_proposer_variants_per_template,
             'crossover_rate': self.crossover_rate,
             'mutation_rate': self.mutation_rate,
             'max_prompt_length': self.max_prompt_length,
             'llm_config': self.llm_config,
-            'convergence_threshold': self.convergence_threshold,
             'no_improvement_generations': self.no_improvement_generations
         }
 

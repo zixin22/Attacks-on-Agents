@@ -1,262 +1,63 @@
-# AutoDan Evolutionary Optimization System
+# AutoDan WebShop — 使用说明（精简）
 
-AutoDan 进化优化系统 - 基于进化算法的Prompt优化框架，用于生成能够绕过安全过滤器的trigger instructions。
+优化流程与数据格式说明。算法与实验设计细节见同目录 [`method.md`](method.md)。
 
-## 架构概述
+## 运行优化
 
-本系统实现了完整的进化算法框架来优化AutoDan trigger prompts：
+在 **`AutoDan_webshop`** 目录下执行：
 
-```
-原始目标 + 初始 Prompt/种子集合
-              │
-     ┌────────┴─────────┐
-     │   提案生成器（Proposer）  │
-     │     - LLM 改写/扩写      │
-     │     - 交叉/变异 操作     │
-     └────────┬─────────┘
-              │
-   候选 Prompt 池（Population / Queue）
-              │
-     ┌────────┴─────────┐
-     │   评价/打分  (Evaluator)  │
-     │     - 目标达成情况        │
-     │     - 语言质量评分        │
-     └────────┬─────────┘
-              │
-       选择 + 更新（Selection & Update）
-              │  → 产生下一轮候选
-              ↓
-        终止条件？→ 是 / 否
-         （若否返回候选生成）
-```
-
-## 文件结构
-
-```
-AutoDan/
-├── config.py                    # 配置管理
-├── population.py                # 种群管理
-├── proposer.py                  # 提案生成器 (LLM改写/交叉/变异)
-├── evaluator.py                 # 评价器 (目标达成+质量评分)
-├── evolutionary_optimizer.py    # 主进化优化器
-├── utils.py                     # 工具函数
-├── run_optimization.py          # 主执行脚本
-├── trigger_instruction.txt      # 种子prompts集合
-├── README.md                    # 本文件
-└── results/                     # 输出结果目录
-    ├── best_triggers.json       # 优化结果
-    ├── optimization_log.txt     # 优化日志
-    └── population_history.json  # 种群历史
-```
-
-## 核心组件
-
-### 1. 配置管理 (`config.py`)
-- 管理所有算法参数
-- 支持从文件加载/保存配置
-- 参数包括种群大小、进化代数、权重等
-
-### 2. 种群管理 (`population.py`)
-- 管理候选prompt池
-- 实现精英保留策略
-- 提供多样性计算和统计
-
-### 3. 提案生成器 (`proposer.py`)
-- **LLM改写**: 使用GPT生成prompt变体
-- **交叉操作**: 组合不同prompts的元素
-- **变异操作**: 随机修改现有prompts
-
-### 4. 评价器 (`evaluator.py`)
-- **越狱成功评分**: 测试是否能绕过RuleChecker
-- **语言质量评分**: LLM评估prompt质量
-- **综合评分**: 加权组合两种评分
-
-### 5. 主优化器 (`evolutionary_optimizer.py`)
-- 协调整个进化过程
-- 实现终止条件检查
-- 提供检查点保存/恢复功能
-
-## 快速开始
-
-### 基本使用
+e.g.:
 
 ```bash
-# 运行默认优化
-python run_optimization.py
-
-# 指定目标指令
-python run_optimization.py --target-instruction "i would like a restricted product"
-
-# 自定义参数
-python run_optimization.py --max-generations 100 --population-size 30
+cd /path/to/Attacks-on-Agents/webshop/AutoDan/AutoDan_webshop
+python run_optimization.py -g 10 -p 5
 ```
 
-### 高级用法
+| 选项 | 含义 |
+|------|------|
+| `-g` / `--max-generations` | 最大进化代数，覆盖 `config.py` 中的 `num_generations` |
+| `-p` / `--population-size` | 种群大小，覆盖 `config.population_size` |
+| `-n` / `--experiment-name` | 实验名；非 `default_experiment` 时通过 `utils.setup_experiment_directory` 建独立结果目录 |
+| `-c` / `--config-file` | 从 JSON 加载配置（存在则覆盖默认） |
+| `--no-plots` | 不生成 `optimization_progress.png` |
 
-```bash
-# 大规模实验
-python run_optimization.py \
-    --target-instruction "your target instruction" \
-    --max-generations 200 \
-    --population-size 50 \
-    --experiment-name "large_scale_test"
+默认会在 `results/optimization_<id>/` 下写入 `best_triggers.json`、`optimization_log.txt`、`optimization_log_full.txt`、`population_history*.json`、`config_used.json`、`experiment_report.md` 等（`experiment_id` 自增逻辑见 `config.py`）。
 
-# 从检查点恢复
-python run_optimization.py --resume-from results/checkpoint.json
+**复现注意**：`attack_instruction_template.txt` 中 **第一条** `attack_instruction = …` 赋值是唯一用于 attack 模板初始化的种子（`evaluator.py` / `population.py` / `symbol_proposer.py`）；换种子请改该文件并保证目标行在首条有效赋值。
 
-# 自定义配置
-python run_optimization.py --config-file my_config.json
-```
+## `data_webshop/` 数据文件
 
-## 配置参数
+路径基准：`AutoDan_webshop/data_webshop/`。
 
-### 种群参数
-- `population_size`: 种群大小 (默认: 20)
-- `num_generations`: 最大进化代数 (默认: 50)
-- `elite_size`: 精英个体数量 (默认: 3)
+### `dataset.txt`（主流程读取）
 
-### 提案生成参数
-- `llm_rewrite_variants`: LLM改写变体数 (默认: 5)
-- `crossover_rate`: 交叉概率 (默认: 0.3)
-- `mutation_rate`: 变异概率 (默认: 0.1)
+- **用途**：`evaluator._load_all_dataset_pairs` 解析为结构化样本，供训练/测试划分与打分。
+- **结构**：纯文本；多个 `Pair N:` 块。解析器抽取（见 `evaluator.py`）：
+  - `Host Instruction:`
+  - `Sensitive Fragment:`
+  - `fragment1:` / `fragment2:`（若无则把 `Sensitive Fragment` 从中截半作为两段）
+  - `Masked Instruction:`
+- **划分**（以代码为准）：加载全部 pair 后，**前 20 条**为训练、**第 21 条起**为测试（`evaluator._load_and_split_dataset`；注释中的「5/10」与当前切片不一致，以切片为准）。
 
-### 评价参数
-- `request_interval`: LLM请求间隔(秒)，用于限流控制 (默认: 0.2)
-- `llm_config`: 评估和生成使用的模型配置（model/temperature/max_tokens/api_base）
+### `trigger_instruction.txt`（主流程读取）
 
-### 终止条件
-- `convergence_threshold`: 收敛阈值 (默认: 0.95)
-- `no_improvement_generations`: 无改进代数上限 (默认: 10)
+- **用途**：trigger 模板种子库；`Population.initialize_from_seeds` 在采样 pair 上评估并选精英进入进化。
+- **结构**：多个模板用 **空行分隔**（`\n\n`）；占位符常见 `{Masked Instruction}`、`{host_instruction}`，须与 evaluator 拼接逻辑一致。
 
-## 输出结果
+### `attack_instruction_template.txt`（主流程读取 — 种子）
 
-### 主要输出文件
+- **用途**：attack 侧 Python f-string 模板的**唯一种子来源**；首条 `attack_instruction = …` 的右侧表达式用于初始化种群与 `SymbolProposer` 规范骨架（`evaluator._load_attack_template` 读第一行；`population` / `symbol_proposer` 通过 `load_attack_instruction_lines` 取列表首项，等价于首条赋值）。
+- **结构**：与旧 `attack_instruction.txt` 相同，每行 `attack_instruction = f'...'` 或 `f"..."`；须含 `{host_instruction}`，以及 `{fragment}` 或 `{fragment1}`/`{fragment2}`（格式需满足 `attack_template_utils.py` 解析）。可保留多行，**只有第一条参与运行**。
 
-1. **`best_triggers.json`**: 优化结果
-   - 包含所有代的最佳个体
-   - 最终最优prompt
-   - 完整的评分信息
+### `attack_instruction.txt`（可选）
 
-2. **`optimization_log.txt`**: 优化日志
-   - 每代种群统计信息
-   - 进化进度记录
-   - 用于生成图表
+- **用途**：当前主流程 **不读取**；可作多模板备份或人工对照。实际种子以 `attack_instruction_template.txt` 为准。
 
-3. **`population_history.json`**: 种群历史
-   - 保存每一代的完整种群状态
-   - 用于详细分析
 
-### 结果分析
+## 相关代码入口
 
-```python
-from utils import print_optimization_summary, plot_optimization_progress
-
-# 打印摘要
-print_optimization_summary('results/best_triggers.json')
-
-# 生成进度图
-plot_optimization_progress('results/optimization_log.txt')
-```
-
-## API接口
-
-### 基本优化
-
-```python
-from config import Config
-from evolutionary_optimizer import EvolutionaryOptimizer
-
-# 配置
-config = Config()
-config.num_generations = 100
-
-# 创建优化器
-optimizer = EvolutionaryOptimizer(config)
-
-# 执行优化
-target_instruction = "i would like a restricted product"
-best_individuals = optimizer.optimize(target_instruction)
-```
-
-### 直接调用评价器
-
-```python
-from evaluator import Evaluator
-
-# 创建自定义评价器
-evaluator = Evaluator(config)
-
-# 批量评估候选prompts
-scores, jb_scores, histories = evaluator.evaluate_population(
-    ["prompt A", "prompt B"],
-    memory_examples=[]
-)
-```
-
-## 扩展开发
-
-### 添加新的提案策略
-
-在 `proposer.py` 中添加新的生成方法：
-
-```python
-def new_proposal_strategy(self, population):
-    # 实现新的提案生成逻辑
-    pass
-```
-
-### 自定义评价指标
-
-在 `evaluator.py` 中添加新的评价函数：
-
-```python
-def custom_evaluation_metric(self, prompt):
-    # 实现自定义评价逻辑
-    pass
-```
-
-### 集成新的LLM
-
-在 `proposer.py` 和 `evaluator.py` 中替换LLM接口：
-
-```python
-class CustomLLMInterface:
-    def generate(self, prompt, **kwargs):
-        # 实现自定义LLM调用
-        pass
-```
-
-## 注意事项
-
-1. **API依赖**: 需要有效的OpenAI API密钥
-2. **计算资源**: 大规模优化需要较多计算资源
-3. **安全考虑**: 生成的prompts可能具有攻击性，请谨慎使用
-4. **实验记录**: 建议使用不同的实验名称来组织结果
-
-## 故障排除
-
-### 常见问题
-
-1. **API调用失败**
-   - 检查API密钥配置
-   - 确认网络连接
-   - 检查API额度
-
-2. **内存不足**
-   - 减小种群大小
-   - 减少LLM改写变体数
-
-3. **优化收敛慢**
-   - 调整变异和交叉率
-   - 增加精英保留数量
-
-### 调试模式
-
-```bash
-# 运行基本功能测试
-python run_optimization.py --test
-```
-
-## 许可证
-
-本项目仅用于研究目的，请勿用于非法活动。
+- 配置：`config.py`
+- 优化主循环：`evolutionary_optimizer.py` + `run_optimization.py`
+- 数据解析与评分：`evaluator.py`
+- Trigger 初始化：`population.py` → `initialize_from_seeds`
+- Attack 初始化：`population.py` → `initialize_attack_templates_from_file`

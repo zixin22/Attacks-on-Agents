@@ -86,8 +86,11 @@ def plot_optimization_progress(log_file: str, output_file: str = None) -> None:
     diversities = []
 
     for entry in log_data:
-        generations.append(entry['generation'])
-        stats = entry['statistics']
+        gen = entry.get('generation')
+        if not isinstance(gen, int):
+            continue
+        generations.append(gen)
+        stats = entry.get('statistics_trigger', entry.get('statistics', {}))
         best_scores.append(stats.get('max_score', 0))
         avg_scores.append(stats.get('avg_score', 0))
         diversities.append(stats.get('diversity', 0))
@@ -198,7 +201,7 @@ def print_optimization_summary(results_file: str) -> None:
         print(f"分析结果时出错: {e}")
 
 
-def compare_prompts(prompts: List[str], target_instruction: str) -> Dict[str, Any]:
+def compare_prompts(prompts: List[str]) -> Dict[str, Any]:
     """比较多个prompts的表现"""
     # 这里可以扩展为实际的比较逻辑
     # 暂时返回基本的统计信息
@@ -294,7 +297,7 @@ def setup_experiment_directory(base_dir: str, experiment_name: str) -> str:
     os.makedirs(experiment_dir, exist_ok=True)
 
     # 创建子目录
-    subdirs = ['results', 'logs', 'checkpoints', 'plots']
+    subdirs = ['results', 'logs', 'plots']
     for subdir in subdirs:
         os.makedirs(os.path.join(experiment_dir, subdir), exist_ok=True)
 

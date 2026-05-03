@@ -53,8 +53,9 @@ class Individual:
 class Population:
     """候选prompt池管理类"""
 
-    def __init__(self, config):
+    def __init__(self, config, template_kind: str = "trigger"):
         self.config = config
+        self.template_kind = template_kind  # "trigger" | "attack"
         self.size = config.population_size
         self.members: List[Individual] = []
         self.generation = 0
@@ -121,9 +122,10 @@ class Population:
 
             print(f"  模板 {template_idx + 1}: 平均得分 {avg_score:.4f}")
 
-        # 4. 选择平均得分最高的3个模板作为精英
+        # 4. 选择平均得分最高的 elite_size 个模板作为精英
         template_scores.sort(key=lambda x: x['avg_score'], reverse=True)
-        elite_templates = template_scores[:3]  # 选择Top 3
+        elite_n = min(self.config.elite_size, len(template_scores))
+        elite_templates = template_scores[:elite_n]
 
         print("\n=== 精英模板选择结果 ===")
         for i, elite in enumerate(elite_templates, 1):
@@ -146,8 +148,83 @@ class Population:
         print(f"\n初始种群大小: {len(self.members)} (选择了{len(elite_templates)}个精英模板)")
         self._update_best_individual()
 
+    def initialize_attack_templates_from_file(
+        self,
+        evaluator,
+        reference_trigger: str,
+        attack_file: str = None,
+    ) -> None:
+        """
+        Load attack_instruction = ... lines from data_webshop/attack_instruction_template.txt,
+        score each template with a fixed trigger, keep top elites (prompt = full template string).
+        """
+        if attack_file is None:
+            attack_file = os.path.join(self.config.base_dir, "data_webshop", "attack_instruction_template.txt")
+        if not os.path.exists(attack_file):
+            raise FileNotFoundError(f"Attack instruction file not found: {attack_file}")
+
+        from attack_template_utils import load_attack_instruction_lines
+
+        templates_all = load_attack_instruction_lines(attack_file)
+        if not templates_all:
+            raise ValueError(f"No attack templates parsed from {attack_file}")
+        # Attack template initialization uses only the first seed line.
+        # Additional lines can be rotated manually across runs.
+        templates = [templates_all[0]]
+
+        print(f"Loaded first attack template seed from {attack_file} (1 of {len(templates_all)} lines)")
+
+        training_pairs = evaluator._train_pairs
+        if not training_pairs:
+            evaluator._load_and_split_dataset()
+            training_pairs = evaluator._train_pairs
+        if not training_pairs:
+            raise ValueError("No training pairs for attack template evaluation")
+
+        template_scores = []
+        for template_idx, template in enumerate(templates):
+            print(f"Evaluating attack template {template_idx + 1}/{len(templates)}...")
+            avg_score, interaction_history = evaluator.evaluate_goal_achievement(
+                reference_trigger, [], attack_template=template
+            )
+            template_scores.append(
+                {
+                    "template": template,
+                    "avg_score": avg_score,
+                    "template_idx": template_idx,
+                    "interaction_history": interaction_history,
+                }
+            )
+            print(f"  Template {template_idx + 1}: avg score {avg_score:.4f}")
+
+        template_scores.sort(key=lambda x: x["avg_score"], reverse=True)
+        elite_n = min(self.config.elite_size, len(template_scores))
+        elite_templates = template_scores[:elite_n]
+
+        print("\n=== Elite attack templates ===")
+        for i, elite in enumerate(elite_templates, 1):
+            print(f"Elite {i}: score {elite['avg_score']:.4f}")
+            print(f"  {elite['template'][:80]}...")
+
+        self.members = []
+        for elite in elite_templates:
+            self.members.append(
+                Individual(
+                    prompt=elite["template"],
+                    score=elite["avg_score"],
+                    generation=0,
+                    parent_ids=[elite["template_idx"]],
+                    interaction_history=elite["interaction_history"],
+                )
+            )
+
+        print(f"\nInitial attack population size: {len(self.members)}")
+        self._update_best_individual()
+
     def _simple_mutate(self, prompt: str) -> str:
         """简单的变异操作（用于初始化扩展，保护[MASK]）"""
+        if self.template_kind == "attack":
+            return prompt
         # 跳过包含[MASK]的prompt，避免破坏结构
         if '[MASK]' in prompt or '[mask]' in prompt:
             return prompt
@@ -280,7 +357,17 @@ class Population:
         # 转换为更清晰的对象格式
         history_dict = {}
         for i, generation_population in enumerate(self.history):
-            history_dict[f"population_generation_{i}"] = generation_population
+            cleaned_generation = []
+            for ind in generation_population:
+                if isinstance(ind, dict):
+                    d = dict(ind)
+                    d.pop("interaction_history", None)
+                    cleaned_generation.append(d)
+                else:
+                    d = ind.to_dict()
+                    d.pop("interaction_history", None)
+                    cleaned_generation.append(d)
+            history_dict[f"population_generation_{i}"] = cleaned_generation
 
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
         with open(file_path, 'w', encoding='utf-8') as f:
