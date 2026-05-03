@@ -92,8 +92,7 @@ class LLMInterface:
         api_key = load_openai_api_key()
         if not api_key:
             raise ValueError(
-                "No API key: set OPENAI_API_KEY (or API_KEY), or put your key in "
-                "openai_key.txt next to run_optimization.py (see README)."
+                "No API key: create webshop/OpenAI_api_key.txt (see README)."
             )
         return api_key
 

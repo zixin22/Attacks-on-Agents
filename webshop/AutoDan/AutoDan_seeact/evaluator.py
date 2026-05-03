@@ -60,8 +60,7 @@ class LLMInterface:
             api_key = load_openai_api_key()
             if not api_key:
                 raise ValueError(
-                    "No API key: set OPENAI_API_KEY (or API_KEY), or put your key in "
-                    "openai_key.txt in this folder (see README)."
+                    "No API key: create webshop/OpenAI_api_key.txt (see README)."
                 )
 
             headers = {

@@ -1,7 +1,8 @@
 --extra-index-url https://download.pytorch.org/whl/cu121
 beautifulsoup4==4.12.3
 numpy==1.22.4
-openai==1.30.5
+# >=1.58 fixes httpx 0.28+ (proxies kw removed). Pin <2 so pyautogen 0.2.x (openai~=1.2) stays satisfied.
+openai>=1.58.0,<2
 PyYAML==6.0.1
 Requests==2.32.3
 sentence_transformers==2.7.0

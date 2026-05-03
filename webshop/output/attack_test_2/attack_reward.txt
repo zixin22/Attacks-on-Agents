@@ -1,6 +1,0 @@
-CaseId	FixNumber	FragmentReward	TriggerReward
-1	3107	1.000	0.000
-2	11649	0.100	0.000
-3	2609	0.100	0.033
-4	10074	1.000	
-5	487	1.000	0.000

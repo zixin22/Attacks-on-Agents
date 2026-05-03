@@ -245,8 +245,12 @@ def process_instructions(output_dir=None):
     rule_checker = RuleCheckerDetailed(verbose=False, model="gpt-4o")
     print(f"DEBUG: RuleChecker class: {rule_checker.__class__}")
     print(f"DEBUG: RuleChecker module: {rule_checker.__class__.__module__}")
-    print(f"DEBUG: OPENAI_API_KEY env: {os.getenv('OPENAI_API_KEY', 'NOT SET')}")
-    print(f"DEBUG: API_KEY env: {os.getenv('API_KEY', 'NOT SET')}")
+    import sys
+    _ws = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+    if _ws not in sys.path:
+        sys.path.insert(0, _ws)
+    from openai_paths import OPENAI_API_KEY_PATH
+    print(f"DEBUG: OpenAI key file: {OPENAI_API_KEY_PATH} (exists={os.path.isfile(OPENAI_API_KEY_PATH)})")
 
     # Initialize attack generator with NER capability
     attack_generator = FragmentAttackGenerator(verbose=False)

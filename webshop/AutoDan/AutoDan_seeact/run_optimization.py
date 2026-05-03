@@ -202,7 +202,7 @@ Resume:
     python run_optimization.py -r results/checkpoint_interrupt.json
 
 API key:
-    Put the key in openai_key.txt (same folder as this script) or set OPENAI_API_KEY.
+    Put your key in webshop/OpenAI_api_key.txt only (no environment variables).
 
 Smoke test:
     python run_optimization.py --test

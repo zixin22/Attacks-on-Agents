@@ -32,8 +32,8 @@ parser.add_argument(
     "--dataset",
     type=str,
     default=None,
-    help="Dataset JSON (array of cases). For attack mode: required per case fix_number, "
-    "carrier_instruction_3, masked_instruction. For defense without attack: provide profile per case "
+    help="Dataset JSON (array of cases). For attack mode: required per case host_fix_number (or fix_number), "
+    "carrier_query, masked_instruction. For defense without attack: provide profile per case "
     "(same structure as dataset_test_10_benign.json).",
 )
 parser.add_argument("--limit", type=int, default=None, help="Maximum number of cases to process")
@@ -46,7 +46,8 @@ parser.add_argument("--defense_check_target", type=str.lower, default="prompt",
                     choices=["prompt", "instruction"],
                     help="Defense check scope: 'prompt' checks full prompt, 'instruction' checks only current instruction")
 parser.add_argument("--defense_mode_model", type=str, default=None,
-                    help="Override model used by defense mode (defaults to --model)")
+                    help="Override defense LLM (defaults to --model). For guard_agent, a name containing "
+                         "'gemini' uses only gemini_api.txt + GenAI relay for all Guard stages (see guard agent/config.py).")
 parser.add_argument("--guard_agent_shots", type=int, default=3, choices=[1, 2, 3],
                     help="Number of few-shot examples for GuardAgent (1, 2, or 3)")
 parser.add_argument("--guard_agent_seed", type=int, default=42,
@@ -97,7 +98,12 @@ def _read_api_key_from_paths(possible_paths, key_name):
     raise FileNotFoundError(f"{key_name} API key file not found. Tried: {possible_paths}")
 
 
-OPENAI_API_KEY_PATH = os.path.join(os.path.dirname(__file__), "OpenAI_api_key.txt")
+from openai_paths import read_openai_api_key
+
+GEMINI_API_KEY_PATH = os.path.join(os.path.dirname(__file__), "gemini_api.txt")
+
+# Initialized below when --model uses Gemini; stays None for GPT/Llama.
+gemini_client = None
 
 # llama2
 from transformers import AutoModelForCausalLM
@@ -120,18 +126,11 @@ elif 'gpt' in args.model or 'gemini' in args.model:
     is_gemini = 'gemini' in model_lower
 
     if is_gemini:
-        # Gemini relay key (Google GenAI client)
-        gemini_key_paths = [
-            os.path.join(os.path.dirname(__file__), 'Gemini_api_key.txt'),
-            r"D:\rap-main\webshop\Gemini_api_key.txt",
-            'Gemini_api_key.txt'
-        ]
-        gemini_api_key = _read_api_key_from_paths(gemini_key_paths, "Gemini")
+        gemini_api_key = _read_api_key_from_paths([GEMINI_API_KEY_PATH], "Gemini")
 
         try:
             os.environ["GEMINI_API_KEY"] = gemini_api_key
             from google import genai
-            global gemini_client
             gemini_client = genai.Client(
                 http_options={
                     "base_url": "http://148.113.224.153:3000"
@@ -142,7 +141,7 @@ elif 'gpt' in args.model or 'gemini' in args.model:
             raise ImportError("google-genai library not available. Please install google-genai to use Gemini.")
     else:
         from openai import OpenAI
-        api_key = _read_api_key_from_paths([OPENAI_API_KEY_PATH], "OpenAI")
+        api_key = read_openai_api_key()
         client = OpenAI(api_key=api_key, base_url="http://152.53.53.64:3000/v1")
 else:
     print('LLM currently not supported')
@@ -152,9 +151,6 @@ else:
 
 import time
 
-# Gemini client (initialized only when using gemini-* models)
-gemini_client = None
-
 
 def _ensure_gemini_client():
     """Lazily initialize Gemini client if needed."""
@@ -162,19 +158,7 @@ def _ensure_gemini_client():
     if gemini_client is not None:
         return gemini_client
 
-    gemini_key_paths = [
-        os.path.join(os.path.dirname(__file__), 'Gemini_api_key.txt'),
-        r"D:\rap-main\webshop\Gemini_api_key.txt",
-        'Gemini_api_key.txt'
-    ]
-    gemini_api_key = None
-    for path in gemini_key_paths:
-        if os.path.exists(path):
-            with open(path, "r") as f:
-                gemini_api_key = f.read().strip()
-            break
-    if not gemini_api_key:
-        raise FileNotFoundError(f"Gemini API key file not found. Tried: {gemini_key_paths}")
+    gemini_api_key = _read_api_key_from_paths([GEMINI_API_KEY_PATH], "Gemini")
 
     os.environ["GEMINI_API_KEY"] = gemini_api_key
     from google import genai
@@ -594,18 +578,23 @@ def _sensitive_fragments_for_log_only(attack_case_data: dict) -> List[str]:
     return [str(x).strip() for x in raw if str(x).strip()]
 
 
+def _attack_carrier_query(attack_case_data: dict) -> str:
+    """Fragment carrier string from dataset field ``carrier_query`` (legacy: ``carrier_instruction_3``)."""
+    return (attack_case_data.get("carrier_query") or attack_case_data.get("carrier_instruction_3") or "").strip()
+
+
 def _build_minimal_attack_plan(attack_case_data: dict, host_instruction: str) -> Dict:
     """
-    Runtime attack plan: ``carrier_instruction_3`` (fragment inject) + ``masked_instruction`` (trigger).
+    Runtime attack plan: ``carrier_query`` (fragment inject) + ``masked_instruction`` (trigger).
 
     ``sensitive_fragments`` in JSON is optional and **log-only**; to compute sensitive pieces from
     NER + RuleChecker mask use ``ner_mask.generate_live_attack_plan`` / ``python -m ner_mask.fragment_mask``.
     """
-    carrier = (attack_case_data.get('carrier_instruction_3') or '').strip()
+    carrier = _attack_carrier_query(attack_case_data)
     masked = (attack_case_data.get('masked_instruction') or '').strip()
     if not carrier:
         raise ValueError(
-            "Attack dataset entry must have non-empty 'carrier_instruction_3'."
+            "Attack dataset entry must have non-empty 'carrier_query' (or legacy 'carrier_instruction_3')."
         )
     if not masked:
         raise ValueError(
@@ -635,14 +624,14 @@ def _build_minimal_attack_plan(attack_case_data: dict, host_instruction: str) ->
 
 
 def _attack_plan_console_lines(attack_case_data: dict, attack_plan: Dict) -> List[str]:
-    _c3 = attack_case_data.get('carrier_instruction_3', '') or ''
-    _c3_prev = (_c3[:120] + '...') if len(_c3) > 120 else _c3
+    _cq = _attack_carrier_query(attack_case_data)
+    _cq_prev = (_cq[:120] + '...') if len(_cq) > 120 else _cq
     return [
         "\nAttack plan (minimal schema):",
         f"  Sensitive fragments: {attack_plan['sensitive_fragments']}",
-        f"  Carrier (carrier_instruction_3): {_c3_prev}",
+        f"  Carrier (carrier_query): {_cq_prev}",
         f"  Masked query (masked_instruction): {attack_case_data.get('masked_instruction', '')}",
-        f"  Fragment attacks to run: {len(attack_plan['fragment_attacks'])} (carrier_instruction_3)",
+        f"  Fragment attacks to run: {len(attack_plan['fragment_attacks'])} (carrier_query)",
         f"  Trigger Instruction: {attack_plan['trigger_instruction']}\n",
     ]
 
@@ -663,7 +652,7 @@ def _attack_plan_file_block(
         f"Host Instruction: {host_instruction}\n",
         f"Target Instruction (optional log): {attack_target_instruction}\n",
         f"Sensitive fragments: {attack_plan['sensitive_fragments']}\n",
-        f"carrier_instruction_3: {attack_case_data.get('carrier_instruction_3', '')}\n",
+        f"carrier_query: {_attack_carrier_query(attack_case_data)}\n",
         f"masked_instruction: {attack_case_data.get('masked_instruction', '')}\n",
         "\nFragment attack (single injection; sensitive_fragments above is log-only):\n",
     ]
@@ -1665,7 +1654,7 @@ def _resolve_case_plan(sample_limit):
             print(f"Processing {n} attack cases")
             print(f"Fix numbers: {index_list[:5]}... (showing first 5)")
             print(
-                "Each case should define: carrier_instruction_3, masked_instruction, fix_number; "
+                "Each case should define: carrier_query, masked_instruction, host_fix_number (or fix_number); "
                 "optional sensitive_fragments (log only)."
             )
         else:
@@ -1718,7 +1707,7 @@ def _initialize_attack_mode(n, sample_limit):
         f.write("ATTACK MODE PROMPT LOG\n")
         f.write("="*80 + "\n")
         f.write(
-            "Dataset schema (minimal): carrier_instruction_3, masked_instruction, fix_number; "
+            "Dataset schema (minimal): carrier_query, masked_instruction, host_fix_number (or fix_number); "
             "optional sensitive_fragments (log only); optional id / instruction for logs.\n"
         )
         if args.dataset:
@@ -1814,7 +1803,9 @@ for i in index_list:
     case_id = i
     case_fix_number = i
     if attack_case_data:
-        case_fix_number = int(attack_case_data.get('fix_number', i))
+        case_fix_number = int(
+            attack_case_data.get('host_fix_number', attack_case_data.get('fix_number', i))
+        )
 
     if is_attack_case:
         print(f"\n{'='*60}")
@@ -1879,7 +1870,7 @@ for i in index_list:
             )
 
         # Step 4: Execute trigger attack
-        # Use 'fixed' prefix so server uses the correct goal (fixed_{i}) instead of random goal
+        # Use 'fixed' prefix so server uses the correct goal (fixed_{host_fix_number}) instead of random goal
         trigger_session_id = f'fixed_attack_trigger_{case_fix_number}'
         SESSION_ID_DISPLAY_MAP[trigger_session_id] = display_session_id
         _trigger_injected, trigger_reward = execute_trigger_attack(
@@ -1935,7 +1926,7 @@ for i in index_list:
     override_instruction = None
 
     r, mem_data, violated_rules, was_blocked, assertion_failed = _run_webshop_case_fixed(
-        f'fixed_{i}', initial_prompt, profile, memory, embeddings, override_instruction
+        f'fixed_{case_fix_number}', initial_prompt, profile, memory, embeddings, override_instruction
     )
     if assertion_failed:
         cnt += 1
@@ -1953,8 +1944,8 @@ for i in index_list:
         
     # Extract instruction/query/price for metrics tracking even when memory write failed.
     product_price = 0.0
-    if f'fixed_{i}' in env.sessions:
-        session_info = env.sessions[f'fixed_{i}']
+    if f'fixed_{case_fix_number}' in env.sessions:
+        session_info = env.sessions[f'fixed_{case_fix_number}']
         instruction = session_info.get('instruction', instruction)
         query = session_info.get('query', query)
         try:
@@ -1966,7 +1957,7 @@ for i in index_list:
             pass
 
     # Always update metrics once per completed case.
-    session_id = f'fixed_{i}'
+    session_id = f'fixed_{case_fix_number}'
     metrics_result = mem_data if isinstance(mem_data, dict) else {'Success': (r == 1), 'Reward': r}
     metrics_tracker.update(
         profile, metrics_result, violated_rules, was_blocked,
@@ -1980,7 +1971,7 @@ for i in index_list:
 
     # Record session information to webshop.txt
     with open(webshop_log_file, 'a', encoding='utf-8') as f:
-        f.write(f"Session ID: {format_session_id_for_log(f'fixed_{i}')}\n")
+        f.write(f"Session ID: {format_session_id_for_log(f'fixed_{case_fix_number}')}\n")
 
         # Profile information (only if profile is used)
         if profile is not None:

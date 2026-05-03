@@ -98,30 +98,14 @@ class LLMInterface:
     def _get_api_key(self) -> str:
         """获取API密钥"""
         import os
+        import sys
 
-        api_key = os.getenv('OPENAI_API_KEY') or os.getenv('API_KEY')
+        _ws = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+        if _ws not in sys.path:
+            sys.path.insert(0, _ws)
+        from openai_paths import read_openai_api_key
 
-        if not api_key:
-            api_key_paths = [
-                os.path.join(os.path.dirname(__file__), '..', '..', 'OpenAI_api_key.txt'),
-                os.path.join(os.path.dirname(__file__), '..', 'OpenAI_api_key.txt'),
-                'OpenAI_api_key.txt'
-            ]
-
-            api_key_path = None
-            for path in api_key_paths:
-                if os.path.exists(path):
-                    api_key_path = path
-                    break
-
-            if api_key_path:
-                with open(api_key_path, "r") as f:
-                    api_key = f.read().strip()
-
-        if not api_key:
-            raise ValueError("API key not found in environment variables (OPENAI_API_KEY or API_KEY) or API key file. Please set API key and try again.")
-
-        return api_key
+        return read_openai_api_key()
 
 
 

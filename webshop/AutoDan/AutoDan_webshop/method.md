@@ -220,17 +220,12 @@ best_template = max(test_results, key=lambda x: test_results[x]['avg_test_score'
 
 - **模型与代理配置**
   - 模型命名（CLI 用法示例）:
-    - Claude: `--model claude-sonnet-4-5-20250929`
     - Gemini: `--model gemini-xxxx`
     - OpenAI‑style: `--model gpt-4o` / `--model gpt2`（本地 GPT‑2 用于 coherence）
-  - Claude 初始化（在代码中）：
-    - API key 文件优先路径：`AutoDan/AutoDan_webshop/Claude_api_key.txt` 或 `D:\rap-main\webshop\Claude_api_key.txt`
-    - base_url（relay/proxy）：`http://148.113.224.153:3000/v1`
-    - 在代码中以 OpenAI 客户端方式初始化：OpenAI(api_key=..., base_url=..., http_client=...)
   - Gemini 初始化：
-    - API key 文件类似查找 `Gemini_api_key.txt`
+    - Gemini API key：`webshop/gemini_api.txt`
     - base_url（relay/proxy）：`http://148.113.224.153:3000`
-  - 通用代理（非 Claude/Gemini）的 base_url：`http://152.53.53.64:3000/v1`（见 fallback）
+  - 通用 OpenAI 兼容代理（非 Gemini）的 base_url：`http://152.53.53.64:3000/v1`（见 fallback）
 
 - **CLI flags（常用）**
   - `--model <model_name>`  : 模型名称（必须）
@@ -240,7 +235,7 @@ best_template = max(test_results, key=lambda x: test_results[x]['avg_test_score'
   - `--enable_rule_checker` : 使用 RuleChecker（布尔 flag）
   - `--defense_mode <mode>` : 防御模式（示例：`rule_checker`）
   - `--skip_trigger`       : 跳过 trigger 攻击（布尔 flag）
-  - `--output <path>`      : 输出目录/文件前缀（示例：`ablation/target_with_prompt_injection_claude4_5`）
+  - `--output <path>`      : 输出目录/文件前缀（示例：`output/rulechecker_run`）
   - `--cont_seed <int>`    : 随机种子（建议传入以保证复现）
 
 - **Coherence evaluator（coherence_evaluator.py）配置**
@@ -283,9 +278,8 @@ best_template = max(test_results, key=lambda x: test_results[x]['avg_test_score'
   - 日志（建议 JSON 结构）应包含：
     - `experiment_id`, `timestamp`, `seed`, `env_file`（conda 导出）, `cli_args`, `model_versions`, `dataset_hashes`
   - 输出文件（示例）:
-    - `ablation/target_with_prompt_injection_claude4_5`（攻击输出）
+    - `output/attack_experiment_1`（攻击输出，示例名）
     - `batch_attack/batch_attack_<n>/analysis.json`（批次分析汇总）
     - `promptarmor/promptarmor_osagent.json`（PromptArmor 检测结果）
 
 按照上面模板把运行时实际参数补齐到实验日志（或 README）中，就能保证每次对比实验都是可复现且可审计的。
-</xai:function_call">Write contents to c:\Users\22749\Desktop\rap-main\webshop\AutoDan\method.md

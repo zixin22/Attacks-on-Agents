@@ -1,5 +1,12 @@
 import time
 import os
+import sys
+
+_WS = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+if _WS not in sys.path:
+    sys.path.insert(0, _WS)
+from openai_paths import read_openai_api_key
+
 import json
 import re
 import requests
@@ -47,27 +54,7 @@ class LLMInterface:
     def _real_llm_response(self, prompt: str) -> str:
         try:
             api_url = f"{self.config['api_base']}/chat/completions"
-            api_key = os.getenv('OPENAI_API_KEY') or os.getenv('API_KEY')
-
-            if not api_key:
-                api_key_paths = [
-                    os.path.join(os.path.dirname(__file__), '..', '..', 'OpenAI_api_key.txt'),
-                    os.path.join(os.path.dirname(__file__), '..', 'OpenAI_api_key.txt'),
-                    'OpenAI_api_key.txt'
-                ]
-
-                api_key_path = None
-                for path in api_key_paths:
-                    if os.path.exists(path):
-                        api_key_path = path
-                        break
-
-                if api_key_path:
-                    with open(api_key_path, "r") as f:
-                        api_key = f.read().strip()
-
-            if not api_key:
-                raise ValueError("API key not found in environment variables (OPENAI_API_KEY or API_KEY) or API key file. Please set API key and try again.")
+            api_key = read_openai_api_key()
 
             headers = {
                 "Content-Type": "application/json",

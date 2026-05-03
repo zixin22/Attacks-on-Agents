@@ -21,18 +21,14 @@ Evolutionary search over **SeeAct-style trigger instructions**: propose variants
    pip install scikit-learn sentence-transformers matplotlib
    ```
 
-3. **OpenAI API key** — either:
-   - Environment variable: `OPENAI_API_KEY` (or `API_KEY`), **or**
-   - File: **`openai_key.txt`** in **this same directory** as `run_optimization.py` (repository ships an empty placeholder; paste your key as a single line and save).
-
-   Resolution order: env vars → `openai_key.txt` → `OpenAI_api_key.txt` (same folder).
+3. **OpenAI API key** — **only** the file **`webshop/OpenAI_api_key.txt`** (repository root’s `webshop/` folder, two levels up from `AutoDan_seeact/`). No environment variables are read.
 
 4. **Data** (included under `data_seeact/`):
    - `dataset.txt` — host / fragment / masked / target pairs  
    - `trigger_instruction_short_seed.txt` — blank-line separated seed triggers  
    - `attack_instruction.txt` — first line template for building the “similar task” block in the evaluator prompt  
 
-All paths are **relative to this folder** (`config.base_dir`). You can zip **`AutoDan_seeact/`** alone and run from inside it; no parent `webshop` tree is required.
+Paths under `data_seeact/` are **relative to this folder** (`config.base_dir`). The API key must live at **`webshop/OpenAI_api_key.txt`** relative to the repo layout above.
 
 ---
 
@@ -47,7 +43,7 @@ AutoDan_seeact/
   evaluator.py
   evolutionary_optimizer.py
   utils.py
-  openai_key.txt           # put your key here (or use env)
+  (see webshop/OpenAI_api_key.txt — two levels up)
   requirements.txt
   data_seeact/
     dataset.txt

@@ -26,4 +26,4 @@ python run_optimization.py
 python -c "from utils import print_optimization_summary; print_optimization_summary('results/optimization_1/best_triggers.json')"
 ```
 
-API key: `openai_key.txt` in this folder or env `OPENAI_API_KEY`.
+API key: `webshop/OpenAI_api_key.txt` only.

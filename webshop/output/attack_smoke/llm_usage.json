@@ -1,0 +1,490 @@
+{
+  "llm_function_calls": 80,
+  "calls_with_usage_field": 80,
+  "sum_prompt_tokens": 107193,
+  "sum_completion_tokens": 1723,
+  "sum_total_tokens": 108916,
+  "per_call": [
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 719,
+      "completion_tokens": 14,
+      "total_tokens": 733
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 882,
+      "completion_tokens": 33,
+      "total_tokens": 915
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 920,
+      "completion_tokens": 17,
+      "total_tokens": 937
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 943,
+      "completion_tokens": 6,
+      "total_tokens": 949
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 955,
+      "completion_tokens": 23,
+      "total_tokens": 978
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 983,
+      "completion_tokens": 14,
+      "total_tokens": 997
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1146,
+      "completion_tokens": 35,
+      "total_tokens": 1181
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1186,
+      "completion_tokens": 14,
+      "total_tokens": 1200
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1206,
+      "completion_tokens": 13,
+      "total_tokens": 1219
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1362,
+      "completion_tokens": 25,
+      "total_tokens": 1387
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1392,
+      "completion_tokens": 12,
+      "total_tokens": 1404
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1410,
+      "completion_tokens": 12,
+      "total_tokens": 1422
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1589,
+      "completion_tokens": 34,
+      "total_tokens": 1623
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1628,
+      "completion_tokens": 14,
+      "total_tokens": 1642
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1648,
+      "completion_tokens": 14,
+      "total_tokens": 1662
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1712,
+      "completion_tokens": 34,
+      "total_tokens": 1746
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1697,
+      "completion_tokens": 14,
+      "total_tokens": 1711
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1687,
+      "completion_tokens": 13,
+      "total_tokens": 1700
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1710,
+      "completion_tokens": 28,
+      "total_tokens": 1738
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1696,
+      "completion_tokens": 24,
+      "total_tokens": 1720
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1677,
+      "completion_tokens": 35,
+      "total_tokens": 1712
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1659,
+      "completion_tokens": 26,
+      "total_tokens": 1685
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1652,
+      "completion_tokens": 13,
+      "total_tokens": 1665
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1650,
+      "completion_tokens": 13,
+      "total_tokens": 1663
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1653,
+      "completion_tokens": 27,
+      "total_tokens": 1680
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1648,
+      "completion_tokens": 24,
+      "total_tokens": 1672
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1647,
+      "completion_tokens": 32,
+      "total_tokens": 1679
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1631,
+      "completion_tokens": 15,
+      "total_tokens": 1646
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1624,
+      "completion_tokens": 14,
+      "total_tokens": 1638
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1637,
+      "completion_tokens": 34,
+      "total_tokens": 1671
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1627,
+      "completion_tokens": 33,
+      "total_tokens": 1660
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1608,
+      "completion_tokens": 12,
+      "total_tokens": 1620
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1599,
+      "completion_tokens": 12,
+      "total_tokens": 1611
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1632,
+      "completion_tokens": 34,
+      "total_tokens": 1666
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1608,
+      "completion_tokens": 26,
+      "total_tokens": 1634
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1595,
+      "completion_tokens": 6,
+      "total_tokens": 1601
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1598,
+      "completion_tokens": 6,
+      "total_tokens": 1604
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1597,
+      "completion_tokens": 24,
+      "total_tokens": 1621
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1596,
+      "completion_tokens": 34,
+      "total_tokens": 1630
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1598,
+      "completion_tokens": 26,
+      "total_tokens": 1624
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 755,
+      "completion_tokens": 13,
+      "total_tokens": 768
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 773,
+      "completion_tokens": 18,
+      "total_tokens": 791
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 796,
+      "completion_tokens": 20,
+      "total_tokens": 816
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 821,
+      "completion_tokens": 21,
+      "total_tokens": 842
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 847,
+      "completion_tokens": 23,
+      "total_tokens": 870
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 875,
+      "completion_tokens": 21,
+      "total_tokens": 896
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 901,
+      "completion_tokens": 21,
+      "total_tokens": 922
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 927,
+      "completion_tokens": 21,
+      "total_tokens": 948
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 953,
+      "completion_tokens": 23,
+      "total_tokens": 976
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 981,
+      "completion_tokens": 21,
+      "total_tokens": 1002
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1007,
+      "completion_tokens": 21,
+      "total_tokens": 1028
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1033,
+      "completion_tokens": 21,
+      "total_tokens": 1054
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1059,
+      "completion_tokens": 21,
+      "total_tokens": 1080
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1085,
+      "completion_tokens": 21,
+      "total_tokens": 1106
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1111,
+      "completion_tokens": 21,
+      "total_tokens": 1132
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1137,
+      "completion_tokens": 23,
+      "total_tokens": 1160
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1165,
+      "completion_tokens": 21,
+      "total_tokens": 1186
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1191,
+      "completion_tokens": 21,
+      "total_tokens": 1212
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1217,
+      "completion_tokens": 21,
+      "total_tokens": 1238
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1243,
+      "completion_tokens": 23,
+      "total_tokens": 1266
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1271,
+      "completion_tokens": 21,
+      "total_tokens": 1292
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1297,
+      "completion_tokens": 21,
+      "total_tokens": 1318
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1323,
+      "completion_tokens": 21,
+      "total_tokens": 1344
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1349,
+      "completion_tokens": 21,
+      "total_tokens": 1370
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1375,
+      "completion_tokens": 21,
+      "total_tokens": 1396
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1401,
+      "completion_tokens": 21,
+      "total_tokens": 1422
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1427,
+      "completion_tokens": 21,
+      "total_tokens": 1448
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1453,
+      "completion_tokens": 23,
+      "total_tokens": 1476
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1456,
+      "completion_tokens": 23,
+      "total_tokens": 1479
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1450,
+      "completion_tokens": 21,
+      "total_tokens": 1471
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1446,
+      "completion_tokens": 23,
+      "total_tokens": 1469
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1443,
+      "completion_tokens": 23,
+      "total_tokens": 1466
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1446,
+      "completion_tokens": 26,
+      "total_tokens": 1472
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1448,
+      "completion_tokens": 26,
+      "total_tokens": 1474
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1450,
+      "completion_tokens": 26,
+      "total_tokens": 1476
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1453,
+      "completion_tokens": 26,
+      "total_tokens": 1479
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1454,
+      "completion_tokens": 26,
+      "total_tokens": 1480
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1455,
+      "completion_tokens": 26,
+      "total_tokens": 1481
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1456,
+      "completion_tokens": 26,
+      "total_tokens": 1482
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 1456,
+      "completion_tokens": 26,
+      "total_tokens": 1482
+    }
+  ],
+  "note": "Counts only main.py llm(); proxy must return usage on the completion object. Defense LLM calls are not included here."
+}

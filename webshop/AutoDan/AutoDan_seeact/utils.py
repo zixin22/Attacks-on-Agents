@@ -1,26 +1,23 @@
 """Utility helpers for AutoDan SeeAct."""
 
 import os
+import sys
+
+_WS = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+if _WS not in sys.path:
+    sys.path.insert(0, _WS)
+
 import json
 import random
 from typing import List, Dict, Any, Optional, Tuple
 from datetime import datetime
 
 
-def load_openai_api_key() -> Optional[str]:
-    """Read API key from env, then package-local openai_key.txt / OpenAI_api_key.txt."""
-    key = (os.getenv("OPENAI_API_KEY") or os.getenv("API_KEY") or "").strip()
-    if key:
-        return key
-    here = os.path.dirname(os.path.abspath(__file__))
-    for name in ("openai_key.txt", "OpenAI_api_key.txt"):
-        path = os.path.join(here, name)
-        if os.path.isfile(path):
-            with open(path, encoding="utf-8") as f:
-                key = f.read().strip()
-            if key:
-                return key
-    return None
+def load_openai_api_key() -> str:
+    """Read API key from ``webshop/OpenAI_api_key.txt`` only (via ``openai_paths``)."""
+    from openai_paths import read_openai_api_key
+
+    return read_openai_api_key()
 
 
 # Optional matplotlib import
@@ -382,7 +379,7 @@ def generate_experiment_report(results_dir: str, output_file: str = None) -> str
         "python -c \"from utils import print_optimization_summary; print_optimization_summary('results/optimization_1/best_triggers.json')\"",
         "```",
         "",
-        "API key: `openai_key.txt` in this folder or env `OPENAI_API_KEY`.",
+        "API key: `webshop/OpenAI_api_key.txt` (run from repo so webshop is two levels up).",
     ])
 
     with open(output_file, 'w', encoding='utf-8') as f:

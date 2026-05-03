@@ -1,16 +1,13 @@
 # AutoDan_seeact 启动脚本 (PowerShell版本)
-# 自动设置API密钥环境变量并运行优化
+# API 密钥：使用 webshop/OpenAI_api_key.txt（代码不再读取 OPENAI_API_KEY 环境变量）
 
 Write-Host "🚀 启动 AutoDan_seeact 进化优化" -ForegroundColor Green
 Write-Host "=" * 50 -ForegroundColor Yellow
 
-# 设置API密钥环境变量
-$env:OPENAI_API_KEY = "sk-O0g7ou2ojOXl9EI77pWKFeFfwLBzNQFmDw6EJ8MkHH74FRb9"
-
 # 切换到AutoDan目录 (确保在正确目录)
 Set-Location "D:\rap-main\webshop\AutoDan\AutoDan_seeact"
 
-Write-Host "✅ API密钥已设置" -ForegroundColor Green
+Write-Host "✅ 请确认 webshop/OpenAI_api_key.txt 已填写" -ForegroundColor Green
 Write-Host "📂 工作目录: $(Get-Location)" -ForegroundColor Cyan
 Write-Host "🎯 启动优化程序..." -ForegroundColor Green
 

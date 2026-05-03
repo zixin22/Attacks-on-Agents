@@ -1,0 +1,40 @@
+{
+  "llm_function_calls": 5,
+  "calls_with_usage_field": 5,
+  "sum_prompt_tokens": 3405,
+  "sum_completion_tokens": 92,
+  "sum_total_tokens": 3497,
+  "per_call": [
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 441,
+      "completion_tokens": 12,
+      "total_tokens": 453
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 634,
+      "completion_tokens": 56,
+      "total_tokens": 690
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 695,
+      "completion_tokens": 9,
+      "total_tokens": 704
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 803,
+      "completion_tokens": 6,
+      "total_tokens": 809
+    },
+    {
+      "model": "gpt-4o",
+      "prompt_tokens": 832,
+      "completion_tokens": 9,
+      "total_tokens": 841
+    }
+  ],
+  "note": "Counts only main.py llm(); proxy must return usage on the completion object. Defense LLM calls are not included here."
+}

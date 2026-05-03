@@ -1,7 +1,7 @@
 """
 Offline NER decomposition + RuleChecker mask (semantic sensitive/safe fragments for prompts).
 
-``main.py`` with ``--attack_dataset`` uses ``carrier_instruction_3`` / ``masked_instruction`` only;
+``main.py`` in attack mode uses ``carrier_query`` (legacy: ``carrier_instruction_3``) / ``masked_instruction`` only;
 any ``sensitive_fragments`` field in JSON is log-only there. For NER + mask-driven
 ``sensitive_fragments`` / ``safe_fragments`` and matching fragment/trigger text, use
 ``generate_live_attack_plan`` or ``python -m ner_mask.fragment_mask`` from ``webshop/``.

@@ -9,6 +9,8 @@ from typing import Dict, List, Tuple, Optional, Union
 import openai
 from openai import OpenAI
 
+from openai_paths import OPENAI_API_KEY_PATH, read_openai_api_key
+
 from .user_profile import UserProfile
 
 
@@ -41,92 +43,29 @@ class RuleChecker:
             # Select key source based on model family
             is_gemini = isinstance(model, str) and "gemini" in model.lower()
 
-            is_claude = isinstance(model, str) and "claude" in model.lower()
-
             if is_gemini:
-                # Try Gemini-specific environment variable first
-                api_key = os.getenv('GEMINI_API_KEY')
-                if api_key:
-                    api_key = api_key.strip()
-                    if api_key.startswith("\ufeff"):
-                        api_key = api_key.lstrip("\ufeff")
-                    key_source = "env(GEMINI_API_KEY)"
-
-                if not api_key:
-                    # Fall back to Gemini key file
-                    api_key_paths = [
-                        os.path.join(os.path.dirname(__file__), '..', 'Gemini_api_key.txt'),
-                        r"D:\rap-main\webshop\Gemini_api_key.txt",
-                        'Gemini_api_key.txt'
-                    ]
-
-                    api_key_path = None
-                    for path in api_key_paths:
-                        if os.path.exists(path):
-                            api_key_path = path
-                            break
-
-                    if api_key_path:
-                        with open(api_key_path, "rb") as f:
-                            raw = f.read()
-                        # Strip UTF-8 BOM if present, then decode.
-                        if raw.startswith(b"\xef\xbb\xbf"):
-                            raw = raw[3:]
-                        api_key = raw.decode("utf-8", errors="strict").strip()
-                        if api_key.startswith("\ufeff"):
-                            api_key = api_key.lstrip("\ufeff")
-                        key_source = api_key_path
-            elif is_claude:
-                # Try Claude-specific environment variable first
-                api_key = os.getenv('CLAUDE_API_KEY')
-                if api_key:
-                    api_key = api_key.strip()
-                    if api_key.startswith("\ufeff"):
-                        api_key = api_key.lstrip("\ufeff")
-                    key_source = "env(CLAUDE_API_KEY)"
-
-                if not api_key:
-                    # Fall back to Claude key file
-                    api_key_paths = [
-                        os.path.join(os.path.dirname(__file__), '..', 'Claude_api_key.txt'),
-                        r"D:\rap-main\webshop\Claude_api_key.txt",
-                        'Claude_api_key.txt'
-                    ]
-
-                    api_key_path = None
-                    for path in api_key_paths:
-                        if os.path.exists(path):
-                            api_key_path = path
-                            break
-
-                    if api_key_path:
-                        with open(api_key_path, "rb") as f:
-                            raw = f.read()
-                        # Strip UTF-8 BOM if present, then decode.
-                        if raw.startswith(b"\xef\xbb\xbf"):
-                            raw = raw[3:]
-                        api_key = raw.decode("utf-8", errors="strict").strip()
-                        if api_key.startswith("\ufeff"):
-                            api_key = api_key.lstrip("\ufeff")
-                        key_source = api_key_path
-            else:
-                api_key_path = os.path.join(os.path.dirname(__file__), '..', 'OpenAI_api_key.txt')
+                api_key_path = os.path.abspath(
+                    os.path.join(os.path.dirname(__file__), '..', 'gemini_api.txt')
+                )
                 if os.path.exists(api_key_path):
                     with open(api_key_path, "rb") as f:
                         raw = f.read()
-                    # Strip UTF-8 BOM if present, then decode.
                     if raw.startswith(b"\xef\xbb\xbf"):
                         raw = raw[3:]
                     api_key = raw.decode("utf-8", errors="strict").strip()
                     if api_key.startswith("\ufeff"):
                         api_key = api_key.lstrip("\ufeff")
                     key_source = api_key_path
+            else:
+                api_key = read_openai_api_key()
+                key_source = OPENAI_API_KEY_PATH
 
         if not api_key:
             if isinstance(model, str) and "gemini" in model.lower():
-                raise ValueError("Gemini API key not found in GEMINI_API_KEY or Gemini_api_key.txt. Please set API key and try again.")
-            if isinstance(model, str) and "claude" in model.lower():
-                raise ValueError("Claude API key not found in CLAUDE_API_KEY or Claude_api_key.txt. Please set API key and try again.")
+                raise ValueError(
+                    "Gemini API key not found in webshop/gemini_api.txt. "
+                    "Create that file with your API key."
+                )
             raise ValueError("OpenAI API key not found in webshop/OpenAI_api_key.txt. Please set API key and try again.")
 
         # Initialize OpenAI client with fallback options
@@ -144,7 +83,6 @@ class RuleChecker:
             print(f"[Info] API key source: {key_source}, len={len(api_key)}, ascii=True")
 
         is_gemini = isinstance(model, str) and "gemini" in model.lower()
-        is_claude = isinstance(model, str) and "claude" in model.lower()
         if is_gemini:
             # Gemini relay via Google GenAI client
             try:
@@ -158,16 +96,6 @@ class RuleChecker:
                 print("[Info] Using Gemini GenAI client (custom base_url)")
             except ImportError as e:
                 raise ImportError("google-genai library not available. Please install google-genai to use Gemini.") from e
-        elif is_claude:
-            # Claude relay key uses custom base_url
-            import httpx
-            http_client = httpx.Client(timeout=60.0, base_url="http://148.113.224.153:3000/v1")
-            self.client = OpenAI(
-                api_key=api_key,
-                base_url="http://148.113.224.153:3000/v1",
-                http_client=http_client
-            )
-            print("[Info] Using Claude API key (custom proxy base_url)")
         else:
             # Force proxy server connection (matching AutoDan config)
             import httpx

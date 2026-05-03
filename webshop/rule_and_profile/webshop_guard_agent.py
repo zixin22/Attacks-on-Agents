@@ -1,6 +1,13 @@
 """
-WebShop GuardAgent Adapter
-Adapts GuardAgent to work with WebShop environment, providing the same interface as RuleChecker
+WebShop GuardAgent adapter (“WebShop Guard”)
+
+**WebShop Guard** is this stack: AutoGen **GuardAgent** (task decomposition + error diagnosis)
+plus an **AssistantAgent** that proposes guardrail Python (invoking ``run_code_webshop``), wired for
+WebShop rule checks. ``main.py`` enables it with ``--defense_mode guard_agent``; it exposes the
+same ``check_all_rules(...)`` surface as **RuleChecker** so defense hooks stay interchangeable.
+
+When ``--defense_mode_model`` names a **Gemini** model, decomposition, debugger, and AutoGen
+codegen all use **Google GenAI** only (``gemini_api.txt``, same relay as ``main.py``).
 """
 
 import os
@@ -18,7 +25,8 @@ if guard_agent_path not in sys.path:
     sys.path.insert(0, guard_agent_path)
 
 from guardagent import GuardAgent
-from config import model_config, llm_config_list
+from config import model_config, llm_config_list, openai_config_for_autogen
+from gemini_autogen_bridge import patch_assistant_agent_for_gemini
 
 # Import WebShop code execution function
 try:
@@ -39,8 +47,10 @@ except ImportError:
 
 class WebShopGuardAgent:
     """
-    GuardAgent adapter for WebShop environment.
-    Provides the same interface as RuleChecker for easy integration.
+    WebShop-facing wrapper around AutoGen GuardAgent + codegen assistant (“WebShop Guard”).
+
+    Implements ``check_all_rules`` like ``RuleChecker`` so
+    ``main.py`` can swap defense backends without changing the WebShop loop.
     """
     
     def __init__(self, verbose: bool = False, model: str = "gpt-4", num_shots: int = 3, seed: int = 42,
@@ -50,7 +60,8 @@ class WebShopGuardAgent:
         
         Args:
             verbose: Whether to print verbose output
-            model: LLM model to use (e.g., "gpt-4", "gpt-3.5-turbo")
+            model: LLM for Guard — OpenAI-style names use ``OpenAI_api_key.txt``; names containing
+                ``gemini`` use ``gemini_api.txt`` for all Guard stages including codegen.
             num_shots: Number of few-shot examples to use (1, 2, or 3)
             seed: Random seed for reproducibility
             prompt_log_path: If set, append two-stage LLM prompts/outputs to this file (e.g. .../guardagent_prompt_log.txt)
@@ -61,9 +72,10 @@ class WebShopGuardAgent:
         self.seed = seed
         self.prompt_log_path = prompt_log_path
         
-        # Initialize GuardAgent configuration
-        config_list = [model_config(model)]
-        llm_config = llm_config_list(seed, config_list)
+        # Full config for GuardAgent (task decomposition / debugger); slim copy for AutoGen chatbot.
+        _full = model_config(model)
+        config_list = [_full]
+        llm_config = llm_config_list(seed, [openai_config_for_autogen(_full)])
         
         # Create chatbot agent (code generator)
         self.chatbot = autogen.agentchat.AssistantAgent(
@@ -75,6 +87,8 @@ class WebShopGuardAgent:
             ),
             llm_config=llm_config,
         )
+        if _full.get("use_gemini_client"):
+            patch_assistant_agent_for_gemini(self.chatbot, _full)
         
         # Create GuardAgent instance
         # code_execution_config=False: AutoGen's markdown code-block runner does NOT prepend WebShop
@@ -367,7 +381,11 @@ class WebShopGuardAgent:
                             error_msg = f"KeyError: {error_str}"
                     # Handle AuthenticationError specifically (API key issues)
                     elif 'AuthenticationError' in error_type or '401' in error_details or 'invalid_api_key' in error_details:
-                        error_msg = f"AuthenticationError: Invalid or expired API key. Please check your OpenAI API key in webshop/OpenAI_api_key.txt. Error: {error_details[:200]}"
+                        error_msg = (
+                            f"AuthenticationError: Invalid or expired API key. "
+                            f"For OpenAI models use webshop/OpenAI_api_key.txt; for Gemini-only defense use webshop/gemini_api.txt. "
+                            f"Error: {error_details[:200]}"
+                        )
                     # Clean up error message if it contains object representations (for non-KeyError)
                     elif '<' in error_msg and 'object at 0x' in error_msg:
                         error_msg = f"{error_type}: GuardAgent initiate_chat failed"
