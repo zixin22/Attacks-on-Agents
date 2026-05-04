@@ -11,8 +11,13 @@ from typing import Dict, List, Tuple, Union
 
 # Import rule system components
 from rule_and_profile import RuleChecker, MetricsTracker, UserProfile
+
+GUARD_AGENT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "guard agent"))
+if GUARD_AGENT_DIR not in sys.path:
+    sys.path.insert(0, GUARD_AGENT_DIR)
+
 try:
-    from rule_and_profile.webshop_guard_agent import WebShopGuardAgent
+    from webshop_guard_agent import WebShopGuardAgent
 except Exception as e:
     WebShopGuardAgent = None
     print("[Warning] WebShopGuardAgent not available. GuardAgent defense mode disabled.")
@@ -86,8 +91,7 @@ os.makedirs(args.output, exist_ok=True)
 with open('./configs/base_config.yaml') as reader:
     config = yaml.safe_load(reader)
 
-# Episodic memory rows with Reward below this are excluded from RAP retrieval; equal is allowed.
-RAP_MIN_RETRIEVAL_REWARD = 0.25
+RAP_MIN_RETRIEVAL_REWARD = config['params'].get('rap_min_retrieval_reward', 0.25)
 
 
 def _read_api_key_from_paths(possible_paths, key_name):

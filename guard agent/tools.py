@@ -12,9 +12,6 @@ def check_access(list_of_database:dict, summary_of_database:dict):
                 access_denied = True
                 inaccessible[key] = inaccessible_column_temp
 
-    if access_denied:
-        print("Inaccessible databases and columns: ", inaccessible)
-
     return access_denied, inaccessible
 
 
@@ -35,8 +32,5 @@ def check_rule(list_of_rules: dict, user_info: dict):
         access_denied = access_denied or access_denied_
         if access_denied_:
             inaccessible[act] = info_violation
-
-    if access_denied:
-        print("Inaccessible actions and user_info: ", inaccessible)
 
     return access_denied, inaccessible

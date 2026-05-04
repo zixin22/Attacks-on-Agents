@@ -1,14 +1,63 @@
 import time
-from typing import Dict, List, Optional, Union, Callable, Literal, Optional, Union
+from typing import Callable, Dict, List, Literal, Optional, Union
 import logging
 import openai
 import json
 from openai import OpenAI
-from autogen.agentchat import Agent, UserProxyAgent, ConversableAgent
-from termcolor import colored
+from autogen.agentchat import Agent, UserProxyAgent
 import Levenshtein
 
 logger = logging.getLogger(__name__)
+
+
+def _guardagent_chat_completion(config: dict, messages: list) -> str:
+    """
+    Run one chat-style completion for GuardAgent internals.
+
+    Uses Google GenAI when ``config['use_gemini_client']`` is True (same relay as main.py /
+    RuleChecker); otherwise OpenAI-compatible ``chat.completions``.
+    """
+    if config.get("use_gemini_client"):
+        import os as _os
+
+        gkey = config.get("gemini_api_key")
+        if not gkey:
+            raise ValueError("Gemini defense enabled but gemini_api_key missing in config.")
+        gbase = config.get("gemini_base_url", "http://148.113.224.153:3000")
+        gmodel = config.get("gemini_model") or "gemini-2.5-flash"
+        _os.environ["GEMINI_API_KEY"] = gkey
+        try:
+            from google import genai
+        except ImportError as e:
+            raise ImportError(
+                "google-genai is required for Gemini GuardAgent. pip install google-genai"
+            ) from e
+        client = genai.Client(http_options={"base_url": gbase})
+        chunks = [f"{m.get('role', 'user').upper()}:\n{m.get('content', '')}" for m in messages]
+        prompt = "\n\n".join(chunks)
+        response = client.models.generate_content(model=gmodel, contents=prompt)
+        text = getattr(response, "text", None)
+        if text and str(text).strip():
+            return str(text).strip()
+        return str(response).strip()
+
+    api_base = config.get("api_base") or config.get("base_url", None)
+    engine = config["model"]
+    if api_base:
+        client = OpenAI(api_key=config["api_key"], base_url=api_base)
+    else:
+        client = OpenAI(api_key=config["api_key"])
+    response = client.chat.completions.create(
+        model=engine,
+        messages=messages,
+        temperature=0,
+        max_tokens=1000,
+        top_p=0.95,
+        frequency_penalty=0,
+        presence_penalty=0,
+        stop=None,
+    )
+    return response.choices[0].message.content.strip()
 
 
 class GuardAgent(UserProxyAgent):
@@ -54,8 +103,8 @@ class GuardAgent(UserProxyAgent):
         # Returns the related information to the given query.
         patience = 2
         sleep_time = 30
-        openai.api_key = config["api_key"]
-        engine = config["model"]
+        if not config.get("use_gemini_client"):
+            openai.api_key = config["api_key"]
         query_message = Example_Decomposition.format(user_request=user_request,
                                                      agent_specification=agent_specification,
                                                      decomposition_examples=Decomposition_Examples,
@@ -65,31 +114,15 @@ class GuardAgent(UserProxyAgent):
         from prompts_guard import SYSTEM_PROMPT_DECOMPOSITION
         messages = [{"role": "system", "content": SYSTEM_PROMPT_DECOMPOSITION},
                     {"role": "user", "content": query_message}]
-        # Use custom API base URL if provided in config
-        # Note: config_list uses 'base_url', but we check both for compatibility
-        api_base = config.get("api_base") or config.get("base_url", None)
-        if api_base:
-            client = OpenAI(api_key=config["api_key"], base_url=api_base)
-        else:
-            client = OpenAI(api_key=config["api_key"])
         while patience > 0:
             patience -= 1
             try:
-                response = client.chat.completions.create(
-                    model=engine,
-                    messages=messages,
-                    temperature=0,
-                    max_tokens=1000,
-                    top_p=0.95,
-                    frequency_penalty=0,
-                    presence_penalty=0,
-                    stop=None)
-                prediction = response.choices[0].message.content.strip()
-                if prediction != "" and prediction != None:
+                prediction = _guardagent_chat_completion(config, messages)
+                if prediction != "" and prediction is not None:
                     self.last_task_decomposition_output = prediction
                     return prediction
             except Exception as e:
-                print(e)
+                logger.warning("GuardAgent task decomposition failed: %s", e)
                 if sleep_time > 0:
                     time.sleep(sleep_time)
         return "Fail to retrieve related knowledge, please try again later."
@@ -155,8 +188,17 @@ class GuardAgent(UserProxyAgent):
             raise ValueError(f"config_list must be a non-empty list. Got: {type(self.config_list)}")
         if not isinstance(self.config_list[0], dict):
             raise ValueError(f"config_list[0] must be a dict. Got: {type(self.config_list[0])}")
-        if "api_key" not in self.config_list[0] or "model" not in self.config_list[0]:
-            raise KeyError(f"config_list[0] must contain 'api_key' and 'model' keys. Got keys: {list(self.config_list[0].keys())}")
+        cfg0 = self.config_list[0]
+        if cfg0.get("use_gemini_client"):
+            if not cfg0.get("gemini_api_key") or not cfg0.get("gemini_model"):
+                raise KeyError(
+                    "config_list[0] for Gemini must contain 'gemini_api_key' and 'gemini_model'. "
+                    f"Got keys: {list(cfg0.keys())}"
+                )
+        elif "api_key" not in cfg0 or "model" not in cfg0:
+            raise KeyError(
+                f"config_list[0] must contain 'api_key' and 'model' keys. Got keys: {list(cfg0.keys())}"
+            )
 
         # import prompt
         from prompts_guard import GuardAgent_Message_Prompt
@@ -226,36 +268,20 @@ class GuardAgent(UserProxyAgent):
         # Returns the related information to the given query.
         patience = 1
         sleep_time = 30
-        openai.api_key = config["api_key"]
-        engine = config["model"]
+        if not config.get("use_gemini_client"):
+            openai.api_key = config["api_key"]
         query_message = CodeDebugger.format(subtasks=self.subtasks, code=code, error_info=error_info)
         messages = [{"role": "system",
                      "content": "You are an AI assistant that helps people debug their code. Only list one most possible reason to the errors."},
                     {"role": "user", "content": query_message}]
-        # Use custom API base URL if provided in config
-        # Note: config_list uses 'base_url', but we check both for compatibility
-        api_base = config.get("api_base") or config.get("base_url", None)
-        if api_base:
-            client = OpenAI(api_key=config["api_key"], base_url=api_base)
-        else:
-            client = OpenAI(api_key=config["api_key"])
         while patience > 0:
             patience -= 1
             try:
-                response = client.chat.completions.create(
-                    model=engine,
-                    messages=messages,
-                    temperature=0,
-                    max_tokens=1000,
-                    top_p=0.95,
-                    frequency_penalty=0,
-                    presence_penalty=0,
-                    stop=None)
-                prediction = response.choices[0].message.content.strip()
-                if prediction != "" and prediction != None:
+                prediction = _guardagent_chat_completion(config, messages)
+                if prediction != "" and prediction is not None:
                     return prediction
             except Exception as e:
-                print(e)
+                logger.warning("GuardAgent error debugger failed: %s", e)
                 if sleep_time > 0:
                     time.sleep(sleep_time)
         return "Fail to diagnose the reasons to the errors."
@@ -295,10 +321,6 @@ class GuardAgent(UserProxyAgent):
 
             # Try to execute the function
             if arguments is not None:
-                print(
-                    colored(f"\n>>>>>>>> EXECUTING FUNCTION {func_name}...", "magenta"),
-                    flush=True,
-                )
                 self.code = arguments["cell"]
                 try:
                     content = func(**arguments)
@@ -320,5 +342,4 @@ class GuardAgent(UserProxyAgent):
     def update_memory(self, num_shots, memory):
         self.num_shots = num_shots
         self.memory = memory
-
 

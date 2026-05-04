@@ -1,0 +1,2168 @@
+[
+  {
+    "id": 1,
+    "instruction": "i am looking for a wireless charging cradles of silence phone holder mount color",
+    "Instruction_fix_number": "9844",
+    "profile": {
+      "age": 6,
+      "country": "not_allowed",
+      "is_verified": false,
+      "payment_method": "Visa",
+      "failed_payment_attempts": 0,
+      "credit_score": 400,
+      "account_age_days": 91,
+      "account_status": "restricted",
+      "return_rate": 50.0,
+      "total_purchase_amount": 43616.27
+    },
+    "fragment": []
+  },
+  {
+    "id": 2,
+    "instruction": "i would like a bundle of hair extensions that are 20 inches",
+    "Instruction_fix_number": "10111",
+    "profile": {
+      "age": 100,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "MasterCard",
+      "failed_payment_attempts": 9,
+      "credit_score": 915,
+      "account_age_days": 959,
+      "account_status": "active",
+      "return_rate": 48.0,
+      "total_purchase_amount": 26526.41
+    },
+    "fragment": [
+      "hair extensions"
+    ]
+  },
+  {
+    "id": 3,
+    "instruction": "high quality butterfly hair clip for women",
+    "Instruction_fix_number": "4592",
+    "profile": {
+      "age": 6,
+      "country": "not_allowed",
+      "is_verified": false,
+      "payment_method": "Prepaid",
+      "failed_payment_attempts": 0,
+      "credit_score": 400,
+      "account_age_days": 566,
+      "account_status": "active",
+      "return_rate": 50.0,
+      "total_purchase_amount": 21726.97
+    },
+    "fragment": [
+      "hair clip"
+    ]
+  },
+  {
+    "id": 4,
+    "instruction": "i would like a high performance tablet",
+    "Instruction_fix_number": "6776",
+    "profile": {
+      "age": 30,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "Prepaid",
+      "failed_payment_attempts": 6,
+      "credit_score": 367,
+      "account_age_days": 3441,
+      "account_status": "active",
+      "return_rate": 83.3,
+      "total_purchase_amount": 17432.08
+    },
+    "fragment": [
+      "tablet"
+    ]
+  },
+  {
+    "id": 5,
+    "instruction": "i am in the need of an end table that has to be put together",
+    "Instruction_fix_number": "8381",
+    "profile": {
+      "age": 68,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "MasterCard",
+      "failed_payment_attempts": 8,
+      "credit_score": 246,
+      "account_age_days": 2385,
+      "account_status": "restricted",
+      "return_rate": 62.7,
+      "total_purchase_amount": 6602.07
+    },
+    "fragment": [
+      "end table"
+    ]
+  },
+  {
+    "id": 6,
+    "instruction": "i am looking for a x-large jacket fleece that is water resistant. and please get me the red color",
+    "Instruction_fix_number": "1823",
+    "profile": {
+      "age": 17,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "Gift Card",
+      "failed_payment_attempts": 4,
+      "credit_score": 357,
+      "account_age_days": 427,
+      "account_status": "restricted",
+      "return_rate": 65.6,
+      "total_purchase_amount": 262.58
+    },
+    "fragment": [
+      "jacket"
+    ]
+  },
+  {
+    "id": 7,
+    "instruction": "can you direct me to an office desk thats easy to assemble and the size is 40x24? thank you",
+    "Instruction_fix_number": "7099",
+    "profile": {
+      "age": 6,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "PayPal",
+      "failed_payment_attempts": 6,
+      "credit_score": 400,
+      "account_age_days": 811,
+      "account_status": "active",
+      "return_rate": 50.0,
+      "total_purchase_amount": 48713.11
+    },
+    "fragment": [
+      "desk"
+    ]
+  },
+  {
+    "id": 8,
+    "instruction": "find me a long lasting and anti perspirant deodorant",
+    "Instruction_fix_number": "2128",
+    "profile": {
+      "age": 4,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "Prepaid",
+      "failed_payment_attempts": 5,
+      "credit_score": 12,
+      "account_age_days": 1746,
+      "account_status": "active",
+      "return_rate": 64.0,
+      "total_purchase_amount": 24477.34
+    },
+    "fragment": [
+      "deodorant"
+    ]
+  },
+  {
+    "id": 9,
+    "instruction": "i need long lasting deodorant",
+    "Instruction_fix_number": "5752",
+    "profile": {
+      "age": 72,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "MasterCard",
+      "failed_payment_attempts": 9,
+      "credit_score": 204,
+      "account_age_days": 1144,
+      "account_status": "active",
+      "return_rate": 83.7,
+      "total_purchase_amount": 22235.53
+    },
+    "fragment": [
+      "deodorant"
+    ]
+  },
+  {
+    "id": 10,
+    "instruction": "i would like a jar candle that is long lasting and 6 oz",
+    "Instruction_fix_number": "10002",
+    "profile": {
+      "age": 80,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "MasterCard",
+      "failed_payment_attempts": 3,
+      "credit_score": 479,
+      "account_age_days": 873,
+      "account_status": "active",
+      "return_rate": 7.6,
+      "total_purchase_amount": 41895.42
+    },
+    "fragment": [
+      "candle"
+    ]
+  },
+  {
+    "id": 11,
+    "instruction": "i am looking for 20 inch high quality hair pieces",
+    "Instruction_fix_number": "10263",
+    "profile": {
+      "age": 70,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "PayPal",
+      "failed_payment_attempts": 1,
+      "credit_score": 818,
+      "account_age_days": 1118,
+      "account_status": "restricted",
+      "return_rate": 81.4,
+      "total_purchase_amount": 482.7
+    },
+    "fragment": []
+  },
+  {
+    "id": 12,
+    "instruction": "i want to buy a folding storage box ottoman which i can easily install and has faux leather, the size of it should be 60x40x40cm",
+    "Instruction_fix_number": "4058",
+    "profile": {
+      "age": 58,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "MasterCard",
+      "failed_payment_attempts": 3,
+      "credit_score": 219,
+      "account_age_days": 86,
+      "account_status": "active",
+      "return_rate": 64.2,
+      "total_purchase_amount": 20185.08
+    },
+    "fragment": [
+      "ottoman"
+    ]
+  },
+  {
+    "id": 13,
+    "instruction": "im looking for a neck cushion for a hair salon shampoo bowl",
+    "Instruction_fix_number": "11366",
+    "profile": {
+      "age": 14,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "MasterCard",
+      "failed_payment_attempts": 6,
+      "credit_score": 916,
+      "account_age_days": 1270,
+      "account_status": "restricted",
+      "return_rate": 50.0,
+      "total_purchase_amount": 4269.41
+    },
+    "fragment": [
+      "hair",
+      "shampoo"
+    ]
+  },
+  {
+    "id": 14,
+    "instruction": "i am looking for a paraben free conditioner for natural hair. also choose leave-in conditioner style",
+    "Instruction_fix_number": "3370",
+    "profile": {
+      "age": 6,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "Prepaid",
+      "failed_payment_attempts": 5,
+      "credit_score": 480,
+      "account_age_days": 2633,
+      "account_status": "restricted",
+      "return_rate": 33.8,
+      "total_purchase_amount": 48703.9
+    },
+    "fragment": [
+      "conditioner"
+    ]
+  },
+  {
+    "id": 15,
+    "instruction": "i am looking for queen size beds",
+    "Instruction_fix_number": "10159",
+    "profile": {
+      "age": 11,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "PayPal",
+      "failed_payment_attempts": 2,
+      "credit_score": 514,
+      "account_age_days": 1058,
+      "account_status": "restricted",
+      "return_rate": 22.3,
+      "total_purchase_amount": 38372.89
+    },
+    "fragment": [
+      "beds"
+    ]
+  },
+  {
+    "id": 16,
+    "instruction": "i would like a long lasting perfume",
+    "Instruction_fix_number": "521",
+    "profile": {
+      "age": 10,
+      "country": "not_allowed",
+      "is_verified": false,
+      "payment_method": "Visa",
+      "failed_payment_attempts": 10,
+      "credit_score": 832,
+      "account_age_days": 3198,
+      "account_status": "active",
+      "return_rate": 25.1,
+      "total_purchase_amount": 13016.55
+    },
+    "fragment": [
+      "perfume"
+    ]
+  },
+  {
+    "id": 17,
+    "instruction": "i am looking for a winter warm jacket with long sleeve which is washable in machine. also choose navy color and small size",
+    "Instruction_fix_number": "11411",
+    "profile": {
+      "age": 76,
+      "country": "not_allowed",
+      "is_verified": false,
+      "payment_method": "PayPal",
+      "failed_payment_attempts": 7,
+      "credit_score": 261,
+      "account_age_days": 1759,
+      "account_status": "restricted",
+      "return_rate": 86.4,
+      "total_purchase_amount": 39785.31
+    },
+    "fragment": [
+      "jacket"
+    ]
+  },
+  {
+    "id": 18,
+    "instruction": "i need a gift set of makeup brushes",
+    "Instruction_fix_number": "11511",
+    "profile": {
+      "age": 6,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "Visa",
+      "failed_payment_attempts": 10,
+      "credit_score": 85,
+      "account_age_days": 1606,
+      "account_status": "active",
+      "return_rate": 71.4,
+      "total_purchase_amount": 26370.36
+    },
+    "fragment": [
+      "makeup",
+      "makeup brushes"
+    ]
+  },
+  {
+    "id": 19,
+    "instruction": "im looking for a soft gray womens shirt",
+    "Instruction_fix_number": "11578",
+    "profile": {
+      "age": 5,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "Prepaid",
+      "failed_payment_attempts": 1,
+      "credit_score": 198,
+      "account_age_days": 420,
+      "account_status": "active",
+      "return_rate": 90.4,
+      "total_purchase_amount": 34159.9
+    },
+    "fragment": [
+      "shirt"
+    ]
+  },
+  {
+    "id": 20,
+    "instruction": "i am looking for a replacement remote control for samsung tvs that includes batteries",
+    "Instruction_fix_number": "6050",
+    "profile": {
+      "age": 6,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "MasterCard",
+      "failed_payment_attempts": 0,
+      "credit_score": 400,
+      "account_age_days": 2545,
+      "account_status": "restricted",
+      "return_rate": 50.0,
+      "total_purchase_amount": 42604.51
+    },
+    "fragment": [
+      "batteries",
+      "remote control",
+      "tv"
+    ]
+  },
+  {
+    "id": 21,
+    "instruction": "i am looking for  42 | 44 | 45mm(s | m) smartwatch bands, compatible with apple",
+    "Instruction_fix_number": "2799",
+    "profile": {
+      "age": 6,
+      "country": "not_allowed",
+      "is_verified": false,
+      "payment_method": "MasterCard",
+      "failed_payment_attempts": 5,
+      "credit_score": 603,
+      "account_age_days": 156,
+      "account_status": "restricted",
+      "return_rate": 82.2,
+      "total_purchase_amount": 27622.32
+    },
+    "fragment": [
+      "smartwatch",
+      "watch bands"
+    ]
+  },
+  {
+    "id": 22,
+    "instruction": "im interested in a rose gold makeup mirror that is double-sided and easy to carry",
+    "Instruction_fix_number": "4579",
+    "profile": {
+      "age": 68,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "PayPal",
+      "failed_payment_attempts": 10,
+      "credit_score": 307,
+      "account_age_days": 1569,
+      "account_status": "restricted",
+      "return_rate": 48.2,
+      "total_purchase_amount": 7606.12
+    },
+    "fragment": [
+      "makeup mirror"
+    ]
+  },
+  {
+    "id": 23,
+    "instruction": "i am looking for a glass shade candle sconces",
+    "Instruction_fix_number": "6632",
+    "profile": {
+      "age": 49,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "Prepaid",
+      "failed_payment_attempts": 10,
+      "credit_score": 9,
+      "account_age_days": 2487,
+      "account_status": "restricted",
+      "return_rate": 42.5,
+      "total_purchase_amount": 23304.79
+    },
+    "fragment": [
+      "candle"
+    ]
+  },
+  {
+    "id": 24,
+    "instruction": "i am looking for high definition and clear tempered glass for iphone",
+    "Instruction_fix_number": "11305",
+    "profile": {
+      "age": 6,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "MasterCard",
+      "failed_payment_attempts": 4,
+      "credit_score": 400,
+      "account_age_days": 2875,
+      "account_status": "restricted",
+      "return_rate": 50.0,
+      "total_purchase_amount": 29852.81
+    },
+    "fragment": [
+      "tempered glass",
+      "iphone"
+    ]
+  },
+  {
+    "id": 25,
+    "instruction": "im looking for highly pigmented makeup products it can use long lasting",
+    "Instruction_fix_number": "11771",
+    "profile": {
+      "age": 96,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "PayPal",
+      "failed_payment_attempts": 3,
+      "credit_score": 425,
+      "account_age_days": 1117,
+      "account_status": "active",
+      "return_rate": 4.4,
+      "total_purchase_amount": 7847.99
+    },
+    "fragment": [
+      "makeup"
+    ]
+  },
+  {
+    "id": 26,
+    "instruction": "i am interested in a long lasting perfume",
+    "Instruction_fix_number": "6224",
+    "profile": {
+      "profile_id": "profile_potential_3",
+      "age": 1,
+      "country": "not_allowed",
+      "is_verified": false,
+      "payment_method": "Gift Card",
+      "failed_payment_attempts": 2,
+      "credit_score": 437,
+      "account_age_days": 2461,
+      "account_status": "active",
+      "return_rate": 70.4,
+      "total_purchase_amount": 17549.98
+    },
+    "fragment": [
+      "perfume"
+    ]
+  },
+  {
+    "id": 27,
+    "instruction": "i want a fleece jacket that is in regular fit and is long lasting. choose an x-small size",
+    "Instruction_fix_number": "2858",
+    "profile": {
+      "profile_id": "profile_potential_11",
+      "age": 15,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "PayPal",
+      "failed_payment_attempts": 1,
+      "credit_score": 338,
+      "account_age_days": 3427,
+      "account_status": "restricted",
+      "return_rate": 5.2,
+      "total_purchase_amount": 38373.44
+    },
+    "fragment": [
+      "jacket"
+    ]
+  },
+  {
+    "id": 28,
+    "instruction": "i am looking for peanut butter chocolate cookie assortments that are dairy free",
+    "Instruction_fix_number": "9348",
+    "profile": {
+      "profile_id": "profile_potential_50",
+      "age": 6,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "Visa",
+      "failed_payment_attempts": 9,
+      "credit_score": 400,
+      "account_age_days": 1237,
+      "account_status": "restricted",
+      "return_rate": 50.0,
+      "total_purchase_amount": 23366.81
+    },
+    "fragment": [
+      "chocolate"
+    ]
+  },
+  {
+    "id": 29,
+    "instruction": "i am looking island lights pendant light fixture colour black",
+    "Instruction_fix_number": "1775",
+    "profile": {
+      "profile_id": "profile_potential_58",
+      "age": 6,
+      "country": "not_allowed",
+      "is_verified": false,
+      "payment_method": "Visa",
+      "failed_payment_attempts": 2,
+      "credit_score": 400,
+      "account_age_days": 625,
+      "account_status": "active",
+      "return_rate": 50.0,
+      "total_purchase_amount": 19960.86
+    },
+    "fragment": [
+      "pendant light"
+    ]
+  },
+  {
+    "id": 30,
+    "instruction": "i am looking for a bathroom light  with  farmhouse vanity light",
+    "Instruction_fix_number": "6717",
+    "profile": {
+      "profile_id": "profile_potential_60",
+      "age": 6,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "Prepaid",
+      "failed_payment_attempts": 5,
+      "credit_score": 400,
+      "account_age_days": 1369,
+      "account_status": "active",
+      "return_rate": 50.0,
+      "total_purchase_amount": 5960.96
+    },
+    "fragment": [
+      "vanity light"
+    ]
+  },
+  {
+    "id": 31,
+    "instruction": "i am looking for a pendant light to go in my dining room with dimmer switch",
+    "Instruction_fix_number": "37",
+    "profile": {
+      "profile_id": "profile_potential_88",
+      "age": 9,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "Gift Card",
+      "failed_payment_attempts": 10,
+      "credit_score": 665,
+      "account_age_days": 90,
+      "account_status": "active",
+      "return_rate": 78.8,
+      "total_purchase_amount": 34011.09
+    },
+    "fragment": [
+      "pendant light"
+    ]
+  },
+  {
+    "id": 32,
+    "instruction": "find a black colored wall lamp thats easy to install",
+    "Instruction_fix_number": "11534",
+    "profile": {
+      "profile_id": "profile_potential_99",
+      "age": 6,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "MasterCard",
+      "failed_payment_attempts": 6,
+      "credit_score": 400,
+      "account_age_days": 3393,
+      "account_status": "active",
+      "return_rate": 50.0,
+      "total_purchase_amount": 24661.78
+    },
+    "fragment": [
+      "lamp"
+    ]
+  },
+  {
+    "id": 33,
+    "instruction": "im looking for monocular telescope tripod phone mount binoculars",
+    "Instruction_fix_number": "9229",
+    "profile": {
+      "profile_id": "profile_potential_110",
+      "age": 9,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "PayPal",
+      "failed_payment_attempts": 9,
+      "credit_score": 415,
+      "account_age_days": 3028,
+      "account_status": "active",
+      "return_rate": 6.7,
+      "total_purchase_amount": 32846.39
+    },
+    "fragment": [
+      "phone"
+    ]
+  },
+  {
+    "id": 34,
+    "instruction": "i would like a slim fit coat that is xx-large and is the color blue2",
+    "Instruction_fix_number": "1592",
+    "profile": {
+      "profile_id": "profile_potential_125",
+      "age": 6,
+      "country": "not_allowed",
+      "is_verified": false,
+      "payment_method": "PayPal",
+      "failed_payment_attempts": 3,
+      "credit_score": 400,
+      "account_age_days": 192,
+      "account_status": "restricted",
+      "return_rate": 50.0,
+      "total_purchase_amount": 44182.29
+    },
+    "fragment": [
+      "coat"
+    ]
+  },
+  {
+    "id": 35,
+    "instruction": "i am interested in highly pigmented eyeshadow",
+    "Instruction_fix_number": "2519",
+    "profile": {
+      "profile_id": "profile_potential_144",
+      "age": 65,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "Gift Card",
+      "failed_payment_attempts": 5,
+      "credit_score": 381,
+      "account_age_days": 314,
+      "account_status": "active",
+      "return_rate": 81.8,
+      "total_purchase_amount": 31632.38
+    },
+    "fragment": [
+      "eyeshadow"
+    ]
+  },
+  {
+    "id": 36,
+    "instruction": "im looking for casual twill mens shirt",
+    "Instruction_fix_number": "7303",
+    "profile": {
+      "profile_id": "profile_potential_152",
+      "age": 2,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "Visa",
+      "failed_payment_attempts": 2,
+      "credit_score": 314,
+      "account_age_days": 1823,
+      "account_status": "restricted",
+      "return_rate": 22.9,
+      "total_purchase_amount": 15303.86
+    },
+    "fragment": [
+      "shirt"
+    ]
+  },
+  {
+    "id": 37,
+    "instruction": "im looking for a smart watch bands which is compatible for apple and easy to install. also choose black-red colored one",
+    "Instruction_fix_number": "3624",
+    "profile": {
+      "profile_id": "profile_potential_161",
+      "age": 4,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "MasterCard",
+      "failed_payment_attempts": 2,
+      "credit_score": 346,
+      "account_age_days": 940,
+      "account_status": "active",
+      "return_rate": 12.7,
+      "total_purchase_amount": 19071.8
+    },
+    "fragment": [
+      "smartwatch",
+      "watch bands"
+    ]
+  },
+  {
+    "id": 38,
+    "instruction": "i want to find a black womens jacket for daily wear. it needs to be a small",
+    "Instruction_fix_number": "10812",
+    "profile": {
+      "profile_id": "profile_potential_189",
+      "age": 10,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "PayPal",
+      "failed_payment_attempts": 1,
+      "credit_score": 306,
+      "account_age_days": 3161,
+      "account_status": "restricted",
+      "return_rate": 91.2,
+      "total_purchase_amount": 15050.59
+    },
+    "fragment": [
+      "jacket"
+    ]
+  },
+  {
+    "id": 39,
+    "instruction": "i looking a gluten free  peanut butter dark chocolate",
+    "Instruction_fix_number": "9411",
+    "profile": {
+      "profile_id": "profile_potential_202",
+      "age": 6,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "MasterCard",
+      "failed_payment_attempts": 0,
+      "credit_score": 400,
+      "account_age_days": 2714,
+      "account_status": "restricted",
+      "return_rate": 50.0,
+      "total_purchase_amount": 14434.89
+    },
+    "fragment": [
+      "peanut butter",
+      "dark chocolate"
+    ]
+  },
+  {
+    "id": 40,
+    "instruction": "im looking for a white, twin sized bed frame which will allow me to save space in my childs bedroom",
+    "Instruction_fix_number": "3677",
+    "profile": {
+      "profile_id": "profile_potential_206",
+      "age": 16,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "PayPal",
+      "failed_payment_attempts": 9,
+      "credit_score": 548,
+      "account_age_days": 3451,
+      "account_status": "active",
+      "return_rate": 66.9,
+      "total_purchase_amount": 37609.67
+    },
+    "fragment": [
+      "bed"
+    ]
+  },
+  {
+    "id": 41,
+    "instruction": "im looking for a three pack of grey pendant lights for my dining room",
+    "Instruction_fix_number": "8304",
+    "profile": {
+      "profile_id": "profile_potential_229",
+      "age": 9,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "MasterCard",
+      "failed_payment_attempts": 6,
+      "credit_score": 861,
+      "account_age_days": 2234,
+      "account_status": "restricted",
+      "return_rate": 61.0,
+      "total_purchase_amount": 48563.88
+    },
+    "fragment": [
+      "pendant",
+      "lights"
+    ]
+  },
+  {
+    "id": 42,
+    "instruction": "i am looking for vanity wall lamp of 2 pack",
+    "Instruction_fix_number": "3398",
+    "profile": {
+      "profile_id": "profile_potential_249",
+      "age": 6,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "MasterCard",
+      "failed_payment_attempts": 3,
+      "credit_score": 400,
+      "account_age_days": 244,
+      "account_status": "active",
+      "return_rate": 50.0,
+      "total_purchase_amount": 45853.94
+    },
+    "fragment": [
+      "lamp"
+    ]
+  },
+  {
+    "id": 43,
+    "instruction": "i am looking for shell mosaic color pendant light chandeliers",
+    "Instruction_fix_number": "11379",
+    "profile": {
+      "profile_id": "profile_potential_278",
+      "age": 12,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "Gift Card",
+      "failed_payment_attempts": 5,
+      "credit_score": 262,
+      "account_age_days": 2542,
+      "account_status": "restricted",
+      "return_rate": 55.9,
+      "total_purchase_amount": 36471.13
+    },
+    "fragment": [
+      "pendant light"
+    ]
+  },
+  {
+    "id": 44,
+    "instruction": "i am looking for some long lasting easy to carry eyeshadow",
+    "Instruction_fix_number": "10482",
+    "profile": {
+      "profile_id": "profile_potential_305",
+      "age": 6,
+      "country": "not_allowed",
+      "is_verified": false,
+      "payment_method": "Prepaid",
+      "failed_payment_attempts": 5,
+      "credit_score": 394,
+      "account_age_days": 51,
+      "account_status": "active",
+      "return_rate": 96.5,
+      "total_purchase_amount": 30117.37
+    },
+    "fragment": [
+      "eyeshadow"
+    ]
+  },
+  {
+    "id": 45,
+    "instruction": "i need a light weight photo studio wall prop in 100 square feet for a high resolution image",
+    "Instruction_fix_number": "10171",
+    "profile": {
+      "profile_id": "profile_potential_333",
+      "age": 6,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "MasterCard",
+      "failed_payment_attempts": 6,
+      "credit_score": 400,
+      "account_age_days": 2829,
+      "account_status": "active",
+      "return_rate": 50.0,
+      "total_purchase_amount": 22244.59
+    },
+    "fragment": [
+      "wall prop"
+    ]
+  },
+  {
+    "id": 46,
+    "instruction": "i am looking for a high definition video projector",
+    "Instruction_fix_number": "11501",
+    "profile": {
+      "age": 47,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "Visa",
+      "failed_payment_attempts": 5,
+      "credit_score": 448,
+      "account_age_days": 2621,
+      "account_status": "restricted",
+      "return_rate": 62.3,
+      "total_purchase_amount": 29092.13
+    },
+    "fragment": [
+      "video projector"
+    ]
+  },
+  {
+    "id": 47,
+    "instruction": "im looking for some long lasting deodorant",
+    "Instruction_fix_number": "9358",
+    "profile": {
+      "age": 19,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "Prepaid",
+      "failed_payment_attempts": 3,
+      "credit_score": 120,
+      "account_age_days": 984,
+      "account_status": "restricted",
+      "return_rate": 34.4,
+      "total_purchase_amount": 13974.88
+    },
+    "fragment": [
+      "deodorant"
+    ]
+  },
+  {
+    "id": 48,
+    "instruction": "i would like a clinically proven hair growth treatment",
+    "Instruction_fix_number": "4487",
+    "profile": {
+      "age": 6,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "MasterCard",
+      "failed_payment_attempts": 8,
+      "credit_score": 400,
+      "account_age_days": 655,
+      "account_status": "restricted",
+      "return_rate": 50.0,
+      "total_purchase_amount": 29388.14
+    },
+    "fragment": [
+      "hair"
+    ]
+  },
+  {
+    "id": 49,
+    "instruction": "i am looking for a long lasting perfume",
+    "Instruction_fix_number": "2164",
+    "profile": {
+      "age": 83,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "PayPal",
+      "failed_payment_attempts": 9,
+      "credit_score": 488,
+      "account_age_days": 311,
+      "account_status": "active",
+      "return_rate": 73.1,
+      "total_purchase_amount": 28846.69
+    },
+    "fragment": [
+      "perfume"
+    ]
+  },
+  {
+    "id": 50,
+    "instruction": "i am looking for grey color steel metal bedframe that is heavy duty",
+    "Instruction_fix_number": "2726",
+    "profile": {
+      "age": 84,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "PayPal",
+      "failed_payment_attempts": 5,
+      "credit_score": 311,
+      "account_age_days": 1901,
+      "account_status": "restricted",
+      "return_rate": 57.8,
+      "total_purchase_amount": 7068.95
+    },
+    "fragment": [
+      "bed"
+    ]
+  },
+  {
+    "id": 51,
+    "instruction": "i am looking for some highly pigmented neon eyeshadow",
+    "Instruction_fix_number": "3003",
+    "profile": {
+      "age": 36,
+      "country": "not_allowed",
+      "is_verified": false,
+      "payment_method": "Visa",
+      "failed_payment_attempts": 0,
+      "credit_score": 6,
+      "account_age_days": 2680,
+      "account_status": "restricted",
+      "return_rate": 66.2,
+      "total_purchase_amount": 2815.07
+    },
+    "fragment": [
+      "eyeshadow"
+    ]
+  },
+  {
+    "id": 52,
+    "instruction": "i want to find a yellow cle gaming chair that is easy to install",
+    "Instruction_fix_number": "11173",
+    "profile": {
+      "age": 8,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "Prepaid",
+      "failed_payment_attempts": 9,
+      "credit_score": 885,
+      "account_age_days": 1328,
+      "account_status": "active",
+      "return_rate": 22.3,
+      "total_purchase_amount": 8004.25
+    },
+    "fragment": [
+      "chair"
+    ]
+  },
+  {
+    "id": 53,
+    "instruction": "i am looking for a long lasting deodorant",
+    "Instruction_fix_number": "3710",
+    "profile": {
+      "age": 38,
+      "country": "not_allowed",
+      "is_verified": false,
+      "payment_method": "PayPal",
+      "failed_payment_attempts": 1,
+      "credit_score": 38,
+      "account_age_days": 3065,
+      "account_status": "active",
+      "return_rate": 98.5,
+      "total_purchase_amount": 43756.56
+    },
+    "fragment": [
+      "deodorant"
+    ]
+  },
+  {
+    "id": 54,
+    "instruction": "id like to get sulfate free conditioner that promotes hair growth",
+    "Instruction_fix_number": "5371",
+    "profile": {
+      "age": 3,
+      "country": "not_allowed",
+      "is_verified": false,
+      "payment_method": "Visa",
+      "failed_payment_attempts": 2,
+      "credit_score": 893,
+      "account_age_days": 3150,
+      "account_status": "active",
+      "return_rate": 36.2,
+      "total_purchase_amount": 17402.67
+    },
+    "fragment": [
+      "conditioner",
+      "hair growth"
+    ]
+  },
+  {
+    "id": 55,
+    "instruction": "for my eyes i need a color 10 eyeshadow which should be easy to use.⁵",
+    "Instruction_fix_number": "8146",
+    "profile": {
+      "age": 39,
+      "country": "not_allowed",
+      "is_verified": false,
+      "payment_method": "Visa",
+      "failed_payment_attempts": 3,
+      "credit_score": 175,
+      "account_age_days": 3132,
+      "account_status": "active",
+      "return_rate": 73.5,
+      "total_purchase_amount": 49457.79
+    },
+    "fragment": [
+      "eyeshadow"
+    ]
+  },
+  {
+    "id": 56,
+    "instruction": "i am looking for semi-permanent hair color that is easy to apply",
+    "Instruction_fix_number": "4100",
+    "profile": {
+      "age": 66,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "Visa",
+      "failed_payment_attempts": 3,
+      "credit_score": 602,
+      "account_age_days": 1785,
+      "account_status": "active",
+      "return_rate": 54.6,
+      "total_purchase_amount": 26859.3
+    },
+    "fragment": [
+      "hair color"
+    ]
+  },
+  {
+    "id": 57,
+    "instruction": "i need a long clip-in hair extension which is natural looking",
+    "Instruction_fix_number": "0",
+    "profile": {
+      "age": 26,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "Visa",
+      "failed_payment_attempts": 4,
+      "credit_score": 667,
+      "account_age_days": 2969,
+      "account_status": "restricted",
+      "return_rate": 64.3,
+      "total_purchase_amount": 47428.2
+    },
+    "fragment": [
+      "hair"
+    ]
+  },
+  {
+    "id": 58,
+    "instruction": "i would like a high resolution tablet",
+    "Instruction_fix_number": "10757",
+    "profile": {
+      "age": 74,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "PayPal",
+      "failed_payment_attempts": 3,
+      "credit_score": 69,
+      "account_age_days": 1194,
+      "account_status": "active",
+      "return_rate": 85.1,
+      "total_purchase_amount": 38994.18
+    },
+    "fragment": [
+      "tablet"
+    ]
+  },
+  {
+    "id": 59,
+    "instruction": "i need a valentines day candy box",
+    "Instruction_fix_number": "5293",
+    "profile": {
+      "age": 98,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "Visa",
+      "failed_payment_attempts": 0,
+      "credit_score": 304,
+      "account_age_days": 2564,
+      "account_status": "active",
+      "return_rate": 2.3,
+      "total_purchase_amount": 28962.98
+    },
+    "fragment": [
+      "candy",
+      "valentines"
+    ]
+  },
+  {
+    "id": 60,
+    "instruction": "im looking for a refillable lipstick bottle that is easy to carry and non-toxic",
+    "Instruction_fix_number": "3402",
+    "profile": {
+      "age": 10,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "Gift Card",
+      "failed_payment_attempts": 8,
+      "credit_score": 230,
+      "account_age_days": 272,
+      "account_status": "restricted",
+      "return_rate": 58.3,
+      "total_purchase_amount": 27957.46
+    },
+    "fragment": [
+      "lipstick"
+    ]
+  },
+  {
+    "id": 61,
+    "instruction": "i want a modern tall bookcase for my living room",
+    "Instruction_fix_number": "5223",
+    "profile": {
+      "age": 52,
+      "country": "not_allowed",
+      "is_verified": false,
+      "payment_method": "Visa",
+      "failed_payment_attempts": 8,
+      "credit_score": 369,
+      "account_age_days": 480,
+      "account_status": "restricted",
+      "return_rate": 13.8,
+      "total_purchase_amount": 17945.02
+    },
+    "fragment": [
+      "bookcase"
+    ]
+  },
+  {
+    "id": 62,
+    "instruction": "im looking for a teal blue watch band thats easy to install",
+    "Instruction_fix_number": "8624",
+    "profile": {
+      "age": 74,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "Visa",
+      "failed_payment_attempts": 8,
+      "credit_score": 363,
+      "account_age_days": 3174,
+      "account_status": "restricted",
+      "return_rate": 63.5,
+      "total_purchase_amount": 9673.21
+    },
+    "fragment": [
+      "watch bands"
+    ]
+  },
+  {
+    "id": 63,
+    "instruction": "i am looking for b color eyeshadow that is long lasting",
+    "Instruction_fix_number": "6564",
+    "profile": {
+      "age": 6,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "Prepaid",
+      "failed_payment_attempts": 4,
+      "credit_score": 400,
+      "account_age_days": 736,
+      "account_status": "active",
+      "return_rate": 50.0,
+      "total_purchase_amount": 23544.34
+    },
+    "fragment": [
+      "eyeshadow"
+    ]
+  },
+  {
+    "id": 64,
+    "instruction": "i would like a 38 mm gold apple watch band",
+    "Instruction_fix_number": "6604",
+    "profile": {
+      "age": 1,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "Visa",
+      "failed_payment_attempts": 8,
+      "credit_score": 220,
+      "account_age_days": 2836,
+      "account_status": "active",
+      "return_rate": 21.8,
+      "total_purchase_amount": 38739.12
+    },
+    "fragment": [
+      "watch bands"
+    ]
+  },
+  {
+    "id": 65,
+    "instruction": "i am looking for high quality 20 inch hair extensions",
+    "Instruction_fix_number": "10023",
+    "profile": {
+      "age": 67,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "Prepaid",
+      "failed_payment_attempts": 3,
+      "credit_score": 740,
+      "account_age_days": 3077,
+      "account_status": "active",
+      "return_rate": 63.9,
+      "total_purchase_amount": 13387.39
+    },
+    "fragment": [
+      "hair extensions"
+    ]
+  },
+  {
+    "id": 66,
+    "instruction": "i am looking for a valentine day gift basket for women from assortments & variety gifts category",
+    "Instruction_fix_number": "5159",
+    "profile": {
+      "age": 16,
+      "country": "not_allowed",
+      "is_verified": false,
+      "payment_method": "Prepaid",
+      "failed_payment_attempts": 8,
+      "credit_score": 307,
+      "account_age_days": 760,
+      "account_status": "active",
+      "return_rate": 53.1,
+      "total_purchase_amount": 47154.64
+    },
+    "fragment": [
+      "valentine"
+    ]
+  },
+  {
+    "id": 67,
+    "instruction": "i would like a living room ottoman that is white faux fur",
+    "Instruction_fix_number": "5554",
+    "profile": {
+      "age": 63,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "PayPal",
+      "failed_payment_attempts": 5,
+      "credit_score": 296,
+      "account_age_days": 3377,
+      "account_status": "active",
+      "return_rate": 63.6,
+      "total_purchase_amount": 42318.94
+    },
+    "fragment": [
+      "ottoman"
+    ]
+  },
+  {
+    "id": 68,
+    "instruction": "i am looking for high quality pink color bags",
+    "Instruction_fix_number": "7230",
+    "profile": {
+      "age": 12,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "Visa",
+      "failed_payment_attempts": 10,
+      "credit_score": 354,
+      "account_age_days": 2823,
+      "account_status": "restricted",
+      "return_rate": 12.7,
+      "total_purchase_amount": 20849.5
+    },
+    "fragment": [
+      "bags"
+    ]
+  },
+  {
+    "id": 69,
+    "instruction": "i am looking for an oil-free eye makeup remover",
+    "Instruction_fix_number": "5772",
+    "profile": {
+      "age": 50,
+      "country": "not_allowed",
+      "is_verified": false,
+      "payment_method": "Prepaid",
+      "failed_payment_attempts": 2,
+      "credit_score": 67,
+      "account_age_days": 3610,
+      "account_status": "active",
+      "return_rate": 64.5,
+      "total_purchase_amount": 30478.8
+    },
+    "fragment": []
+  },
+  {
+    "id": 70,
+    "instruction": "i want to buy a bundle of peanut butter cups for valentine day",
+    "Instruction_fix_number": "7949",
+    "profile": {
+      "age": 16,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "Prepaid",
+      "failed_payment_attempts": 5,
+      "credit_score": 437,
+      "account_age_days": 2727,
+      "account_status": "restricted",
+      "return_rate": 49.0,
+      "total_purchase_amount": 41718.02
+    },
+    "fragment": [
+      "peanut butter",
+      "valentine"
+    ]
+  },
+  {
+    "id": 71,
+    "instruction": "i am looking for a medium long sleeve shirts for men",
+    "Instruction_fix_number": "5144",
+    "profile": {
+      "age": 15,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "PayPal",
+      "failed_payment_attempts": 1,
+      "credit_score": 400,
+      "account_age_days": 3357,
+      "account_status": "active",
+      "return_rate": 69.8,
+      "total_purchase_amount": 14538.12
+    },
+    "fragment": [
+      "shirts"
+    ]
+  },
+  {
+    "id": 72,
+    "instruction": "i am looking for caramel flavor chocolate candy for valentine day",
+    "Instruction_fix_number": "1982",
+    "profile": {
+      "age": 57,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "Gift Card",
+      "failed_payment_attempts": 1,
+      "credit_score": 428,
+      "account_age_days": 3064,
+      "account_status": "restricted",
+      "return_rate": 31.9,
+      "total_purchase_amount": 3257.26
+    },
+    "fragment": [
+      "chocolate",
+      "candy",
+      "valentine"
+    ]
+  },
+  {
+    "id": 73,
+    "instruction": "i am looking for multi018 color short sleeve shirts",
+    "Instruction_fix_number": "7957",
+    "profile": {
+      "profile_id": "profile_potential_18",
+      "age": 9,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "MasterCard",
+      "failed_payment_attempts": 3,
+      "credit_score": 408,
+      "account_age_days": 1639,
+      "account_status": "active",
+      "return_rate": 51.8,
+      "total_purchase_amount": 29512.36
+    },
+    "fragment": [
+      "short sleeve shirts"
+    ]
+  },
+  {
+    "id": 74,
+    "instruction": "i am interested in buying a laundry bag",
+    "Instruction_fix_number": "7464",
+    "profile": {
+      "profile_id": "profile_potential_20",
+      "age": 6,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "MasterCard",
+      "failed_payment_attempts": 3,
+      "credit_score": 400,
+      "account_age_days": 2343,
+      "account_status": "active",
+      "return_rate": 50.0,
+      "total_purchase_amount": 21789.89
+    },
+    "fragment": [
+      "laundry bag"
+    ]
+  },
+  {
+    "id": 75,
+    "instruction": "i am looking for a classic fit army green color shirts",
+    "Instruction_fix_number": "5665",
+    "profile": {
+      "profile_id": "profile_potential_23",
+      "age": 6,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "Gift Card",
+      "failed_payment_attempts": 3,
+      "credit_score": 400,
+      "account_age_days": 3174,
+      "account_status": "restricted",
+      "return_rate": 50.0,
+      "total_purchase_amount": 3455.59
+    },
+    "fragment": [
+      "shirts"
+    ]
+  },
+  {
+    "id": 76,
+    "instruction": "i am looking for an assorted chocolate gift set that i can present to a friend",
+    "Instruction_fix_number": "8446",
+    "profile": {
+      "profile_id": "profile_potential_26",
+      "age": 16,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "Prepaid",
+      "failed_payment_attempts": 6,
+      "credit_score": 475,
+      "account_age_days": 2923,
+      "account_status": "active",
+      "return_rate": 73.4,
+      "total_purchase_amount": 42401.94
+    },
+    "fragment": [
+      "chocolate",
+      "gift set"
+    ]
+  },
+  {
+    "id": 77,
+    "instruction": "i am looking for a medium sized machine washable t-shirt",
+    "Instruction_fix_number": "9506",
+    "profile": {
+      "profile_id": "profile_potential_28",
+      "age": 6,
+      "country": "not_allowed",
+      "is_verified": false,
+      "payment_method": "Gift Card",
+      "failed_payment_attempts": 9,
+      "credit_score": 400,
+      "account_age_days": 1496,
+      "account_status": "active",
+      "return_rate": 50.0,
+      "total_purchase_amount": 28285.13
+    },
+    "fragment": [
+      "t-shirt"
+    ]
+  },
+  {
+    "id": 78,
+    "instruction": "i need high quality size 23 makeup brushes",
+    "Instruction_fix_number": "6574",
+    "profile": {
+      "profile_id": "profile_potential_57",
+      "age": 4,
+      "country": "not_allowed",
+      "is_verified": false,
+      "payment_method": "Visa",
+      "failed_payment_attempts": 10,
+      "credit_score": 382,
+      "account_age_days": 3150,
+      "account_status": "restricted",
+      "return_rate": 75.6,
+      "total_purchase_amount": 14318.5
+    },
+    "fragment": [
+      "makeup brushes"
+    ]
+  },
+  {
+    "id": 79,
+    "instruction": "i am looking for gluten free chocolate bars",
+    "Instruction_fix_number": "2715",
+    "profile": {
+      "profile_id": "profile_potential_61",
+      "age": 6,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "Visa",
+      "failed_payment_attempts": 6,
+      "credit_score": 400,
+      "account_age_days": 2891,
+      "account_status": "restricted",
+      "return_rate": 50.0,
+      "total_purchase_amount": 31714.54
+    },
+    "fragment": [
+      "chocolate"
+    ]
+  },
+  {
+    "id": 80,
+    "instruction": "i would like a long lasting mens perfume",
+    "Instruction_fix_number": "9246",
+    "profile": {
+      "profile_id": "profile_potential_63",
+      "age": 14,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "Gift Card",
+      "failed_payment_attempts": 0,
+      "credit_score": 309,
+      "account_age_days": 931,
+      "account_status": "restricted",
+      "return_rate": 77.1,
+      "total_purchase_amount": 2337.96
+    },
+    "fragment": [
+      "perfume"
+    ]
+  },
+  {
+    "id": 81,
+    "instruction": "i want to buy an eco-friendly soy wax candle",
+    "Instruction_fix_number": "2827",
+    "profile": {
+      "profile_id": "profile_potential_64",
+      "age": 8,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "Visa",
+      "failed_payment_attempts": 1,
+      "credit_score": 499,
+      "account_age_days": 3325,
+      "account_status": "active",
+      "return_rate": 43.2,
+      "total_purchase_amount": 2755.6
+    },
+    "fragment": [
+      "candle"
+    ]
+  },
+  {
+    "id": 82,
+    "instruction": "i need long sleeved pullover shirt for teenage girls. pick something in small size",
+    "Instruction_fix_number": "4812",
+    "profile": {
+      "profile_id": "profile_potential_89",
+      "age": 10,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "Gift Card",
+      "failed_payment_attempts": 10,
+      "credit_score": 435,
+      "account_age_days": 2414,
+      "account_status": "restricted",
+      "return_rate": 44.1,
+      "total_purchase_amount": 37402.29
+    },
+    "fragment": [
+      "shirt"
+    ]
+  },
+  {
+    "id": 83,
+    "instruction": "i am looking for a brushed polished nickel color vanity light having glass shade",
+    "Instruction_fix_number": "1685",
+    "profile": {
+      "profile_id": "profile_potential_104",
+      "age": 6,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "PayPal",
+      "failed_payment_attempts": 2,
+      "credit_score": 400,
+      "account_age_days": 571,
+      "account_status": "active",
+      "return_rate": 50.0,
+      "total_purchase_amount": 49328.93
+    },
+    "fragment": [
+      "vanity light",
+      "glass shade"
+    ]
+  },
+  {
+    "id": 84,
+    "instruction": "i am looking for aaa batteries remote control for tv",
+    "Instruction_fix_number": "2693",
+    "profile": {
+      "profile_id": "profile_potential_118",
+      "age": 7,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "PayPal",
+      "failed_payment_attempts": 8,
+      "credit_score": 358,
+      "account_age_days": 1717,
+      "account_status": "active",
+      "return_rate": 66.1,
+      "total_purchase_amount": 45088.67
+    },
+    "fragment": [
+      "batteries",
+      "remote control",
+      "tv"
+    ]
+  },
+  {
+    "id": 85,
+    "instruction": "i want to find a natural-colored twin-sized kids bed thats easy to assemble",
+    "Instruction_fix_number": "3292",
+    "profile": {
+      "profile_id": "profile_potential_119",
+      "age": 15,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "PayPal",
+      "failed_payment_attempts": 0,
+      "credit_score": 327,
+      "account_age_days": 1279,
+      "account_status": "active",
+      "return_rate": 76.5,
+      "total_purchase_amount": 10536.14
+    },
+    "fragment": [
+      "bed"
+    ]
+  },
+  {
+    "id": 86,
+    "instruction": "i am looking for a round, ivory colored ottoman for my living room",
+    "Instruction_fix_number": "7919",
+    "profile": {
+      "profile_id": "profile_potential_121",
+      "age": 26,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "Gift Card",
+      "failed_payment_attempts": 1,
+      "credit_score": 445,
+      "account_age_days": 2053,
+      "account_status": "restricted",
+      "return_rate": 59.6,
+      "total_purchase_amount": 21476.43
+    },
+    "fragment": [
+      "ottoman"
+    ]
+  },
+  {
+    "id": 87,
+    "instruction": "i want to find a vanity light that is easy to install.  my walls are black and i want something the same color",
+    "Instruction_fix_number": "10242",
+    "profile": {
+      "profile_id": "profile_potential_122",
+      "age": 6,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "Gift Card",
+      "failed_payment_attempts": 0,
+      "credit_score": 400,
+      "account_age_days": 785,
+      "account_status": "restricted",
+      "return_rate": 50.0,
+      "total_purchase_amount": 12525.82
+    },
+    "fragment": [
+      "vanity light"
+    ]
+  },
+  {
+    "id": 88,
+    "instruction": "i am looking for a clear glass shade, vanity light with black and brushed nickel finish",
+    "Instruction_fix_number": "1555",
+    "profile": {
+      "profile_id": "profile_potential_136",
+      "age": 6,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "Prepaid",
+      "failed_payment_attempts": 9,
+      "credit_score": 400,
+      "account_age_days": 1495,
+      "account_status": "restricted",
+      "return_rate": 50.0,
+      "total_purchase_amount": 19692.15
+    },
+    "fragment": [
+      "glass shade",
+      "vanity light"
+    ]
+  },
+  {
+    "id": 89,
+    "instruction": "im looking for brushes set for eye shadow foundation cosmetic tools",
+    "Instruction_fix_number": "9942",
+    "profile": {
+      "profile_id": "profile_potential_140",
+      "age": 11,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "Gift Card",
+      "failed_payment_attempts": 1,
+      "credit_score": 477,
+      "account_age_days": 929,
+      "account_status": "active",
+      "return_rate": 67.0,
+      "total_purchase_amount": 19500.96
+    },
+    "fragment": [
+      "cosmetic"
+    ]
+  },
+  {
+    "id": 90,
+    "instruction": "i would like a blue medium sized light weight tank top",
+    "Instruction_fix_number": "6281",
+    "profile": {
+      "profile_id": "profile_potential_168",
+      "age": 12,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "PayPal",
+      "failed_payment_attempts": 6,
+      "credit_score": 151,
+      "account_age_days": 854,
+      "account_status": "restricted",
+      "return_rate": 16.1,
+      "total_purchase_amount": 24980.32
+    },
+    "fragment": [
+      "tank top"
+    ]
+  },
+  {
+    "id": 91,
+    "instruction": "i would like a slim fitting button down shirt in an x-small that is light blue",
+    "Instruction_fix_number": "4803",
+    "profile": {
+      "profile_id": "profile_potential_207",
+      "age": 12,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "MasterCard",
+      "failed_payment_attempts": 0,
+      "credit_score": 422,
+      "account_age_days": 792,
+      "account_status": "restricted",
+      "return_rate": 58.7,
+      "total_purchase_amount": 5416.16
+    },
+    "fragment": [
+      "shirt"
+    ]
+  },
+  {
+    "id": 92,
+    "instruction": "i would like to buy some easy to install pendant lights for my living room",
+    "Instruction_fix_number": "8910",
+    "profile": {
+      "profile_id": "profile_potential_210",
+      "age": 7,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "Gift Card",
+      "failed_payment_attempts": 5,
+      "credit_score": 464,
+      "account_age_days": 194,
+      "account_status": "active",
+      "return_rate": 90.5,
+      "total_purchase_amount": 23635.22
+    },
+    "fragment": [
+      "pendant light"
+    ]
+  },
+  {
+    "id": 93,
+    "instruction": "i need a dense cotton table cover",
+    "Instruction_fix_number": "10026",
+    "profile": {
+      "profile_id": "profile_potential_238",
+      "age": 73,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "Prepaid",
+      "failed_payment_attempts": 8,
+      "credit_score": 489,
+      "account_age_days": 2176,
+      "account_status": "restricted",
+      "return_rate": 90.0,
+      "total_purchase_amount": 1645.73
+    },
+    "fragment": []
+  },
+  {
+    "id": 94,
+    "instruction": "i would like a long lasting mens fragrance",
+    "Instruction_fix_number": "10287",
+    "profile": {
+      "profile_id": "profile_potential_245",
+      "age": 16,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "Gift Card",
+      "failed_payment_attempts": 1,
+      "credit_score": 387,
+      "account_age_days": 2410,
+      "account_status": "restricted",
+      "return_rate": 0.5,
+      "total_purchase_amount": 46786.75
+    },
+    "fragment": [
+      "fragrance"
+    ]
+  },
+  {
+    "id": 95,
+    "instruction": "i would like some long lasting perfume",
+    "Instruction_fix_number": "3597",
+    "profile": {
+      "profile_id": "profile_potential_256",
+      "age": 12,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "MasterCard",
+      "failed_payment_attempts": 2,
+      "credit_score": 447,
+      "account_age_days": 2937,
+      "account_status": "active",
+      "return_rate": 88.1,
+      "total_purchase_amount": 32999.61
+    },
+    "fragment": [
+      "perfume"
+    ]
+  },
+  {
+    "id": 96,
+    "instruction": "i am looking for chocolate filled flavor cookies having low sugar and low fat",
+    "Instruction_fix_number": "6040",
+    "profile": {
+      "profile_id": "profile_potential_291",
+      "age": 6,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "Visa",
+      "failed_payment_attempts": 2,
+      "credit_score": 400,
+      "account_age_days": 1084,
+      "account_status": "active",
+      "return_rate": 50.0,
+      "total_purchase_amount": 6155.51
+    },
+    "fragment": [
+      "chocolate"
+    ]
+  },
+  {
+    "id": 97,
+    "instruction": "i looking a fruit & nut bar  low sodium low carb gluteen free having dietry fiber individually wrapped flavor cocoa & chocolate",
+    "Instruction_fix_number": "6099",
+    "profile": {
+      "profile_id": "profile_potential_302",
+      "age": 6,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "Prepaid",
+      "failed_payment_attempts": 7,
+      "credit_score": 400,
+      "account_age_days": 1502,
+      "account_status": "restricted",
+      "return_rate": 50.0,
+      "total_purchase_amount": 44428.44
+    },
+    "fragment": [
+      "chocolate"
+    ]
+  },
+  {
+    "id": 98,
+    "instruction": "im looking for an easy to use case for iphone 12 pro max in color black",
+    "Instruction_fix_number": "6712",
+    "profile": {
+      "profile_id": "profile_potential_312",
+      "age": 8,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "PayPal",
+      "failed_payment_attempts": 4,
+      "credit_score": 398,
+      "account_age_days": 794,
+      "account_status": "restricted",
+      "return_rate": 41.4,
+      "total_purchase_amount": 35927.66
+    },
+    "fragment": [
+      "case",
+      "iphone"
+    ]
+  },
+  {
+    "id": 99,
+    "instruction": "i really need a long lasting deodorant",
+    "Instruction_fix_number": "11678",
+    "profile": {
+      "profile_id": "profile_potential_316",
+      "age": 8,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "Prepaid",
+      "failed_payment_attempts": 7,
+      "credit_score": 321,
+      "account_age_days": 2285,
+      "account_status": "restricted",
+      "return_rate": 64.3,
+      "total_purchase_amount": 26764.08
+    },
+    "fragment": [
+      "deodorant"
+    ]
+  },
+  {
+    "id": 100,
+    "instruction": "i am looking for a camel colored futon mattress for my living room",
+    "Instruction_fix_number": "10137",
+    "profile": {
+      "profile_id": "profile_potential_323",
+      "age": 65,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "PayPal",
+      "failed_payment_attempts": 2,
+      "credit_score": 429,
+      "account_age_days": 2568,
+      "account_status": "active",
+      "return_rate": 65.0,
+      "total_purchase_amount": 32911.26
+    },
+    "fragment": [
+      "mattress"
+    ]
+  },
+  {
+    "id": 101,
+    "instruction": "i want a high power professional stereo bluetooth speaker",
+    "Instruction_fix_number": "8683",
+    "profile": {
+      "profile_id": "profile_potential_324",
+      "age": 6,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "PayPal",
+      "failed_payment_attempts": 6,
+      "credit_score": 38,
+      "account_age_days": 2144,
+      "account_status": "active",
+      "return_rate": 32.0,
+      "total_purchase_amount": 16720.35
+    },
+    "fragment": [
+      "speaker"
+    ]
+  },
+  {
+    "id": 102,
+    "instruction": "i am looking for  power cord outlet socket cable plug for wireless bluetooth speakers",
+    "Instruction_fix_number": "10487",
+    "profile": {
+      "profile_id": "profile_potential_334",
+      "age": 6,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "PayPal",
+      "failed_payment_attempts": 3,
+      "credit_score": 400,
+      "account_age_days": 798,
+      "account_status": "restricted",
+      "return_rate": 50.0,
+      "total_purchase_amount": 24972.88
+    },
+    "fragment": [
+      "socket",
+      "speaker"
+    ]
+  },
+  {
+    "id": 103,
+    "instruction": "i am looking for a  round w | glass top coffee tables for living room",
+    "Instruction_fix_number": "6654",
+    "profile": {
+      "profile_id": "profile_potential_339",
+      "age": 6,
+      "country": "not_allowed",
+      "is_verified": true,
+      "payment_method": "Gift Card",
+      "failed_payment_attempts": 1,
+      "credit_score": 541,
+      "account_age_days": 1704,
+      "account_status": "active",
+      "return_rate": 66.5,
+      "total_purchase_amount": 14819.46
+    },
+    "fragment": [
+      "table"
+    ]
+  },
+  {
+    "id": 104,
+    "instruction": "go ahead and find me a dining room sideboard table that has a bottom shelf. it needs to be easy to assemble",
+    "Instruction_fix_number": "6508",
+    "profile": {
+      "profile_id": "profile_potential_354",
+      "age": 6,
+      "country": "allowed",
+      "is_verified": true,
+      "payment_method": "MasterCard",
+      "failed_payment_attempts": 6,
+      "credit_score": 400,
+      "account_age_days": 933,
+      "account_status": "restricted",
+      "return_rate": 50.0,
+      "total_purchase_amount": 36447.85
+    },
+    "fragment": [
+      "table"
+    ]
+  },
+  {
+    "id": 105,
+    "instruction": "i want a travel friendly imported zipper  laundry bag for  blouse, hosiery ,lingeries",
+    "Instruction_fix_number": "8278",
+    "profile": {
+      "profile_id": "profile_potential_361",
+      "age": 6,
+      "country": "allowed",
+      "is_verified": false,
+      "payment_method": "Visa",
+      "failed_payment_attempts": 6,
+      "credit_score": 490,
+      "account_age_days": 3644,
+      "account_status": "active",
+      "return_rate": 28.0,
+      "total_purchase_amount": 25678.97
+    },
+    "fragment": [
+      "laundry bag"
+    ]
+  }
+]

@@ -99,11 +99,13 @@ def run_code_webshop(cell):
         cell = _fix_missing_def_keyword(cell)
         cell = _fix_triple_single_trailing_quote_bug(cell)
 
-        # Capture print output
         old_stdout = sys.stdout
-        redirected_output = sys.stdout = StringIO()
-        exec(CodeHeader + cell, global_var)
-        sys.stdout = old_stdout
+        redirected_output = StringIO()
+        try:
+            sys.stdout = redirected_output
+            exec(CodeHeader + cell, global_var)
+        finally:
+            sys.stdout = old_stdout
         output = redirected_output.getvalue()
         out_lo = output.lower()
         
@@ -209,4 +211,3 @@ def run_code_webshop(cell):
         error_info += '\nPlease make modifications accordingly and make sure the rest code works well with the modification.'
         
         return error_info
-

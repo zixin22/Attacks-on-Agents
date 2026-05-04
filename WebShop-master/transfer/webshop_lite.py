@@ -4,8 +4,7 @@ from flask import render_template_string, Flask
 from predict_help import Page
 
 app=Flask(__name__)
-app.run(debug=False)
-#app.debug=True
+app.debug=True
 
 SESSION_ID = "ABC"
 TEMPLATE_DIR = "../web_agent_site/templates/"

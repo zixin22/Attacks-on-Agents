@@ -14,6 +14,7 @@ from rank_bm25 import BM25Okapi
 from flask import render_template_string
 from rich import print
 from pyserini.search.lucene import LuceneSearcher
+
 from web_agent_site.utils import (
     BASE_DIR,
     DEFAULT_FILE_PATH,
@@ -202,9 +203,7 @@ def init_search_engine(num_products=None):
         indexes = 'indexes'
     else:
         raise NotImplementedError(f'num_products being {num_products} is not supported yet.')
-    #originall indexes
-    #search_engine = LuceneSearcher(os.path.join(BASE_DIR, f'../search_engine/{indexes_1k}'))
-    search_engine = LuceneSearcher(os.path.join(BASE_DIR, f'../search_engine/indexes_1k'))
+    search_engine = LuceneSearcher(os.path.join(BASE_DIR, f'../search_engine/{indexes}'))
     return search_engine
 
 

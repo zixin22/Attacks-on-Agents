@@ -11,5 +11,6 @@ params:
   act_obs: True
   analogy_len: 10
   num_retrieval: 1
+  rap_min_retrieval_reward: 0.25
   reward_weight: 1
   max_init_prompt_len: 6400
