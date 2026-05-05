@@ -1,14 +1,21 @@
 #!/usr/bin/env python3
 """
-Extract trigger-category keywords from WebShop attack datasets.
+Single pipeline: Step-1 keyword extraction (LLM) + masked/carrier query construction.
 
-Default:
-    python fragExtracor.py
+Combines the behavior of ``fragExtracor.py`` and ``mask.py``.
 
-reads ``dataset_attack.json`` in this folder and writes
-``fragment_dataset_attack.json``. The output keeps only:
-``id``, ``instruction``, ``host_fix_number``, ``host_instruction``, ``profile``, and
-``fragment`` where ``fragment`` is the detected keyword list.
+**Input** is ``dataset_attack.json`` style: each row has ``instruction``, ``host_instruction``,
+and typically ``sensitive_fragments`` / ``profile`` / fix-number fields. Keywords are **always**
+from the LLM (never taken from a pre-filled ``fragment`` list).
+
+Example::
+
+    python frag_mask_pipeline.py \\
+      --input dataset_attack.json \\
+      --output output_2.json
+
+Defaults (same directory as this script): ``--input dataset_attack.json``,
+``--output output.json``.
 """
 
 from __future__ import annotations
@@ -20,8 +27,8 @@ import os
 import re
 import sys
 import time
-from typing import Dict, List, Optional
-
+from pathlib import Path
+from typing import Dict, Iterable, List, Optional
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 WEBSHOP_DIR = os.path.dirname(CURRENT_DIR)
@@ -30,6 +37,12 @@ if WEBSHOP_DIR not in sys.path:
 
 from openai import OpenAI  # noqa: E402
 from openai_paths import OPENAI_API_KEY_PATH, read_openai_api_key  # noqa: E402
+
+# --- mask splitting (from mask.py) ---
+ODD_SPLIT_OVERRIDES = {
+    "smart": 3,
+    "shampoo": 3,
+}
 
 
 def print_progress(current: int, total: int) -> None:
@@ -46,10 +59,7 @@ def print_progress(current: int, total: int) -> None:
 
 
 class FragmentKeywordExtractor:
-    """
-    Reproduce RuleChecker's Step-1 keyword detection only.
-    Keeps the same strict rules prompt, but does not ask for Step 2/3.
-    """
+    """Step-1 keyword detection via LLM (from fragExtracor.py)."""
 
     def __init__(self, api_key: Optional[str] = None, model: str = "gpt-4o", verbose: bool = False):
         self.model = model
@@ -276,84 +286,198 @@ Constraints:
         return deduped
 
 
-def default_output_path(dataset_path: str) -> str:
-    directory = os.path.dirname(os.path.abspath(dataset_path))
-    stem = os.path.splitext(os.path.basename(dataset_path))[0]
-    return os.path.join(directory, f"fragment_{stem}.json")
+def normalize_fragments(raw_fragments) -> List[str]:
+    if isinstance(raw_fragments, str):
+        raw_fragments = [raw_fragments]
+    if not isinstance(raw_fragments, list):
+        return []
+
+    fragments = []
+    seen = set()
+    for fragment in raw_fragments:
+        text = str(fragment).strip()
+        key = text.lower()
+        if text and key not in seen:
+            fragments.append(text)
+            seen.add(key)
+    return fragments
 
 
-def load_dataset(path: str) -> List[Dict]:
-    with open(path, "r", encoding="utf-8") as f:
+def mask_instruction(instruction: str, fragments: Iterable[str]) -> str:
+    masked = instruction
+    for fragment in sorted(fragments, key=len, reverse=True):
+        pattern = re.compile(re.escape(fragment), flags=re.IGNORECASE)
+        masked = pattern.sub("<>", masked, count=1)
+    return masked
+
+
+def split_word_halves(word: str) -> tuple[str, str]:
+    w = word.strip()
+    if not w:
+        return "", ""
+    mid = ODD_SPLIT_OVERRIDES.get(w.lower(), len(w) // 2)
+    mid = max(1, mid)
+    mid = min(mid, len(w) - 1) if len(w) > 1 else 1
+    return w[:mid], w[mid:]
+
+
+def phrase_to_chunks(phrase: str) -> List[str]:
+    words = phrase.strip().split()
+    if not words:
+        return []
+
+    if len(words) == 1:
+        a, b = split_word_halves(words[0])
+        return [x for x in (a, b) if x]
+
+    if len(words) == 2 and len(words[1]) >= 8:
+        chunks: List[str] = []
+        for w in words:
+            left, right = split_word_halves(w)
+            chunks.extend([left, right])
+        return [c for c in chunks if c]
+
+    halves = [split_word_halves(w) for w in words]
+    out: List[str] = []
+    left0, right0 = halves[0]
+    if left0:
+        out.append(left0)
+    for i in range(len(words) - 1):
+        bridge = (halves[i][1] + " " + halves[i + 1][0]).strip()
+        if bridge:
+            out.append(bridge)
+    last_right = halves[-1][1]
+    if last_right:
+        out.append(last_right)
+    return out
+
+
+def fragments_to_chunks(fragments: Iterable[str]) -> List[str]:
+    all_chunks: List[str] = []
+    for phrase in fragments:
+        all_chunks.extend(phrase_to_chunks(phrase))
+    return all_chunks
+
+
+def join_carrier_suffix(chunks: List[str]) -> str:
+    if not chunks:
+        return ""
+    return "".join(f"<{c}>" for c in chunks)
+
+
+def build_carrier_query(host_instruction: str, fragments: Iterable[str]) -> str:
+    host = host_instruction.strip()
+    chunks = fragments_to_chunks(fragments)
+    if not chunks:
+        return host
+
+    suffix = join_carrier_suffix(chunks)
+    if not host:
+        return suffix.lstrip(".")
+    return f"{host} .{suffix}"
+
+
+def load_rows(path: Path) -> List[Dict]:
+    with path.open("r", encoding="utf-8") as f:
         data = json.load(f)
     if not isinstance(data, list):
-        raise ValueError("Input dataset must be a JSON list.")
+        raise ValueError("Input must be a JSON array.")
     return data
 
 
-def build_fragment_dataset(
+def save_rows(path: Path, rows: List[Dict]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as f:
+        json.dump(rows, f, indent=2, ensure_ascii=False)
+        f.write("\n")
+
+
+def run_pipeline(
     rows: List[Dict],
     extractor: FragmentKeywordExtractor,
-    limit: int | None = None,
-    show_progress: bool = True,
+    *,
+    limit: Optional[int],
+    show_progress: bool,
 ) -> List[Dict]:
     selected = rows if limit is None else rows[:limit]
-    output = []
+    out: List[Dict] = []
     total = len(selected)
     if show_progress and not extractor.verbose:
         print_progress(0, total)
+
     for idx, row in enumerate(selected, start=1):
         instruction = str(row.get("instruction", "")).strip()
         if not instruction:
             raise ValueError(f"Row {idx} missing non-empty 'instruction'.")
-        output.append(
-            {
-                "id": row.get("id"),
-                "instruction": instruction,
-                "host_fix_number": row.get("host_fix_number"),
-                "host_instruction": row.get("host_instruction"),
-                "profile": row.get("profile"),
-                "fragment": extractor.extract_keywords(instruction),
-            }
-        )
+
+        fragment_list = extractor.extract_keywords(instruction)
+
+        fragments_norm = normalize_fragments(fragment_list)
+        output_row = dict(row)
+        output_row["instruction"] = instruction
+        output_row["fragment"] = fragment_list
+        output_row["masked_query"] = mask_instruction(instruction, fragments_norm)
+        hi = str(row.get("host_instruction") or "").strip()
+        output_row["host_instruction"] = row.get("host_instruction", "")
+        output_row["carrier_query"] = build_carrier_query(hi, fragments_norm)
+
+        out.append(output_row)
+
         if extractor.verbose:
-            print(f"[{idx}/{len(selected)}] {instruction} -> {output[-1]['fragment']}")
+            print(f"[{idx}/{total}] {instruction[:80]}... -> {fragment_list}")
         elif show_progress:
             print_progress(idx, total)
-    return output
+
+    return out
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description="Extract Step-1 keyword fragments from a WebShop dataset.")
+def parse_args() -> argparse.Namespace:
+    base_dir = Path(CURRENT_DIR)
+    parser = argparse.ArgumentParser(
+        description=(
+            "Read dataset_attack.json-style rows, call LLM for Step-1 keywords, "
+            "then build masked_query and carrier_query."
+        )
+    )
     parser.add_argument(
-        "--dataset",
-        default=os.path.join(CURRENT_DIR, "dataset_attack.json"),
-        help="Input dataset JSON. Defaults to fragExtracor_pipeline/dataset_attack.json.",
+        "--input",
+        "-i",
+        type=Path,
+        default=base_dir / "dataset_attack.json",
+        help="Input JSON array (default: fragExtracor_pipeline/dataset_attack.json).",
     )
     parser.add_argument(
         "--output",
-        default=None,
-        help="Output JSON path. Defaults to fragment_<dataset_stem>.json next to the input dataset.",
+        "-o",
+        type=Path,
+        default=base_dir / "output.json",
+        help="Output JSON path (default: fragExtracor_pipeline/output.json).",
     )
-    parser.add_argument("--model", default="gpt-4o", help="Chat model name for the LLM client.")
-    parser.add_argument("--limit", type=int, default=None, help="Optional number of rows to process.")
+    parser.add_argument("--model", default="gpt-4o", help="Chat model when calling the LLM.")
+    parser.add_argument("--limit", type=int, default=None, help="Process only the first N rows.")
     parser.add_argument("--verbose", action="store_true")
-    parser.add_argument("--no-progress", action="store_true", help="Disable progress bar.")
-    args = parser.parse_args()
+    parser.add_argument("--no-progress", action="store_true")
+    return parser.parse_args()
 
-    dataset_path = os.path.abspath(args.dataset)
-    output_path = os.path.abspath(args.output) if args.output else default_output_path(dataset_path)
-    rows = load_dataset(dataset_path)
+
+def main() -> None:
+    args = parse_args()
+    inp = args.input.resolve()
+    outp = args.output.resolve()
+
+    rows = load_rows(inp)
     extractor = FragmentKeywordExtractor(model=args.model, verbose=args.verbose)
-    fragment_rows = build_fragment_dataset(
+
+    result = run_pipeline(
         rows,
         extractor,
         limit=args.limit,
         show_progress=not args.no_progress,
     )
 
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(fragment_rows, f, indent=2, ensure_ascii=False)
-    print(f"Wrote {len(fragment_rows)} rows to {output_path}")
+    save_rows(outp, result)
+    print(f"Read {len(rows)} rows from {inp}")
+    print(f"Wrote {len(result)} rows to {outp}")
 
 
 if __name__ == "__main__":
