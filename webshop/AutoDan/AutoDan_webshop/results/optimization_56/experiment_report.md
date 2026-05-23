@@ -1,29 +1,29 @@
-# AutoDan 进化优化实验报告
+# AutoDan Evolutionary Optimization Experiment Report
 
-生成时间: 2026-04-16 02:25:16
+Generated at: 2026-04-16 02:25:16
 
-## 文件结构
-- 结果目录: /Users/zixinrao/Desktop/rap-fragment/Attacks-on-Agents/webshop/AutoDan/AutoDan_webshop/results/optimization_56
-- 最佳triggers: results/best_triggers.json
-- 优化日志: results/optimization_log.txt
-- 种群历史: results/population_history.json
+## File Structure
+- Result directory: results/optimization_56
+- Best triggers: results/best_triggers.json
+- Optimization log: results/optimization_log.txt
+- Population history: results/population_history.json
 
-## 优化结果摘要
+## Optimization Summary
 
-## 使用说明
+## Usage
 
-### 1. 运行优化
+### 1. Run Optimization
 ```bash
 cd AutoDan
 python run_optimization.py
 ```
 
-### 2. 查看结果
+### 2. View Results
 ```bash
 python -c "from utils import print_optimization_summary; print_optimization_summary('results/best_triggers.json')"
 ```
 
-### 3. 绘制进度图
+### 3. Plot Progress
 ```bash
 python -c "from utils import plot_optimization_progress; plot_optimization_progress('results/optimization_log.txt')"
 ```

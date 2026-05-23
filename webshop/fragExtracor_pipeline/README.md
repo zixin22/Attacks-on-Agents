@@ -27,7 +27,7 @@ Runs LLM extraction and masking/carrier construction in one pass.
 All non-derived fields are copied to output; `fragment`, `masked_query`, and `carrier_query` are regenerated.
 
 ```bash
-cd /Users/zixinrao/Desktop/rap-fragment/Attacks-on-Agents/webshop/fragExtracor_pipeline
+cd webshop/fragExtracor_pipeline
 
 python3 frag_mask_pipeline.py \
   --input dataset_input.json \

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
 NER
-SeeActAttack Instruction，sensitive fragmentsmasked instructions
+Utilities for segmenting attack instructions, extracting sensitive fragments,
+and creating masked instructions.
 """
 
 import re
@@ -10,39 +11,33 @@ from typing import List, Tuple
 
 
 class NERProcessor:
-    """NER"""
+    """Rule-based NER-style processor."""
 
     def __init__(self):
-        # NER，spaCyNER
-        # -based
+        # Placeholder for future statistical NER integrations.
         pass
 
     def segment_text(self, text: str, num_segments: int = 7) -> List[str]:
         """
-        
+        Split text into a fixed number of segments.
 
         Args:
-            text: 
-            num_segments: 
+            text: Source text.
+            num_segments: Number of segments to produce.
 
         Returns:
-            
+            A list of text segments.
         """
-        # 
         sentences = re.split(r'[.!?]+', text)
         sentences = [s.strip() for s in sentences if s.strip()]
 
         if len(sentences) >= num_segments:
-            # ，
             segments = sentences[:num_segments]
         else:
-            # ，
             words = text.split()
             if len(words) < num_segments:
-                # ，
                 segments = words + [words[i % len(words)] for i in range(num_segments - len(words))]
             else:
-                # 
                 segment_size = len(words) // num_segments
                 segments = []
                 for i in range(num_segments):
@@ -54,16 +49,16 @@ class NERProcessor:
 
     def extract_sensitive_fragments(self, segments: List[str]) -> List[str]:
         """
-        sensitive fragments（2、4、6）
+        Extract sensitive fragments from the second, fourth, and sixth segments.
 
         Args:
-            segments: 
+            segments: Text segments.
 
         Returns:
-            sensitive fragments
+            Sensitive fragments.
         """
         sensitive_parts = []
-        indices = [1, 3, 5]  # 2、4、6（0-indexed）
+        indices = [1, 3, 5]  # 2nd, 4th, and 6th segments using zero-based indexes.
 
         for idx in indices:
             if idx < len(segments):
@@ -73,27 +68,24 @@ class NERProcessor:
 
     def create_masked_instruction(self, text: str, sensitive_fragments: List[str]) -> str:
         """
-        masked instruction，[MASK]
+        Replace sensitive fragments with [MASK].
 
         Args:
-            text: 
-            sensitive_fragments: 
+            text: Source instruction.
+            sensitive_fragments: Fragments to mask.
 
         Returns:
-            masked instruction
+            Masked instruction.
         """
         if not sensitive_fragments:
             return text
 
-        # ，
         sorted_fragments = sorted(sensitive_fragments, key=len, reverse=True)
 
         masked = text
         for fragment in sorted_fragments:
             if fragment.strip():
-                # 
                 escaped_fragment = re.escape(fragment)
-                # ，[MASK]，
                 masked = re.sub(r'\b' + escaped_fragment + r'\b', '[MASK]', masked, flags=re.IGNORECASE, count=1)
 
         return masked.strip()
@@ -101,32 +93,28 @@ class NERProcessor:
 
 def process_dataset(input_file: str, output_file: str = None):
     """
-    
+    Process a dataset file in place or write it to a separate output file.
 
     Args:
-        input_file: 
-        output_file: ，None
+        input_file: Input dataset path.
+        output_file: Output dataset path. If None, the input file is overwritten.
     """
     if output_file is None:
         output_file = input_file
 
     processor = NERProcessor()
 
-    # 
     with open(input_file, 'r', encoding='utf-8') as f:
         lines = f.readlines()
 
     processed_lines = []
     pair_start_indices = []
 
-    # Pair
     for i, line in enumerate(lines):
         if line.strip().startswith('Pair ') and ':' in line:
             pair_start_indices.append(i)
 
-    # pair
     for i, start_idx in enumerate(pair_start_indices):
-        # pair
         if i < len(pair_start_indices) - 1:
             end_idx = pair_start_indices[i + 1]
         else:
@@ -145,27 +133,22 @@ def process_dataset(input_file: str, output_file: str = None):
                 break
 
         if attack_instruction_line:
-            # Attack Instruction
             attack_instruction = attack_instruction_line.replace('Attack Instruction:', '').strip()
 
-            if attack_instruction:  # 
+            if attack_instruction:
                 print(f"Pair {i+1}: {attack_instruction[:60]}...")
 
-                # 7
                 segments = processor.segment_text(attack_instruction, 7)
-                print(f"   {len(segments)} : {[s[:20] + '...' if len(s) > 20 else s for s in segments]}")
+                print(f"  {len(segments)} segments: {[s[:20] + '...' if len(s) > 20 else s for s in segments]}")
 
-                # sensitive fragments（2、4、6）
                 sensitive_fragments_list = processor.extract_sensitive_fragments(segments)
                 sensitive_fragments_str = ', '.join(sensitive_fragments_list)
                 print(f"  Sensitive fragments: {sensitive_fragments_list}")
                 print(f"  Sensitive fragments (string): {sensitive_fragments_str}")
 
-                # masked instruction
                 masked_instruction = processor.create_masked_instruction(attack_instruction, sensitive_fragments_list)
                 print(f"  Masked instruction: {masked_instruction}")
 
-                # 
                 # Sensitive Fragment
                 for j, line in enumerate(pair_lines):
                     if line.strip().startswith('Sensitive Fragment:'):
@@ -180,33 +163,31 @@ def process_dataset(input_file: str, output_file: str = None):
 
         processed_lines.extend(pair_lines)
 
-    # pair，
     if not pair_start_indices:
         processed_lines = lines
 
-    # 
     with open(output_file, 'w', encoding='utf-8') as f:
         f.writelines(processed_lines)
 
-    print(f"\n！: {output_file}")
-    print(f" {len(pair_start_indices)} pairs")
+    print(f"\nDone: {output_file}")
+    print(f"Processed {len(pair_start_indices)} pairs")
 
 
 def main():
-    """"""
-    input_file = r"D:\rap-main\webshop\AutoDan\data_seeact\dataset.txt"
+    """Run the default dataset processor."""
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    input_file = os.path.join(script_dir, "data_webshop", "dataset.txt")
 
     if not os.path.exists(input_file):
-        print(f": {input_file}")
+        print(f"File not found: {input_file}")
         return
 
-    print("NER...")
-    print(f": {input_file}")
+    print("Running NER processor...")
+    print(f"Input file: {input_file}")
 
-    # 
     process_dataset(input_file)
 
-    print("NER！")
+    print("NER processing complete.")
 
 
 if __name__ == "__main__":
