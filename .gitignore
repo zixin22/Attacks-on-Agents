@@ -1,41 +1,73 @@
-# Python bytecode
+# macOS / editor files
+.DS_Store
+.AppleDouble
+.LSOverride
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Python cache / bytecode
 __pycache__/
 *.py[cod]
 *$py.class
+*.so
 
 # Virtual environments
+.env
+.env.*
+!.env.example
 .venv/
 venv/
 env/
+ENV/
 
-# Python tool caches
+# Local secrets and API keys
+*api_key*.txt
+*API_key*.txt
+*apikey*.txt
+gemini_api.txt
+OpenAI_api_key.txt
+
+# Test, lint, and type-check caches
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
-.pyre/
-.hypothesis/
 .tox/
-.nox/
-.ipynb_checkpoints/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
 
-# Build / packaging
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Build / packaging output
 build/
 dist/
 *.egg-info/
 .eggs/
-pip-wheel-metadata/
+*.egg
+wheels/
 
-# Logs / runtime artifacts
+# Logs and runtime output
 *.log
 logs/
+output/
+outputs/
+run_envs/
+wandb/
+ckpts/
+
+# Project-generated caches and experiment outputs
 .cache/
+webshop/.cache/
+webshop/output/
+webshop/AutoDan/AutoDan_webshop/results/
+WebShop-master/transfer/flagged
 
-# OS / editor
-.DS_Store
-.vscode/
-.idea/
-
-# Secrets / local config
-.env
-.env.*
-*.local
+# Large generated WebShop indexes/resources
+WebShop-master/search_engine/indexes*/
+WebShop-master/search_engine/resources*/
+WebShop-master/user_session_logs/

@@ -281,28 +281,28 @@ Constraints:
         return violated_rules, prompt, response
 
     def _extract_standard_format(self, detailed_response: str) -> str:
-        """从详细回复中提取标准格式结果"""
+        """Extract the normalized result from a verbose model response."""
         for line in detailed_response.split('\n'):
             if line.startswith('FINAL RESULT:'):
                 return line.replace('FINAL RESULT:', '').strip()
-        # 如果没有找到FINAL RESULT，回退到简单解析
+        # Fallback if FINAL RESULT is missing.
         if detailed_response.upper().startswith('VIOLATED'):
             return 'VIOLATED' + detailed_response.split('VIOLATED', 1)[1]
         elif detailed_response.upper().startswith('VALID'):
             return 'VALID'
-        return 'VALID'  # 默认值
+        return 'VALID'  # Safe default.
 
     def _parse_extracted_result(self, extracted_result: str) -> Tuple[bool, List[str]]:
-        """解析提取的标准格式结果"""
+        """Parse a normalized result string into validity and violated rules."""
         if extracted_result.upper().startswith('VALID'):
             return True, []
         elif extracted_result.upper().startswith('VIOLATED'):
-            # 解析规则列表
+            # Parse violated rules.
             rules_part = extracted_result.split(':', 1)[1] if ':' in extracted_result else ''
             violated_rules = [rule.strip() for rule in rules_part.split(',') if rule.strip()]
             return False, violated_rules
         else:
-            # 默认认为有效
+            # Default to valid if format is unexpected.
             return True, []
 
     def check_all_rules(self, profile: UserProfile,
@@ -332,16 +332,16 @@ Constraints:
             violated_rules = ["API_ERROR"]  # Mark as API error for tracking
             extracted_result = "ERROR"
         else:
-            # Extract标准格式结果
+            # Extract normalized result line.
             extracted_result = self._extract_standard_format(response)
-            # 解析提取的结果
+            # Parse normalized result.
             is_valid, violated_rules = self._parse_extracted_result(extracted_result)
 
         if return_details:
             details = {
                 'prompt': prompt,
-                'response': response,  # 原始详细回复
-                'extracted_result': extracted_result  # 提取的标准格式
+                'response': response,  # Raw detailed model response.
+                'extracted_result': extracted_result  # Normalized extracted result.
             }
             return is_valid, violated_rules, details
         else:

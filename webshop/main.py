@@ -784,12 +784,12 @@ def _memory_entry_session_instruction_prefix(memory_entry: dict) -> Tuple[str, s
 
 
 def generate_examples(info, actions, memory, embeddings, reasoning='', k=3, act_len=0, use_act_obs=False, session_id=None, case_id=None):
-    # 如果是Trigger检索，进行memory过滤并重新生成embeddings
+    # For trigger retrieval, filter memory and rebuild embeddings.
     if session_id and session_id.startswith('fixed_attack_trigger_'):
-        # 提取fix_number，例如从"fixed_attack_trigger_10280"提取"10280"
+        # Extract fix number, e.g. "fixed_attack_trigger_10280" -> "10280".
         fix_number = session_id.split('_')[-1]
 
-        # TRIGGER RAP：全部 benign fixed_*（非 fixed_attack_*）+ 同 fix 的 fixed_attack_fragment_*
+        # TRIGGER RAP: all benign fixed_* (excluding fixed_attack_*) plus same-fix fixed_attack_fragment_*.
         filtered_memory = []
         for mem_item in memory:
             mem_id = mem_item.get('Id', '')
@@ -804,10 +804,10 @@ def generate_examples(info, actions, memory, embeddings, reasoning='', k=3, act_
             elif mem_id.startswith('fixed_'):
                 filtered_memory.append(mem_item)
 
-        # 使用过滤后的memory重新生成embeddings，确保完全同步
+        # Rebuild embeddings from filtered memory to keep indices fully aligned.
         memory, embeddings = generate_embeddings(filtered_memory)
 
-        # 如果过滤后没有可用memory，返回空结果
+        # Return empty retrieval results when no memory remains after filtering.
         if len(memory) == 0:
             return '', reasoning, []
 
@@ -832,13 +832,13 @@ def generate_examples(info, actions, memory, embeddings, reasoning='', k=3, act_
         ret_scores, ret_index, intra_scores = [], [], []
         query_embedding = model_embedding.encode([reasoning])
         for a, emb in enumerate(embeddings['Actions']):
-          # 为每个memory条目计算ret_score，即使Actions很少也要给默认值
+          # Compute a retrieval score per memory item; use defaults for short action traces.
           if len(emb) < 2:
-            # Actions太少，给默认的低分
+            # Too few action embeddings; assign a low default score.
             ret_scores.append(0.0)
-            ret_index.append(0)  # 默认索引
+            ret_index.append(0)  # Default index.
             if config['params'].get('intra_task', False):
-              intra_scores.append(0.0)  # 默认intra_score
+              intra_scores.append(0.0)  # Default intra-task score.
             continue
 
           if use_act_obs:

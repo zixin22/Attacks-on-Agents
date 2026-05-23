@@ -1,7 +1,7 @@
 """
 AutoDan Evolutionary Optimization System
 
-基于进化算法的Prompt优化框架，用于生成能够绕过安全过滤器的trigger instructions。
+Prompt，trigger instructions。
 """
 
 __version__ = "1.0.0"

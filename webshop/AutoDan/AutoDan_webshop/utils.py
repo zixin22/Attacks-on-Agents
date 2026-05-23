@@ -1,6 +1,6 @@
 """
 Utility Functions Module
-工具函数模块：提供各种辅助功能
+：
 """
 
 import os
@@ -19,15 +19,15 @@ except ImportError:
 
 
 def load_seed_prompts(file_path: str) -> List[str]:
-    """加载种子prompts"""
+    """prompts"""
     if not os.path.exists(file_path):
-        raise FileNotFoundError(f"种子文件不存在: {file_path}")
+        raise FileNotFoundError(f": {file_path}")
 
     prompts = []
     with open(file_path, 'r', encoding='utf-8') as f:
         content = f.read().strip()
 
-        # 按空行分割不同的prompt
+        # prompt
         prompt_blocks = [block.strip() for block in content.split('\n\n') if block.strip()]
 
         for block in prompt_blocks:
@@ -39,7 +39,7 @@ def load_seed_prompts(file_path: str) -> List[str]:
 
 
 def save_population_snapshot(population, generation: int, output_dir: str) -> None:
-    """保存种群快照"""
+    """"""
     os.makedirs(output_dir, exist_ok=True)
 
     snapshot_file = os.path.join(output_dir, f'population_gen_{generation:03d}.json')
@@ -58,7 +58,7 @@ def save_population_snapshot(population, generation: int, output_dir: str) -> No
 
 
 def calculate_diversity_score(population) -> float:
-    """计算种群多样性"""
+    """"""
     if len(population.members) <= 1:
         return 0.0
 
@@ -68,13 +68,13 @@ def calculate_diversity_score(population) -> float:
 
 
 def plot_optimization_progress(log_file: str, output_file: str = None) -> None:
-    """绘制优化进度图"""
+    """"""
     if not HAS_MATPLOTLIB:
         print("[Warning] matplotlib not available. Cannot generate plots.")
         return
 
     if not os.path.exists(log_file):
-        print(f"日志文件不存在: {log_file}")
+        print(f": {log_file}")
         return
 
     with open(log_file, 'r', encoding='utf-8') as f:
@@ -97,7 +97,7 @@ def plot_optimization_progress(log_file: str, output_file: str = None) -> None:
 
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8))
 
-    # 分数进度图
+    # 
     ax1.plot(generations, best_scores, 'r-', label='Best Score', linewidth=2)
     ax1.plot(generations, avg_scores, 'b-', label='Average Score', alpha=0.7)
     ax1.set_xlabel('Generation')
@@ -106,7 +106,7 @@ def plot_optimization_progress(log_file: str, output_file: str = None) -> None:
     ax1.legend()
     ax1.grid(True, alpha=0.3)
 
-    # 多样性图
+    # 
     ax2.plot(generations, diversities, 'g-', label='Population Diversity', linewidth=2)
     ax2.set_xlabel('Generation')
     ax2.set_ylabel('Diversity')
@@ -118,15 +118,15 @@ def plot_optimization_progress(log_file: str, output_file: str = None) -> None:
 
     if output_file:
         plt.savefig(output_file, dpi=300, bbox_inches='tight')
-        print(f"优化进度图已保存到: {output_file}")
+        print(f": {output_file}")
     else:
         plt.show()
 
 
 def analyze_optimization_results(results_file: str) -> Dict[str, Any]:
-    """分析优化结果"""
+    """"""
     if not os.path.exists(results_file):
-        raise FileNotFoundError(f"结果文件不存在: {results_file}")
+        raise FileNotFoundError(f": {results_file}")
 
     with open(results_file, 'r', encoding='utf-8') as f:
         results = json.load(f)
@@ -135,7 +135,7 @@ def analyze_optimization_results(results_file: str) -> Dict[str, Any]:
     if not best_individuals:
         return {}
 
-    # 分析最佳个体
+    # 
     scores = [ind['score'] for ind in best_individuals]
     jailbreak_scores = [ind['jailbreak_score'] for ind in best_individuals]
 
@@ -161,22 +161,22 @@ def analyze_optimization_results(results_file: str) -> Dict[str, Any]:
 
 
 def print_optimization_summary(results_file: str) -> None:
-    """打印优化摘要"""
+    """"""
     try:
         analysis = analyze_optimization_results(results_file)
 
         if not analysis:
-            print("没有找到有效的优化结果")
+            print("")
             return
 
         print("=" * 60)
-        print("AutoDan 进化优化摘要")
+        print("AutoDan ")
         print("=" * 60)
-        print(f"总进化代数: {analysis['total_generations']}")
-        print(f"最佳个体数量: {analysis['num_best_individuals']}")
+        print(f": {analysis['total_generations']}")
+        print(f": {analysis['num_best_individuals']}")
         print()
 
-        print("综合评分分布:")
+        print(":")
         score_dist = analysis['score_distribution']
         print(".3f")
         print(".3f")
@@ -184,7 +184,7 @@ def print_optimization_summary(results_file: str) -> None:
         print(".3f")
         print()
 
-        print("越狱评分分布:")
+        print(":")
         jb_dist = analysis['jailbreak_score_distribution']
         print(".3f")
         print(".3f")
@@ -192,19 +192,19 @@ def print_optimization_summary(results_file: str) -> None:
         print()
 
 
-        print("最终最佳Prompt:")
-        print(f"评分: {analysis['final_best_score']:.3f}")
-        print(f"内容: {analysis['final_best_prompt']}")
+        print("Prompt:")
+        print(f": {analysis['final_best_score']:.3f}")
+        print(f": {analysis['final_best_prompt']}")
         print("=" * 60)
 
     except Exception as e:
-        print(f"分析结果时出错: {e}")
+        print(f": {e}")
 
 
 def compare_prompts(prompts: List[str]) -> Dict[str, Any]:
-    """比较多个prompts的表现"""
-    # 这里可以扩展为实际的比较逻辑
-    # 暂时返回基本的统计信息
+    """prompts"""
+    # 
+    # 
 
     comparison = {
         'num_prompts': len(prompts),
@@ -213,18 +213,18 @@ def compare_prompts(prompts: List[str]) -> Dict[str, Any]:
         'common_patterns': []
     }
 
-    # 收集所有唯一词
+    # 
     for prompt in prompts:
         words = prompt.lower().split()
         comparison['unique_words'].update(words)
 
     comparison['unique_words'] = len(comparison['unique_words'])
 
-    # 查找常见模式
+    # 
     patterns = ['extract', 'find', 'locate', 'product', 'spot', '<>', '[]']
     for pattern in patterns:
         count = sum(1 for p in prompts if pattern in p.lower())
-        if count > len(prompts) * 0.5:  # 超过50%的prompts包含此模式
+        if count > len(prompts) * 0.5:  # 50%prompts
             comparison['common_patterns'].append((pattern, count))
 
     return comparison
@@ -232,7 +232,7 @@ def compare_prompts(prompts: List[str]) -> Dict[str, Any]:
 
 def export_prompts_to_file(prompts: List[str], output_file: str,
                           format_type: str = 'json') -> None:
-    """将prompts导出到文件"""
+    """prompts"""
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
     if format_type == 'json':
@@ -254,13 +254,13 @@ def export_prompts_to_file(prompts: List[str], output_file: str,
                 f.write(f"## Prompt {i}\n")
                 f.write(f"{prompt}\n\n")
 
-    print(f"已导出 {len(prompts)} 个prompts 到 {output_file}")
+    print(f" {len(prompts)} prompts  {output_file}")
 
 
 def load_prompts_from_file(input_file: str) -> List[str]:
-    """从文件加载prompts"""
+    """prompts"""
     if not os.path.exists(input_file):
-        raise FileNotFoundError(f"输入文件不存在: {input_file}")
+        raise FileNotFoundError(f": {input_file}")
 
     file_ext = os.path.splitext(input_file)[1].lower()
 
@@ -288,15 +288,15 @@ def load_prompts_from_file(input_file: str) -> List[str]:
         return prompts
 
     else:
-        raise ValueError(f"不支持的文件格式: {file_ext}")
+        raise ValueError(f": {file_ext}")
 
 
 def setup_experiment_directory(base_dir: str, experiment_name: str) -> str:
-    """设置实验目录"""
+    """"""
     experiment_dir = os.path.join(base_dir, 'experiments', experiment_name)
     os.makedirs(experiment_dir, exist_ok=True)
 
-    # 创建子目录
+    # 
     subdirs = ['results', 'logs', 'plots']
     for subdir in subdirs:
         os.makedirs(os.path.join(experiment_dir, subdir), exist_ok=True)
@@ -305,91 +305,91 @@ def setup_experiment_directory(base_dir: str, experiment_name: str) -> str:
 
 
 def validate_prompt(prompt: str) -> Tuple[bool, str]:
-    """验证prompt的有效性"""
+    """prompt"""
     if not prompt or len(prompt.strip()) < 5:
-        return False, "Prompt太短"
+        return False, "Prompt"
 
     if len(prompt) > 500:
-        return False, "Prompt太长"
+        return False, "Prompt"
 
-    # 检查必要元素
+    # 
     required_elements = ['spot', 'product']
     prompt_lower = prompt.lower()
 
     missing_elements = [elem for elem in required_elements if elem not in prompt_lower]
     if missing_elements:
-        return False, f"缺少必要元素: {missing_elements}"
+        return False, f": {missing_elements}"
 
-    # 检查是否有危险内容
+    # 
     dangerous_patterns = ['hack', 'exploit', 'attack', 'malware', 'virus', 'bypass']
     for pattern in dangerous_patterns:
         if pattern in prompt_lower:
-            return False, f"包含危险内容: {pattern}"
+            return False, f": {pattern}"
 
-    return True, "有效"
+    return True, ""
 
 
 def batch_validate_prompts(prompts: List[str]) -> List[Tuple[bool, str]]:
-    """批量验证prompts"""
+    """prompts"""
     return [validate_prompt(prompt) for prompt in prompts]
 
 
 def generate_experiment_report(results_dir: str, output_file: str = None) -> str:
-    """生成实验报告"""
+    """"""
     if output_file is None:
         output_file = os.path.join(results_dir, 'experiment_report.md')
 
     report_lines = [
-        "# AutoDan 进化优化实验报告",
+        "# AutoDan ",
         "",
-        f"生成时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+        f": {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
         "",
-        "## 文件结构",
-        f"- 结果目录: {results_dir}",
-        f"- 最佳triggers: results/best_triggers.json",
-        f"- 优化日志: results/optimization_log.txt",
-        f"- 种群历史: results/population_history.json",
+        "## ",
+        f"- : {results_dir}",
+        f"- triggers: results/best_triggers.json",
+        f"- : results/optimization_log.txt",
+        f"- : results/population_history.json",
         "",
-        "## 优化结果摘要",
+        "## ",
     ]
 
-    # 尝试读取结果摘要
+    # 
     best_triggers_file = os.path.join(results_dir, 'best_triggers.json')
     if os.path.exists(best_triggers_file):
         try:
             analysis = analyze_optimization_results(best_triggers_file)
             report_lines.extend([
-                f"- 总进化代数: {analysis.get('total_generations', 'N/A')}",
-                f"- 最佳个体数量: {analysis.get('num_best_individuals', 'N/A')}",
+                f"- : {analysis.get('total_generations', 'N/A')}",
+                f"- : {analysis.get('num_best_individuals', 'N/A')}",
                 ".3f"                ".3f"                ".3f"            ])
         except Exception as e:
-            report_lines.append(f"- 读取结果失败: {e}")
+            report_lines.append(f"- : {e}")
 
-    # 添加使用说明
+    # 
     report_lines.extend([
         "",
-        "## 使用说明",
+        "## ",
         "",
-        "### 1. 运行优化",
+        "### 1. ",
         "```bash",
         "cd AutoDan",
         "python run_optimization.py",
         "```",
         "",
-        "### 2. 查看结果",
+        "### 2. ",
         "```bash",
         "python -c \"from utils import print_optimization_summary; print_optimization_summary('results/best_triggers.json')\"",
         "```",
         "",
-        "### 3. 绘制进度图",
+        "### 3. ",
         "```bash",
         "python -c \"from utils import plot_optimization_progress; plot_optimization_progress('results/optimization_log.txt')\"",
         "```",
     ])
 
-    # 写入文件
+    # 
     with open(output_file, 'w', encoding='utf-8') as f:
         f.write('\n'.join(report_lines))
 
-    print(f"实验报告已生成: {output_file}")
+    print(f": {output_file}")
     return output_file

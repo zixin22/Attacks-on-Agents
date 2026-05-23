@@ -1,6 +1,6 @@
 """
 AutoDan Evolutionary Optimization Configuration
-配置文件：管理进化算法的所有参数
+：
 """
 
 import os
@@ -8,54 +8,54 @@ from typing import Dict, Any
 
 
 class Config:
-    """AutoDan进化优化配置类"""
+    """AutoDan"""
 
     def __init__(self):
-        # === 种群参数 ===
-        self.population_size = 20  # 种群大小
-        self.num_generations = 50  # 最大进化代数
-        self.elite_size = 3  # 精英个体数量（直接保留到下一代）
+        # ===  ===
+        self.population_size = 20  # 
+        self.num_generations = 50  # 
+        self.elite_size = 3  # （）
 
-        # === 提案生成参数 ===
-        self.llm_rewrite_variants = 5  # 每个prompt的LLM改写变体数
+        # ===  ===
+        self.llm_rewrite_variants = 5  # promptLLM
         self.symbol_proposer_variants_per_template = 3  # Symbol proposer: LLM delimiter pairs per attack template
-        self.crossover_rate = 0.3  # 交叉概率
-        self.mutation_rate = 0.1  # 变异概率
-        self.max_prompt_length = 200  # 最大prompt长度限制
+        self.crossover_rate = 0.3  # 
+        self.mutation_rate = 0.1  # 
+        self.max_prompt_length = 200  # prompt
 
-        # === LLM配置 ===
+        # === LLM ===
         self.llm_config = {
-            'model': 'gpt-4o',  # 默认使用GPT-4o
-            'temperature': 0.8,  # 创造性温度
-            'max_tokens': 150,  # 最大token数
-            'api_base': "http://152.53.53.64:3000/v1"  # API基础URL
+            'model': 'gpt-4o',  # GPT-4o
+            'temperature': 0.8,  # 
+            'max_tokens': 150,  # token
+            'api_base': "http://152.53.53.64:3000/v1"  # APIURL
         }
 
-        # === 文件路径 ===
+        # ===  ===
         self.base_dir = os.path.dirname(os.path.abspath(__file__))
         self.results_dir = os.path.join(self.base_dir, 'results')
 
-        # === 实验管理 ===
+        # ===  ===
         self.experiment_id = self._get_next_experiment_id()
         self.experiment_dir = os.path.join(self.results_dir, f'optimization_{self.experiment_id}')
 
-        # 创建实验目录
+        # 
         os.makedirs(self.experiment_dir, exist_ok=True)
 
-        # 实验内文件路径
+        # 
         self.best_triggers_file = os.path.join(self.experiment_dir, 'best_triggers.json')
         self.optimization_log_file = os.path.join(self.experiment_dir, 'optimization_log.txt')
         self.optimization_log_full_file = os.path.join(self.experiment_dir, 'optimization_log_full.txt')
         self.population_history_file = os.path.join(self.experiment_dir, 'population_history.json')
 
-        # === API和性能配置 ===
-        self.request_interval = 0.2  # LLM API请求间隔（秒），配合重试机制防止速率限制
+        # === API ===
+        self.request_interval = 0.2  # LLM API（），
 
-        # === 终止条件 ===
-        self.no_improvement_generations = 10  # 无改进代数上限
+        # ===  ===
+        self.no_improvement_generations = 10  # 
 
     def to_dict(self) -> Dict[str, Any]:
-        """转换为字典格式"""
+        """"""
         return {
             'experiment_id': self.experiment_id,
             'population_size': self.population_size,
@@ -71,20 +71,20 @@ class Config:
         }
 
     def update_from_dict(self, config_dict: Dict[str, Any]):
-        """从字典更新配置"""
+        """"""
         for key, value in config_dict.items():
             if hasattr(self, key):
                 setattr(self, key, value)
 
     def save_to_file(self, file_path: str):
-        """保存配置到文件"""
+        """"""
         import json
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
         with open(file_path, 'w', encoding='utf-8') as f:
             json.dump(self.to_dict(), f, indent=2, ensure_ascii=False)
 
     def load_from_file(self, file_path: str):
-        """从文件加载配置"""
+        """"""
         import json
         if os.path.exists(file_path):
             with open(file_path, 'r', encoding='utf-8') as f:
@@ -92,12 +92,12 @@ class Config:
             self.update_from_dict(config_dict)
 
     def _get_next_experiment_id(self) -> int:
-        """获取下一个实验编号"""
+        """"""
         if not os.path.exists(self.results_dir):
             os.makedirs(self.results_dir, exist_ok=True)
             return 1
 
-        # 查找所有optimization_开头的文件夹
+        # optimization_
         existing_experiments = []
         for item in os.listdir(self.results_dir):
             if os.path.isdir(os.path.join(self.results_dir, item)) and item.startswith('optimization_'):
@@ -107,11 +107,11 @@ class Config:
                 except (ValueError, IndexError):
                     continue
 
-        # 返回下一个可用的ID
+        # ID
         return max(existing_experiments) + 1 if existing_experiments else 1
 
     def __str__(self) -> str:
-        """字符串表示"""
+        """"""
         return f"AutoDan Config:\n" \
                f"  Experiment ID: {self.experiment_id}\n" \
                f"  Population Size: {self.population_size}\n" \

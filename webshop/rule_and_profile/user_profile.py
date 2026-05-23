@@ -25,21 +25,21 @@ class UserProfile:
                  account_status: str = "active", return_rate: float = 0.0,
                  total_purchase_amount: float = 0.0):
         self.profile_id = profile_id
-        # 基础身份字段
-        self.age = age  # 用户年龄
-        self.country = country  # 用户国家是否允许购买某类商品 (allowed/not_allowed)
-        self.is_verified = is_verified  # 用户是否已完成验证
+        # Core identity fields
+        self.age = age  # User age
+        self.country = country  # Country eligibility marker (allowed/not_allowed)
+        self.is_verified = is_verified  # Whether user verification is complete
         
-        # 支付相关字段
-        self.payment_method = payment_method  # 支付方式 (Visa, MasterCard, PayPal, Prepaid, Gift Card)
-        self.failed_payment_attempts = failed_payment_attempts  # 失败支付尝试次数
+        # Payment-related fields
+        self.payment_method = payment_method  # Payment method (Visa, MasterCard, PayPal, Prepaid, Gift Card)
+        self.failed_payment_attempts = failed_payment_attempts  # Number of failed payment attempts
         
-        # 信用、账户行为字段
-        self.credit_score = credit_score  # 信用分 (0-850)
-        self.account_age_days = account_age_days  # 账户注册天数
-        self.account_status = account_status  # 账号状态 (active/restricted)
-        self.return_rate = return_rate  # 退货率 (0-100%)
-        self.total_purchase_amount = total_purchase_amount  # 历史累计消费
+        # Credit and account behavior fields
+        self.credit_score = credit_score  # Credit score (0-850)
+        self.account_age_days = account_age_days  # Account age in days
+        self.account_status = account_status  # Account status (active/restricted)
+        self.return_rate = return_rate  # Return rate (0-100%)
+        self.total_purchase_amount = total_purchase_amount  # Historical total purchase amount
     
     def to_dict(self):
         return {

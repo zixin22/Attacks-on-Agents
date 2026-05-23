@@ -150,14 +150,14 @@ class Evaluator:
         if self._dataset_cache is None:
             self._dataset_cache = self._load_all_dataset_pairs()
 
-            # 不打乱顺序，保持原始顺序
+            # ，
             # random.shuffle(self._dataset_cache)
 
-            # 训练集：前5个pair（索引0-4）
-            # 测试集：第6-10个pair（索引5-9）
-            self._train_pairs = self._dataset_cache[:20]  # 前5个
-            self._val_pairs = []  # 不使用验证集
-            self._test_pairs = self._dataset_cache[20:]  # 第6-10个（索引5-9）
+            # ：5pair（0-4）
+            # ：6-10pair（5-9）
+            self._train_pairs = self._dataset_cache[:20]  # 5
+            self._val_pairs = []  # 
+            self._test_pairs = self._dataset_cache[20:]  # 6-10（5-9）
 
             print(f"Dataset split completed: train {len(self._train_pairs)} | val {len(self._val_pairs)} | test {len(self._test_pairs)}")
 
@@ -169,7 +169,7 @@ class Evaluator:
             with open(dataset_file, 'r', encoding='utf-8') as f:
                 lines = f.readlines()
 
-            # 找到所有包含'Pair '的行
+            # 'Pair '
             pair_indices = []
             for i, line in enumerate(lines):
                 if line.strip().startswith('Pair ') and ':' in line:
@@ -177,10 +177,10 @@ class Evaluator:
 
             for start_idx in pair_indices:
                 try:
-                    # 每个pair占用大约6行（序号行 + 5个字段行）
+                    # pair6（ + 5）
                     pair_lines = lines[start_idx:start_idx+8]
 
-                    # 提取各个字段
+                    # 
                     instruction_line = None
                     fragments_line = None
                     fragment1_line = None
@@ -201,10 +201,10 @@ class Evaluator:
                             masked_line = line
 
                     if instruction_line and fragments_line and masked_line:
-                        # 解析instruction
+                        # instruction
                         host_instruction = instruction_line.replace('Host Instruction:', '').strip()
 
-                        # 解析fragment（直接提取文本，不再解析列表格式）
+                        # fragment（，）
                         fragment = fragments_line.replace('Sensitive Fragment:', '').strip()
                         fragment1 = (
                             fragment1_line.replace('fragment1:', '').strip()
@@ -221,7 +221,7 @@ class Evaluator:
                             mid = max(1, len(fragment) // 2)
                             fragment1, fragment2 = fragment[:mid], fragment[mid:]
 
-                        # 解析masked instruction
+                        # masked instruction
                         masked_instruction = masked_line.replace('Masked Instruction:', '').strip()
 
                     pairs.append({
@@ -233,7 +233,7 @@ class Evaluator:
                     })
 
                 except Exception as e:
-                    print(f"解析pair失败 (行{start_idx}): {e}")
+                    print(f"pair ({start_idx}): {e}")
                     continue
 
         except Exception as e:
@@ -251,8 +251,8 @@ class Evaluator:
         attack_template: Optional[str] = None,
     ) -> Tuple[float, List[Dict[str, str]]]:
         """
-        在所有测试pairs上评估trigger并取平均值
-        返回: (平均分数, 交互历史列表)
+        pairstrigger
+        : (, )
         """
         self._load_and_split_dataset()
         if not self._test_pairs:
@@ -262,7 +262,7 @@ class Evaluator:
         total_scores = []
         interaction_history = []
 
-        for pair in self._test_pairs:  # 评估所有测试pairs
+        for pair in self._test_pairs:  # pairs
             host_instruction = pair['host_instruction']
             fragment = pair['fragment']
             fragment1 = pair.get('fragment1', '')
@@ -289,7 +289,7 @@ class Evaluator:
                 goal_score = self._calculate_goal_achievement(llm_output, fragment)
                 total_scores.append(goal_score)
 
-                # 记录交互历史
+                # 
                 interaction_history.append({
                     "host_instruction": host_instruction,
                     "fragment": fragment,
@@ -356,8 +356,8 @@ class Evaluator:
         attack_template: Optional[str] = None,
     ) -> Tuple[float, List[Dict[str, str]]]:
         """
-        在所有训练pairs上评估trigger并取平均值
-        返回: (平均分数, 交互历史列表)
+        pairstrigger
+        : (, )
         """
         try:
             self._load_and_split_dataset()
@@ -371,7 +371,7 @@ class Evaluator:
 
             atk = attack_template if attack_template is not None else self._attack_template
 
-            # 对每个训练pair进行评估
+            # pair
             for pair in self._train_pairs:
                 try:
                     host_instruction = pair['host_instruction']
@@ -400,7 +400,7 @@ class Evaluator:
                     total_score += goal_score
                     valid_evaluations += 1
 
-                    # 记录交互历史
+                    # 
                     interaction_history.append({
                         "host_instruction": host_instruction,
                         "fragment": fragment,
@@ -417,7 +417,7 @@ class Evaluator:
                 print("No valid evaluations completed")
                 return 0.0, []
 
-            # 返回所有训练pairs的平均得分和交互历史
+            # pairs
             avg_score = total_score / valid_evaluations
             print(f"Evaluated on {valid_evaluations}/{len(self._train_pairs)} training pairs, avg score: {avg_score:.4f}")
 
