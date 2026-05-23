@@ -1,5 +1,0 @@
-Non-attack Summary
-============================================================
-Total cases run: 105
-Average reward: 0.818
-Cases with reward > 0.0: 102
